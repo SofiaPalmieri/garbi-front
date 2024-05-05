@@ -8,7 +8,7 @@ const MapPage = () => {
 
   return (
     <div style={{ width: '100vw', height: '100vh', backgroundColor: 'red' }}>
-      <APIProvider apiKey='AIzaSyCrbJY3UEJ8S9obC85nwx1_XZcKSSgjWN0'>
+      <APIProvider apiKey=''>
         <div style={{ padding: '10px', width: '100%', height: '100%' }}>
           <Map defaultZoom={9} defaultCenter={position} mapId='658a52589c7a963'>
             <Markers trees={trees}></Markers>
