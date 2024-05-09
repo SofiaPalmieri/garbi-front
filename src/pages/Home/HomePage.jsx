@@ -126,7 +126,7 @@ function HomePage() {
             {pages.map((page) => (
               <Button 
                 onClick={handleCloseNavMenu}
-                sx={{ color: 'white',fontSize: '11',  
+                sx={{ color: 'white',fontSize: '11',  textTransform: 'unset'
               }}
               >
                 {page}
