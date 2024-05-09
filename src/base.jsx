@@ -9,7 +9,7 @@ const Base = () => {
         minHeight: '100vh'
     }}>
         <Outlet />
-        <Navigate to ='/login' />
+        <Navigate to ='/home' />
     </Box>
   )
 }
