@@ -1,8 +1,30 @@
 
-import { Box, Button, Checkbox, FormControlLabel, FormGroup, Paper, TextField, Typography } from '@mui/material'
-import React from 'react'
+import { Visibility, VisibilityOff } from '@mui/icons-material'
+import { Box, Button, Checkbox, FormControl, FormControlLabel, FormGroup, IconButton, InputAdornment, InputLabel, OutlinedInput, Paper, TextField, Typography } from '@mui/material'
+import React, { useState } from 'react'
+import { Controller, useForm } from 'react-hook-form'
 
 const LoginPage = () => {
+  const [showPassword, setShowPassword] = useState(false);
+
+  const handleClickShowPassword = () => setShowPassword((show) => !show);
+  const handleMouseDownPassword = (event) => {
+    event.preventDefault();
+  };
+
+  const { control, handleSubmit } = useForm({
+    defaultValues: {
+      email: "",
+      password: "",
+      rememberMeCheckbox: false
+    }
+  })
+
+  const onSubmit = (data) => {
+    alert(JSON.stringify(data));
+    console.log(data);
+  }
+
   return (
     <Box sx={{ width: '100vw', height: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
       <Paper sx={{
@@ -41,44 +63,82 @@ const LoginPage = () => {
           justifyContent: 'center'
         }}>
           <Box>
-            <Typography
-              sx={{
-                fontFamily: 'Roboto',
-                fontSize: '1.5rem',
-                fontWeight: 400,
-                textAlign: 'center',
-                lineHeight: '4rem'
-              }}
-            >Inicia sesión</Typography>
-            <Box padding={1}>
-              <TextField fullWidth label="Email" />
-              <TextField fullWidth label="Contraseña"
+            <form onSubmit={handleSubmit(onSubmit)}>
+              <Typography
                 sx={{
-                  margin: '1rem 0'
+                  fontFamily: 'Roboto',
+                  fontSize: '1.5rem',
+                  fontWeight: 400,
+                  textAlign: 'center',
+                  lineHeight: '4rem'
                 }}
-              />
-              <FormGroup sx={{
-                width: 'fit-content',
-                marginLeft: '9px'
-              }}>
-                <FormControlLabel control={<Checkbox defaultChecked />} label="Recordame" />
-              </FormGroup>
-              <Button sx={{
-                backgroundColor: '#12422C',
-                color: 'white',
-                marginTop: '1rem'
-              }} fullWidth  >
-                INGRESAR
-              </Button>
-              <Typography sx={{
-                textDecoration: 'underline',
-                color: '#2196F3',
-                fontSize: '.875rem',
-                marginTop: '1rem'
-              }}>
-                ¿Olvidaste tu contraseña?
-              </Typography>
-            </Box>
+              >Inicia sesión</Typography>
+              <Box padding={1}>
+                <Controller
+                  name="email"
+                  control={control}
+                  rules={{ required: true }}
+                  render={({ field }) => <TextField fullWidth label="Email" {...field} />}
+                />
+                <Controller
+                  name="password"
+                  control={control}
+                  rules={{ required: true }}
+                  render={({ field }) =>
+                    <FormControl sx={{ mt: 1 }} fullWidth>
+                      <InputLabel htmlFor="outlined-adornment-password">Contraseña</InputLabel>
+                      <OutlinedInput
+                        id="outlined-adornment-password"
+                        { ...field }
+                        type={showPassword ? 'text' : 'password'}
+                        endAdornment={
+                          <InputAdornment position="end">
+                            <IconButton
+                              aria-label="toggle password visibility"
+                              onClick={handleClickShowPassword}
+                              onMouseDown={handleMouseDownPassword}
+                              edge="end"
+                            >
+                              {showPassword ? <VisibilityOff /> : <Visibility />}
+                            </IconButton>
+                          </InputAdornment>
+                        }
+                        label="Contraseña"
+                      />
+                    </FormControl>
+                  }
+                />
+                <Controller
+                  name="rememberMeCheckbox"
+                  control={control}
+                  defaultValue={true}
+                  render={({ field }) =>
+                    <FormGroup sx={{
+                      width: 'fit-content',
+                      marginLeft: '9px',
+                      display: 'flex'
+                    }}>
+                      <FormControlLabel control={<Checkbox {...field} />} label="Recordame" />
+                    </FormGroup>
+                  }
+                />
+                <Button sx={{
+                  backgroundColor: '#12422C',
+                  color: 'white',
+                  marginTop: '1rem'
+                }} fullWidth type='submit'  >
+                  INGRESAR
+                </Button>
+                <Typography sx={{
+                  textDecoration: 'underline',
+                  color: '#2196F3',
+                  fontSize: '.875rem',
+                  marginTop: '1rem'
+                }}>
+                  ¿Olvidaste tu contraseña?
+                </Typography>
+              </Box>
+            </form>
           </Box>
 
         </Box>
