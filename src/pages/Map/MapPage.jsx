@@ -7,9 +7,9 @@ const MapPage = () => {
   console.log(trees)
 
   return (
-    <div style={{ width: '100vw', height: '100vh', backgroundColor: 'red' }}>
-      <APIProvider apiKey=''>
-        <div style={{ padding: '10px', width: '100%', height: '100%' }}>
+    <div style={{ width: '100vw', height: '100vh', backgroundColor: 'white' }}>
+      <APIProvider apiKey='AIzaSyChdsbPNc69MyOgPRQf8o2_5kMUFDx2zMM'>
+        <div style={{ paddingLeft: '350px', paddingBottom:'5px', width: '100%', height: '70%' }}>
           <Map defaultZoom={9} defaultCenter={position} mapId='658a52589c7a963'>
             <Markers trees={trees}></Markers>
           </Map>
