@@ -28,7 +28,6 @@ const router = createBrowserRouter([
         element: <MapPage/>
       }
     ],
-    
   }
 ])
 

@@ -1,8 +1,16 @@
 
 import { Visibility, VisibilityOff } from '@mui/icons-material'
-import { Box, Button, Checkbox, FormControl, FormControlLabel, FormGroup, IconButton, InputAdornment, InputLabel, OutlinedInput, Paper, TextField, Typography } from '@mui/material'
+import { Box, Button, FormControl, IconButton, InputAdornment, InputLabel, OutlinedInput, Paper, TextField, Typography } from '@mui/material'
 import React, { useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
+import { API } from '../../utils/apiHelper'
+import { object, string } from 'yup'
+import { yupResolver } from '@hookform/resolvers/yup'
+
+const userLoginSchema = object({
+  email: string().email().required(),
+  password: string().max(16).required()
+}).required();
 
 const LoginPage = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -12,18 +20,20 @@ const LoginPage = () => {
     event.preventDefault();
   };
 
-  const { control, handleSubmit } = useForm({
+  const { control, handleSubmit, formState: { errors } } = useForm({
     defaultValues: {
       email: "",
       password: "",
-      rememberMeCheckbox: false
-    }
-  })
+    },
+    resolver: yupResolver(userLoginSchema)
+  });
 
-  const onSubmit = (data) => {
-    alert(JSON.stringify(data));
-    console.log(data);
+  const onSubmit = async (data) => {
+    const response = await API.login(data.email, data.password);
+    localStorage.setItem('token', response.data.token);
   }
+
+  console.log(errors);
 
   return (
     <Box sx={{ width: '100vw', height: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
@@ -78,19 +88,32 @@ const LoginPage = () => {
                   name="email"
                   control={control}
                   rules={{ required: true }}
-                  render={({ field }) => <TextField fullWidth label="Email" {...field} />}
+                  render={({ field }) => (
+                    <FormControl fullWidth sx={{ minHeight: '80px' }}>
+                      <TextField
+                        fullWidth label="Email"
+                        {...field}
+                      />
+                      {errors.email && (
+                        <Typography fontSize={'0.85rem'} paddingLeft={1.5} color={'red'}>{errors.email.message}</Typography>
+                      )}
+                    </FormControl>
+
+                  )
+                  }
                 />
                 <Controller
                   name="password"
                   control={control}
                   rules={{ required: true }}
                   render={({ field }) =>
-                    <FormControl sx={{ mt: 1 }} fullWidth>
+                    <FormControl sx={{ minHeight: '80px' }} fullWidth>
                       <InputLabel htmlFor="outlined-adornment-password">Contraseña</InputLabel>
                       <OutlinedInput
                         id="outlined-adornment-password"
-                        { ...field }
+                        {...field}
                         type={showPassword ? 'text' : 'password'}
+                        error={!!errors.password}
                         endAdornment={
                           <InputAdornment position="end">
                             <IconButton
@@ -105,27 +128,16 @@ const LoginPage = () => {
                         }
                         label="Contraseña"
                       />
+                      {errors.password && (
+                        <Typography fontSize={'0.85rem'} paddingLeft={1.5} color={'red'}>{errors.password.message}</Typography>
+                      )}
                     </FormControl>
-                  }
-                />
-                <Controller
-                  name="rememberMeCheckbox"
-                  control={control}
-                  defaultValue={true}
-                  render={({ field }) =>
-                    <FormGroup sx={{
-                      width: 'fit-content',
-                      marginLeft: '9px',
-                      display: 'flex'
-                    }}>
-                      <FormControlLabel control={<Checkbox {...field} />} label="Recordame" />
-                    </FormGroup>
                   }
                 />
                 <Button sx={{
                   backgroundColor: '#12422C',
                   color: 'white',
-                  marginTop: '1rem'
+                  marginTop: 0.1
                 }} fullWidth type='submit'  >
                   INGRESAR
                 </Button>
