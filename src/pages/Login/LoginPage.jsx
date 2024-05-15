@@ -33,8 +33,6 @@ const LoginPage = () => {
     localStorage.setItem('token', response.data.token);
   }
 
-  console.log(errors);
-
   return (
     <Box sx={{ width: '100vw', height: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
       <Paper sx={{
