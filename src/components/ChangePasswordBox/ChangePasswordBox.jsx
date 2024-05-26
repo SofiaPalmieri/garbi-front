@@ -1,35 +1,82 @@
-import { yupResolver } from '@hookform/resolvers/yup'
-import { Visibility, VisibilityOff } from '@mui/icons-material'
+import { Visibility, VisibilityOff, X } from '@mui/icons-material'
 import { Box, Button, FormControl, IconButton, InputAdornment, InputLabel, OutlinedInput, Paper, TextField, Typography } from '@mui/material'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
-import { object, string } from 'yup'
 import CloseIcon from '@mui/icons-material/Close';
+import CheckIcon from '@mui/icons-material/Check'
+import useDebounce from '../../hooks/useDebounce'
+import logo from '/src/assets/garbi-login.png'
 
+const passwordStatusInitial = {
+  atLeast8Characters: false,
+  atLeastOneNumber: false,
+  atLeastOneMayus: false,
+  atLeastAnEspecialCharacter: false,
+  areBothPasswordsEquals: false
+}
 
-const changePasswordSchema = object({
-  password: string().required(),
-  passwordRepeated: string().max(16).required()
-}).required();
-
+const passwordValidationRegex = {
+  uppercase: /(?=.*[A-Z])/,
+  number: /(?=.*\d)/,
+  specialChar: /(?=.*[!@#$%^&//*])/,
+};
 
 export const ChangePasswordBox = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const [passwordStatus, setPasswordStatus] = useState(passwordStatusInitial);
+
+  let passwordChecked = false;
+
+  const { control, handleSubmit, formState: { errors }, watch } = useForm({
+    defaultValues: {
+      password: "",
+      passwordRepeated: "",
+    },
+  });
+
+
+  const passwordWatched = watch("password");
+  const passwordRepeatedWatched = watch("passwordRepeated");
+  const passwordDebounced = useDebounce(passwordWatched, 500);
+  const passwordRepeatedDebounced = useDebounce(passwordRepeatedWatched,500);
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
   };
 
-  const { control, handleSubmit, formState: { errors } } = useForm({
-    defaultValues: {
-      password: "",
-      passwordRepeated: "",
-    },
-    resolver: yupResolver(changePasswordSchema)
-  });
+  useEffect(() => {
+    console.log(passwordDebounced)
+    const newPasswordStatus = {
+      atLeast8Characters: passwordDebounced.length >= 8,
+      atLeastOneNumber: passwordValidationRegex.number.test(passwordDebounced),
+      atLeastOneMayus: passwordValidationRegex.uppercase.test(passwordDebounced),
+      atLeastAnEspecialCharacter: passwordValidationRegex.specialChar.test(passwordDebounced),
+      areBothPasswordsEquals: false
+    }
+
+    setPasswordStatus(newPasswordStatus);
+  }, [passwordDebounced])
+
+
+  useEffect(() => {
+    const oldStatus = passwordStatus;
+
+    setPasswordStatus({...passwordStatus, areBothPasswordsEquals: passwordRepeatedDebounced === passwordDebounced})
+
+  }, [passwordRepeatedDebounced])
+
+  useEffect(() => {
+    // Verificar si todos los valores son true
+    const passwordStatusArray = Object.values(passwordStatus);
+
+    passwordChecked = passwordStatusArray.every(status => status);
+  
+  }, [passwordStatus])
+
 
   const onSubmit = async (data) => {
+    if (!passwordChecked) return;
   }
 
   return (
@@ -86,55 +133,11 @@ export const ChangePasswordBox = () => {
             flexDirection: 'column',
             gap: '1rem'
           }}>
-            <Box display={'flex'} alignItems={'center'}>
-              <CloseIcon sx={{ color: 'red' }} />
-              <Typography
-                sx={{
-                  fontSize: '1rem',
-                  fontWeight: 400,
-                  verticalAlign: 'center'
-                }}
-              >
-                Al menos 8 caracteres
-              </Typography>
-            </Box>
-            <Box display={'flex'} alignItems={'center'}>
-              <CloseIcon sx={{ color: 'red' }} />
-              <Typography
-                sx={{
-                  fontSize: '1rem',
-                  fontWeight: 400,
-                  verticalAlign: 'center'
-                }}
-              >
-                Al menos un número
-              </Typography>
-            </Box>
-            <Box display={'flex'} alignItems={'center'}>
-              <CloseIcon sx={{ color: 'red' }} />
-              <Typography
-                sx={{
-                  fontSize: '1rem',
-                  fontWeight: 400,
-                  verticalAlign: 'center'
-                }}
-              >
-                Al menos una mayúscula
-              </Typography>
-            </Box>
-            <Box display={'flex'} alignItems={'center'}>
-              <CloseIcon sx={{ color: 'red' }} />
-              <Typography
-                sx={{
-                  fontSize: '1rem',
-                  fontWeight: 400,
-                  verticalAlign: 'center'
-                }}
-              >
-                Al menos un caracter especial
-              </Typography>
-            </Box>
-
+            <ValidationItem isValid={passwordStatus.atLeast8Characters} text="Al menos 8 caracteres" />
+            <ValidationItem isValid={passwordStatus.atLeastOneNumber} text="Al menos un número" />
+            <ValidationItem isValid={passwordStatus.atLeastOneMayus} text="Al menos una mayúscula" />
+            <ValidationItem isValid={passwordStatus.atLeastAnEspecialCharacter} text="Al menos un caracter especial" />
+            <ValidationItem isValid={passwordStatus.areBothPasswordsEquals} text="Las contraseñas coinciden" />
           </Box>
 
         </Box>
@@ -165,7 +168,7 @@ export const ChangePasswordBox = () => {
             width: '100%',
             height: '300px',
             objectFit: 'cover'
-          }} src='/src/assets/garbi-login.png'></img>
+          }} src={logo}></img>
         </Box>
         <Box>
 
@@ -179,7 +182,7 @@ export const ChangePasswordBox = () => {
                   <FormControl sx={{ minHeight: '80px' }} fullWidth>
                     <InputLabel color='secondary' sx={{ color: 'white' }} htmlFor="outlined-adornment-password">Contraseña</InputLabel>
                     <OutlinedInput
-                      id="outlined-adornment-password"
+                      id="outlined-adornment-change-password"
                       {...field}
                       type={showPassword ? 'text' : 'password'}
                       error={!!errors.password}
@@ -231,7 +234,7 @@ export const ChangePasswordBox = () => {
                   <FormControl sx={{ minHeight: '80px' }} fullWidth>
                     <InputLabel color='secondary' sx={{ color: 'white' }} htmlFor="outlined-adornment-passwordRepeated">Repetir Contraseña</InputLabel>
                     <OutlinedInput
-                      id="outlined-adornment-passwordRepeated"
+                      id="outlined-adornment-change-password-repeated"
                       {...field}
                       color="secondary"
                       type={showPassword ? 'text' : 'password'}
@@ -293,8 +296,24 @@ export const ChangePasswordBox = () => {
             </Box>
           </form>
         </Box>
-
       </Box>
     </Paper >
   )
 }
+
+const ValidationItem = ({ isValid, text }) => {
+  return (
+    <Box display={'flex'} alignItems={'center'}>
+      {isValid ? <CheckIcon sx={{ color: '#2E7D32' }} /> : <CloseIcon sx={{ color: '#D32F2F' }} />}
+      <Typography
+        sx={{
+          fontSize: '1rem',
+          fontWeight: 400,
+          verticalAlign: 'center'
+        }}
+      >
+        {text}
+      </Typography>
+    </Box>
+  );
+};

@@ -5,6 +5,7 @@ import { Controller, useForm } from 'react-hook-form'
 import { API } from '../../utils/apiHelper'
 import { object, string } from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
+import logo from '/src/assets/garbi-login.png'
 
 const userLoginSchema = object({
     // email: string().email().required(),
@@ -30,7 +31,6 @@ export const LoginBox = ({setIsFlipped}) => {
     const onSubmit = async (data) => {
         // const response = await API.login(data.email, data.password);
         // localStorage.setItem('token', response.data.token);
-        console.log('flipped')
         setIsFlipped(true);
     }
 
@@ -52,7 +52,7 @@ export const LoginBox = ({setIsFlipped}) => {
                 borderTopLeftRadius: '1rem',
                 borderBottomLeftRadius: '1rem'
             }}>
-                <img src='/src/assets/garbi-login.png' style={{
+                <img src={logo} style={{
                     borderTopLeftRadius: '1rem',
                     borderBottomLeftRadius: '1rem'
 
