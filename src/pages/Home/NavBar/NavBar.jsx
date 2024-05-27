@@ -12,11 +12,12 @@ import Button from '@mui/material/Button';
 import AdbIcon from '@mui/icons-material/Adb';
 import MenuIcon from '@mui/icons-material/Menu';
 import Avatar from '@mui/material/Avatar';
-
+import PersonIcon from '@mui/icons-material/Person';
+import NotificationsOutlinedIcon from '@mui/icons-material/NotificationsOutlined';
 
 export default function NavBar(){
   
-const pages = ['Mapa', 'Estadísticas', 'Recomendaciones', 'Reportes', 'Gestión'];
+const pages = ['Mapa', 'Análisis', 'Reportes', 'Gestión'];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
     const [anchorElNav, setAnchorElNav] = React.useState(null);
@@ -37,24 +38,23 @@ const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
       setAnchorElUser(null);
     };
     return(
-      <AppBar position="static"  style = {{padding:'0', paddingTop:'0', paddingLeft:'0', paddingRight:'0'}}sx={{background: '#12422c'}}>
-      <Container maxWidth="xl" sx={{background: '#12422c'}} >
+      <AppBar position="static"  style = {{padding:'0', paddingTop:'0', paddingLeft:'0', paddingRight:'0', textTransform:"lowercase"}}sx={{background: '#12422c'}}>
+      <Container maxWidth="xl" sx={{background: '#12422c'}} textTransform="lowercase">
         <Toolbar disableGutters sx={{background: '#12422c'}}>
           <AdbIcon  sx={{ display: { xs: 'none' }, mr: 1, backgroundColor: '#12422c'} } />
           <Typography
-            variant="h6"
-            noWrap
-            component="a"
-            href="#app-bar-with-responsive-menu"
+          
             sx={{
-              mr: 2,
-              display: { xs: 'none', md: 'grid' },
-              fontFamily: 'montnapha',
-              fontWeight: 1,
-              letterSpacing: '.15rem',
-              color:'inherit',
-              textDecoration: 'none',
-              backgroundColor: '#12422c'
+              fontFamily: 'Roboto',
+              fontStyle:"typography/h6",
+              fontSize:"20px",
+              fontWeight: 500,
+              lineHeight:"32px",
+              letterSpacing: '0.15000000596046448px;',
+              textAlign:"left",
+              backgroundColor: '#12422c',
+              textTransform:"lowercase"
+
             }}
           >
              <img src='/src/assets/garbi-navbar.png' height="30" width="60" 
@@ -94,7 +94,18 @@ const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
             >
               {pages.map((page) => (
                 <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center">{page}</Typography>
+                  <Typography  sx={{
+             
+              fontFamily: 'Roboto',
+              fontStyle:"typography/h6",
+              fontSize:"20px",
+              fontWeight: 500,
+              lineHeight:"32px",
+              letterSpacing: '0.15000000596046448px;',
+              textAlign:"left",
+              backgroundColor: '#12422c',
+              textTransform:"lowercase"
+            }}>{page}</Typography>
                 </MenuItem>
               ))}
             </Menu>
@@ -102,21 +113,19 @@ const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
           <AdbIcon sx={{ display: { xs: 'flex', md: 'none', backgroundColor: '#12422c'
   }, mr: 1 }} />
           <Typography
-            variant="h5"
-            noWrap
-            component="a"
-            href="#app-bar-with-responsive-menu"
-            sx={{
-              mr: 2,
-              display: { xs: 'flex', md: 'none' },
-              flexGrow: 1,
-              fontFamily: 'montnapha',
-              fontWeight: 700,
-              letterSpacing: '.1rem',
-              textDecoration: 'underline',
-              color: '#12422c',
-              marginTop: '1rem',
-              backgroundColor: '#12422c'
+           
+              sx={{
+                mr: 2,
+                display: { xs: 'none', md: 'grid' },
+                fontFamily: 'Roboto',
+                fontStyle:"typography/h6",
+                fontSize:"20px",
+                fontWeight: 500,
+                lineHeight:"32px",
+                letterSpacing: '0.15000000596046448px;',
+                textAlign:"left",
+                backgroundColor: '#12422c',
+                textTransform:"lowercase"
   
             }}
           >
@@ -127,18 +136,31 @@ const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
             {pages.map((page) => (
               <Button 
                 onClick={handleCloseNavMenu}
-                sx={{ color: 'white',fontSize: '11',  
+                sx={{ color: 'white',  textTransform:"capitalize", fontFamily: 'Roboto',
+                fontStyle:"typography/h6",
+                fontSize:"15px",
+                fontWeight: 500,
+                lineHeight:"32px",
+                letterSpacing: '0.15000000596046448px;',
+                textAlign:"left",
+                backgroundColor: '#12422c',
               }}
               >
                 {page}
               </Button>
             ))}
           </Box>
+
+          <Tooltip title="Open settings">
+              <IconButton onClick={handleOpenUserMenu} sx={{ paddingRight: "20px",  backgroundColor: '#12422c'}}>
+                <NotificationsOutlinedIcon sx={{color:"white"}}></NotificationsOutlinedIcon>
+              </IconButton>
+            </Tooltip>
   
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0,  backgroundColor: '#12422c'}}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/3.jpg" />
+                <PersonIcon sx={{color:"white"}}></PersonIcon>
               </IconButton>
             </Tooltip>
             <Menu

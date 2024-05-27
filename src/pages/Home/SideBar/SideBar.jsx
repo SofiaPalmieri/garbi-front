@@ -29,7 +29,7 @@ export default function SideBar() {
   <TextFieldBox text="Máximo" sx={{width:"80px", height:"28px", top:"318px", left:"116px", gap:"0px", opacity:"0px"}}></TextFieldBox>
   
   
-  <Button variant="contained" color="primary"size="large" top="734px" left="16px" padding="8px 22px 8px 22px" gap="0px" opacity="0px" fullWidth sx={{backgroundColor:"#12422C", height:" Hug (42px)px", display:"flex", bottom: "-180px"}}>
+  <Button variant="contained" color="primary"size="large" top="734px" left="16px" padding="8px 22px 8px 22px" gap="0px" opacity="0px" fullWidth sx={{backgroundColor:"#12422C", height:" Hug (42px)px", display:"flex", bottom: "-180px", alignSelf:"flex-end"}}>
   
   Aplicar
   
