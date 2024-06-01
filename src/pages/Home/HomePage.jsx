@@ -36,10 +36,10 @@ function HomePage() {
   };
 
   return (
-    <AppBar position="static"  sx={{background: '#12422c'}}>
-      <Container maxWidth="xl" sx={{background: '#12422c'}} >
-        <Toolbar disableGutters sx={{background: '#12422c'}}>
-          <AdbIcon sx={{ display: { xs: 'none' }, mr: 1, backgroundColor: '#12422c'}} />
+    <AppBar position="static" sx={{ background: '#12422c' }}>
+      <Container maxWidth="xl" sx={{ background: '#12422c' }} >
+        <Toolbar disableGutters sx={{ background: '#12422c' }}>
+          <AdbIcon sx={{ display: { xs: 'none' }, mr: 1, backgroundColor: '#12422c' }} />
           <Typography
             variant="h6"
             noWrap
@@ -51,15 +51,15 @@ function HomePage() {
               fontFamily: 'montnapha',
               fontWeight: 1,
               letterSpacing: '.15rem',
-              color:'inherit',
+              color: 'inherit',
               textDecoration: 'none',
               backgroundColor: '#12422c'
             }}
           >
-             <img src='/src/assets/garbi-navbar.png' height="30" width="60" 
-></img>
+            <img src='/src/assets/garbi-navbar.png' height="30" width="60"
+            ></img>
           </Typography>
-          
+
 
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none', backgroundColor: '#12422c' } }}>
             <IconButton
@@ -78,7 +78,7 @@ function HomePage() {
               anchorOrigin={{
                 vertical: 'bottom',
                 horizontal: 'left',
-                
+
               }}
               keepMounted
               transformOrigin={{
@@ -98,8 +98,11 @@ function HomePage() {
               ))}
             </Menu>
           </Box>
-          <AdbIcon sx={{ display: { xs: 'flex', md: 'none', backgroundColor: '#12422c'
- }, mr: 1 }} />
+          <AdbIcon sx={{
+            display: {
+              xs: 'flex', md: 'none', backgroundColor: '#12422c'
+            }, mr: 1
+          }} />
           <Typography
             variant="h5"
             noWrap
@@ -119,15 +122,19 @@ function HomePage() {
 
             }}
           >
-            
+
           </Typography>
-          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex', color: '#12422c', backgroundColor: '#12422c', 
-  } }}>
+          <Box sx={{
+            flexGrow: 1, display: {
+              xs: 'none', md: 'flex', color: '#12422c', backgroundColor: '#12422c',
+            }
+          }}>
             {pages.map((page) => (
-              <Button 
+              <Button
                 onClick={handleCloseNavMenu}
-                sx={{ color: 'white',fontSize: '11',  textTransform: 'unset'
-              }}
+                sx={{
+                  color: 'white', fontSize: '11', textTransform: 'unset'
+                }}
               >
                 {page}
               </Button>
@@ -136,7 +143,7 @@ function HomePage() {
 
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0,  backgroundColor: '#12422c'}}>
+              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0, backgroundColor: '#12422c' }}>
                 <Avatar alt="Remy Sharp" src="/static/images/avatar/3.jpg" />
               </IconButton>
             </Tooltip>
