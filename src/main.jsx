@@ -4,7 +4,8 @@ import { RouterProvider, createBrowserRouter } from 'react-router-dom'
 import LoginPage from './pages/Login/LoginPage.jsx'
 import MapPage from './pages/Map/MapPage.jsx'
 import { CssBaseline } from '@mui/material'
-import Base from './base.jsx'
+import Base from './common/base.jsx'
+import BaseWithHeader from './common/baseWithHeader.jsx'
 import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
@@ -12,6 +13,7 @@ import '@fontsource/roboto/700.css';
 import { Navigate } from 'react-router-dom'
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { lime, purple } from '@mui/material/colors';
+import { ContainerPage } from './pages/Containers/ContainerPage.jsx'
 
 const theme = createTheme({
   palette: {
@@ -45,6 +47,15 @@ const router = createBrowserRouter([
         element: <MapPage />
       }
     ],
+  },
+  {
+    element: <BaseWithHeader />,
+    children: [
+      {
+        path: '/containers',
+        element: <ContainerPage />
+      }
+    ]
   }
 ])
 
