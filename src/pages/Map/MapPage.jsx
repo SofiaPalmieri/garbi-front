@@ -9,9 +9,9 @@ const MapPage = () => {
   console.log(trees)
 
   return (
-    <div style={{ width: '100vw', height: '100vh', backgroundColor: 'white' }}>
+    <div style={{ width: '100%', height: '85vh', backgroundColor: 'white', overflowX:"hidden" }}>
       <APIProvider apiKey='AIzaSyChdsbPNc69MyOgPRQf8o2_5kMUFDx2zMM'>
-        <div style={{ paddingLeft: '350px', paddingRight:"100px", paddingBottom:'5px', paddingTop:"70px", width: '80%', height: '80%', display:"flex", alignItems:"center" }}>
+        <div style={{ paddingLeft: '350px', paddingRight:"100px", paddingBottom:'5px', paddingTop:"70px", width: '85%', height: '100%', display:"flex", alignItems:"center", overflowX:"hidden" }}>
           <Map defaultZoom={9} defaultCenter={position} mapId='658a52589c7a963'>
             <Markers trees={trees}></Markers>
             <RedMarkers redTrees={redTrees}></RedMarkers>

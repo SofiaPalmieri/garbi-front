@@ -38,7 +38,7 @@ const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
       setAnchorElUser(null);
     };
     return(
-      <AppBar position="static"  style = {{padding:'0', paddingTop:'0', paddingLeft:'0', paddingRight:'0', textTransform:"lowercase"}}sx={{background: '#12422c'}}>
+      <AppBar position="static"  style = {{padding:'0', paddingTop:'0', paddingLeft:'0', paddingRight:'0', textTransform:"lowercase", position:"fixed", zIndex:"1000"}}sx={{background: '#12422c'}}>
       <Container maxWidth="xl" sx={{background: '#12422c'}} textTransform="lowercase">
         <Toolbar disableGutters sx={{background: '#12422c'}}>
           <AdbIcon  sx={{ display: { xs: 'none' }, mr: 1, backgroundColor: '#12422c'} } />

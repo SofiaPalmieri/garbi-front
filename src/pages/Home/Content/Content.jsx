@@ -6,7 +6,7 @@ import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 export default function Content() {
     return (
   
-        <Box width="684px" height="72px" top="64px" left="216px" sx={{padding:"20px", marginLeft:"250px"}} gap="0px" opacity ="0px" flexDirection="column" display="flex">
+        <Box width="100%" height="72px" top="64px" left="216px" sx={{padding:"20px", marginLeft:"250px", overFlowX:"hidden"}} gap="0px" opacity ="0px" flexDirection="column" display="flex">
             <Box width="684px" height="42px" padding="0px 32px 0px 32px" gap="0px" opacity="0px"> 
         <Typography sx={{fontStyle:"typography/h4", fontFamily:"Roboto", fontSize:"34px", fontWeight:"400px", lineHeight:"41.99px", letterSpacing:"0.25px", textAlign:"left", color:"#000000DE", widht:"596px", height:"42px"}}>Mapa</Typography>
             </Box>
