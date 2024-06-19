@@ -12,22 +12,13 @@ import Container from "@mui/material/Container";
 export default function MainContent() {
     return (
   
-        <Box width="100%" top="226px" left="248px"  >
-            <MapPage sx={{
-       position: 'fixed',
-       bottom: 0,
-       width: '100%',
-       textAlign: 'center',
-       paddingRight: '5px',
-       boxSizing: 'border-box',
-       display: 'flex',
-       justifyContent: 'center',
-       alignContent:"center"}}></MapPage>
-            <Box sx={{boxShadow:"0px 3px 1px -2px #00000033", boxShadow:"0px 2px 2px 0px #00000024", boxShadow:"0px 1px 5px 0px #0000001F", boxSizing:"border-box", paddingLeft: '350px', paddingRight:"100px", paddingBottom:'5px', paddingTop:"70px", width: '80%', height: '80%', display:"flex", alignItems:"center" }}>
+        <Box width="100%" >
+            <MapPage></MapPage>
+            <Box sx={{boxShadow:"0px 1px 5px 0px #0000001F", boxSizing:"border-box", paddingLeft: '300px', width: '85%', height: '50%', display:"flex", alignItems:"center", overFlowX:"hidden" }}>
                  <Container sx={{
        position: 'fixed',
        bottom: 0,
-       width: '50%',
+       width: '60%',
        textAlign: 'center',
        boxSizing: 'border-box',
        display: 'flex',
