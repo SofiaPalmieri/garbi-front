@@ -14,6 +14,7 @@ import { Navigate } from 'react-router-dom'
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { lime, purple } from '@mui/material/colors';
 import { ContainerPage } from './pages/Containers/ContainerPage.jsx'
+import HomePage from './pages/Home/HomePage.jsx'
 
 const theme = createTheme({
   palette: {
@@ -43,8 +44,8 @@ const router = createBrowserRouter([
         element: <LoginPage />
       },
       {
-        path: '/map',
-        element: <MapPage />
+        path: '/home',
+        element: <HomePage />
       }
     ],
   },
