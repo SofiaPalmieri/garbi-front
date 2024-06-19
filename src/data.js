@@ -10,6 +10,11 @@
     ["Kentucky coffee", 43.7579181701515, -79.5695018286236],
     ["Katsura, Japanese", 43.646809759809, -79.45258974840542],
     ["Elm, American", 43.73559764660771, -79.4000834768246],
+   
+    
+  ];
+
+  const redData=[
     ["Maple, Norway", 43.6717940983563, -79.28312281638772],
     ["Oak, white", 43.705484262474, -79.5178284396172],
     ["Honey locust, 'Skyline'", 43.6616682848291, -79.5697277859886],
@@ -24,6 +29,13 @@
   ];
 
 export const trees = data.map(([name, lat, lng]) => ({
+    name,
+    lat,
+    lng,
+    key: JSON.stringify({ name, lat, lng }),
+  }));
+
+  export const redTrees = redData.map(([name, lat, lng]) => ({
     name,
     lat,
     lng,
