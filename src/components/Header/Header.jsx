@@ -16,7 +16,7 @@ import { useState } from 'react';
 const pages = ['Mapa', 'Estadísticas', 'Recomendaciones', 'Reportes', 'Gestión'];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
-export const Header = ({ logoOnly }) => {
+export const Header = ({ logoOnly = false }) => {
     const [anchorElNav, setAnchorElNav] = useState(null);
     const [anchorElUser, setAnchorElUser] = useState(null);
 
@@ -63,63 +63,85 @@ export const Header = ({ logoOnly }) => {
                             ></img>
                         </Typography> :
 
-                        <><Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none', backgroundColor: '#12422c' } }}>
-                            <IconButton
-                                size="large"
-                                aria-label="account of current user"
-                                aria-controls="menu-appbar"
-                                aria-haspopup="true"
-                                onClick={handleOpenNavMenu}
-                                color="inherit"
-                            >
-                                <MenuIcon />
-                            </IconButton>
-                            <Menu
-                                id="menu-appbar"
-                                anchorEl={anchorElNav}
-                                anchorOrigin={{
-                                    vertical: 'bottom',
-                                    horizontal: 'left',
-                                }}
-                                keepMounted
-                                transformOrigin={{
-                                    vertical: 'top',
-                                    horizontal: 'left',
-                                }}
-                                open={Boolean(anchorElNav)}
-                                onClose={handleCloseNavMenu}
+                        <>
+                            <Typography
+                                variant="h6"
+                                noWrap
+                                component="a"
+                                href="#app-bar-with-responsive-menu"
                                 sx={{
-                                    display: { xs: 'block', md: 'none', backgroundColor: '#12422c' },
+                                    mr: 2,
+                                    display: { xs: 'none', md: 'grid' },
+                                    fontFamily: 'montnapha',
+                                    fontWeight: 1,
+                                    letterSpacing: '.15rem',
+                                    color: 'inherit',
+                                    textDecoration: 'none',
+                                    backgroundColor: '#12422c'
                                 }}
                             >
-                                {pages.map((page) => (
-                                    <MenuItem key={page} onClick={handleCloseNavMenu}>
-                                        <Typography textAlign="center">{page}</Typography>
-                                    </MenuItem>
-                                ))}
-                            </Menu>
-                        </Box><AdbIcon sx={{
-                            display: {
-                                xs: 'flex', md: 'none', backgroundColor: '#12422c'
-                            }, mr: 1
-                        }} /><Typography
-                            variant="h5"
-                            noWrap
-                            component="a"
-                            href="#app-bar-with-responsive-menu"
-                            sx={{
-                                mr: 2,
-                                display: { xs: 'flex', md: 'none' },
-                                flexGrow: 1,
-                                fontFamily: 'montnapha',
-                                fontWeight: 700,
-                                letterSpacing: '.1rem',
-                                textDecoration: 'underline',
-                                color: '#12422c',
-                                marginTop: '1rem',
-                                backgroundColor: '#12422c'
-                            }}
-                        >
+                                <img src='/src/assets/garbi-navbar.png' height="30" width="60"
+                                ></img>
+                            </Typography>
+
+
+                            <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none', backgroundColor: '#12422c' } }}>
+                                <IconButton
+                                    size="large"
+                                    aria-label="account of current user"
+                                    aria-controls="menu-appbar"
+                                    aria-haspopup="true"
+                                    onClick={handleOpenNavMenu}
+                                    color="inherit"
+                                >
+                                    <MenuIcon />
+                                </IconButton>
+                                <Menu
+                                    id="menu-appbar"
+                                    anchorEl={anchorElNav}
+                                    anchorOrigin={{
+                                        vertical: 'bottom',
+                                        horizontal: 'left',
+                                    }}
+                                    keepMounted
+                                    transformOrigin={{
+                                        vertical: 'top',
+                                        horizontal: 'left',
+                                    }}
+                                    open={Boolean(anchorElNav)}
+                                    onClose={handleCloseNavMenu}
+                                    sx={{
+                                        display: { xs: 'block', md: 'none', backgroundColor: '#12422c' },
+                                    }}
+                                >
+                                    {pages.map((page) => (
+                                        <MenuItem key={page} onClick={handleCloseNavMenu}>
+                                            <Typography textAlign="center">{page}</Typography>
+                                        </MenuItem>
+                                    ))}
+                                </Menu>
+                            </Box><AdbIcon sx={{
+                                display: {
+                                    xs: 'flex', md: 'none', backgroundColor: '#12422c'
+                                }, mr: 1
+                            }} /><Typography
+                                variant="h5"
+                                noWrap
+                                component="a"
+                                href="#app-bar-with-responsive-menu"
+                                sx={{
+                                    mr: 2,
+                                    display: { xs: 'flex', md: 'none' },
+                                    flexGrow: 1,
+                                    fontFamily: 'montnapha',
+                                    fontWeight: 700,
+                                    letterSpacing: '.1rem',
+                                    textDecoration: 'underline',
+                                    color: '#12422c',
+                                    marginTop: '1rem',
+                                    backgroundColor: '#12422c'
+                                }}
+                            >
 
                             </Typography><Box sx={{
                                 flexGrow: 1, display: {
