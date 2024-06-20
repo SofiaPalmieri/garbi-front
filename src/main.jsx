@@ -18,6 +18,7 @@ import HomePage from './pages/Home/HomePage.jsx'
 import CompanyPage from './pages/Company/CompanyPage.jsx'
 import EmpleadosPage from './pages/Empleados/EmpleadosPage.jsx'
 import AreaPage from './pages/Area/AreaPage.jsx'
+import CreateAreaPage from './pages/CreateArea/CreateAreaPage.jsx'
 
 const theme = createTheme({
   palette: {
@@ -66,6 +67,10 @@ const router = createBrowserRouter([
       {
         path: '/areas',
         element: <AreaPage />
+      },
+      {
+        path: '/areas/new',
+        element: <CreateAreaPage />
       }
     ]
   },
