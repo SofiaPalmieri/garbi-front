@@ -16,6 +16,7 @@ import { lime, purple } from '@mui/material/colors';
 import { ContainerPage } from './pages/Containers/ContainerPage.jsx'
 import HomePage from './pages/Home/HomePage.jsx'
 import CompanyPage from './pages/Company/CompanyPage.jsx'
+import EmpleadosPage from './pages/Empleados/EmpleadosPage.jsx'
 
 const theme = createTheme({
   palette: {
@@ -56,6 +57,10 @@ const router = createBrowserRouter([
       {
         path: '/containers',
         element: <ContainerPage />
+      },
+      {
+        path: '/empleados',
+        element: <EmpleadosPage />
       }
     ]
   },

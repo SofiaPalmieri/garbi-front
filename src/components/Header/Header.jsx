@@ -36,7 +36,7 @@ export const Header = ({ logoOnly = false }) => {
     };
 
     return (
-        <AppBar sx={{ background: '#12422c', zIndex: 2000 }}>
+        <AppBar sx={{ background: '#12422c', zIndex: 1100 }}>
             <Container maxWidth="xl" sx={{ background: '#12422c' }} >
                 <Toolbar disableGutters sx={{ background: '#12422c' }}>
                     <AdbIcon sx={{ display: { xs: 'none' }, mr: 1, backgroundColor: '#12422c' }} />
