@@ -16,7 +16,7 @@ const EmpleadosPage = () => {
             height: '100%'
         }}>
             <ModalCreateResource
-                title={"Nueva Empleado"}
+                title={"Nuevo Empleado"}
                 description={"Complete los siguientes campos para agregar un nuevo empleado a la empresa"}
                 open={open}
                 handleClose = {handleClose}

@@ -64,12 +64,11 @@ export const CreateEmployeeForm = () => {
                 height: '40px'
               }}
             >
-              <SelectForm 
-                name={"jobPosition"}
-                label={"Cargo"}
+              <InputForm
                 control={control}
+                name={'lastName'}
+                label={'Apellido'}
                 errors={errors}
-                options={cargos}
               />
             </Box>
             <Box
@@ -78,12 +77,11 @@ export const CreateEmployeeForm = () => {
                 height: '40px'
               }}
             >
-              <SelectForm 
-                name={"timeShift"}
-                label={"Turno"}
+              <InputForm
                 control={control}
+                name={'firstName'}
+                label={'Nombre'}
                 errors={errors}
-                options={turnos}
               />
             </Box>
           </Box>
@@ -158,11 +156,12 @@ export const CreateEmployeeForm = () => {
                 height: '40px'
               }}
             >
-              <InputForm
+              <SelectForm
+                name={"jobPosition"}
+                label={"Cargo"}
                 control={control}
-                name={'lastName'}
-                label={'Apellido'}
                 errors={errors}
+                options={cargos}
               />
             </Box>
             <Box
@@ -171,11 +170,12 @@ export const CreateEmployeeForm = () => {
                 height: '40px'
               }}
             >
-              <InputForm
+              <SelectForm
+                name={"timeShift"}
+                label={"Turno"}
                 control={control}
-                name={'firstName'}
-                label={'Nombre'}
                 errors={errors}
+                options={turnos}
               />
             </Box>
           </Box>
