@@ -12,6 +12,7 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
 import { useState } from 'react';
+import garbiLogo from '/src/assets/garbi-navbar.png'
 
 const pages = ['Mapa', 'Estadísticas', 'Recomendaciones', 'Reportes', 'Gestión'];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
@@ -59,7 +60,7 @@ export const Header = ({ logoOnly = false }) => {
                                 backgroundColor: '#12422c'
                             }}
                         >
-                            <img src='/src/assets/garbi-navbar.png' height="30" width="60"
+                            <img src={garbiLogo} height="30" width="60"
                             ></img>
                         </Typography> :
 
@@ -80,7 +81,7 @@ export const Header = ({ logoOnly = false }) => {
                                     backgroundColor: '#12422c'
                                 }}
                             >
-                                <img src='/src/assets/garbi-navbar.png' height="30" width="60"
+                                <img src={garbiLogo} height="30" width="60"
                                 ></img>
                             </Typography>
 
