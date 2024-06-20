@@ -12,7 +12,7 @@ const userLoginSchema = object({
     // password: string().max(16).required()
 }).required();
 
-export const LoginBox = ({setIsFlipped}) => {
+export const LoginBox = ({ setIsFlipped }) => {
     const [showPassword, setShowPassword] = useState(false);
 
     const handleClickShowPassword = () => setShowPassword((show) => !show);
@@ -135,7 +135,10 @@ export const LoginBox = ({setIsFlipped}) => {
                             <Button sx={{
                                 backgroundColor: '#12422C',
                                 color: 'white',
-                                marginTop: 0.1
+                                marginTop: 0.1,
+                                '&:hover': {
+                                    backgroundColor: '#0a2e1f' // Color verde oscuro al hacer hover
+                                }
                             }} fullWidth type='submit'  >
                                 INGRESAR
                             </Button>

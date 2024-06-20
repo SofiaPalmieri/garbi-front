@@ -1,9 +1,8 @@
-import { Box, Button, Divider, FormControl, IconButton, InputAdornment, InputLabel, OutlinedInput, Paper, Table, TableBody, TableCell, TableContainer, TableFooter, TableHead, TablePagination, TableRow, TextField, Typography } from '@mui/material'
-import React from 'react'
-import SearchIcon from '@mui/icons-material/Search';
-import AddIcon from '@mui/icons-material/Add';
-import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
+import { Box, Divider, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow, Typography } from '@mui/material';
+import React from 'react';
+import { SearcherAndButton } from '../../components/SearcherAndButton';
 
 const rows = [
     {
@@ -76,42 +75,11 @@ export const ContainerPage = () => {
                     <Paper sx={{
                         width: '100%',
                     }}>
-                        <Box sx={{ display: 'flex', justifyContent: 'space-between', padding: '16px' }}>
-                            <FormControl sx={{ width: '18.75rem' }} variant="outlined">
-                                <OutlinedInput
-                                    id="outlined-adornment-password"
-                                    size='small'
-                                    placeholder='Buscar por ID o Dirección'
-                                    endAdornment={
-                                        <InputAdornment position="end">
-                                            <IconButton
-                                                aria-label="toggle password visibility"
-                                                edge="end"
-                                            >
-                                                {<SearchIcon />}
-                                            </IconButton>
-                                        </InputAdornment>
-                                    }
-                                />
-                            </FormControl>
-
-                            <Button size='medium' sx={{
-                                backgroundColor: '#12422C',
-                                color: 'white',
-                                height: '36px',
-                                width: '202px',
-                                '&:hover': {
-                                    'backgroundColor': '#12422C'
-                                }
-                            }} >
-                                Nuevo Contenedor
-                                <AddIcon sx={{
-                                    marginLeft: '8px',
-                                    fontSize: '20px'
-                                }} />
-                            </Button>
-                        </Box>
-
+                        <SearcherAndButton 
+                            placeholderInput={"Buscar por ID o Dirección"} 
+                            buttonText={"Nuevo contenedor"}
+                            inputWidth={'18.75rem'}
+                        />
                         <TableContainer component={Paper}>
                             <Table sx={{ minWidth: 650 }} aria-label="simple table">
                                 <TableHead>
