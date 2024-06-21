@@ -17,6 +17,7 @@ import EmpleadosPage from './pages/Empleados/EmpleadosPage.jsx'
 import HomePage from './pages/Home/HomePage.jsx'
 import LoginPage from './pages/Login/LoginPage.jsx'
 import { ReportPage } from './pages/Report/ReportPage.jsx'
+import { CreateReportPage } from './pages/CreateReport/CreateReportPage.jsx'
 
 const theme = createTheme({
   palette: {
@@ -82,6 +83,10 @@ const router = createBrowserRouter([
       {
         path: '/empresas',
         element: <CompanyPage />
+      },
+      {
+        path: 'reportes/new',
+        element: <CreateReportPage />
       }
     ]
   }
