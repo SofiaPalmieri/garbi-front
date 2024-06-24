@@ -15,6 +15,7 @@ import { ContainerPage } from './pages/Containers/ContainerPage.jsx'
 import CreateAreaPage from './pages/CreateArea/CreateAreaPage.jsx'
 import EmpleadosPage from './pages/Empleados/EmpleadosPage.jsx'
 import HomePage from './pages/Home/HomePage.jsx'
+import RoutesPage from './pages/Routes/RoutesPage.jsx'
 import LoginPage from './pages/Login/LoginPage.jsx'
 import { ReportPage } from './pages/Report/ReportPage.jsx'
 import { CreateReportPage } from './pages/CreateReport/CreateReportPage.jsx'
@@ -49,6 +50,10 @@ const router = createBrowserRouter([
       {
         path: '/home',
         element: <HomePage />
+      },
+      {
+        path: '/routes',
+        element: <RoutesPage />
       }
     ],
   },

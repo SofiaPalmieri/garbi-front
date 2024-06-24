@@ -41,3 +41,5 @@ export const trees = data.map(([name, lat, lng]) => ({
     lng,
     key: JSON.stringify({ name, lat, lng }),
   }));
+
+  
