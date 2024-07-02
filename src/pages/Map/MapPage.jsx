@@ -6,7 +6,6 @@ import CircleIcon from '@mui/icons-material/Circle';
 
 const MapPage = () => {
   const position = { lat: 43.64, lng: -79.41 }
-  console.log(trees)
 
   return (
     <div style={{ width: '100%', height: '85vh', backgroundColor: 'white', overflowX:"hidden" }}>

@@ -1,11 +1,13 @@
 import { Visibility, VisibilityOff, X } from '@mui/icons-material'
-import { Box, Button, FormControl, IconButton, InputAdornment, InputLabel, OutlinedInput, Paper, TextField, Typography } from '@mui/material'
+import { Box, Button, CircularProgress, FormControl, IconButton, InputAdornment, InputLabel, OutlinedInput, Paper, TextField, Typography } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import CloseIcon from '@mui/icons-material/Close';
 import CheckIcon from '@mui/icons-material/Check'
 import useDebounce from '../../hooks/useDebounce'
 import logo from '/src/assets/garbi-login.png'
+import { useAuth } from '../../api/hooks/useAuth';
+import { useNavigate } from 'react-router-dom';
 
 const passwordStatusInitial = {
   atLeast8Characters: false,
@@ -22,15 +24,22 @@ const passwordValidationRegex = {
 };
 
 export const ChangePasswordBox = () => {
-  const [showPassword, setShowPassword] = useState(false);
+  const [showNewPassword, setShowNewPassword] = useState(false);
+  const [showOldPassword, setShowOldPassword] = useState(false);
+  const [showRepeatedPassword, setShowRepeatedPassword] = useState(false);
   const [passwordStatus, setPasswordStatus] = useState(passwordStatusInitial);
+
+  const {isLoading, changePassword} = useAuth()
+  const navigate = useNavigate()
+
 
   let passwordChecked = false;
 
   const { control, handleSubmit, formState: { errors }, watch } = useForm({
     defaultValues: {
-      password: "",
-      passwordRepeated: "",
+      password: "admin1234",
+      passwordRepeated: "admin1234",
+      oldPassword: "admin1234"
     },
   });
 
@@ -38,7 +47,7 @@ export const ChangePasswordBox = () => {
   const passwordWatched = watch("password");
   const passwordRepeatedWatched = watch("passwordRepeated");
   const passwordDebounced = useDebounce(passwordWatched, 500);
-  const passwordRepeatedDebounced = useDebounce(passwordRepeatedWatched,500);
+  const passwordRepeatedDebounced = useDebounce(passwordRepeatedWatched, 500);
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
   const handleMouseDownPassword = (event) => {
@@ -46,7 +55,6 @@ export const ChangePasswordBox = () => {
   };
 
   useEffect(() => {
-    console.log(passwordDebounced)
     const newPasswordStatus = {
       atLeast8Characters: passwordDebounced.length >= 8,
       atLeastOneNumber: passwordValidationRegex.number.test(passwordDebounced),
@@ -62,7 +70,7 @@ export const ChangePasswordBox = () => {
   useEffect(() => {
     const oldStatus = passwordStatus;
 
-    setPasswordStatus({...passwordStatus, areBothPasswordsEquals: passwordRepeatedDebounced === passwordDebounced})
+    setPasswordStatus({ ...passwordStatus, areBothPasswordsEquals: passwordRepeatedDebounced === passwordDebounced })
 
   }, [passwordRepeatedDebounced])
 
@@ -71,12 +79,27 @@ export const ChangePasswordBox = () => {
     const passwordStatusArray = Object.values(passwordStatus);
 
     passwordChecked = passwordStatusArray.every(status => status);
-  
+
   }, [passwordStatus])
 
 
   const onSubmit = async (data) => {
-    if (!passwordChecked) return;
+    // TODO: borrar la segunda parte del condicional
+    if (!passwordChecked && passwordWatched != "admin1234") return;
+
+    console.log(data)
+
+    const userString = localStorage.getItem('user');
+    if(!userString) return;
+
+    const user = await JSON.parse(userString);
+
+    const body = {email: user.email, newPassword: passwordDebounced, oldPassword: data.oldPassword }
+    
+    const response = await changePassword({email: user.email, newPassword: passwordDebounced, oldPassword: data.oldPassword })
+    if(response.success){
+      navigate('/home')
+    }
   }
 
   return (
@@ -172,19 +195,71 @@ export const ChangePasswordBox = () => {
         </Box>
         <Box>
 
-          <form>
+          <form onSubmit={handleSubmit(onSubmit)}>
             <Box padding={1}>
+            <Controller
+                name="oldPassword"
+                control={control}
+                rules={{ required: true }}
+                render={({ field }) =>
+                  <FormControl sx={{ minHeight: '80px' }} fullWidth>
+                    <InputLabel color='secondary' sx={{ color: 'white' }} htmlFor="outlined-adornment-oldPassword">Anterior contraseña</InputLabel>
+                    <OutlinedInput
+                      id="outlined-adornment-change-oldPassword"
+                      {...field}
+                      type={showOldPassword ? 'text' : 'oldPassword'}
+                      error={!!errors.password}
+                      color='secondary'
+                      inputProps={
+                        {
+                          sx: {
+                            color: 'white'
+                          }
+                        }
+                      }
+                      endAdornment={
+                        <InputAdornment position="end">
+                          <IconButton
+                            aria-label="toggle oldPassword visibility"
+                            onClick={() => setShowOldPassword((show) => !show)}
+                            onMouseDown={handleMouseDownPassword}
+                            edge="end"
+                            color='secondary'
+                          >
+                            {showOldPassword ? <VisibilityOff /> : <Visibility />}
+                          </IconButton>
+                        </InputAdornment>
+                      }
+                      label="Anterior Contraseña"
+                      sx={{
+                        '& .MuiOutlinedInput-notchedOutline': {
+                          borderColor: 'white'
+                        },
+                        '& .MuiInputLabel-root': {
+                          color: 'white !important'
+                        },
+                        '&:hover .MuiOutlinedInput-notchedOutline': {
+                          borderColor: 'white'
+                        },
+                      }}
+                    />
+                    {errors.password && (
+                      <Typography fontSize={'0.85rem'} paddingLeft={1.5} color={'red'}>{errors.password.message}</Typography>
+                    )}
+                  </FormControl>
+                }
+              />
               <Controller
                 name="password"
                 control={control}
                 rules={{ required: true }}
                 render={({ field }) =>
                   <FormControl sx={{ minHeight: '80px' }} fullWidth>
-                    <InputLabel color='secondary' sx={{ color: 'white' }} htmlFor="outlined-adornment-password">Contraseña</InputLabel>
+                    <InputLabel color='secondary' sx={{ color: 'white' }} htmlFor="outlined-adornment-password">Nueva contraseña</InputLabel>
                     <OutlinedInput
                       id="outlined-adornment-change-password"
                       {...field}
-                      type={showPassword ? 'text' : 'password'}
+                      type={showNewPassword ? 'text' : 'password'}
                       error={!!errors.password}
                       color='secondary'
                       inputProps={
@@ -198,12 +273,12 @@ export const ChangePasswordBox = () => {
                         <InputAdornment position="end">
                           <IconButton
                             aria-label="toggle password visibility"
-                            onClick={handleClickShowPassword}
+                            onClick={() => setShowNewPassword((show) => !show)}
                             onMouseDown={handleMouseDownPassword}
                             edge="end"
                             color='secondary'
                           >
-                            {showPassword ? <VisibilityOff /> : <Visibility />}
+                            {showNewPassword ? <VisibilityOff /> : <Visibility />}
                           </IconButton>
                         </InputAdornment>
                       }
@@ -232,12 +307,12 @@ export const ChangePasswordBox = () => {
                 rules={{ required: true }}
                 render={({ field }) =>
                   <FormControl sx={{ minHeight: '80px' }} fullWidth>
-                    <InputLabel color='secondary' sx={{ color: 'white' }} htmlFor="outlined-adornment-passwordRepeated">Repetir Contraseña</InputLabel>
+                    <InputLabel color='secondary' sx={{ color: 'white' }} htmlFor="outlined-adornment-passwordRepeated">Repetir nueva contraseña</InputLabel>
                     <OutlinedInput
                       id="outlined-adornment-change-password-repeated"
                       {...field}
                       color="secondary"
-                      type={showPassword ? 'text' : 'password'}
+                      type={showRepeatedPassword ? 'text' : 'password'}
                       error={!!errors.passwordRepeated}
                       sx={{
                         '& .MuiOutlinedInput-notchedOutline': {
@@ -261,12 +336,12 @@ export const ChangePasswordBox = () => {
                         <InputAdornment position="end">
                           <IconButton
                             aria-label="toggle passwordRepeated visibility"
-                            onClick={handleClickShowPassword}
+                            onClick={() => setShowRepeatedPassword((show) => !show)}
                             onMouseDown={handleMouseDownPassword}
                             color='secondary'
                             edge="end"
                           >
-                            {showPassword ? <VisibilityOff /> : <Visibility />}
+                            {showRepeatedPassword ? <VisibilityOff /> : <Visibility />}
                           </IconButton>
                         </InputAdornment>
                       }
@@ -282,22 +357,28 @@ export const ChangePasswordBox = () => {
                 color="secondary"
                 sx={{
                   marginTop: 0.1,
-                  backgroundColor: 'secondary.main',
-                  color: 'secondary.contrastText',
+                  backgroundColor: (theme) => theme.palette.secondary.main,
+                  color: (theme) => theme.palette.secondary.contrastText,
                   '&:hover': {
-                    backgroundColor: 'secondary.dark',
+                    backgroundColor: (theme) => theme.palette.secondary.dark,
+                  },
+                  '&:disabled': {
+                    backgroundColor: (theme) => theme.palette.grey[500], // Color gris
+                    color: (theme) => theme.palette.grey[900], // Color de texto gris más oscuro
                   },
                 }}
+                // TODO: borrar la segunda parte del condicional
+                disabled={!passwordChecked && passwordWatched != "admin1234"} 
                 fullWidth
                 type='submit'
               >
-                Guardar cambios
+                {isLoading ? <CircularProgress size={24} color="inherit" /> : 'Guardar cambios'}
               </Button>
             </Box>
           </form>
         </Box>
       </Box>
-    </Paper >
+    </Paper>
   )
 }
 

@@ -1,19 +1,23 @@
+import { yupResolver } from '@hookform/resolvers/yup'
 import { Visibility, VisibilityOff } from '@mui/icons-material'
-import { Box, Button, FormControl, IconButton, InputAdornment, InputLabel, OutlinedInput, Paper, TextField, Typography } from '@mui/material'
+import { Box, Button, CircularProgress, FormControl, IconButton, InputAdornment, InputLabel, OutlinedInput, Paper, TextField, Typography } from '@mui/material'
 import React, { useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
-import { API } from '../../utils/apiHelper'
 import { object, string } from 'yup'
-import { yupResolver } from '@hookform/resolvers/yup'
+import { useAuth } from '../../api/hooks/useAuth'
 import logo from '/src/assets/garbi-login.png'
+import { useNavigate } from "react-router-dom";
+import { jwtDecode } from 'jwt-decode'
 
 const userLoginSchema = object({
-    // email: string().email().required(),
-    // password: string().max(16).required()
+    email: string().email().required(),
+    password: string().max(16).required()
 }).required();
 
 export const LoginBox = ({ setIsFlipped }) => {
     const [showPassword, setShowPassword] = useState(false);
+    const { login, isLoading } = useAuth()
+    const navigate = useNavigate();
 
     const handleClickShowPassword = () => setShowPassword((show) => !show);
     const handleMouseDownPassword = (event) => {
@@ -22,16 +26,26 @@ export const LoginBox = ({ setIsFlipped }) => {
 
     const { control, handleSubmit, formState: { errors } } = useForm({
         defaultValues: {
-            email: "",
-            password: "",
+            email: "string@admin.com",
+            password: "admin1234",
         },
         resolver: yupResolver(userLoginSchema)
     });
 
     const onSubmit = async (data) => {
-        // const response = await API.login(data.email, data.password);
-        // localStorage.setItem('token', response.data.token);
-        setIsFlipped(true);
+        const response = await login({ email: data.email, password: data.password })
+
+        if (response.success) {
+            localStorage.setItem('token', response.token)
+            const user = jwtDecode(response.token).user
+            localStorage.setItem('user', JSON.stringify(user))
+
+            if (/* !response.termsAndConditions */ true) {
+                setIsFlipped(true);
+            } else {
+                navigate('/home')
+            }
+        }
     }
 
     return (
@@ -132,15 +146,25 @@ export const LoginBox = ({ setIsFlipped }) => {
                                     </FormControl>
                                 }
                             />
-                            <Button sx={{
-                                backgroundColor: '#12422C',
-                                color: 'white',
-                                marginTop: 0.1,
-                                '&:hover': {
-                                    backgroundColor: '#0a2e1f' // Color verde oscuro al hacer hover
-                                }
-                            }} fullWidth type='submit'  >
-                                INGRESAR
+                            <Button
+                                sx={{
+                                    backgroundColor: '#12422C',
+                                    color: 'white',
+                                    marginTop: 0.1,
+                                    '&:hover': {
+                                        backgroundColor: '#0a2e1f' // Color verde oscuro al hacer hover
+                                    },
+                                    '&.Mui-disabled': {
+                                        backgroundColor: '#12422C', // Mantener el mismo fondo
+                                        color: 'gray', // Cambiar el color del texto a gris cuando está deshabilitado
+                                    },
+                                }}
+                                fullWidth
+                                type='submit'
+                                disabled={isLoading}
+
+                            >
+                                 {isLoading ? <CircularProgress size={24} color="inherit" /> : 'INGRESAR'}
                             </Button>
                             <Typography sx={{
                                 textDecoration: 'underline',
