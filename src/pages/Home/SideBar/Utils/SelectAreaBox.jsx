@@ -15,7 +15,7 @@ export default function SelectAreaBox() {
   };
 
   return (
-    <Box sx={{ width: "184px", height: "124px", padding: "0px 12px 0px 12px", display: "flex", justifyContent: "center", alignItems: "center" }}  >
+    <Box sx={{ width: "100%", paddingTop: "24px", paddingBottom: "32px", display: "flex", justifyContent: "center", alignItems: "center" }}  >
       <FormControl size="medium" variant="outlined" state="Focused" fullWidth sx={{
         border: "1px", borderRadius: "6px", borderColor: "#12422C80", width: "Fixed (184px)px",
 

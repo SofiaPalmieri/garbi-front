@@ -89,6 +89,7 @@ export const ModalCreateResource = ({ title, description, open, handleClose, for
                                     backgroundColor: 'secondary.dark',
                                 },
                             }}
+                            onClick={handleClose}
                             type='submit'
                         >
                             Cancelar
