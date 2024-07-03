@@ -1,13 +1,10 @@
-import { Typography } from "@mui/material";
-import { Box } from "@mui/material";
-import Button from "@mui/material/Button";
-import MapPage from "../../Map/MapPage";
 import CircleIcon from '@mui/icons-material/Circle';
+import { Box, Typography } from "@mui/material";
+import Container from "@mui/material/Container";
+import Grid from "@mui/material/Grid";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
-import Grid from "@mui/material/Grid";
-import ListItemText from "@mui/material/ListItemText";
-import Container from "@mui/material/Container";
+import MapPage from "../../Map/MapPage";
 
 export default function MainContent() {
   return (

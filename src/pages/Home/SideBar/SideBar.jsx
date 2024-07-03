@@ -28,23 +28,6 @@ export default function SideBar() {
 
       <TextFieldBox text="Máximo" sx={{ width: "80px", height: "28px", top: "318px", left: "116px", gap: "0px", opacity: "0px" }}></TextFieldBox>
 
-      <Box marginTop="auto" padding="20px" paddingTop="100%" sx={{ alignContent: "flex-end" }}>
-        <Button variant="contained" color="primary" size="large" gap="0px" opacity="0px" fullWidth sx={{
-          backgroundColor: "#12422C", alignItems: "flex-end", marginTop: "auto"
-        }}>
-
-          Aplicar
-
-        </Button>
-      </Box>
-
-
-
-
-
-
     </Box>
-
-
   );
 }
