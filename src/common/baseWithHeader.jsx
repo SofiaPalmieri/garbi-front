@@ -6,7 +6,7 @@ const BaseWithHeader = (props) => {
   return (
     <Box>
       <Header logoOnly = {props.logoOnly} />
-      {/* todo reveer height, por minHeight pero si lo cambio rompen los componentes, por ahora todo funciona OK */}
+      {/* todo: reveer height, por minHeight pero si lo cambio rompen los componentes, por ahora todo funciona OK */}
       <Box margin={'auto'} maxWidth={'90rem'} marginTop={'64px'} height={'calc(100vh - 64px)'}>
         <Outlet />
       </Box>

@@ -3,7 +3,7 @@ import { Controller } from 'react-hook-form';
 import { FormControl, Select, MenuItem, Typography, InputLabel } from '@mui/material';
 
 
-export const SelectForm = ({ name, label, control, errors, options, size = 'small', variant = 'outlined', shrink = true}) => {
+export const SelectForm = ({ name, label, control, errors, options, size = 'small', variant = 'outlined', shrink = true }) => {
     return (
         <Controller
             name={name}
@@ -11,7 +11,12 @@ export const SelectForm = ({ name, label, control, errors, options, size = 'smal
             rules={{ required: true }}
             render={({ field }) => (
                 <FormControl size={size} fullWidth>
-                    <InputLabel id={name + "-label"} shrink={shrink}>{label}</InputLabel>
+                    {/* i dont know why i need to put another input label when i use shrink prop */}
+                    {!shrink ?
+                        <InputLabel id={name + "-label"} shrink={false}>{label}</InputLabel>
+                        :
+                        <InputLabel id={name + "-label"}>{label}</InputLabel>
+                    }
                     <Select
                         size={size}
                         fullWidth
