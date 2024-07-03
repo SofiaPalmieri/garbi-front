@@ -220,9 +220,10 @@ export const ReportContent = () => {
                                                     height: '30px'
                                                 }}
                                             >
-                                                <MenuItem value={10}>Ten</MenuItem>
-                                                <MenuItem value={20}>Twenty</MenuItem>
-                                                <MenuItem value={30}>Thirty</MenuItem>
+                                                <MenuItem value={1}>NUEVO</MenuItem>
+                                                <MenuItem value={2}>EN REVISIÓN</MenuItem>
+                                                <MenuItem value={3}>RECHAZADO</MenuItem>
+                                                <MenuItem value={4}>RESUELTO</MenuItem>
                                             </Select>
                                         </FormControl>
                                     </TableCell>

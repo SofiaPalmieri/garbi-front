@@ -65,7 +65,7 @@ export const Header = ({ logoOnly = false }) => {
                                 component={'button'}
                                 onClick={() => navigate('/home')}
                             >
-                                <img src={garbiLogo} height="30" width="60"
+                                <img src={garbiLogo} height="40"
                                 ></img>
                             </Box>
                         </Box> :
