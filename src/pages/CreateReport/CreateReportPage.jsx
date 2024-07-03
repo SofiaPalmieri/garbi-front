@@ -1,4 +1,4 @@
-import { Box, Button, Divider, FormControl, Grid, Input, TextField, Typography } from '@mui/material'
+import { Box, Button, Divider, FormControl, Grid, Input, TextField, Typography, Select, MenuItem, InputLabel } from '@mui/material'
 import React from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { InputForm } from '../../components/InputForm';
@@ -6,6 +6,13 @@ import { SelectForm } from '../../components/SelectForm/SelectForm';
 import CameraAltIcon from '@mui/icons-material/CameraAlt';
 import addImage from "/src/assets/mdi_image-plus-outline.svg"
 
+const tipos = [
+    { value: 'CONTENEDOR_ROTO', label: 'Contenedor en mal estado' },
+    { value: 'CONTENEDOR_SUCIO', label: 'Contenedor sucio' },
+    { value: 'BASURA_EN_LA_CALLE', label: 'Basura en la calle' },
+    { value: 'CONTENEDOR_FALTANTE', label: 'Contenedor faltante' },
+    { value: 'OTROS', label: 'Otro' },
+  ];
 
 export const CreateReportPage = () => {
     const { control, handleSubmit, formState: { errors } } = useForm({
@@ -14,12 +21,19 @@ export const CreateReportPage = () => {
             password: "",
         },
     });
+
+    let shrink = true
+
     return (
         <Box
             sx={{
-                width: 1,
+                // width: 1,
                 // maxWidth: '1020px',
                 // margin: 'auto'
+                width: '100%',
+                maxWidth: '1400px',
+                margin: 'auto',
+                padding: '0 16px'
             }}
         >
             <Box sx={{ padding: '16px 0 13px' }}>
@@ -65,15 +79,38 @@ export const CreateReportPage = () => {
                         />
                     </Grid>
                     <Grid item xs={6}>
-                        <SelectForm
+                        <Controller
                             name='typeOfProblem'
                             control={control}
-                            errors={errors}
-                            shrink={false}
-                            options={[]}
-                            label={'Tipo de Problema'}
-                            variant='filled'
-                            size='medium'
+                            rules={{ required: true }}
+                            render={({ field }) => (
+                                <FormControl variant={'filled'} size={'medium'} fullWidth>
+                                    {/* i dont know why i need to put another input label when i use shrink prop */}
+                                    {!shrink ?
+                                        <InputLabel id={'typeOfProblem' + "-label"} shrink={false}>{'Tipo de Problema'}</InputLabel>
+                                        :
+                                        <InputLabel id={'typeOfProblem' + "-label"}>{'Tipo de Problema'}</InputLabel>
+                                    }
+                                    <Select
+                                        size={'medium'}
+                                        fullWidth
+                                        variant={'filled'}
+                                        label={'Tipo de Problema'}
+                                        {...field}
+                                    >
+                                        {tipos.map((option) => (
+                                            <MenuItem key={option.value} value={option.value}>
+                                                {option.label}
+                                            </MenuItem>
+                                        ))}
+                                    </Select>
+                                    {errors['typeOfProblem'] && (
+                                        <Typography fontSize={'0.85rem'} paddingLeft={1.5} color={'red'}>
+                                            {errors['typeOfProblem'].message}
+                                        </Typography>
+                                    )}
+                                </FormControl>
+                            )}
                         />
                     </Grid>
                     <Grid item xs={12}>

@@ -5,11 +5,12 @@ import RouteContent from './Content/RouteContent';
 import RoutesSideBar from './SideBar/RoutesSideBar';
 import RouteMainContent from './MainContent/RouteMainContent';
 import { Route } from 'react-router-dom';
+import { FilterSideComponent } from '../../components/FilterSideComponent';
 
 export default function RoutesPage() {
 
   return (
-    <div>
+    /*<div>
       <Box sx={{overflowX:"hidden", width:"100%", overflow:"hidden", overflowY:"hidden"}}>
       <NavBar>
       </NavBar>
@@ -22,7 +23,8 @@ export default function RoutesPage() {
       
 
       </div>
-
+*/
+    <FilterSideComponent title={"Recorridos"} component={() => <RouteMainContent />} />
 
   );
 }

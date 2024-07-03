@@ -6,9 +6,8 @@ import { SelectForm } from '../../components/SelectForm/SelectForm';
 
 
 const cargos = [
-  { value: 'Empleado 1', label: 'Empleado 1' },
-  { value: 'Empleado 2', label: 'Empleado 2' },
-  { value: 'Empleado 3', label: 'Empleado 3' },
+  { value: 'Recolector', label: 'Recolector' },
+  { value: 'Supervisor', label: 'Supervisor' },
 ];
 
 const turnos = [
@@ -112,7 +111,7 @@ export const CreateEmployeeForm = () => {
             >
               <InputForm
                 control={control}
-                name={'email'}
+                name={'personalEmail'}
                 label={'Email personal'}
                 errors={errors}
               />
@@ -206,7 +205,7 @@ export const CreateEmployeeForm = () => {
             >
               <InputForm
                 control={control}
-                name={'email'}
+                name={'enterpriseEmail'}
                 label={'Email de la empresa'}
                 errors={errors}
               />

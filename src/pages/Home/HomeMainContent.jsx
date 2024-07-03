@@ -26,7 +26,7 @@ export default function HomeMainContent() {
           Generar Ruta Óptima
         </Button>
       </Box>
-      <Box width="100%" height={'685px'} padding={"24px 32px 12px"}>
+      <Box width="100%" height={'600px'} padding={"24px 32px 12px"}>
         <APIProvider
           apiKey='AIzaSyChdsbPNc69MyOgPRQf8o2_5kMUFDx2zMM'
         >
@@ -77,10 +77,17 @@ export default function HomeMainContent() {
         elevation={6}
         sx={{
           margin: 'auto',
+          marginBottom: '16px',
           width: 'fit-content',
           display: 'flex',
           padding: '9px 16px',
           gap: '32px',
+
+          position: 'fixed',
+          bottom: 0,
+          left: '50%',
+          transform: 'translateX(-50%)',
+          zIndex: 1,
         }}
       >
         <Box sx={{ display: 'flex' }}>

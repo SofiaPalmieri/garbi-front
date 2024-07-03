@@ -11,14 +11,14 @@ export const FilterSideComponent = ({title, component}) => {
                 width: '256px',
                 boxShadow: '0px 3px 1px -2px #00000033',
                 backgroundColor: '#F5F5F5',
-                padding: '16px 18px',
+                padding: '16px',
                 display: 'flex',
                 flexDirection: 'column',
                 justifyContent: 'space-between'
             }}>
-                <Typography sx={{
-                    color: '#00000099'
-                }}>Filtros</Typography>
+                <Typography height="48px" fontFamily="Roboto" fontSize="20px" fontWeight="300" sx={{ color: "var(--text-secondary, #00000099)" }}>
+                    Filtros
+                </Typography>
                 <Button
                     variant="contained"
                     color="primary"
