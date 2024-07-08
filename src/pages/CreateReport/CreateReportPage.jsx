@@ -1,10 +1,8 @@
-import { Box, Button, Divider, FormControl, Grid, Input, TextField, Typography, Select, MenuItem, InputLabel } from '@mui/material'
-import React from 'react'
-import { Controller, useForm } from 'react-hook-form'
+import { Box, Button, Divider, FormControl, Grid, Input, InputLabel, MenuItem, Select, TextField, Typography } from '@mui/material';
+import React from 'react';
+import { Controller, useForm } from 'react-hook-form';
 import { InputForm } from '../../components/InputForm';
-import { SelectForm } from '../../components/SelectForm/SelectForm';
-import CameraAltIcon from '@mui/icons-material/CameraAlt';
-import addImage from "/src/assets/mdi_image-plus-outline.svg"
+import addImage from "/src/assets/mdi_image-plus-outline.svg";
 
 const tipos = [
     { value: 'CONTENEDOR_ROTO', label: 'Contenedor en mal estado' },
@@ -12,7 +10,7 @@ const tipos = [
     { value: 'BASURA_EN_LA_CALLE', label: 'Basura en la calle' },
     { value: 'CONTENEDOR_FALTANTE', label: 'Contenedor faltante' },
     { value: 'OTROS', label: 'Otro' },
-  ];
+];
 
 export const CreateReportPage = () => {
     const { control, handleSubmit, formState: { errors } } = useForm({

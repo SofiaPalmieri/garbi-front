@@ -4,7 +4,7 @@ import apiClient from '../api/config/apiClient';
 export function useFetch({url}) {
     const [isLoading, setIsLoading] = useState(false);
 
-    const commonFetch = async ({ uri, body, method }) => {
+    const commonFetch = async ({ uri = '', body, method }) => {
         setIsLoading(true);
 
         try {
@@ -16,12 +16,12 @@ export function useFetch({url}) {
 
             return response.data;
         } catch (error) {
-            console.error('Fetch error:', error);
-            // Maneja el error según sea necesario
+            throw error;
         } finally {
             setIsLoading(false);
         }
     };
+    
 
     return { isLoading, commonFetch };
 }

@@ -4,10 +4,11 @@ import { Box, Button, CircularProgress, FormControl, IconButton, InputAdornment,
 import React, { useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { object, string } from 'yup'
-import { useAuth } from '../../api/hooks/useAuth'
+
 import logo from '/src/assets/garbi-login.png'
 import { useNavigate } from "react-router-dom";
 import { jwtDecode } from 'jwt-decode'
+import { useAuth } from '../../api/hooks/useAuth/useAuth'
 
 const userLoginSchema = object({
     email: string().email().required(),
@@ -16,7 +17,7 @@ const userLoginSchema = object({
 
 export const LoginBox = ({ setIsFlipped }) => {
     const [showPassword, setShowPassword] = useState(false);
-    const { login, isLoading } = useAuth()
+    const { login: { login: login, isLoginLoading }}= useAuth()
     const navigate = useNavigate();
 
     const handleClickShowPassword = () => setShowPassword((show) => !show);
@@ -161,10 +162,10 @@ export const LoginBox = ({ setIsFlipped }) => {
                                 }}
                                 fullWidth
                                 type='submit'
-                                disabled={isLoading}
+                                disabled={isLoginLoading}
 
                             >
-                                 {isLoading ? <CircularProgress size={24} color="inherit" /> : 'INGRESAR'}
+                                 {isLoginLoading ? <CircularProgress size={24} color="inherit" /> : 'INGRESAR'}
                             </Button>
                             <Typography sx={{
                                 textDecoration: 'underline',

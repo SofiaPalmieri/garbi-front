@@ -6,8 +6,9 @@ import CloseIcon from '@mui/icons-material/Close';
 import CheckIcon from '@mui/icons-material/Check'
 import useDebounce from '../../hooks/useDebounce'
 import logo from '/src/assets/garbi-login.png'
-import { useAuth } from '../../api/hooks/useAuth';
+
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../../api/hooks/useAuth/useAuth';
 
 const passwordStatusInitial = {
   atLeast8Characters: false,
@@ -29,7 +30,7 @@ export const ChangePasswordBox = () => {
   const [showRepeatedPassword, setShowRepeatedPassword] = useState(false);
   const [passwordStatus, setPasswordStatus] = useState(passwordStatusInitial);
 
-  const {isLoading, changePassword} = useAuth()
+  const {changePassword: { changePassword: changePassword, isChangePasswordLoading}} = useAuth()
   const navigate = useNavigate()
 
 
@@ -93,10 +94,9 @@ export const ChangePasswordBox = () => {
     if(!userString) return;
 
     const user = await JSON.parse(userString);
-
-    const body = {email: user.email, newPassword: passwordDebounced, oldPassword: data.oldPassword }
     
     const response = await changePassword({email: user.email, newPassword: passwordDebounced, oldPassword: data.oldPassword })
+    
     if(response.success){
       navigate('/home')
     }
@@ -372,7 +372,7 @@ export const ChangePasswordBox = () => {
                 fullWidth
                 type='submit'
               >
-                {isLoading ? <CircularProgress size={24} color="inherit" /> : 'Guardar cambios'}
+                {isChangePasswordLoading ? <CircularProgress size={24} color="inherit" /> : 'Guardar cambios'}
               </Button>
             </Box>
           </form>

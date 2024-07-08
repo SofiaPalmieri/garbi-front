@@ -6,9 +6,63 @@ import { APIProvider, AdvancedMarker, Map } from '@vis.gl/react-google-maps';
 import React from 'react';
 import { redTrees } from '../../data';
 import { trees } from '/src/data.js';
+import { useContainers } from '../../api/hooks/useContainers/useContainers';
+import { useState, useEffect } from "react"
+
+const colors = {
+  LOW_CAPACITY: "#D32F2F",
+  MEDIUM_CAPACITY: "#EF6C00",
+  HIGH_CAPACITY: "#2E7D32"
+}
+
+
+const getColorPoint = (point) => {
+  if (point.capacity > 75) {
+    return colors.HIGH_CAPACITY
+  } else if (point.capacity <= 25) {
+    return colors.LOW_CAPACITY
+  } else {
+    return colors.MEDIUM_CAPACITY
+  }
+}
+
 
 export default function HomeMainContent() {
-  const position = { lat: 43.64, lng: -79.41 }
+  const position = { lat: -34.5893, lng: -58.3974 }
+  const { getContainers: { getContainers: getContainers, isLoadingGetContainers } } = useContainers()
+  const [containers, setContainers] = useState([])
+  const apiKeyGoogleMaps = import.meta.env.VITE_REACT_APP_API_KEY_GOOGLE_MAPS;
+
+  const formatContainers = (containers) => {
+    console.log("🚀 ~ formatContainers ~ containers:", containers)
+    return containers.documents.map(
+      (container) => {
+        return { ...container, lat: container.coordinates.lat, lng: container.coordinates.lng }
+      }
+    )
+  }
+
+
+  useEffect(() => {
+    const retrieveContainers = async () => {
+      const containersUnformated = await getContainers()
+      const containersFormated = formatContainers(containersUnformated)
+
+      setContainers(containersFormated)
+    }
+
+    try {
+      retrieveContainers()
+    } catch (e) {
+      console.log(e)
+    }
+  }, [])
+
+  useEffect(() => {
+    console.log(containers)
+  }, [containers])
+
+
 
   return (
     <Box width="100%">
@@ -22,57 +76,23 @@ export default function HomeMainContent() {
         pr: '32px'
       }}>
         <InfoOutlinedIcon sx={{ color: "#0000008F" }} widht="24px" height="24px" top="2px" left="2px" />
-        <Button width="177px" height="26px" fontStyle="button/large" fontFamily="Roboto" fontSize="15px" fontWeight="500" lineHeight="26px" letterSpacing="0.46000000834465027px" textAlign="left" variant="contained" color="primary" size="large" sx={{ backgroundColor: "#12422C" }}>
+        <Button width="177px" height="26px" font="button/large" fontFamily="Roboto" fontSize="15px" variant="contained" color="primary" size="large" sx={{ backgroundColor: "#12422C" }}>
           Generar Ruta Óptima
         </Button>
       </Box>
       <Box width="100%" height={'600px'} padding={"24px 32px 12px"}>
         <APIProvider
-          apiKey='AIzaSyChdsbPNc69MyOgPRQf8o2_5kMUFDx2zMM'
+          apiKey={apiKeyGoogleMaps}
         >
-          <Map defaultZoom={9} defaultCenter={position} mapId='658a52589c7a963'>
-            <Markers trees={trees}></Markers>
-            <RedMarkers redTrees={redTrees}></RedMarkers>
+          <Map
+            defaultZoom={12}
+            defaultCenter={position}
+            mapId='658a52589c7a963'
+          >
+            <Markers trees={containers}></Markers>
           </Map>
         </APIProvider>
       </Box>
-      {/* <Box sx={{ boxShadow: "0px 1px 5px 0px #0000001F", boxSizing: "border-box", paddingLeft: '300px', width: '85%', height: '50%', display: "flex", alignItems: "center", overFlowX: "hidden" }}>
-        <Container sx={{
-          position: 'fixed',
-          bottom: 0,
-          width: '60%',
-          textAlign: 'center',
-          boxSizing: 'border-box',
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: "flex-end",
-          background: "#FFFFFF",
-          boxShadow: "0px 2px 2px 0px #00000024",
-          zIndex: "1"
-        }}>
-          <List sx={{ flexDirection: "row" }} spacing={2} >
-            <Grid container direction="row" spacing={2}>
-              <Grid item>
-                <ListItem>
-                  <CircleIcon sx={{ color: "#D32F2F" }}></CircleIcon>
-                  <Typography sx={{ fontFamily: "Roboto", fontSize: "16px", fontWeight: "bold", lineHeight: "24px", letterSpacing: "0.46000000834465027px", textAlign: "left", color: "#000000" }}> +75%</Typography>
-                </ListItem>
-              </Grid>
-              <Grid item>
-                <ListItem>
-                  <CircleIcon sx={{ color: "#EF6C00" }}></CircleIcon>
-                  <Typography sx={{ fontFamily: "Roboto", fontSize: "16px", fontWeight: "bold", lineHeight: "24px", letterSpacing: "0.46000000834465027px", textAlign: "left", color: "#000000" }}> 25% - 75%</Typography>
-                </ListItem>
-              </Grid>
-              <Grid item>
-                <ListItem>
-                  <CircleIcon sx={{ color: "#2E7D32" }}></CircleIcon>
-                  <Typography sx={{ fontFamily: "Roboto", fontSize: "16px", fontWeight: "bold", lineHeight: "24px", letterSpacing: "0.46000000834465027px", textAlign: "left", color: "#000000" }}> 25%</Typography>        </ListItem>
-              </Grid>
-            </Grid>
-          </List>
-        </Container>
-      </Box> */}
       <Paper
         elevation={6}
         sx={{
@@ -91,15 +111,15 @@ export default function HomeMainContent() {
         }}
       >
         <Box sx={{ display: 'flex' }}>
-          <CircleIcon sx={{ color: "#D32F2F", mr: '16px' }}></CircleIcon>
+          <CircleIcon sx={{ color: colors.LOW_CAPACITY, mr: '16px' }}></CircleIcon>
           <Typography sx={{ fontSize: "16px", fontWeight: "bold", lineHeight: "24px", color: "#000000" }}> +75%</Typography>
         </Box>
         <Box sx={{ display: 'flex' }}>
-          <CircleIcon sx={{ color: "#EF6C00", mr: '16px' }}></CircleIcon>
+          <CircleIcon sx={{ color: colors.MEDIUM_CAPACITY, mr: '16px' }}></CircleIcon>
           <Typography sx={{ fontSize: "16px", fontWeight: "bold", lineHeight: "24px", color: "#000000" }}> 25% - 75%</Typography>
         </Box>
         <Box sx={{ display: 'flex' }}>
-          <CircleIcon sx={{ color: "#2E7D32", mr: '16px' }}></CircleIcon>
+          <CircleIcon sx={{ color: colors.HIGH_CAPACITY, mr: '16px' }}></CircleIcon>
           <Typography sx={{ fontSize: "16px", fontWeight: "bold", lineHeight: "24px", color: "#000000" }}> -25%</Typography>
         </Box>
       </Paper>
@@ -113,26 +133,9 @@ function Markers(props) {
   return <>
     {
       trees.map(p => (
-        <AdvancedMarker position={p} key={p.key}>
+        <AdvancedMarker position={p} key={p.lat + p.lng}>
           <div style={{ width: '50px', height: '20px' }}>
-            <CircleIcon sx={{ color: "#EF6C00" }}></CircleIcon>
-          </div>
-        </AdvancedMarker>
-      ))
-    }
-  </>
-
-}
-
-function RedMarkers(props) {
-  const { redTrees } = props
-
-  return <>
-    {
-      redTrees.map(p => (
-        <AdvancedMarker position={p} key={p.key}>
-          <div style={{ width: '50px', height: '20px' }}>
-            <CircleIcon sx={{ color: "#D32F2F" }}></CircleIcon>
+            <CircleIcon sx={{ color: getColorPoint(p) }}></CircleIcon>
           </div>
         </AdvancedMarker>
       ))

@@ -155,6 +155,7 @@ export const Header = ({ logoOnly = false }) => {
                                 }}>
                                     {pages.map((page) => (
                                         <Button
+                                            key={page}
                                             onClick={handleCloseNavMenu}
                                             sx={{
                                                 color: 'white',
