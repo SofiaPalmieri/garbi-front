@@ -1,1 +1,3 @@
-export { SearcherAndButton } from "./SearcherAndButton"
+export {
+  SearcherAndButton 
+} from './SearcherAndButton';

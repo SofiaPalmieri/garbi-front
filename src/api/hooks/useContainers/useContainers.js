@@ -1,13 +1,16 @@
-import { useFetch } from "../../../hooks/useFetch"
-import { useGetContainers } from "./request"
+import {
+  useGetContainers 
+} from './request';
 
 export const useContainers = () => {
-    const { getContainers, isLoadingGetContainers } = useGetContainers()
+  const {
+    getContainers, isLoadingGetContainers 
+  } = useGetContainers();
 
-    return {
-        getContainers: {
-            getContainers,
-            isLoadingGetContainers
-        }
-    }
-}
+  return {
+    getContainers: {
+      getContainers,
+      isLoadingGetContainers,
+    },
+  };
+};

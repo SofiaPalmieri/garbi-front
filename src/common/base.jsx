@@ -1,15 +1,21 @@
-import { Box } from '@mui/material'
-import { Outlet } from 'react-router-dom'
+import {
+  Box 
+} from '@mui/material';
+import {
+  Outlet 
+} from 'react-router-dom';
 
 const Base = () => {
   return (
-    <Box sx={{
+    <Box
+      sx={{
         minWidth: '100vw',
-        minHeight: '100vh'
-    }}>
-        <Outlet />
+        minHeight: '100vh',
+      }}
+    >
+      <Outlet />
     </Box>
-  )
-}
+  );
+};
 
-export default Base
+export default Base;

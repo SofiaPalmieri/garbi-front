@@ -1,12 +1,26 @@
 import CircleIcon from '@mui/icons-material/Circle';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
-import { Box, LinearProgress, Paper, styled, Tooltip, tooltipClasses, Typography } from "@mui/material";
-import Button from "@mui/material/Button";
-import { APIProvider, AdvancedMarker, InfoWindow, Map, useAdvancedMarkerRef } from '@vis.gl/react-google-maps';
-import React, { useEffect, useState } from 'react';
-import { useContainers } from '../../api/hooks/useContainers/useContainers';
+import {
+  Box,
+  LinearProgress,
+  Paper,
+  styled,
+  Tooltip,
+  tooltipClasses,
+  Typography,
+} from '@mui/material';
+import Button from '@mui/material/Button';
+import {
+  APIProvider, AdvancedMarker, Map 
+} from '@vis.gl/react-google-maps';
+import {
+  useEffect, useState 
+} from 'react';
+import {
+  useContainers 
+} from '../../api/hooks/useContainers/useContainers';
 import CloseIcon from '@mui/icons-material/Close';
-import "./HomeMainContent.css"
+import './HomeMainContent.css';
 import Battery0BarIcon from '@mui/icons-material/Battery0Bar';
 import Battery1BarIcon from '@mui/icons-material/Battery1Bar';
 import Battery2BarIcon from '@mui/icons-material/Battery2Bar';
@@ -24,26 +38,41 @@ const icons = [
   Battery4BarIcon,
   Battery5BarIcon,
   Battery6BarIcon,
-  BatteryFullIcon
+  BatteryFullIcon,
 ];
 
 const getBatteryIcon = (battery) => {
-  console.log("🚀 ~ getBatteryIcon ~ battery:", battery)
+  console.log('🚀 ~ getBatteryIcon ~ battery:', battery);
   const index = Math.min(Math.floor(battery / 12.5), icons.length - 1);
   const IconComponent = icons[index];
-  console.log(100-battery)
-  return <IconComponent sx={{ color: getColorPoint(100 - battery)}} />;
+  console.log(100 - battery);
+  return (
+    <IconComponent
+      sx={{
+        color: getColorPoint(100 - battery),
+      }}
+    />
+  );
 };
 
 const colors = {
-  LOW_CAPACITY: "#D32F2F",
-  MEDIUM_CAPACITY: "#EF6C00",
-  HIGH_CAPACITY: "#2E7D32"
-}
+  LOW_CAPACITY: '#D32F2F',
+  MEDIUM_CAPACITY: '#EF6C00',
+  HIGH_CAPACITY: '#2E7D32',
+};
 
-const HtmlTooltip = styled(({ className, ...props }) => (
-  <Tooltip {...props} classes={{ popper: className }} />
-))(({ theme }) => ({
+const HtmlTooltip = styled(({
+  className, ...props 
+}) => (
+  <Tooltip
+    {...props}
+    classes={{
+      popper: className,
+    }}
+  />
+))(({
+  theme 
+}) => ({
   [`& .${tooltipClasses.tooltip}`]: {
     backgroundColor: '#fff',
     padding: 0,
@@ -55,45 +84,52 @@ const HtmlTooltip = styled(({ className, ...props }) => (
 
 const getColorPoint = (capacity) => {
   if (capacity > 75) {
-    return colors.LOW_CAPACITY
+    return colors.LOW_CAPACITY;
   } else if (capacity <= 25) {
-    return colors.HIGH_CAPACITY
+    return colors.HIGH_CAPACITY;
   } else {
-    return colors.MEDIUM_CAPACITY
+    return colors.MEDIUM_CAPACITY;
   }
-}
-
+};
 
 export default function HomeMainContent() {
-  const position = { lat: -34.5893, lng: -58.3974 }
-  const { getContainers: { getContainers: getContainers, isLoadingGetContainers } } = useContainers()
-  const [containers, setContainers] = useState([])
+  const position = {
+    lat: -34.5893,
+    lng: -58.3974,
+  };
+  const {
+    getContainers: {
+      getContainers: getContainers 
+    },
+  } = useContainers();
+  const [containers, setContainers] = useState([]);
   const apiKeyGoogleMaps = import.meta.env.VITE_REACT_APP_API_KEY_GOOGLE_MAPS;
-  const [containerSelected, setContainerSeleted] = useState(null)
+  const [containerSelected, setContainerSeleted] = useState(null);
 
   const formatContainers = (containers) => {
-    return containers.documents.map(
-      (container) => {
-        return { ...container, lat: container.coordinates.lat, lng: container.coordinates.lng }
-      }
-    )
-  }
-
+    return containers.documents.map((container) => {
+      return {
+        ...container,
+        lat: container.coordinates.lat,
+        lng: container.coordinates.lng,
+      };
+    });
+  };
 
   useEffect(() => {
     const retrieveContainers = async () => {
-      const containersUnformated = await getContainers()
-      const containersFormated = formatContainers(containersUnformated)
+      const containersUnformated = await getContainers();
+      const containersFormated = formatContainers(containersUnformated);
 
-      setContainers(containersFormated)
-    }
+      setContainers(containersFormated);
+    };
 
     try {
-      retrieveContainers()
+      retrieveContainers();
     } catch (e) {
-      console.log(e)
+      console.log(e);
     }
-  }, [])
+  }, []);
 
   // useEffect(() => {
   //   console.log(containerSelected)
@@ -101,23 +137,56 @@ export default function HomeMainContent() {
 
   return (
     <>
-      <Box width="100%">
-        <Box sx={{
-          width: '100%',
-          display: 'flex',
-          justifyContent: 'end',
-          marginTop: '24px',
-          alignItems: 'center',
-          gap: '11px',
-          pr: '32px'
-        }}>
-          <InfoOutlinedIcon sx={{ color: "#0000008F" }} widht="24px" height="24px" top="2px" left="2px" />
-          <Button width="177px" height="26px" font="button/large" fontFamily="Roboto" fontSize="15px" variant="contained" color="primary" size="large" sx={{ backgroundColor: "#12422C" }}>
+      <Box
+        width='100%'
+      >
+        <Box
+          sx={{
+            width: '100%',
+            display: 'flex',
+            justifyContent: 'end',
+            marginTop: '24px',
+            alignItems: 'center',
+            gap: '11px',
+            pr: '32px',
+          }}
+        >
+          <InfoOutlinedIcon
+            sx={{
+              color: '#0000008F',
+            }}
+            widht='24px'
+            height='24px'
+            top='2px'
+            left='2px'
+          />
+          <Button
+            width='177px'
+            height='26px'
+            font='button/large'
+            fontFamily='Roboto'
+            fontSize='15px'
+            variant='contained'
+            color='primary'
+            size='large'
+            sx={{
+              backgroundColor: '#12422C',
+            }}
+          >
             Generar Ruta Óptima
           </Button>
         </Box>
-        <Box width="100%" height={'600px'} padding={"24px 32px 12px"} position={'relative'} overflow={'hidden'}>
-          <Box width={1} height={'106%'}>
+        <Box
+          width='100%'
+          height={'600px'}
+          padding={'24px 32px 12px'}
+          position={'relative'}
+          overflow={'hidden'}
+        >
+          <Box
+            width={1}
+            height={'106%'}
+          >
             <APIProvider
               apiKey={apiKeyGoogleMaps}
             >
@@ -134,17 +203,21 @@ export default function HomeMainContent() {
                 style={{
                   outline: 'none',
                   '&:focus': {
-                    outline: 'none'
-                  }
+                    outline: 'none',
+                  },
                 }}
               >
-                {
-                  containers.map(p => <Marker setContainerSeleted={setContainerSeleted} key={p._id} point={p} />)
-                }
+                {containers.map((p) => (
+                  <Marker
+                    setContainerSeleted={setContainerSeleted}
+                    key={p._id}
+                    point={p}
+                  />
+                ))}
               </Map>
             </APIProvider>
           </Box>
-          {containerSelected &&
+          {containerSelected && (
             <Paper
               elevation={4}
               sx={{
@@ -157,10 +230,12 @@ export default function HomeMainContent() {
                 padding: '24px 40px',
                 display: 'flex',
                 flexDirection: 'column',
-                justifyContent: 'space-between'
+                justifyContent: 'space-between',
               }}
             >
-              <Box position='relative'>
+              <Box
+                position='relative'
+              >
                 <Button
                   sx={{
                     padding: 0,
@@ -168,23 +243,28 @@ export default function HomeMainContent() {
                     borderRadius: '50%',
                     position: 'absolute',
                     right: '-30px',
-                    top: '-15px'
+                    top: '-15px',
                   }}
                   onClick={() => setContainerSeleted(null)}
                 >
-                  <CloseIcon sx={{ color: 'black' }} />
+                  <CloseIcon
+                    sx={{
+                      color: 'black',
+                    }}
+                  />
                 </Button>
-                <Typography sx={{
-                  color: 'rgba(0, 0, 0, 0.60)',
-                  fontFeatureSettings: "'clig' off, 'liga' off",
-                  fontFamily: 'Roboto',
-                  fontSize: '14px',
-                  fontStyle: 'normal',
-                  fontWeight: 500,
-                  lineHeight: '14px',
-                  letterSpacing: '0.1px',
-                  mb: 2
-                }}
+                <Typography
+                  sx={{
+                    color: 'rgba(0, 0, 0, 0.60)',
+                    fontFeatureSettings: '\'clig\' off, \'liga\' off',
+                    fontFamily: 'Roboto',
+                    fontSize: '14px',
+                    fontStyle: 'normal',
+                    fontWeight: 500,
+                    lineHeight: '14px',
+                    letterSpacing: '0.1px',
+                    mb: 2,
+                  }}
                 >
                   ID #{containerSelected.sensorId}
                 </Typography>
@@ -196,30 +276,36 @@ export default function HomeMainContent() {
                     fontStyle: 'normal',
                     fontWeight: 500,
                     lineHeight: '32px',
-                    letterSpacing: '0.1px'
+                    letterSpacing: '0.1px',
                   }}
-                >{(containerSelected.capacity)}% lleno</Typography>
-                <Typography sx={{
-                  color: ' rgba(0, 0, 0, 0.60)',
-                  fontFeatureSettings: "'clig' off, 'liga' off",
-                  fontFamily: 'Roboto',
-                  fontSize: '12px',
-                  fontStyle: 'normal',
-                  fontWeight: 300,
-                  lineHeight: '16px',
-                  letterSpacing: '0.1px',
-                  mb: 2
-                }}>Actualizado hace 10 min</Typography>
+                >
+                  {containerSelected.capacity}% lleno
+                </Typography>
+                <Typography
+                  sx={{
+                    color: ' rgba(0, 0, 0, 0.60)',
+                    fontFeatureSettings: '\'clig\' off, \'liga\' off',
+                    fontFamily: 'Roboto',
+                    fontSize: '12px',
+                    fontStyle: 'normal',
+                    fontWeight: 300,
+                    lineHeight: '16px',
+                    letterSpacing: '0.1px',
+                    mb: 2,
+                  }}
+                >
+                  Actualizado hace 10 min
+                </Typography>
                 <Typography
                   sx={{
                     color: 'rgba(0, 0, 0, 0.87)',
-                    fontFeatureSettings: "'clig' off, 'liga' off",
+                    fontFeatureSettings: '\'clig\' off, \'liga\' off',
                     fontFamily: 'Roboto',
                     fontSize: '14px',
                     fontStyle: 'normal',
                     fontWeight: 500,
                     lineHeight: '32px',
-                    letterSpacing: '0.1px'
+                    letterSpacing: '0.1px',
                   }}
                 >
                   Villa Pueyrredón - Área 2
@@ -227,99 +313,117 @@ export default function HomeMainContent() {
                 <Typography
                   sx={{
                     color: 'rgba(0, 0, 0, 0.87)',
-                    fontFeatureSettings: "'clig' off, 'liga' off",
+                    fontFeatureSettings: '\'clig\' off, \'liga\' off',
                     fontFamily: 'Roboto',
                     fontSize: '12px',
                     fontStyle: 'normal',
                     fontWeight: 300,
                     lineHeight: '24px',
                     letterSpacing: '0.1px',
-                    mb: 2
+                    mb: 2,
                   }}
                 >
                   Av. Honorio Pueyrredón 123
                 </Typography>
-                <Box display={'flex'} mb={2}>
+                <Box
+                  display={'flex'}
+                  mb={2}
+                >
                   <Typography
                     sx={{
                       color: 'rgba(0, 0, 0, 0.87)',
-                      fontFeatureSettings: "'clig' off, 'liga' off",
+                      fontFeatureSettings: '\'clig\' off, \'liga\' off',
                       fontFamily: 'Roboto',
                       fontSize: '14px',
                       fontStyle: 'normal',
                       fontWeight: 500,
                       lineHeight: '32px',
                       letterSpacing: '0.1px',
-                      mr: 0.4
+                      mr: 0.4,
                     }}
-                  >Última Recolección:{' '}</Typography>
-                  <Typography sx={{
-                    color: 'var(--text-primary, rgba(0, 0, 0, 0.87))',
-                    fontFeatureSettings: "'clig' off, 'liga' off",
-                    fontFamily: 'Roboto',
-                    fontSize: '14px',
-                    fontStyle: 'normal',
-                    fontWeight: 400,
-                    lineHeight: '32px',
-                    letterSpacing: '0.1px'
-                  }}>26/4 - 21.35 hs</Typography>
+                  >
+                    Última Recolección:{' '}
+                  </Typography>
+                  <Typography
+                    sx={{
+                      color: 'var(--text-primary, rgba(0, 0, 0, 0.87))',
+                      fontFeatureSettings: '\'clig\' off, \'liga\' off',
+                      fontFamily: 'Roboto',
+                      fontSize: '14px',
+                      fontStyle: 'normal',
+                      fontWeight: 400,
+                      lineHeight: '32px',
+                      letterSpacing: '0.1px',
+                    }}
+                  >
+                    26/4 - 21.35 hs
+                  </Typography>
                 </Box>
                 <Typography
                   sx={{
                     color: 'var(--text-primary, rgba(0, 0, 0, 0.87))',
-                    fontFeatureSettings: "'clig' off, 'liga' off",
+                    fontFeatureSettings: '\'clig\' off, \'liga\' off',
                     fontFamily: 'Roboto',
                     fontSize: '14px',
                     fontStyle: 'normal',
                     fontWeight: 300,
                     lineHeight: '32px',
                     letterSpacing: '0.1px',
-                    mb: 2
+                    mb: 2,
                   }}
-                >Contenedor bilateral</Typography>
+                >
+                  Contenedor bilateral
+                </Typography>
                 <Box
                   sx={{
                     display: 'flex',
-                    alignItems: 'center'
+                    alignItems: 'center',
                   }}
                 >
                   {getBatteryIcon(containerSelected.battery)}
-                  <Typography sx={{
-                    color: 'rgba(0, 0, 0, 0.87)',
-                    fontFeatureSettings: "'clig' off, 'liga' off",
-                    fontFamily: 'Roboto',
-                    fontSize: '14px',
-                    fontStyle: 'normal',
-                    fontWeight: 500,
-                    lineHeight: '32px', // 228.571%
-                    letterSpacing: '0.1px',
-                    marginRight: '0.5rem',
-                  }}>
+                  <Typography
+                    sx={{
+                      color: 'rgba(0, 0, 0, 0.87)',
+                      fontFeatureSettings: '\'clig\' off, \'liga\' off',
+                      fontFamily: 'Roboto',
+                      fontSize: '14px',
+                      fontStyle: 'normal',
+                      fontWeight: 500,
+                      lineHeight: '32px', // 228.571%
+                      letterSpacing: '0.1px',
+                      marginRight: '0.5rem',
+                    }}
+                  >
                     Batería:
                   </Typography>
-                  <Typography sx={{
-                    color: 'rgba(0, 0, 0, 0.87)',
-                    fontFeatureSettings: "'clig' off, 'liga' off",
-                    fontFamily: 'Roboto',
-                    fontSize: '14px',
-                    fontStyle: 'normal',
-                    fontWeight: 400,
-                    lineHeight: '32px',
-                    letterSpacing: '0.1px',
-                    marginRight: '0.5rem',
-                  }}
+                  <Typography
+                    sx={{
+                      color: 'rgba(0, 0, 0, 0.87)',
+                      fontFeatureSettings: '\'clig\' off, \'liga\' off',
+                      fontFamily: 'Roboto',
+                      fontSize: '14px',
+                      fontStyle: 'normal',
+                      fontWeight: 400,
+                      lineHeight: '32px',
+                      letterSpacing: '0.1px',
+                      marginRight: '0.5rem',
+                    }}
                   >
                     {containerSelected.battery}%
                   </Typography>
                 </Box>
               </Box>
               <Box>
-
-                <Button fullWidth>Reportes históricos</Button>
-                <Button fullWidth >Reportes activos</Button>
+                <Button
+                  fullWidth
+                >Reportes históricos</Button>
+                <Button
+                  fullWidth
+                >Reportes activos</Button>
               </Box>
-            </Paper >}
-        </Box >
+            </Paper>
+          )}
+        </Box>
         <Paper
           elevation={6}
           sx={{
@@ -337,25 +441,84 @@ export default function HomeMainContent() {
             zIndex: 1,
           }}
         >
-          <Box sx={{ display: 'flex' }}>
-            <CircleIcon sx={{ color: colors.LOW_CAPACITY, mr: '16px' }}></CircleIcon>
-            <Typography sx={{ fontSize: "16px", fontWeight: "bold", lineHeight: "24px", color: "#000000" }}> +75%</Typography>
+          <Box
+            sx={{
+              display: 'flex',
+            }}
+          >
+            <CircleIcon
+              sx={{
+                color: colors.LOW_CAPACITY,
+                mr: '16px',
+              }}
+            />
+            <Typography
+              sx={{
+                fontSize: '16px',
+                fontWeight: 'bold',
+                lineHeight: '24px',
+                color: '#000000',
+              }}
+            >
+              {' '}
+              +75%
+            </Typography>
           </Box>
-          <Box sx={{ display: 'flex' }}>
-            <CircleIcon sx={{ color: colors.MEDIUM_CAPACITY, mr: '16px' }}></CircleIcon>
-            <Typography sx={{ fontSize: "16px", fontWeight: "bold", lineHeight: "24px", color: "#000000" }}> 25% - 75%</Typography>
+          <Box
+            sx={{
+              display: 'flex',
+            }}
+          >
+            <CircleIcon
+              sx={{
+                color: colors.MEDIUM_CAPACITY,
+                mr: '16px',
+              }}
+            />
+            <Typography
+              sx={{
+                fontSize: '16px',
+                fontWeight: 'bold',
+                lineHeight: '24px',
+                color: '#000000',
+              }}
+            >
+              {' '}
+              25% - 75%
+            </Typography>
           </Box>
-          <Box sx={{ display: 'flex' }}>
-            <CircleIcon sx={{ color: colors.HIGH_CAPACITY, mr: '16px' }}></CircleIcon>
-            <Typography sx={{ fontSize: "16px", fontWeight: "bold", lineHeight: "24px", color: "#000000" }}> -25%</Typography>
+          <Box
+            sx={{
+              display: 'flex',
+            }}
+          >
+            <CircleIcon
+              sx={{
+                color: colors.HIGH_CAPACITY,
+                mr: '16px',
+              }}
+            />
+            <Typography
+              sx={{
+                fontSize: '16px',
+                fontWeight: 'bold',
+                lineHeight: '24px',
+                color: '#000000',
+              }}
+            >
+              {' '}
+              -25%
+            </Typography>
           </Box>
         </Paper>
-      </Box ></>
+      </Box>
+    </>
   );
 }
 
-function Marker({ point, setContainerSeleted }) {
-
+function Marker({
+  point, setContainerSeleted 
+}) {
   return (
     <AdvancedMarker
       position={point}
@@ -377,27 +540,31 @@ function Marker({ point, setContainerSeleted }) {
           },
         }}
         title={
-          <Box position={'relative'}>
-            <Box width={'88px'} height={'42px'}
+          <Box
+            position={'relative'}
+          >
+            <Box
+              width={'88px'}
+              height={'42px'}
               sx={{
                 borderRadius: '4px',
-                overflow: 'hidden'
+                overflow: 'hidden',
               }}
             >
               <LinearProgress
-                variant="determinate"
+                variant='determinate'
                 value={point.capacity}
                 sx={{
                   '& .MuiLinearProgress-bar': {
-                    backgroundColor: getColorPoint(point.capacity)
-                  }
+                    backgroundColor: getColorPoint(point.capacity),
+                  },
                 }}
               />
               <Box
                 sx={{
-                  display: "flex",
+                  display: 'flex',
                   alignItems: 'center',
-                  flexDirection: 'column'
+                  flexDirection: 'column',
                 }}
               >
                 <Typography
@@ -406,7 +573,7 @@ function Marker({ point, setContainerSeleted }) {
                     fontWeight: 500,
                     lineHeight: '14px',
                     color: 'black',
-                    marginTop: '4px'
+                    marginTop: '4px',
                   }}
                 >
                   {point.capacity}% lleno
@@ -431,15 +598,18 @@ function Marker({ point, setContainerSeleted }) {
                 position: 'absolute',
                 left: '50%',
                 bottom: '-3px',
-                transform: 'translateX(-50%) rotate(-45deg)'
+                transform: 'translateX(-50%) rotate(-45deg)',
               }}
-            >
-            </Box>
+            />
           </Box>
         }
       >
         <div>
-          <CircleIcon sx={{ color: getColorPoint(point.capacity) }} />
+          <CircleIcon
+            sx={{
+              color: getColorPoint(point.capacity),
+            }}
+          />
         </div>
       </HtmlTooltip>
     </AdvancedMarker>

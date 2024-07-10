@@ -1,27 +1,52 @@
-import { Box, FormControl, TextField, Typography } from '@mui/material';
-import React from 'react';
-import { Controller, useForm } from 'react-hook-form';
-import { InputForm } from '../../components/InputForm';
-import { SelectForm } from '../../components/SelectForm/SelectForm';
-
+import {
+  Box, Typography 
+} from '@mui/material';
+import {
+  useForm 
+} from 'react-hook-form';
+import {
+  InputForm 
+} from '../../components/InputForm';
+import {
+  SelectForm 
+} from '../../components/SelectForm/SelectForm';
 
 const cargos = [
-  { value: 'Recolector', label: 'Recolector' },
-  { value: 'Supervisor', label: 'Supervisor' },
+  {
+    value: 'Recolector',
+    label: 'Recolector',
+  },
+  {
+    value: 'Supervisor',
+    label: 'Supervisor',
+  },
 ];
 
 const turnos = [
-  { value: 'Noche', label: 'Noche' },
-  { value: 'Tarde', label: 'Tarde' },
-  { value: 'manana', label: 'Mañana' },
+  {
+    value: 'Noche',
+    label: 'Noche',
+  },
+  {
+    value: 'Tarde',
+    label: 'Tarde',
+  },
+  {
+    value: 'manana',
+    label: 'Mañana',
+  },
 ];
 
 export const CreateEmployeeForm = () => {
-
-  const { control, handleSubmit, formState: { errors } } = useForm({
+  const {
+    control,
+    formState: {
+      errors 
+    },
+  } = useForm({
     defaultValues: {
-      email: "",
-      password: "",
+      email: '',
+      password: '',
     },
   });
 
@@ -30,7 +55,7 @@ export const CreateEmployeeForm = () => {
       <Box
         sx={{
           width: '100%',
-          padding: '16px 24px'
+          padding: '16px 24px',
         }}
       >
         <Typography
@@ -38,7 +63,7 @@ export const CreateEmployeeForm = () => {
             fontSize: '16px',
             fontWeight: 400,
             lineHeight: '16px',
-            marginBottom: '16px'
+            marginBottom: '16px',
           }}
         >
           Datos Personales
@@ -48,19 +73,21 @@ export const CreateEmployeeForm = () => {
             display: 'flex',
             flexDirection: 'column',
             width: '100%',
-            gap: '16px'
+            gap: '16px',
           }}
         >
-          <Box sx={{
-            display: 'flex',
-            width: '100%',
-            height: '40px',
-            gap: '24px'
-          }}>
+          <Box
+            sx={{
+              display: 'flex',
+              width: '100%',
+              height: '40px',
+              gap: '24px',
+            }}
+          >
             <Box
               sx={{
                 flex: 1,
-                height: '40px'
+                height: '40px',
               }}
             >
               <InputForm
@@ -73,7 +100,7 @@ export const CreateEmployeeForm = () => {
             <Box
               sx={{
                 flex: 1,
-                height: '40px'
+                height: '40px',
               }}
             >
               <InputForm
@@ -84,16 +111,18 @@ export const CreateEmployeeForm = () => {
               />
             </Box>
           </Box>
-          <Box sx={{
-            display: 'flex',
-            width: '100%',
-            height: '40px',
-            gap: '24px'
-          }}>
+          <Box
+            sx={{
+              display: 'flex',
+              width: '100%',
+              height: '40px',
+              gap: '24px',
+            }}
+          >
             <Box
               sx={{
                 flex: 1,
-                height: '40px'
+                height: '40px',
               }}
             >
               <InputForm
@@ -106,7 +135,7 @@ export const CreateEmployeeForm = () => {
             <Box
               sx={{
                 flex: 1,
-                height: '40px'
+                height: '40px',
               }}
             >
               <InputForm
@@ -122,7 +151,7 @@ export const CreateEmployeeForm = () => {
       <Box
         sx={{
           width: '100%',
-          padding: '16px 24px'
+          padding: '16px 24px',
         }}
       >
         <Typography
@@ -130,7 +159,7 @@ export const CreateEmployeeForm = () => {
             fontSize: '16px',
             fontWeight: 400,
             lineHeight: '16px',
-            marginBottom: '16px'
+            marginBottom: '16px',
           }}
         >
           Datos dentro de la empresa
@@ -140,24 +169,26 @@ export const CreateEmployeeForm = () => {
             display: 'flex',
             flexDirection: 'column',
             width: '100%',
-            gap: '16px'
+            gap: '16px',
           }}
         >
-          <Box sx={{
-            display: 'flex',
-            width: '100%',
-            height: '40px',
-            gap: '24px'
-          }}>
+          <Box
+            sx={{
+              display: 'flex',
+              width: '100%',
+              height: '40px',
+              gap: '24px',
+            }}
+          >
             <Box
               sx={{
                 flex: 1,
-                height: '40px'
+                height: '40px',
               }}
             >
               <SelectForm
-                name={"jobPosition"}
-                label={"Cargo"}
+                name={'jobPosition'}
+                label={'Cargo'}
                 control={control}
                 errors={errors}
                 options={cargos}
@@ -166,28 +197,30 @@ export const CreateEmployeeForm = () => {
             <Box
               sx={{
                 flex: 1,
-                height: '40px'
+                height: '40px',
               }}
             >
               <SelectForm
-                name={"timeShift"}
-                label={"Turno"}
+                name={'timeShift'}
+                label={'Turno'}
                 control={control}
                 errors={errors}
                 options={turnos}
               />
             </Box>
           </Box>
-          <Box sx={{
-            display: 'flex',
-            width: '100%',
-            height: '40px',
-            gap: '24px'
-          }}>
+          <Box
+            sx={{
+              display: 'flex',
+              width: '100%',
+              height: '40px',
+              gap: '24px',
+            }}
+          >
             <Box
               sx={{
                 flex: 1,
-                height: '40px'
+                height: '40px',
               }}
             >
               <InputForm
@@ -200,7 +233,7 @@ export const CreateEmployeeForm = () => {
             <Box
               sx={{
                 flex: 1,
-                height: '40px'
+                height: '40px',
               }}
             >
               <InputForm
@@ -214,5 +247,5 @@ export const CreateEmployeeForm = () => {
         </Box>
       </Box>
     </form>
-  )
-}
+  );
+};

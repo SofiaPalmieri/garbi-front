@@ -1,1 +1,3 @@
-export { ModalCreateResource } from "./ModalCreateResource"
+export {
+  ModalCreateResource 
+} from './ModalCreateResource';

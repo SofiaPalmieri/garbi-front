@@ -1,1 +1,3 @@
-export { FilterSideComponent } from "./FilterSideComponent"
+export {
+  FilterSideComponent 
+} from './FilterSideComponent';

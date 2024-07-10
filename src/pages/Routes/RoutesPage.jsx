@@ -1,14 +1,9 @@
-import * as React from 'react';
-import Box from '@mui/material/Box';
-import NavBar from '../Home/NavBar/NavBar';
-import RouteContent from './Content/RouteContent';
-import RoutesSideBar from './SideBar/RoutesSideBar';
 import RouteMainContent from './MainContent/RouteMainContent';
-import { Route } from 'react-router-dom';
-import { FilterSideComponent } from '../../components/FilterSideComponent';
+import {
+  FilterSideComponent 
+} from '../../components/FilterSideComponent';
 
 export default function RoutesPage() {
-
   return (
     /*<div>
       <Box sx={{overflowX:"hidden", width:"100%", overflow:"hidden", overflowY:"hidden"}}>
@@ -24,7 +19,9 @@ export default function RoutesPage() {
 
       </div>
 */
-    <FilterSideComponent title={"Recorridos"} component={() => <RouteMainContent />} />
-
+    <FilterSideComponent
+      title={'Recorridos'}
+      component={() => <RouteMainContent />}
+    />
   );
 }
