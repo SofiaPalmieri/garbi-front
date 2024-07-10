@@ -7,5 +7,5 @@ export default function HomePage() {
   return <FilterSideComponent
     title={'Mapa'}
     component={() => <HomeMainContent />}
-         />;
+  />;
 }

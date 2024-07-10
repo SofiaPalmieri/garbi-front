@@ -18,7 +18,7 @@ module.exports = {
     "@stylistic/js/newline-per-chained-call": ["error", { "ignoreChainWithDepth": 2 }],
     "@stylistic/js/quotes": ["error", "single"],
     "@stylistic/js/jsx-quotes": ["error", "prefer-single"],
-    "@stylistic/jsx/jsx-closing-bracket-location": 1,
+    "@stylistic/jsx/jsx-closing-bracket-location": [1,"line-aligned"],
     "@stylistic/jsx/jsx-indent":  ["warn", 2],
     "@stylistic/jsx/jsx-indent-props": [2,2],
     '@stylistic/js/object-curly-newline': ['error', 'always'],

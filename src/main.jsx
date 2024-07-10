@@ -50,7 +50,7 @@ const router = createBrowserRouter([
     path: '/',
     element: <Navigate
       to='/login'
-             />,
+    />,
   },
   {
     element: <Base />,
@@ -97,7 +97,7 @@ const router = createBrowserRouter([
   {
     element: <BaseWithHeader
       logoOnly={true}
-             />,
+    />,
     children: [
       {
         path: '/empresas',

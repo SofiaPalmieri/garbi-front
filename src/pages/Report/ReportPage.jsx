@@ -9,5 +9,5 @@ export const ReportPage = () => {
   return <FilterSideComponent
     title={'Reportes'}
     component={() => <ReportContent />}
-         />;
+  />;
 };

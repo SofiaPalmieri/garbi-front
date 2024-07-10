@@ -28,7 +28,7 @@ const LoginPage = () => {
         isFlipped={isFlipped}
         frontComponent={<LoginBox
           setIsFlipped={setIsFlipped}
-                        />}
+        />}
         backComponent={<ChangePasswordBox />}
       />
     </Box>

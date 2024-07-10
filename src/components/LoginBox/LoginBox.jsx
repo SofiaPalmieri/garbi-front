@@ -258,7 +258,7 @@ export const LoginBox = ({
                 {isLoginLoading ? <CircularProgress
                   size={24}
                   color='inherit'
-                                  /> : 'INGRESAR'}
+                /> : 'INGRESAR'}
 
               </Button>
               <Typography
