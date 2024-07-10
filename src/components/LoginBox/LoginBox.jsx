@@ -259,6 +259,7 @@ export const LoginBox = ({
                   size={24}
                   color='inherit'
                                   /> : 'INGRESAR'}
+
               </Button>
               <Typography
                 sx={{
