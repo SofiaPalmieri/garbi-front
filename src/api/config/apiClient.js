@@ -2,7 +2,7 @@ import axios from 'axios';
 
 // Configura la instancia de axios
 const apiClient = axios.create({
-  baseURL: "http://54.152.182.89",
+  baseURL: 'http://54.152.182.89',
   headers: {
     'Content-Type': 'application/json',
   },
@@ -18,7 +18,7 @@ apiClient.interceptors.request.use(
     }
     return config;
   },
-  (error) => Promise.reject(error)
+  (error) => Promise.reject(error),
 );
 
 apiClient.interceptors.response.use(
@@ -29,7 +29,7 @@ apiClient.interceptors.response.use(
       // Lógica para manejar errores 401 (no autorizado)
     }
     return Promise.reject(error);
-  }
+  },
 );
 
 export default apiClient;

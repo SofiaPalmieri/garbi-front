@@ -1,15 +1,22 @@
-import { useEffect, useState } from "react"
-import { useFetch } from "../../../hooks/useFetch"
+import {
+  useFetch 
+} from '../../../hooks/useFetch';
 
 export const useGetContainers = () => {
-    const { isLoading, commonFetch } = useFetch({ url: '/api/container' })
+  const {
+    isLoading, commonFetch 
+  } = useFetch({
+    url: '/api/container',
+  });
 
-    const getContainers = () => {
-        return commonFetch({ method: 'GET' })
-    }
+  const getContainers = () => {
+    return commonFetch({
+      method: 'GET',
+    });
+  };
 
-    return {
-        getContainers,
-        isLoadingGetContainers: isLoading
-    }
-}
+  return {
+    getContainers,
+    isLoadingGetContainers: isLoading,
+  };
+};

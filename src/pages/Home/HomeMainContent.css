@@ -1,1 +1,4 @@
-#garbi-home-map div { border:none!important; outline:none; }
+#garbi-home-map div {
+  border: none !important;
+  outline: none;
+}

@@ -1,27 +1,36 @@
-import { useState } from 'react';
+import {
+  useState 
+} from 'react';
 import apiClient from '../api/config/apiClient';
 
-export function useFetch({url}) {
-    const [isLoading, setIsLoading] = useState(false);
+export function useFetch({
+  url 
+}) {
+  const [isLoading, setIsLoading] = useState(false);
 
-    const commonFetch = async ({ uri = '', body, method }) => {
-        setIsLoading(true);
+  const commonFetch = async ({
+    uri = '', body, method 
+  }) => {
+    setIsLoading(true);
 
-        try {
-            const response = await apiClient.request({
-                url: url + uri,
-                data: body,
-                method
-            });
+    try {
+      const response = await apiClient.request({
+        url: url + uri,
+        data: body,
+        method,
+      });
 
-            return response.data;
-        } catch (error) {
-            throw error;
-        } finally {
-            setIsLoading(false);
-        }
-    };
-    
+      return response.data;
+    } catch (error) {
+      console.error('Error: ', error);
+      throw error;
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
-    return { isLoading, commonFetch };
+  return {
+    isLoading,
+    commonFetch,
+  };
 }
