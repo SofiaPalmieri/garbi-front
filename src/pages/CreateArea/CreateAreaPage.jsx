@@ -1,23 +1,31 @@
 import {
-  Box, Divider, Typography, FormControl, TextField, Button 
+  Box,
+  Button,
+  Divider,
+  FormControl, TextField,
+  Typography
 } from '@mui/material';
 import {
-  APIProvider, Map 
-} from '@vis.gl/react-google-maps';
-import {
-  Controller, useForm 
+  Controller, useForm
 } from 'react-hook-form';
-const CreateAreaPage = () => {
-  const apiKeyGoogleMaps = import.meta.env.VITE_REACT_APP_API_KEY_GOOGLE_MAPS;
-  const position = {
-    lat: 43.64,
-    lng: -79.41,
-  };
+import {
+  AreaDrawingMap 
+} from '../../components/AreaDrawingMap';
+import './CreateAreaPage.css';
+import {
+  APIProvider 
+} from '@vis.gl/react-google-maps';
 
+
+
+const CreateAreaPage = () => {
+
+  const apiKeyGoogleMaps = import.meta.env.VITE_REACT_APP_API_KEY_GOOGLE_MAPS;
+  
   const {
     control,
     formState: {
-      errors 
+      errors
     },
   } = useForm({
     defaultValues: {
@@ -101,7 +109,7 @@ const CreateAreaPage = () => {
               required: true,
             }}
             render={({
-              field 
+              field
             }) => (
               <FormControl>
                 <TextField
@@ -134,7 +142,7 @@ const CreateAreaPage = () => {
             required: true,
           }}
           render={({
-            field 
+            field
           }) => (
             <FormControl
               fullWidth
@@ -167,17 +175,21 @@ const CreateAreaPage = () => {
         <Box
           sx={{
             flexGrow: 1,
+            overflow: 'hidden'
           }}
         >
-          <APIProvider
-            apiKey={apiKeyGoogleMaps}
+          <Box
+            sx={{
+              width: '100%',
+              height: '100%'
+            }}
           >
-            <Map
-              defaultZoom={9}
-              defaultCenter={position}
-              mapId='658a52589c7a963'
-            />
-          </APIProvider>
+            <APIProvider
+              apiKey={apiKeyGoogleMaps}
+            >
+              <AreaDrawingMap />
+            </APIProvider>
+          </Box>
         </Box>
       </Box>
     </Box>
