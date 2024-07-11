@@ -42,7 +42,6 @@ const icons = [
 ];
 
 const getBatteryIcon = (battery) => {
-  console.log('🚀 ~ getBatteryIcon ~ battery:', battery);
   const index = Math.min(Math.floor(battery / 12.5), icons.length - 1);
   const IconComponent = icons[index];
   console.log(100 - battery);
