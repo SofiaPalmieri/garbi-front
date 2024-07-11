@@ -12,8 +12,17 @@ import {
   TableRow,
 } from '@mui/material';
 import {
-  SearcherAndButton 
+  SearcherAndButton
 } from '../../components/SearcherAndButton';
+import {
+  ModalCreateResource 
+} from '../../modales/ModalCreateResource';
+import {
+  useState 
+} from 'react';
+import {
+  CreateContainerForm 
+} from '../../forms/CreateContainer';
 
 const rows = [
   {
@@ -49,12 +58,24 @@ const rows = [
 ];
 
 export const ContainerContent = () => {
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+
+
   return (
     <Box
       sx={{
         padding: '32px',
       }}
     >
+      <ModalCreateResource
+        title={'Nuevo Contenedor'}
+        description={'Complete los siguientes campos para agregar un nuevo contenedor'}
+        open={open}
+        handleClose={handleClose}
+        form={<CreateContainerForm />}
+      />
       <Paper
         sx={{
           width: '100%',
@@ -64,6 +85,7 @@ export const ContainerContent = () => {
           placeholderInput={'Buscar por ID o Dirección'}
           buttonText={'Nuevo contenedor'}
           inputWidth={'18.75rem'}
+          onClick={handleOpen}
         />
         <TableContainer
           component={Paper}
