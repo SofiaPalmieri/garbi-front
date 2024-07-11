@@ -118,8 +118,8 @@ export const CreateContainerForm = () => {
             >
               <InputForm
                 control={control}
-                name={'phoneCompany'}
-                label={'Teléfono de la empresa'}
+                name={'address'}
+                label={'Dirección'}
                 errors={errors}
               />
             </Box>
@@ -131,8 +131,8 @@ export const CreateContainerForm = () => {
             >
               <InputForm
                 control={control}
-                name={'enterpriseEmail'}
-                label={'Email de la empresa'}
+                name={'heightAddress'}
+                label={'Altura'}
                 errors={errors}
               />
             </Box>
