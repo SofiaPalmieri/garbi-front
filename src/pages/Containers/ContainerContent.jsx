@@ -2,6 +2,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import {
   Box,
+  Button,
   Paper,
   Table,
   TableBody,
@@ -15,18 +16,21 @@ import {
   SearcherAndButton
 } from '../../components/SearcherAndButton';
 import {
-  ModalCreateResource 
+  ModalCreateResource
 } from '../../modales/ModalCreateResource';
 import {
-  useState 
+  useState
 } from 'react';
 import {
-  CreateContainerForm 
+  CreateContainerForm
 } from '../../forms/CreateContainer';
+import {
+  ModifyContainerForm 
+} from '../../forms/ModifyContainer/ModifyContainerForm';
 
 const rows = [
   {
-    id: 123456,
+    id: 1234,
     barrio: 'Villa del Parque',
     area: 2,
     direccion: 'Av. Liberatador General',
@@ -36,7 +40,7 @@ const rows = [
     alturaContenedor: '170 cm',
   },
   {
-    id: 123456,
+    id: 12345,
     barrio: 'Villa del Parque',
     area: 2,
     direccion: 'Av. Liberatador General',
@@ -58,9 +62,21 @@ const rows = [
 ];
 
 export const ContainerContent = () => {
-  const [open, setOpen] = useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const [openCreateContainerModal, setOpenCreateContainerModal] = useState(false);
+  const [openModifyContainerModal, setOpenModifyContainerModal] = useState(false);
+  const [containerToModify, setContainerToModify] = useState(false);
+
+  const handleOpenCreateContainerModal = () => setOpenCreateContainerModal(true);
+  const handleCloseCreateContainerModal = () => setOpenCreateContainerModal(false);
+
+  const handleOpenModifyContainerModal = (containerToModify) => {
+    setContainerToModify(containerToModify)
+    setOpenModifyContainerModal(true)
+  };
+  const handleCloseModifyContainerModal = () => {
+    setOpenModifyContainerModal(false)
+    setContainerToModify(null);
+  };
 
 
   return (
@@ -72,9 +88,18 @@ export const ContainerContent = () => {
       <ModalCreateResource
         title={'Nuevo Contenedor'}
         description={'Complete los siguientes campos para agregar un nuevo contenedor'}
-        open={open}
-        handleClose={handleClose}
+        open={openCreateContainerModal}
+        handleClose={handleCloseCreateContainerModal}
         form={<CreateContainerForm />}
+      />
+      <ModalCreateResource
+        title={'Modificar datos del contenedor'}
+        open={openModifyContainerModal}
+        handleClose={handleCloseModifyContainerModal}
+        form={<ModifyContainerForm
+          containerToModify={containerToModify}
+        />}
+        buttonSubmitMessage='MODIFICAR'
       />
       <Paper
         sx={{
@@ -85,7 +110,7 @@ export const ContainerContent = () => {
           placeholderInput={'Buscar por ID o Dirección'}
           buttonText={'Nuevo contenedor'}
           inputWidth={'18.75rem'}
-          onClick={handleOpen}
+          onClick={handleOpenCreateContainerModal}
         />
         <TableContainer
           component={Paper}
@@ -131,25 +156,25 @@ export const ContainerContent = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {rows.map((row) => (
+              {rows.map((container) => (
                 <TableRow
-                  key={row.direccion}
+                  key={container.id}
                 >
                   <TableCell
                     component='th'
                     scope='row'
                   >
-                    {row.id}
+                    {container.id}
                   </TableCell>
                   <TableCell
                     align='center'
-                  >{row.barrio}</TableCell>
+                  >{container.barrio}</TableCell>
                   <TableCell
                     align='center'
-                  >{row.area}</TableCell>
+                  >{container.area}</TableCell>
                   <TableCell
                     align='center'
-                  >{row.direccion}</TableCell>
+                  >{container.direccion}</TableCell>
                   <TableCell
                     align='center'
                   >
@@ -166,7 +191,7 @@ export const ContainerContent = () => {
                         margin: 'auto',
                       }}
                     >
-                      {row.capacidad}
+                      {container.capacidad}
                     </Box>
                   </TableCell>
                   <TableCell
@@ -185,34 +210,52 @@ export const ContainerContent = () => {
                         margin: 'auto',
                       }}
                     >
-                      {row.bateria}
+                      {container.bateria}
                     </Box>
                   </TableCell>
                   <TableCell
                     align='center'
-                  >{row.tipoDeCarga}</TableCell>
+                  >{container.tipoDeCarga}</TableCell>
                   <TableCell
                     align='center'
                     sx={{
                       borderRight: '1px solid #0000001F',
                     }}
                   >
-                    {row.alturaContenedor}
+                    {container.alturaContenedor}
                   </TableCell>
                   <TableCell
                     align='center'
                   >
-                    <EditIcon
+                    <Button
                       sx={{
-                        color: '#0000008F',
-                        marginRight: '16px',
+                        width: 'fit-content',
+                        minWidth: 'unset',
+                        borderRadius: '50%'
                       }}
-                    />
-                    <DeleteIcon
+                    >
+                      <EditIcon
+                        sx={{
+                          color: '#0000008F',
+                        }}
+                        onClick={() => handleOpenModifyContainerModal(container)}
+                      />
+
+                    </Button>
+                    <Button
                       sx={{
-                        color: '#0000008F',
+                        width: 'fit-content',
+                        minWidth: 'unset',
+                        borderRadius: '50%'
                       }}
-                    />
+                    >
+                      <DeleteIcon
+                        sx={{
+                          color: '#0000008F',
+                        }}
+                      />
+
+                    </Button>
                   </TableCell>
                 </TableRow>
               ))}

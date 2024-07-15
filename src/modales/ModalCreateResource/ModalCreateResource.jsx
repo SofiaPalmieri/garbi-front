@@ -1,6 +1,6 @@
 import CloseIcon from '@mui/icons-material/Close';
 import {
-  Box, Button, Divider, Modal, Typography 
+  Box, Button, Divider, Modal, Typography
 } from '@mui/material';
 
 const style = {
@@ -14,7 +14,7 @@ const style = {
 };
 
 export const ModalCreateResource = ({
-  title, description, open, handleClose, form 
+  title, description, open, handleClose, form, buttonSubmitMessage = 'CREAR'
 }) => {
   return (
     <Modal
@@ -58,24 +58,24 @@ export const ModalCreateResource = ({
             <CloseIcon />
           </Button>
         </Box>
-        <Divider />
-
-        <Box
-          sx={{
-            height: '78px',
-            padding: '12px 24px',
-          }}
-        >
-          <Typography
+        {description && (<>
+          <Divider />
+          <Box
             sx={{
-              fontSize: '16px',
-              fontWeight: 300,
-              lineHeight: '26.56px',
+              height: '78px',
+              padding: '12px 24px',
             }}
           >
-            {description}
-          </Typography>
-        </Box>
+            <Typography
+              sx={{
+                fontSize: '16px',
+                fontWeight: 300,
+                lineHeight: '26.56px',
+              }}
+            >
+              {description}
+            </Typography>
+          </Box></>)}
         <Divider />
         {form}
         <Box
@@ -119,7 +119,7 @@ export const ModalCreateResource = ({
               }}
               type='submit'
             >
-              CREAR
+              {buttonSubmitMessage}
             </Button>
           </Box>
         </Box>

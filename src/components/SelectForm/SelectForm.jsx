@@ -48,6 +48,7 @@ export const SelectForm = ({
             variant={variant}
             label={label}
             {...field}
+            defaultValue=''
           >
             {options.map((option) => (
               <MenuItem
