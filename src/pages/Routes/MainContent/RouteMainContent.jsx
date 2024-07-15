@@ -9,6 +9,7 @@ import {
   TableContainer,
   TablePagination,
   TableRow,
+  Tooltip,
   Typography,
 } from '@mui/material';
 
@@ -22,7 +23,9 @@ export default function RouteMainContent() {
       area: 'Área 2',
       duracion: '55 min',
       horario: '20:30 - 21:25 hs',
-      asignadaPor: 'Supervisor',
+      supervisor: 'Hernan Ramirez',
+      recolector1: 'Pepe Pepin',
+      recolector2: 'Roberto Roberti'
     },
     {
       id: 2,
@@ -32,7 +35,9 @@ export default function RouteMainContent() {
       area: 'Área 1',
       duracion: '1hr 20min',
       horario: '5:00 - 6:20 hs',
-      asignadaPor: 'Supervisor',
+      supervisor: 'Hernan Ramirez',
+      recolector1: 'Pepe Pepin',
+      recolector2: 'Roberto Roberti'
     },
     {
       id: 3,
@@ -42,7 +47,9 @@ export default function RouteMainContent() {
       area: 'Área 1',
       duracion: '1hr 30min',
       horario: '22:13 - 23:43 hs',
-      asignadaPor: 'Supervisor',
+      supervisor: 'Hernan Ramirez',
+      recolector1: 'Pepe Pepin',
+      recolector2: 'Roberto Roberti'
     },
   ];
 
@@ -70,57 +77,61 @@ export default function RouteMainContent() {
                 <TableRow
                   key={row.id}
                 >
-                  <TableCell>
-                    <Box>
-                      <Typography
-                        sx={{
-                          fontSize: '14px',
-                          fontWeight: 400,
-                          lineHeight: '21px',
-                          textAlign: 'left',
-                          color: '#00000099',
-                        }}
-                      >
-                        {row.fecha}
-                      </Typography>
-                    </Box>
+                  <TableCell 
+                    align='left'
+                    sx={{
+                      width: '1%' 
+                    }}
+                  >
+                    <Typography
+                      sx={{
+                        fontSize: '14px',
+                        color: '#616161',
+                      }}
+                    >
+                      {row.fecha}
+                    </Typography>
                   </TableCell>
                   <TableCell
                     align='left'
                   >
                     <Typography
                       sx={{
-                        fontSize: '14px',
-                        fontWeight: 400,
-                        lineHeight: '21px',
-                        textAlign: 'left',
-                        color: '#00000099',
+                        fontSize: '16px',
+                        color: '#212121',
                       }}
                     >
-                      {row.lugar} {row.codigo}
+                      {row.lugar}
+                      <Typography
+                        component='span'
+                        sx={{
+                          fontSize: '14px',
+                          color: '#616161',
+                          marginLeft: '16px'
+                        }}
+                      >
+                        {row.codigo}
+                      </Typography>
                     </Typography>
                     <Typography
                       sx={{
                         fontSize: '16px',
-                        fontWeight: 400,
-                        lineHeight: '24px',
-                        textAlign: 'left',
-                        color: '#000000DE',
+                        color: '#616161',
                       }}
                     >
                       {row.area}
                     </Typography>
                   </TableCell>
-
                   <TableCell
                     align='right'
+                    sx={{
+                      paddingRight: '64px'
+                    }}
                   >
                     <Typography
                       sx={{
                         fontSize: '16px',
-                        fontWeight: 400,
-                        lineHeight: '24px',
-                        color: '#00000099',
+                        color: '#212121',
                       }}
                     >
                       {row.duracion}
@@ -128,9 +139,7 @@ export default function RouteMainContent() {
                     <Typography
                       sx={{
                         fontSize: '14px',
-                        fontWeight: 400,
-                        lineHeight: '21px',
-                        color: '#00000099',
+                        color: '#616161',
                       }}
                     >
                       {row.horario}
@@ -138,36 +147,75 @@ export default function RouteMainContent() {
                   </TableCell>
                   <TableCell
                     align='center'
+                    sx={{
+                      width: '1%',
+                      paddingRight: '0px' 
+                    }}
                   >
                     <Typography
                       sx={{
                         fontSize: '16px',
-                        fontWeight: 400,
-                        lineHeight: '24px',
-                        color: '#00000099',
+                        color: '#616161',
                       }}
                     >
-                      {row.asignadaPor}
+                      Supervisor
                     </Typography>
                   </TableCell>
                   <TableCell
                     align='center'
+                    sx={{
+                      width: '1%',
+                      paddingRight: '64px'
+                    }}
                   >
-                    <Avatar>H</Avatar>
+                    <Tooltip  
+                      title={row.supervisor}
+                      arrow
+                      placement='top'
+                    >
+                      <Avatar>H</Avatar>
+                    </Tooltip>
                   </TableCell>
                   <TableCell
-                    align='center'
+                    align='right'
+                    sx={{
+                      width: '1%',
+                      padding: '0px'
+                    }}
+                  >
+                    <Typography
+                      sx={{
+                        fontSize: '16px',
+                        color: '#616161',
+                      }}
+                    >
+                      Recolectores
+                    </Typography>
+                  </TableCell>
+                  <TableCell
+                    align='right'
+                    sx={{
+                      width: '1%',
+                      margin: '0px'
+                    }}
                   >
                     <AvatarGroup
                       max={2}
                     >
-                      <Avatar
-                        alt='Remy Sharp'
-                      />
-
-                      <Avatar
-                        alt='Travis Howard'
-                      />
+                      <Tooltip  
+                        title={row.recolector1}
+                        arrow
+                        placement='top'
+                      >
+                        <Avatar/>
+                      </Tooltip>
+                      <Tooltip  
+                        title={row.recolector2}
+                        arrow
+                        placement='top'
+                      >
+                        <Avatar/>
+                      </Tooltip>
                     </AvatarGroup>
                   </TableCell>
                 </TableRow>
