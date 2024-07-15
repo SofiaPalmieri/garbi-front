@@ -25,7 +25,7 @@ import {
   CreateContainerForm
 } from '../../forms/CreateContainer';
 import {
-  ModifyContainerForm 
+  ModifyContainerForm
 } from '../../forms/ModifyContainer/ModifyContainerForm';
 
 const rows = [
@@ -61,6 +61,44 @@ const rows = [
   },
 ];
 
+const tableHeaders = [
+  {
+    value: 'ID',
+    minWidth: 88 
+  },
+  {
+    value: 'Barrio',
+    minWidth: 152 
+  },
+  {
+    value: 'Área',
+    minWidth: 88 
+  },
+  {
+    value: 'Dirección',
+    minWidth: 200 
+  },
+  {
+    value: 'Capacidad',
+    minWidth: 112 
+  },
+  {
+    value: 'Bateria',
+    minWidth: 104 
+  },
+  {
+    value: 'Tipo de carga',
+    minWidth: 120 
+  },
+  {
+    value: 'Altura contenedor',
+    minWidth: 152,
+    sx: {
+      borderRight: '1px solid #0000001F',
+    }
+  }
+];
+
 export const ContainerContent = () => {
   const [openCreateContainerModal, setOpenCreateContainerModal] = useState(false);
   const [openModifyContainerModal, setOpenModifyContainerModal] = useState(false);
@@ -83,6 +121,8 @@ export const ContainerContent = () => {
     <Box
       sx={{
         padding: '32px',
+        width: '100%',
+        overflow: 'hidden'
       }}
     >
       <ModalCreateResource
@@ -104,6 +144,7 @@ export const ContainerContent = () => {
       <Paper
         sx={{
           width: '100%',
+          overflow: 'hidden'
         }}
       >
         <SearcherAndButton
@@ -112,164 +153,192 @@ export const ContainerContent = () => {
           inputWidth={'18.75rem'}
           onClick={handleOpenCreateContainerModal}
         />
-        <TableContainer
-          component={Paper}
+        <Box
+          sx={{
+            position: 'relative',
+            paddingRight: '113px'
+          }}
         >
-          <Table
-            sx={{
-              minWidth: 650,
-            }}
-            aria-label='simple table'
-          >
-            <TableHead>
-              <TableRow>
-                <TableCell>ID</TableCell>
-                <TableCell
-                  align='center'
-                >Barrio</TableCell>
-                <TableCell
-                  align='center'
-                >Área</TableCell>
-                <TableCell
-                  align='center'
-                >Dirección</TableCell>
-                <TableCell
-                  align='center'
-                >Capacidad</TableCell>
-                <TableCell
-                  align='center'
-                >Bateria</TableCell>
-                <TableCell
-                  align='center'
-                >Tipo de carga</TableCell>
-                <TableCell
-                  align='center'
-                  sx={{
-                    borderRight: '1px solid #0000001F',
-                  }}
-                >
-                  Altura contenedor
-                </TableCell>
-                <TableCell
-                  align='center'
-                >Acciones</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {rows.map((container) => (
-                <TableRow
-                  key={container.id}
-                >
-                  <TableCell
-                    component='th'
-                    scope='row'
-                  >
-                    {container.id}
-                  </TableCell>
-                  <TableCell
-                    align='center'
-                  >{container.barrio}</TableCell>
-                  <TableCell
-                    align='center'
-                  >{container.area}</TableCell>
-                  <TableCell
-                    align='center'
-                  >{container.direccion}</TableCell>
-                  <TableCell
-                    align='center'
-                  >
-                    <Box
+          <TableContainer>
+            <Table
+              aria-label='simple table'
+            >
+              <TableHead>
+                <TableRow>
+                  {tableHeaders.map((header, index) => (
+                    <TableCell
+                      key={index}
                       sx={{
-                        borderRadius: '8px',
-                        backgroundColor: '#D32F2F',
-                        minHeight: '28px',
-                        width: '72px',
-                        color: 'white',
-                        display: 'flex',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        margin: 'auto',
+                        minWidth: header.minWidth 
                       }}
                     >
-                      {container.capacidad}
-                    </Box>
-                  </TableCell>
-                  <TableCell
-                    align='center'
-                  >
-                    <Box
-                      sx={{
-                        borderRadius: '8px',
-                        backgroundColor: '#D32F2F',
-                        minHeight: '28px',
-                        width: '72px',
-                        color: 'white',
-                        display: 'flex',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        margin: 'auto',
-                      }}
-                    >
-                      {container.bateria}
-                    </Box>
-                  </TableCell>
-                  <TableCell
-                    align='center'
-                  >{container.tipoDeCarga}</TableCell>
-                  <TableCell
-                    align='center'
+                      {header.value}
+                    </TableCell>
+                  ))}
+
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {rows.map((container) => (
+                  <TableRow
+                    key={container.id}
                     sx={{
-                      borderRight: '1px solid #0000001F',
+                      '& .MuiTableCell-root:last-child': {
+                        borderRight: 0,
+                      },
                     }}
                   >
-                    {container.alturaContenedor}
-                  </TableCell>
-                  <TableCell
-                    align='center'
-                  >
-                    <Button
+                    <TableCell
+                      component='th'
+                      scope='row'
+                    >
+                      {container.id}
+                    </TableCell>
+                    <TableCell
+                      align='center'
+                    >{container.barrio}</TableCell>
+                    <TableCell
+                      align='center'
+                    >{container.area}</TableCell>
+                    <TableCell
+                      align='center'
+                    >{container.direccion}</TableCell>
+                    <TableCell
+                      align='center'
+                    >
+                      <Box
+                        sx={{
+                          borderRadius: '8px',
+                          backgroundColor: '#D32F2F',
+                          minHeight: '28px',
+                          width: '72px',
+                          color: 'white',
+                          display: 'flex',
+                          justifyContent: 'center',
+                          alignItems: 'center',
+                          margin: 'auto',
+                        }}
+                      >
+                        {container.capacidad}
+                      </Box>
+                    </TableCell>
+                    <TableCell
+                      align='center'
+                    >
+                      <Box
+                        sx={{
+                          borderRadius: '8px',
+                          backgroundColor: '#D32F2F',
+                          minHeight: '28px',
+                          width: '72px',
+                          color: 'white',
+                          display: 'flex',
+                          justifyContent: 'center',
+                          alignItems: 'center',
+                          margin: 'auto',
+                        }}
+                      >
+                        {container.bateria}
+                      </Box>
+                    </TableCell>
+                    <TableCell
+                      align='center'
+                    >{container.tipoDeCarga}</TableCell>
+                    <TableCell
+                      align='center'
                       sx={{
-                        width: 'fit-content',
-                        minWidth: 'unset',
-                        borderRadius: '50%'
+                        borderRight: '1px solid #0000001F',
                       }}
                     >
-                      <EditIcon
-                        sx={{
-                          color: '#0000008F',
-                        }}
-                        onClick={() => handleOpenModifyContainerModal(container)}
-                      />
-
-                    </Button>
-                    <Button
+                      {container.alturaContenedor}
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+          <Box
+            sx={{
+              position: 'absolute',
+              right: 0,
+              top: 0
+            }}
+          >
+            <TableContainer>
+              <Table>
+                <TableHead>
+                  <TableRow>
+                    <TableCell
+                      align='center'
                       sx={{
-                        width: 'fit-content',
-                        minWidth: 'unset',
-                        borderRadius: '50%'
+                        width: 113,
+                        borderLeft: '1px solid #0000001F'
+                      }}
+                    >Acciones
+                    </TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {rows.map(container =>
+                    <TableRow
+                      key={container.id + '-action'}
+                      sx={{
+                        height: '61px' 
                       }}
                     >
-                      <DeleteIcon
+                      <TableCell
+                        align='center'
                         sx={{
-                          color: '#0000008F',
+                          height: '61px',
+                          padding: 0,
+                          borderLeft: '1px solid #0000001F'
                         }}
-                      />
+                      >
+                        <Button
+                          sx={{
+                            width: 'fit-content',
+                            minWidth: 'unset',
+                            borderRadius: '50%'
+                          }}
+                        >
+                          <EditIcon
+                            sx={{
+                              color: '#0000008F',
+                            }}
+                            onClick={() => handleOpenModifyContainerModal(container)}
+                          />
 
-                    </Button>
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-          <TablePagination
-            rowsPerPageOptions={[5, 10, 25]}
-            component='div'
-            count={3}
-            rowsPerPage={3}
-            page={6}
-          />
-        </TableContainer>
+                        </Button>
+                        <Button
+                          sx={{
+                            width: 'fit-content',
+                            minWidth: 'unset',
+                            borderRadius: '50%'
+                          }}
+                        >
+                          <DeleteIcon
+                            sx={{
+                              color: '#0000008F',
+                            }}
+                          />
+
+                        </Button>
+                      </TableCell>
+                    </TableRow>)}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </Box>
+        </Box>
+        <TablePagination
+          rowsPerPageOptions={[5, 10, 25]}
+          component='div'
+          count={3}
+          rowsPerPage={3}
+          page={6}
+        />
+
       </Paper>
-    </Box>
+    </Box >
   );
 };

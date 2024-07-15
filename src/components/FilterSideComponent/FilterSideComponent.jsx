@@ -50,6 +50,7 @@ export const FilterSideComponent = ({
       <Box
         sx={{
           flexGrow: 1,
+          overflow: 'hidden'
         }}
       >
         <Box
