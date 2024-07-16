@@ -12,6 +12,9 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
 import {
+  ExpandMore 
+} from '@mui/icons-material';
+import {
   useState 
 } from 'react';
 import garbiLogo from '/src/assets/garbi-navbar.png';
@@ -22,12 +25,15 @@ import {
 
 const pages = ['Mapa', 'Estadísticas', 'Recomendaciones', 'Reportes', 'Gestión'];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
+const managementItems=['Empleados', 'Contenedores', 'Recorridos','Áreas']
 
 export const Header = ({
   logoOnly = false 
 }) => {
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
+  const [anchorElManagement, setAnchorElManagement] = useState(null);
+
   const navigate = useNavigate();
 
   const handleOpenNavMenu = (event) => {
@@ -43,6 +49,14 @@ export const Header = ({
 
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
+  };
+
+  const handleOpenManagementMenu = (event) => {
+    setAnchorElManagement(event.currentTarget);
+
+  }
+  const handleCloseManagementMenu = () => {
+    setAnchorElManagement(null);
   };
 
   return (
@@ -190,7 +204,9 @@ export const Header = ({
                     </MenuItem>
                   ))}
                 </Menu>
+                 
               </Box>
+              
               <AdbIcon
                 sx={{
                   display: {
@@ -230,8 +246,77 @@ export const Header = ({
                       }}
                     >
                       {page}
+
                     </Button>
+                    
                   ))}
+                  <IconButton
+                    onClick={handleOpenManagementMenu}
+                  >
+                    <ExpandMore
+                      sx={{
+                        color: 'white'
+                      }}
+                    />
+                  </IconButton>
+                  <Menu
+                    sx={{
+                      mt: '45px',
+                    }}
+                    id='menu-appbar'
+                    anchorEl={anchorElManagement}
+                    anchorOrigin={{
+                      vertical: 'top',
+                      horizontal: 'right',
+                    }}
+                    keepMounted
+                    transformOrigin={{
+                      vertical: 'top',
+                      horizontal: 'right',
+                    }}
+                    open={Boolean(anchorElManagement)}
+                    onClose={handleOpenManagementMenu}
+                  >
+                    {managementItems.map((managementItem) => (
+                      <MenuItem
+                        key={managementItem}
+                        onClick={handleOpenManagementMenu}
+                      >
+                        <Typography
+                          textAlign='center'
+                        >{managementItem}</Typography>
+                      </MenuItem>
+                    ))}
+                  </Menu>
+                  <Menu
+                    sx={{
+                      mt: '45px',
+                    }}
+                    id='menu-appbar'
+                    anchorEl={anchorElManagement}
+                    anchorOrigin={{
+                      vertical: 'top',
+                      horizontal: 'right',
+                    }}
+                    keepMounted
+                    transformOrigin={{
+                      vertical: 'top',
+                      horizontal: 'right',
+                    }}
+                    open={Boolean(anchorElManagement)}
+                    onClose={handleCloseManagementMenu}
+                  >
+                    {managementItems.map((managementItem) => (
+                      <MenuItem
+                        key={managementItem}
+                        onClick={handleCloseManagementMenu}
+                      >
+                        <Typography
+                          textAlign='center'
+                        >{managementItem}</Typography>
+                      </MenuItem>
+                    ))}
+                  </Menu>
                 </Box>
                 <Box
                   sx={{
@@ -239,6 +324,7 @@ export const Header = ({
                     gap: '16px',
                   }}
                 >
+                  
                   <Box>
                     <IconButton
                       onClick={handleOpenUserMenu}
