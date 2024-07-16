@@ -300,12 +300,12 @@ export const ContainerContent = () => {
                             minWidth: 'unset',
                             borderRadius: '50%'
                           }}
+                          onClick={() => handleOpenModifyContainerModal(container)}
                         >
                           <EditIcon
                             sx={{
                               color: '#0000008F',
                             }}
-                            onClick={() => handleOpenModifyContainerModal(container)}
                           />
 
                         </Button>
