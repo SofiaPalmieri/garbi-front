@@ -12,8 +12,36 @@ import {
   Tooltip,
   Typography,
 } from '@mui/material';
+import {
+  useEffect, useState 
+} from 'react';
+import {
+  useRoutes 
+} from '../../../api/hooks/useRoutes/useRoutes';
 
 export default function RouteMainContent() {
+  const {
+    getRoutes: {
+      getRoutes: getRoutes 
+    },
+  } = useRoutes();
+  const [routes, setRoutes] = useState([]);
+
+  useEffect(() => {
+    const retrieveRoutes = async () => {
+      const routes = await getRoutes();
+      setRoutes(routes);
+    };
+
+    try {
+      retrieveRoutes();
+      console.log('aaaaaaaaaaaaaaaaaaa')
+      console.log('routes: ' + routes.documents[0].managerId); //BE to create some
+    } catch (e) {
+      console.log(e);
+    }
+  }, []);
+  
   const rows = [
     {
       id: 1,
