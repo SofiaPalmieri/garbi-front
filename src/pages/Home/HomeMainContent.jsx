@@ -138,6 +138,7 @@ export default function HomeMainContent() {
     <>
       <Box
         width='100%'
+        height={'calc(100% - 83px)'}
       >
         <Box
           sx={{
@@ -177,14 +178,16 @@ export default function HomeMainContent() {
         </Box>
         <Box
           width='100%'
-          height={'600px'}
+          sx={{
+            height:'calc(100% - 140px)'
+          }}
           padding={'24px 32px 12px'}
           position={'relative'}
           overflow={'hidden'}
         >
           <Box
             width={1}
-            height={'106%'}
+            height={'110%'}
           >
             <APIProvider
               apiKey={apiKeyGoogleMaps}
@@ -432,7 +435,6 @@ export default function HomeMainContent() {
             display: 'flex',
             padding: '9px 16px',
             gap: '32px',
-
             position: 'fixed',
             bottom: 0,
             left: '50%',
