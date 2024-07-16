@@ -1,5 +1,4 @@
 import {
-  Avatar,
   AvatarGroup,
   Box,
   Paper,
@@ -9,7 +8,6 @@ import {
   TableContainer,
   TablePagination,
   TableRow,
-  Tooltip,
   Typography,
 } from '@mui/material';
 import {
@@ -18,6 +16,10 @@ import {
 import {
   useRoutes 
 } from '../../../api/hooks/useRoutes/useRoutes';
+import {
+  AvatarWithTooltip 
+} from '../../../components/AvatarWithTooltip';
+import profilePicture from '../../../assets/profile_picture.jpg';
 
 export default function RouteMainContent() {
   const {
@@ -52,8 +54,11 @@ export default function RouteMainContent() {
       duracion: '55 min',
       horario: '20:30 - 21:25 hs',
       supervisor: 'Hernan Ramirez',
+      supervisor_picture: profilePicture,
       recolector1: 'Pepe Pepin',
-      recolector2: 'Roberto Roberti'
+      recolector1_picture: profilePicture,
+      recolector2: 'Roberto Roberti',
+      recolector2_picture: null
     },
     {
       id: 2,
@@ -63,9 +68,12 @@ export default function RouteMainContent() {
       area: 'Área 1',
       duracion: '1hr 20min',
       horario: '5:00 - 6:20 hs',
-      supervisor: 'Hernan Ramirez',
+      supervisor: 'Hernan Ramirez de la Serna',
+      supervisor_picture: null,
       recolector1: 'Pepe Pepin',
-      recolector2: 'Roberto Roberti'
+      recolector1_picture: profilePicture,
+      recolector2: 'Roberto Roberti',
+      recolector2_picture: profilePicture
     },
     {
       id: 3,
@@ -76,8 +84,11 @@ export default function RouteMainContent() {
       duracion: '1hr 30min',
       horario: '22:13 - 23:43 hs',
       supervisor: 'Hernan Ramirez',
+      supervisor_picture: profilePicture,
       recolector1: 'Pepe Pepin',
-      recolector2: 'Roberto Roberti'
+      recolector1_picture: null,
+      recolector2: null,
+      recolector2_picture: null
     },
   ];
 
@@ -196,13 +207,10 @@ export default function RouteMainContent() {
                       paddingRight: '64px'
                     }}
                   >
-                    <Tooltip  
-                      title={row.supervisor}
-                      arrow
-                      placement='top'
-                    >
-                      <Avatar>H</Avatar>
-                    </Tooltip>
+                    <AvatarWithTooltip
+                      name={row.supervisor}
+                      profilePicture={row.supervisor_picture}
+                    />
                   </TableCell>
                   <TableCell
                     align='right'
@@ -230,20 +238,14 @@ export default function RouteMainContent() {
                     <AvatarGroup
                       max={2}
                     >
-                      <Tooltip  
-                        title={row.recolector1}
-                        arrow
-                        placement='top'
-                      >
-                        <Avatar/>
-                      </Tooltip>
-                      <Tooltip  
-                        title={row.recolector2}
-                        arrow
-                        placement='top'
-                      >
-                        <Avatar/>
-                      </Tooltip>
+                      <AvatarWithTooltip
+                        name={row.recolector1}
+                        profilePicture={row.recolector1_picture}
+                      />
+                      <AvatarWithTooltip
+                        name={row.recolector2}
+                        profilePicture={row.recolector2_picture}
+                      />
                     </AvatarGroup>
                   </TableCell>
                 </TableRow>

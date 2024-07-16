@@ -1,0 +1,3 @@
+export {
+  AvatarWithTooltip
+} from './AvatarWithTooltip';
