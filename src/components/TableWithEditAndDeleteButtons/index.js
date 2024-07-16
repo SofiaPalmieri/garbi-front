@@ -1,0 +1,3 @@
+export {
+  TableWithEditAndDeleteButtons 
+} from './TableWithEditAndDeleteButtons'
