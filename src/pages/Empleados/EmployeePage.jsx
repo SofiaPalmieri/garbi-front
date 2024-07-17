@@ -2,16 +2,16 @@ import {
   FilterSideComponent 
 } from '../../components/FilterSideComponent';
 import {
-  EmpleadosContent 
-} from './EmpleadosContent';
+  EmployeeContent 
+} from './EmployeeContent';
 
-const EmpleadosPage = () => {
+const EmployeePage = () => {
   return (
     <FilterSideComponent
       title={'Gestión > Empleados'}
-      component={() => <EmpleadosContent />}
+      component={() => <EmployeeContent />}
     />
   );
 };
 
-export default EmpleadosPage;
+export default EmployeePage;
