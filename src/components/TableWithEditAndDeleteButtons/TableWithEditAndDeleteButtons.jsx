@@ -21,7 +21,7 @@ export const TableWithEditAndDeleteButtons = ({
       <Box
         sx={{
           position: 'relative',
-          paddingRight: '113px'
+          paddingRight: '7.0625rem'
         }}
       >
         <TableContainer>
@@ -33,6 +33,7 @@ export const TableWithEditAndDeleteButtons = ({
                 {tableHeaders.map((header, index) => (
                   <TableCell
                     key={index}
+                    align={header.align || 'center'}
                     sx={{
                       minWidth: header.minWidth
                     }}
@@ -65,7 +66,7 @@ export const TableWithEditAndDeleteButtons = ({
                     align='center'
                     sx={{
                       width: 113,
-                      borderLeft: '1px solid #0000001F'
+                      borderLeft: '.0625rem solid #0000001F'
                     }}
                   >Acciones
                   </TableCell>
@@ -75,15 +76,15 @@ export const TableWithEditAndDeleteButtons = ({
                 {rows.map(row => <TableRow
                   key={row.id + '-action'}
                   sx={{
-                    height: '61px'
+                    height: '3rem'
                   }}
                 >
                   <TableCell
                     align='center'
                     sx={{
-                      height: '61px',
+                      height: '100%',
                       padding: 0,
-                      borderLeft: '1px solid #0000001F'
+                      borderLeft: '.0625rem solid #0000001F'
                     }}
                   >
                     <Button
