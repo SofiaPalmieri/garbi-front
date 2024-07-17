@@ -14,7 +14,7 @@ import {
 
 
 export const TableWithEditAndDeleteButtons = ({
-  tableHeaders, rows, handleOnClickEditButton, renderRow 
+  tableHeaders, rows, handleOnClickEditButton, handleOnClickDeleteButton, renderRow 
 }) => {
   return (
     <>
@@ -107,6 +107,7 @@ export const TableWithEditAndDeleteButtons = ({
                         minWidth: 'unset',
                         borderRadius: '50%'
                       }}
+                      onClick={() => handleOnClickDeleteButton(row)}
                     >
                       <DeleteIcon
                         sx={{

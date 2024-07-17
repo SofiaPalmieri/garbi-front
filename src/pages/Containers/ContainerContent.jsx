@@ -20,6 +20,9 @@ import {
   ModifyContainerForm
 } from '../../forms/ModifyContainer/ModifyContainerForm';
 import {
+  DeleteContainerForm
+} from '../../forms/DeleteContainer/DeleteContainerForm';
+import {
   TableWithEditAndDeleteButtons 
 } from '../../components/TableWithEditAndDeleteButtons';
 
@@ -178,6 +181,8 @@ export const ContainerContent = () => {
   const [openCreateContainerModal, setOpenCreateContainerModal] = useState(false);
   const [openModifyContainerModal, setOpenModifyContainerModal] = useState(false);
   const [containerToModify, setContainerToModify] = useState(false);
+  const [openDeleteContainerModal, setOpenDeleteContainerModal] = useState(false);
+  const [containerToDelete, setContainerToDelete] = useState(false);
 
   const handleOpenCreateContainerModal = () => setOpenCreateContainerModal(true);
   const handleCloseCreateContainerModal = () => setOpenCreateContainerModal(false);
@@ -189,6 +194,15 @@ export const ContainerContent = () => {
   const handleCloseModifyContainerModal = () => {
     setOpenModifyContainerModal(false)
     setContainerToModify(null);
+  };
+
+  const handleOpenDeleteContainerModal = (containerToDelete) => {
+    setContainerToDelete(containerToDelete)
+    setOpenDeleteContainerModal(true)
+  };
+  const handleCloseDeleteContainerModal = () => {
+    setOpenDeleteContainerModal(false)
+    setContainerToDelete(null);
   };
 
 
@@ -216,6 +230,15 @@ export const ContainerContent = () => {
         />}
         buttonSubmitMessage='MODIFICAR'
       />
+      <ModalCreateResource
+        title={'Eliminar contenedor'}
+        open={openDeleteContainerModal}
+        handleClose={handleCloseDeleteContainerModal}
+        form={<DeleteContainerForm
+          containerToDelete={containerToDelete}
+        />}
+        buttonSubmitMessage='ELIMINAR'
+      />
       <Paper
         sx={{
           width: '100%',
@@ -233,6 +256,7 @@ export const ContainerContent = () => {
           rows={containers}
           renderRow={ContainerRowRender}
           handleOnClickEditButton={handleOpenModifyContainerModal}
+          handleOnClickDeleteButton={handleOpenDeleteContainerModal}
         />
       </Paper>
     </Box >
