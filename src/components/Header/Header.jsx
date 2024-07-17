@@ -20,25 +20,39 @@ import {
 import garbiLogo from '/src/assets/garbi-navbar.png';
 import NotificationsOutlinedIcon from '@mui/icons-material/NotificationsOutlined';
 import {
-  useNavigate 
+  useNavigate, useLocation 
 } from 'react-router-dom';
 
-const pages = ['Mapa', 'Estadísticas', 'Recomendaciones', 'Reportes', 'Gestión'];
+const pages = {
+  Mapa: '/home',
+  Estadísticas: '/home',  // esta hay que cambiarla cuando la creemos
+  Recomendaciones: '/home',  // esta hay que cambiarla cuando la creemos
+  Reportes: '/reportes',
+};
+
+const managementItems = {
+  Empleados: '/empleados',
+  Contenedores: '/containers',  
+  Recorridos: '/routes',  
+  Áreas: '/areas',
+};
+
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
-const managementItems=['Empleados', 'Contenedores', 'Recorridos','Áreas']
 
 export const Header = ({
   logoOnly = false 
 }) => {
+  const navigate = useNavigate();
+  const location = useLocation();
+
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
   const [anchorElManagement, setAnchorElManagement] = useState(null);
 
-  const navigate = useNavigate();
-
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
   };
+
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
   };
@@ -53,17 +67,30 @@ export const Header = ({
 
   const handleOpenManagementMenu = (event) => {
     setAnchorElManagement(event.currentTarget);
+  };
 
-  }
   const handleCloseManagementMenu = () => {
     setAnchorElManagement(null);
   };
+
+
+  const handleClickTab = (path) => () => {
+    navigate(path);
+    setAnchorElNav(null);
+  };
+
+  const handleClickManagementItem = (path) => () => {
+    navigate(path);
+    setAnchorElManagement(null);
+  };
+
+  const currentTab = Object.keys(pages).find(key => pages[key] === location.pathname) || false;
 
   return (
     <AppBar
       sx={{
         background: '#12422c',
-        zIndex: 1100,
+        zIndex: 1100 
       }}
     >
       <Container
@@ -80,16 +107,16 @@ export const Header = ({
           sx={{
             background: '#12422c',
             width: '100%',
-            pr: '32px',
+            pr: '32px' 
           }}
         >
           <AdbIcon
             sx={{
               display: {
-                xs: 'none',
+                xs: 'none' 
               },
               mr: 1,
-              backgroundColor: '#12422c',
+              backgroundColor: '#12422c' 
             }}
           />
           {logoOnly ? (
@@ -98,7 +125,7 @@ export const Header = ({
               sx={{
                 display: 'flex',
                 justifyContent: 'center',
-                alignItems: 'center',
+                alignItems: 'center' 
               }}
             >
               <Box
@@ -107,7 +134,7 @@ export const Header = ({
                   display: 'flex',
                   alignItems: 'center',
                   cursor: 'pointer',
-                  border: 'none',
+                  border: 'none' 
                 }}
                 component={'button'}
                 onClick={() => navigate('/home')}
@@ -122,7 +149,7 @@ export const Header = ({
             <Box
               sx={{
                 display: 'flex',
-                width: '100%',
+                width: '100%' 
               }}
             >
               <Box
@@ -130,7 +157,7 @@ export const Header = ({
                 sx={{
                   display: 'flex',
                   justifyContent: 'center',
-                  alignItems: 'center',
+                  alignItems: 'center' 
                 }}
               >
                 <Box
@@ -139,7 +166,7 @@ export const Header = ({
                     display: 'flex',
                     alignItems: 'center',
                     cursor: 'pointer',
-                    border: 'none',
+                    border: 'none' 
                   }}
                   component={'button'}
                   onClick={() => navigate('/home')}
@@ -156,9 +183,9 @@ export const Header = ({
                   flexGrow: 1,
                   display: {
                     xs: 'flex',
-                    md: 'none',
-                    backgroundColor: '#12422c',
+                    md: 'none' 
                   },
+                  backgroundColor: '#12422c' 
                 }}
               >
                 <IconButton
@@ -176,27 +203,27 @@ export const Header = ({
                   anchorEl={anchorElNav}
                   anchorOrigin={{
                     vertical: 'bottom',
-                    horizontal: 'left',
+                    horizontal: 'left' 
                   }}
                   keepMounted
                   transformOrigin={{
                     vertical: 'top',
-                    horizontal: 'left',
+                    horizontal: 'left' 
                   }}
                   open={Boolean(anchorElNav)}
                   onClose={handleCloseNavMenu}
                   sx={{
                     display: {
                       xs: 'block',
-                      md: 'none',
-                      backgroundColor: '#12422c',
+                      md: 'none' 
                     },
+                    backgroundColor: '#12422c' 
                   }}
                 >
-                  {pages.map((page) => (
+                  {Object.keys(pages).map((page) => (
                     <MenuItem
                       key={page}
-                      onClick={handleCloseNavMenu}
+                      onClick={handleClickTab(pages[page])}
                     >
                       <Typography
                         textAlign='center'
@@ -204,112 +231,89 @@ export const Header = ({
                     </MenuItem>
                   ))}
                 </Menu>
-                 
               </Box>
               
               <AdbIcon
                 sx={{
                   display: {
                     xs: 'flex',
-                    md: 'none',
-                    backgroundColor: '#12422c',
+                    md: 'none' 
                   },
-                  mr: 1,
+                  backgroundColor: '#12422c',
+                  mr: 1 
                 }}
               />
               <Box
                 sx={{
                   display: 'flex',
                   flexGrow: 1,
-                  justifyContent: 'space-between',
+                  justifyContent: 'space-between' 
                 }}
               >
                 <Box
                   sx={{
                     display: {
                       xs: 'none',
-                      md: 'flex',
+                      md: 'flex' 
                     },
                     backgroundColor: '#12422c',
                     gap: {
-                      md: '16px',
+                      md: '16px' 
                     },
                   }}
                 >
-                  {pages.map((page) => (
+                  {Object.keys(pages).map((page) => (
                     <Button
                       key={page}
-                      onClick={handleCloseNavMenu}
+                      onClick={handleClickTab(pages[page])}
                       sx={{
                         color: 'white',
                         textTransform: 'unset',
+                        borderBottom: currentTab === page ? '2px solid white' : 'none',
                       }}
                     >
                       {page}
-
                     </Button>
-                    
                   ))}
-                  <IconButton
+             
+                  <Button
                     onClick={handleOpenManagementMenu}
+                    sx={{
+                      color: 'white',
+                      textTransform: 'unset',
+                      display: 'flex',
+                      alignItems: 'center',
+                    }}
                   >
+                    Gestión
                     <ExpandMore
                       sx={{
-                        color: 'white'
+                        color: 'white' 
                       }}
                     />
-                  </IconButton>
+                  </Button>
                   <Menu
                     sx={{
-                      mt: '45px',
+                      mt: '45px' 
                     }}
                     id='menu-appbar'
                     anchorEl={anchorElManagement}
                     anchorOrigin={{
                       vertical: 'top',
-                      horizontal: 'right',
+                      horizontal: 'right' 
                     }}
                     keepMounted
                     transformOrigin={{
                       vertical: 'top',
-                      horizontal: 'right',
-                    }}
-                    open={Boolean(anchorElManagement)}
-                    onClose={handleOpenManagementMenu}
-                  >
-                    {managementItems.map((managementItem) => (
-                      <MenuItem
-                        key={managementItem}
-                        onClick={handleOpenManagementMenu}
-                      >
-                        <Typography
-                          textAlign='center'
-                        >{managementItem}</Typography>
-                      </MenuItem>
-                    ))}
-                  </Menu>
-                  <Menu
-                    sx={{
-                      mt: '45px',
-                    }}
-                    id='menu-appbar'
-                    anchorEl={anchorElManagement}
-                    anchorOrigin={{
-                      vertical: 'top',
-                      horizontal: 'right',
-                    }}
-                    keepMounted
-                    transformOrigin={{
-                      vertical: 'top',
-                      horizontal: 'right',
+                      horizontal: 'right' 
                     }}
                     open={Boolean(anchorElManagement)}
                     onClose={handleCloseManagementMenu}
                   >
-                    {managementItems.map((managementItem) => (
+                    {Object.keys(managementItems).map((managementItem) => (
                       <MenuItem
                         key={managementItem}
-                        onClick={handleCloseManagementMenu}
+                        onClick={handleClickManagementItem(managementItems[managementItem])}
                       >
                         <Typography
                           textAlign='center'
@@ -321,37 +325,36 @@ export const Header = ({
                 <Box
                   sx={{
                     display: 'flex',
-                    gap: '16px',
+                    gap: '16px' 
                   }}
                 >
-                  
                   <Box>
                     <IconButton
                       onClick={handleOpenUserMenu}
                       sx={{
-                        backgroundColor: '#12422c',
+                        backgroundColor: '#12422c' 
                       }}
                     >
                       <NotificationsOutlinedIcon
                         sx={{
-                          color: 'white',
+                          color: 'white' 
                         }}
                       />
                     </IconButton>
                     <Menu
                       sx={{
-                        mt: '45px',
+                        mt: '45px' 
                       }}
                       id='menu-appbar'
                       anchorEl={anchorElUser}
                       anchorOrigin={{
                         vertical: 'top',
-                        horizontal: 'right',
+                        horizontal: 'right' 
                       }}
                       keepMounted
                       transformOrigin={{
                         vertical: 'top',
-                        horizontal: 'right',
+                        horizontal: 'right' 
                       }}
                       open={Boolean(anchorElUser)}
                       onClose={handleCloseUserMenu}
@@ -374,12 +377,12 @@ export const Header = ({
                     >
                       <IconButton
                         sx={{
-                          backgroundColor: '#12422c',
+                          backgroundColor: '#12422c' 
                         }}
                       >
                         <PersonIcon
                           sx={{
-                            color: 'white',
+                            color: 'white' 
                           }}
                         />
                       </IconButton>
