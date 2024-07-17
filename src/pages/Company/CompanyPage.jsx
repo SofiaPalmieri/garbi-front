@@ -1,130 +1,154 @@
 import {
-  Box, Paper, 
-  TableCell, 
-  TableRow
+  Box, Paper,
+  TableCell,
+  TableRow,
+  Typography
 } from '@mui/material';
 import {
-  useState 
+  useState
 } from 'react';
 import {
-  SearcherAndButton 
+  SearcherAndButton
 } from '../../components/SearcherAndButton';
 import {
-  ModalCreateResource 
+  ModalCreateResource
 } from '../../modales/ModalCreateResource';
 import {
-  CreateCompanyForm 
+  CreateCompanyForm
 } from '../../forms/CreateCompany/CreateCompanyForm';
 import {
-  TableWithEditAndDeleteButtons 
+  TableWithEditAndDeleteButtons
 } from '../../components/TableWithEditAndDeleteButtons';
 
-const containersInitial = [
+const companiesInitial = [
   {
     id: 1234,
-    barrio: 'Villa del Parque',
-    area: 2,
-    direccion: 'Av. Liberatador General',
-    capacidad: '100%',
-    bateria: '100%',
-    tipoDeCarga: 'Bilateral',
-    alturaContenedor: '170 cm',
+    companyName: 'Tech Solutions LLC',
+    CUIT: '30-12345678-9',
+    province: 'Buenos Aires',
+    address: 'Av. Libertador General 1234',
+    startDate: '2020-01-15',
+    adminEmail: 'admin@techsolutions.com',
   },
   {
     id: 12345,
-    barrio: 'Villa del Parque',
-    area: 2,
-    direccion: 'Av. Liberatador General',
-    capacidad: '100%',
-    bateria: '100%',
-    tipoDeCarga: 'Bilateral',
-    alturaContenedor: '170 cm',
+    companyName: 'Innovatech Corp',
+    CUIT: '30-87654321-0',
+    province: 'Cordoba',
+    address: 'Calle Falsa 123',
+    startDate: '2018-06-20',
+    adminEmail: 'contact@innovatech.com',
   },
   {
     id: 123456,
-    barrio: 'Villa del Parque',
-    area: 2,
-    direccion: 'Av. Liberatador General',
-    capacidad: '100%',
-    bateria: '100%',
-    tipoDeCarga: 'Bilateral',
-    alturaContenedor: '170 cm',
+    companyName: 'Green Energy SA',
+    CUIT: '30-11223344-5',
+    province: 'Santa Fe',
+    address: 'Av. Siempreviva 742',
+    startDate: '2015-09-10',
+    adminEmail: 'info@greenenergy.com',
   },
 ];
 
-const ContainerRowRender = (container) => {
+const CompanyRowRender = (company) => {
   return (
     <TableRow
-      key={container.id}
+      key={company.id}
       sx={{
+        height: '48px',
         '& .MuiTableCell-root:last-child': {
           borderRight: 0,
         },
+        '& .MuiTableCell-root': {
+          height: '100%',
+          paddingTop: 0,
+          paddingBottom: 0
+        }
       }}
     >
       <TableCell
         component='th'
         scope='row'
       >
-        {container.id}
-      </TableCell>
-      <TableCell
-        align='center'
-      >{container.barrio}</TableCell>
-      <TableCell
-        align='center'
-      >{container.area}</TableCell>
-      <TableCell
-        align='center'
-      >{container.direccion}</TableCell>
-      <TableCell
-        align='center'
-      >
-        <Box
+        <Typography
           sx={{
-            borderRadius: '8px',
-            backgroundColor: '#D32F2F',
-            minHeight: '28px',
-            width: '72px',
-            color: 'white',
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            margin: 'auto',
+            fontSize: '.875rem',
+            fontWeight: 400,
+            lineHeight: ' 1.2512rem',
+            color: '#000000DE'
           }}
         >
-          {container.capacidad}
-        </Box>
+          {company.companyName}
+        </Typography>
       </TableCell>
       <TableCell
         align='center'
       >
-        <Box
+        <Typography
           sx={{
-            borderRadius: '8px',
-            backgroundColor: '#D32F2F',
-            minHeight: '28px',
-            width: '72px',
-            color: 'white',
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            margin: 'auto',
+            fontSize: '.875rem',
+            fontWeight: 400,
+            lineHeight: ' 1.2512rem',
+            color: '#000000DE'
           }}
         >
-          {container.bateria}
-        </Box>
+          {company.CUIT}
+        </Typography>
       </TableCell>
       <TableCell
         align='center'
-      >{container.tipoDeCarga}</TableCell>
-      <TableCell
-        align='center'
+      ><Typography
         sx={{
-          borderRight: '1px solid #0000001F',
-        }}
+            fontSize: '.875rem',
+            fontWeight: 400,
+            lineHeight: ' 1.2512rem',
+            color: '#000000DE'
+          }}
       >
-        {container.alturaContenedor}
+          {company.province}
+        </Typography>
+      </TableCell>
+      <TableCell
+        align='center'
+      >
+        <Typography
+          sx={{
+            fontSize: '.875rem',
+            fontWeight: 400,
+            lineHeight: ' 1.2512rem',
+            color: '#000000DE'
+          }}
+        >
+          {company.address}
+        </Typography>
+      </TableCell>
+      <TableCell
+        align='center'
+      >
+        <Typography
+          sx={{
+            fontSize: '.875rem',
+            fontWeight: 400,
+            lineHeight: ' 1.2512rem',
+            color: '#000000DE'
+          }}
+        >
+          {company.startDate}
+        </Typography>
+      </TableCell>
+      <TableCell
+        align='center'
+      >
+        <Typography
+          sx={{
+            fontSize: '.875rem',
+            fontWeight: 400,
+            lineHeight: ' 1.2512rem',
+            color: '#000000DE'
+          }}
+        >
+          {company.adminEmail}
+        </Typography>
       </TableCell>
     </TableRow>
   )
@@ -133,62 +157,47 @@ const ContainerRowRender = (container) => {
 
 const tableHeaders = [
   {
-    value: 'ID',
-    minWidth: 88
+    value: 'Razón social',
+    minWidth: 160
   },
   {
-    value: 'Barrio',
-    minWidth: 152
+    value: 'CUIT',
+    minWidth: 144
   },
   {
-    value: 'Área',
-    minWidth: 88
-  },
-  {
-    value: 'Dirección',
+    value: 'Provincia',
     minWidth: 200
   },
   {
-    value: 'Capacidad',
-    minWidth: 112
+    value: 'Dirección',
+    minWidth: 176
   },
   {
-    value: 'Bateria',
-    minWidth: 104
+    value: 'Fecha de inicio',
+    minWidth: 136
   },
   {
-    value: 'Tipo de carga',
-    minWidth: 120
-  },
-  {
-    value: 'Altura contenedor',
-    minWidth: 152,
-    sx: {
-      borderRight: '1px solid #0000001F',
-    }
+    value: 'Mail admin',
+    minWidth: 144
   }
 ];
 
 const CompanyPage = () => {
-  const [containers, setContainers] = useState(containersInitial)
-  const [open, setOpen] = useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const [companies, setcompanies] = useState(companiesInitial)
+  const [openCreateCompanyModal, setOpenCreateCompanyModal] = useState(false);
+  const handleOpenCreateCompanyModal = () => setOpenCreateCompanyModal(true);
+  const handleCloseCreateCompanyModal = () => setOpenCreateCompanyModal(false);
 
-  const [openCreateContainerModal, setOpenCreateContainerModal] = useState(false);
-  const [openModifyContainerModal, setOpenModifyContainerModal] = useState(false);
-  const [containerToModify, setContainerToModify] = useState(false);
+  const [openModifyCompanyModal, setOpenModifyCompanyModal] = useState(false);
+  const [companyToModify, setCompanyToModify] = useState(false);
 
-  const handleOpenCreateContainerModal = () => setOpenCreateContainerModal(true);
-  const handleCloseCreateContainerModal = () => setOpenCreateContainerModal(false);
-
-  const handleOpenModifyContainerModal = (containerToModify) => {
-    setContainerToModify(containerToModify)
-    setOpenModifyContainerModal(true)
+  const handleOpenModifyContainerModal = (companyToModify) => {
+    setCompanyToModify(companyToModify)
+    setCompanyToModify(true)
   };
-  const handleCloseModifyContainerModal = () => {
-    setOpenModifyContainerModal(false)
-    setContainerToModify(null);
+  const handleCloseModifyCompanyModal = () => {
+    setOpenModifyCompanyModal(false)
+    setCompanyToModify(null);
   };
 
 
@@ -205,8 +214,8 @@ const CompanyPage = () => {
         description={
           'Complete los siguientes campos para agregar una nueva empresa de recolección al sistema'
         }
-        open={open}
-        handleClose={handleClose}
+        open={openCreateCompanyModal}
+        handleClose={handleCloseCreateCompanyModal}
         form={<CreateCompanyForm />}
       />
 
@@ -219,13 +228,13 @@ const CompanyPage = () => {
           placeholderInput={'Buscar por Razón social o Nombre'}
           buttonText={'nueva empresa'}
           inputWidth={'20rem'}
-          onClick={handleOpen}
+          onClick={handleOpenCreateCompanyModal}
         />
         <TableWithEditAndDeleteButtons
           tableHeaders={tableHeaders}
-          rows={containers}
-          renderRow={ContainerRowRender}
-          handleOnClickEditButton={handleOpenModifyContainerModal}
+          rows={companies}
+          renderRow={CompanyRowRender}
+          handleOnClickEditButton={handleCloseModifyCompanyModal}
         />
       </Paper>
     </Box>

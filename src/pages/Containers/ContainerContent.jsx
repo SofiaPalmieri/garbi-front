@@ -64,6 +64,12 @@ const ContainerRowRender = (container) => {
         '& .MuiTableCell-root:last-child': {
           borderRight: 0,
         },
+        '& .MuiTableCell-root':{
+          height: '100%',
+          paddingTop: 0,
+          paddingBottom: 0
+        },
+        height: '3rem'
       }}
     >
       <TableCell
@@ -138,35 +144,43 @@ const ContainerRowRender = (container) => {
 const tableHeaders = [
   {
     value: 'ID',
-    minWidth: 88
+    minWidth: 88,
+    align: 'center'
   },
   {
     value: 'Barrio',
-    minWidth: 152
+    minWidth: 152,
+    align: 'center'
   },
   {
     value: 'Área',
-    minWidth: 88
+    minWidth: 88,
+    align: 'center'
   },
   {
     value: 'Dirección',
-    minWidth: 200
+    minWidth: 200,
+    align: 'center'
   },
   {
     value: 'Capacidad',
-    minWidth: 112
+    minWidth: 112,
+    align: 'center'
   },
   {
     value: 'Bateria',
-    minWidth: 104
+    minWidth: 104,
+    align: 'center'
   },
   {
     value: 'Tipo de carga',
-    minWidth: 120
+    minWidth: 120,
+    align: 'center'
   },
   {
     value: 'Altura contenedor',
     minWidth: 152,
+    align: 'center',
     sx: {
       borderRight: '1px solid #0000001F',
     }
