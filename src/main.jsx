@@ -22,6 +22,7 @@ import {
 } from './pages/Containers/ContainerPage.jsx';
 import CreateAreaPage from './pages/CreateArea/CreateAreaPage.jsx';
 import HomePage from './pages/Home/HomePage.jsx';
+import RecommendationsPage from './pages/Recomendaciones/RecommendationsPage.jsx';
 import RoutesPage from './pages/Routes/RoutesPage.jsx';
 import LoginPage from './pages/Login/LoginPage.jsx';
 import {
@@ -79,6 +80,10 @@ const router = createBrowserRouter([
       {
         path: '/areas',
         element: <AreaPage />,
+      },
+      {
+        path: '/recomendaciones',
+        element: <RecommendationsPage />,
       },
       {
         path: '/routes',
