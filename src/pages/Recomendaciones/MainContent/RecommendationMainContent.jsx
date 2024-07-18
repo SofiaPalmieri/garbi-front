@@ -16,9 +16,12 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import UpdateIcon from '@mui/icons-material/Update';
 import MarkunreadOutlinedIcon from '@mui/icons-material/MarkunreadOutlined';
 import DraftsOutlinedIcon from '@mui/icons-material/DraftsOutlined';
+import {
+  useState
+} from 'react';
 
 export default function RecommendationMainContent() {
-  const rows = [
+  const recommendationsInitial = [
     {
       id: 1,
       title: 'Añadir un contenedor',
@@ -45,6 +48,17 @@ export default function RecommendationMainContent() {
     },
   ];
 
+  const [recommendations, setRecommendations] = useState(recommendationsInitial);
+
+  const handleToggleRead = (id) => {
+    setRecommendations(recommendations.map(row => 
+      row.id === id ? {
+        ...row,
+        read: !row.read 
+      } : row
+    ));
+  };
+
   return (
     <Box
       width='100%'
@@ -66,7 +80,7 @@ export default function RecommendationMainContent() {
             aria-label='simple table'
           >
             <TableBody>
-              {rows.map((row) => (
+              {recommendations.map((row) => (
                 <TableRow
                   key={row.id}
                   sx={{
@@ -136,6 +150,7 @@ export default function RecommendationMainContent() {
                     >
                       <IconButton
                         edge='end'
+                        onClick={() => handleToggleRead(row.id)}
                       >
                         {row.read ? <MarkunreadOutlinedIcon /> : <DraftsOutlinedIcon />}
                       </IconButton>
