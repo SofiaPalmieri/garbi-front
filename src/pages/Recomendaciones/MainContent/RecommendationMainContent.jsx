@@ -1,7 +1,7 @@
 import {
   Avatar,
-  AvatarGroup,
   Box,
+  IconButton,
   Paper,
   Table,
   TableBody,
@@ -9,40 +9,39 @@ import {
   TableContainer,
   TablePagination,
   TableRow,
+  Tooltip,
   Typography,
 } from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete';
+import UpdateIcon from '@mui/icons-material/Update';
+import MarkunreadOutlinedIcon from '@mui/icons-material/MarkunreadOutlined';
+import DraftsOutlinedIcon from '@mui/icons-material/DraftsOutlined';
 
 export default function RecommendationMainContent() {
   const rows = [
     {
       id: 1,
-      fecha: '19/02/24',
-      codigo: '#123456',
-      lugar: 'Villa del Parque',
-      area: 'Área 2',
-      duracion: '55 min',
-      horario: '20:30 - 21:25 hs',
-      asignadaPor: 'Supervisor',
+      title: 'Añadir un contenedor',
+      subtitle: 'en Hilario Pueyrredón 1234 - Villa Crespo',
+      date: '20/02',
+      read: true,
+      Icon: DeleteIcon
     },
     {
       id: 2,
-      fecha: '20/02/24',
-      codigo: '#123457',
-      lugar: 'Palermo',
-      area: 'Área 1',
-      duracion: '1hr 20min',
-      horario: '5:00 - 6:20 hs',
-      asignadaPor: 'Supervisor',
+      title: 'Eliminar un contenedor',
+      subtitle: 'en Hilario Pueyrredón 1234 - Villa Crespo',
+      date: '20/02',
+      read: false,
+      Icon: DeleteIcon
     },
     {
       id: 3,
-      fecha: '20/02/24',
-      codigo: '#123456',
-      lugar: 'Palermo',
-      area: 'Área 1',
-      duracion: '1hr 30min',
-      horario: '22:13 - 23:43 hs',
-      asignadaPor: 'Supervisor',
+      title: 'Reducir la frecuencia de recolección',
+      subtitle: 'en el Área 2 de Villa del Parque',
+      date: '16/05',
+      read: true,
+      Icon: UpdateIcon
     },
   ];
 
@@ -50,6 +49,7 @@ export default function RecommendationMainContent() {
     <Box
       width='100%'
       padding='32px'
+      overflow= 'hidden'
     >
       <Paper
         sx={{
@@ -69,107 +69,89 @@ export default function RecommendationMainContent() {
               {rows.map((row) => (
                 <TableRow
                   key={row.id}
+                  sx={{
+                    backgroundColor: row.read ? '#f0f0f0' : 'inherit'
+                  }}
                 >
-                  <TableCell>
+                  <TableCell 
+                    sx={{
+                      width: '1%',
+                      paddingRight: '8px'
+                    }}
+                  >
                     <Box>
-                      <Typography
-                        sx={{
-                          fontSize: '14px',
-                          fontWeight: 400,
-                          lineHeight: '21px',
-                          textAlign: 'left',
-                          color: '#00000099',
-                        }}
-                      >
-                        {row.fecha}
-                      </Typography>
+                      <Avatar>
+                        <row.Icon />
+                      </Avatar>
                     </Box>
                   </TableCell>
                   <TableCell
-                    align='left'
+                    sx={{
+                      width: 'auto'
+                    }}
                   >
                     <Typography
                       sx={{
-                        fontSize: '14px',
-                        fontWeight: 400,
-                        lineHeight: '21px',
-                        textAlign: 'left',
-                        color: '#00000099',
+                        fontSize: '16px',
+                        color: '#212121',
                       }}
                     >
-                      {row.lugar} {row.codigo}
+                      {row.title}
                     </Typography>
                     <Typography
                       sx={{
                         fontSize: '16px',
-                        fontWeight: 400,
-                        lineHeight: '24px',
-                        textAlign: 'left',
-                        color: '#000000DE',
+                        color: '#616161',
                       }}
                     >
-                      {row.area}
+                      {row.subtitle}
                     </Typography>
                   </TableCell>
-
+                  
                   <TableCell
                     align='right'
+                    sx={{
+                      width: 80
+                    }}
                   >
-                    <Typography
-                      sx={{
-                        fontSize: '16px',
-                        fontWeight: 400,
-                        lineHeight: '24px',
-                        color: '#00000099',
-                      }}
-                    >
-                      {row.duracion}
-                    </Typography>
                     <Typography
                       sx={{
                         fontSize: '14px',
-                        fontWeight: 400,
-                        lineHeight: '21px',
-                        color: '#00000099',
+                        color: '#616161',
                       }}
                     >
-                      {row.horario}
+                      {row.date}
                     </Typography>
                   </TableCell>
                   <TableCell
-                    align='center'
+                    sx={{
+                      width: '1%'
+                    }}
                   >
-                    <Typography
-                      sx={{
-                        fontSize: '16px',
-                        fontWeight: 400,
-                        lineHeight: '24px',
-                        color: '#00000099',
-                      }}
+                    <Tooltip 
+                      title={row.read ? 'Marcar como no leída' : 'Marcar como leída'}
+                      arrow
                     >
-                      {row.asignadaPor}
-                    </Typography>
+                      <IconButton
+                        edge='end'
+                      >
+                        {row.read ? <MarkunreadOutlinedIcon /> : <DraftsOutlinedIcon />}
+                      </IconButton>
+                    </Tooltip>
                   </TableCell>
                   <TableCell
-                    align='center'
+                    sx={{
+                      width: '1%',
+                      paddingRight: '32px'
+                    }}
                   >
-                    <Avatar>H</Avatar>
-                  </TableCell>
-                  <TableCell
-                    align='center'
-                  >
-                    <AvatarGroup
-                      max={2}
+                    <IconButton
+                      edge='end'
                     >
-                      <Avatar
-                        alt='Remy Sharp'
-                      />
+                      <DeleteIcon />
+                    </IconButton>
+                  </TableCell>
 
-                      <Avatar
-                        alt='Travis Howard'
-                      />
-                    </AvatarGroup>
-                  </TableCell>
                 </TableRow>
               ))}
             </TableBody>
