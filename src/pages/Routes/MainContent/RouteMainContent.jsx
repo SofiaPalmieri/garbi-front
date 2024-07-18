@@ -1,5 +1,4 @@
 import {
-  Avatar,
   AvatarGroup,
   Box,
   Paper,
@@ -11,8 +10,40 @@ import {
   TableRow,
   Typography,
 } from '@mui/material';
+import {
+  useEffect, useState 
+} from 'react';
+import {
+  useRoutes 
+} from '../../../api/hooks/useRoutes/useRoutes';
+import {
+  AvatarWithTooltip 
+} from '../../../components/AvatarWithTooltip';
+import profilePicture from '../../../assets/profile_picture.jpg';
+import useMediaQuery from '@mui/material/useMediaQuery';
 
 export default function RouteMainContent() {
+  const {
+    getRoutes: {
+      getRoutes: getRoutes 
+    },
+  } = useRoutes();
+  const [routes, setRoutes] = useState([]);
+
+  useEffect(() => {
+    const retrieveRoutes = async () => {
+      const routes = await getRoutes();
+      setRoutes(routes);
+    };
+
+    try {
+      retrieveRoutes();
+      console.log('routes: ' + routes.documents[0].managerId); //BE to create some
+    } catch (e) {
+      console.log(e);
+    }
+  }, []);
+  
   const rows = [
     {
       id: 1,
@@ -22,7 +53,12 @@ export default function RouteMainContent() {
       area: 'Área 2',
       duracion: '55 min',
       horario: '20:30 - 21:25 hs',
-      asignadaPor: 'Supervisor',
+      supervisor: 'Hernan Ramirez',
+      supervisor_picture: profilePicture,
+      recolector1: 'Pepe Pepin',
+      recolector1_picture: profilePicture,
+      recolector2: 'Roberto Roberti',
+      recolector2_picture: null
     },
     {
       id: 2,
@@ -32,7 +68,12 @@ export default function RouteMainContent() {
       area: 'Área 1',
       duracion: '1hr 20min',
       horario: '5:00 - 6:20 hs',
-      asignadaPor: 'Supervisor',
+      supervisor: 'Hernan Ramirez de la Serna',
+      supervisor_picture: null,
+      recolector1: 'Pepe Pepin',
+      recolector1_picture: profilePicture,
+      recolector2: 'Roberto Roberti',
+      recolector2_picture: profilePicture
     },
     {
       id: 3,
@@ -42,14 +83,23 @@ export default function RouteMainContent() {
       area: 'Área 1',
       duracion: '1hr 30min',
       horario: '22:13 - 23:43 hs',
-      asignadaPor: 'Supervisor',
+      supervisor: 'Hernan Ramirez',
+      supervisor_picture: profilePicture,
+      recolector1: 'Pepe Pepin',
+      recolector1_picture: null,
+      recolector2: null,
+      recolector2_picture: null
     },
   ];
+
+  const isLargeScreen = useMediaQuery('(min-width:1200px)');
+  const isMediumScreen = useMediaQuery('(min-width:900px)');
 
   return (
     <Box
       width='100%'
       padding='32px'
+      overflow= 'hidden'
     >
       <Paper
         sx={{
@@ -60,9 +110,6 @@ export default function RouteMainContent() {
           component={Paper}
         >
           <Table
-            sx={{
-              minWidth: 650,
-            }}
             aria-label='simple table'
           >
             <TableBody>
@@ -70,106 +117,152 @@ export default function RouteMainContent() {
                 <TableRow
                   key={row.id}
                 >
-                  <TableCell>
-                    <Box>
-                      <Typography
-                        sx={{
-                          fontSize: '14px',
-                          fontWeight: 400,
-                          lineHeight: '21px',
-                          textAlign: 'left',
-                          color: '#00000099',
-                        }}
-                      >
-                        {row.fecha}
-                      </Typography>
-                    </Box>
-                  </TableCell>
-                  <TableCell
+                  <TableCell 
                     align='left'
+                    sx={{
+                      width: '1%',
+                      padding: '16px' 
+                    }}
                   >
                     <Typography
                       sx={{
                         fontSize: '14px',
-                        fontWeight: 400,
-                        lineHeight: '21px',
-                        textAlign: 'left',
-                        color: '#00000099',
+                        color: '#616161',
                       }}
                     >
-                      {row.lugar} {row.codigo}
+                      {row.fecha}
+                    </Typography>
+                  </TableCell>
+                  <TableCell
+                    align='left'
+                    sx={{
+                      minWidth: 240
+                    }}
+                  >
+                    <Typography
+                      sx={{
+                        fontSize: '16px',
+                        color: '#212121',
+                      }}
+                    >
+                      {row.lugar}
+                      <Typography
+                        component='span'
+                        sx={{
+                          fontSize: '14px',
+                          color: '#616161',
+                          marginLeft: '16px'
+                        }}
+                      >
+                        {row.codigo}
+                      </Typography>
                     </Typography>
                     <Typography
                       sx={{
                         fontSize: '16px',
-                        fontWeight: 400,
-                        lineHeight: '24px',
-                        textAlign: 'left',
-                        color: '#000000DE',
+                        color: '#616161',
                       }}
                     >
                       {row.area}
                     </Typography>
                   </TableCell>
-
                   <TableCell
                     align='right'
+                    sx={{
+                      minWidth: 160,
+                    }}
                   >
                     <Typography
                       sx={{
                         fontSize: '16px',
-                        fontWeight: 400,
-                        lineHeight: '24px',
-                        color: '#00000099',
-                      }}
-                    >
-                      {row.duracion}
-                    </Typography>
-                    <Typography
-                      sx={{
-                        fontSize: '14px',
-                        fontWeight: 400,
-                        lineHeight: '21px',
-                        color: '#00000099',
+                        color: '#212121',
                       }}
                     >
                       {row.horario}
                     </Typography>
-                  </TableCell>
-                  <TableCell
-                    align='center'
-                  >
                     <Typography
                       sx={{
-                        fontSize: '16px',
-                        fontWeight: 400,
-                        lineHeight: '24px',
-                        color: '#00000099',
+                        fontSize: '14px',
+                        color: '#616161',
                       }}
                     >
-                      {row.asignadaPor}
+                      {row.duracion}
                     </Typography>
                   </TableCell>
-                  <TableCell
-                    align='center'
-                  >
-                    <Avatar>H</Avatar>
-                  </TableCell>
-                  <TableCell
-                    align='center'
-                  >
-                    <AvatarGroup
-                      max={2}
-                    >
-                      <Avatar
-                        alt='Remy Sharp'
-                      />
-
-                      <Avatar
-                        alt='Travis Howard'
-                      />
-                    </AvatarGroup>
-                  </TableCell>
+                  {isMediumScreen && (
+                    <>
+                      <TableCell
+                        align='center'
+                        sx={{
+                          width: '1%',
+                          paddingRight: '0px',
+                          paddingLeft: '48px'
+                        }}
+                      >
+                        <Typography
+                          sx={{
+                            fontSize: '16px',
+                            color: '#616161',
+                          }}
+                        >
+                          Supervisor
+                        </Typography>
+                      </TableCell>
+                      <TableCell
+                        align='center'
+                        sx={{
+                          width: '1%',
+                          paddingLeft: '8px'
+                        }}
+                      >
+                        <AvatarWithTooltip
+                          name={row.supervisor}
+                          profilePicture={row.supervisor_picture}
+                        />
+                      </TableCell>
+                    </>
+                  )}
+                  {isLargeScreen && (
+                    <>
+                      <TableCell
+                        align='right'
+                        sx={{
+                          width: '1%',
+                          paddingRight: '0px',
+                          paddingLeft: '16px'
+                        }}
+                      >
+                        <Typography
+                          sx={{
+                            fontSize: '16px',
+                            color: '#616161',
+                          }}
+                        >
+                          Recolectores
+                        </Typography>
+                      </TableCell>
+                      <TableCell
+                        align='right'
+                        sx={{
+                          width: '1%',
+                          paddingLeft: '8px',
+                        }}
+                      >
+                        <AvatarGroup
+                          max={2}
+                        >
+                          <AvatarWithTooltip
+                            name={row.recolector1}
+                            profilePicture={row.recolector1_picture}
+                          />
+                          <AvatarWithTooltip
+                            name={row.recolector2}
+                            profilePicture={row.recolector2_picture}
+                          />
+                        </AvatarGroup>
+                      </TableCell>
+                    </>
+                  )}
                 </TableRow>
               ))}
             </TableBody>
