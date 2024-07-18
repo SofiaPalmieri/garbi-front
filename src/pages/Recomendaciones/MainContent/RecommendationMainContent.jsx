@@ -70,7 +70,7 @@ export default function RecommendationMainContent() {
                 <TableRow
                   key={row.id}
                   sx={{
-                    backgroundColor: row.read ? '#f0f0f0' : 'inherit'
+                    backgroundColor: row.read ? '#F5F5F5' : 'inherit'
                   }}
                 >
                   <TableCell 
@@ -94,14 +94,16 @@ export default function RecommendationMainContent() {
                       sx={{
                         fontSize: '16px',
                         color: '#212121',
+                        fontWeight: row.read ? 'normal' : '500'
                       }}
                     >
                       {row.title}
                     </Typography>
                     <Typography
                       sx={{
-                        fontSize: '16px',
-                        color: '#616161',
+                        fontSize: '14px',
+                        color: '#212121',
+                        fontWeight: row.read ? 'normal' : '500'
                       }}
                     >
                       {row.subtitle}
