@@ -78,7 +78,7 @@ export const ModalCreateResource = ({
           </Box></>)}
         <Divider />
         {form}
-        <Box
+        {/* <Box
           sx={{
             width: '100%',
             height: '68px',
@@ -122,7 +122,7 @@ export const ModalCreateResource = ({
               {buttonSubmitMessage}
             </Button>
           </Box>
-        </Box>
+        </Box> */}
       </Box>
     </Modal>
   );

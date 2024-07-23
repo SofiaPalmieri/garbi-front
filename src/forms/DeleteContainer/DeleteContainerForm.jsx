@@ -4,18 +4,21 @@ import {
 import {
   useForm
 } from 'react-hook-form';
+import {
+  CancelAndSubmitButton 
+} from '../../components/CancelAndSubmitButton/CancelAndSubmitButton';
 
 
 export const DeleteContainerForm = ({
-  containerToDelete
+  containerToDelete,
+  handleClose
 }) => {
-  console.log('🚀 ~ DeleteContainerForm ~ containerToDelete:', containerToDelete)
+
   useForm({
     defaultValues: {
       idContainer: containerToDelete?.id
     },
   });
-
 
   return (
     <form>
@@ -44,6 +47,10 @@ export const DeleteContainerForm = ({
           ? No podrá deshacer esta acción.
         </Typography>
       </Box>
+      <CancelAndSubmitButton
+        buttonSubmitMessage='ELIMINAR'
+        handleClose={handleClose}
+      />
     </form>
   )
 }

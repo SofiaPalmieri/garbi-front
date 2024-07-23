@@ -13,8 +13,13 @@ import {
 import {
   OutlinedInputForm 
 } from '../../components/OutlinedInputForm';
+import {
+  CancelAndSubmitButton 
+} from '../../components/CancelAndSubmitButton/CancelAndSubmitButton';
 
-export const CreateContainerForm = () => {
+export const CreateContainerForm = ({
+  handleClose
+}) => {
   const {
     control,
     formState: {
@@ -202,6 +207,9 @@ export const CreateContainerForm = () => {
           </Box>
         </Box>
       </Box>
+      <CancelAndSubmitButton
+        handleClose={handleClose}
+      />
     </form>
   )
 }

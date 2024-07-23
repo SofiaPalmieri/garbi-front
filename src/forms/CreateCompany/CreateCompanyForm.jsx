@@ -10,6 +10,9 @@ import {
 import {
   Controller, useForm 
 } from 'react-hook-form';
+import {
+  CancelAndSubmitButton 
+} from '../../components/CancelAndSubmitButton/CancelAndSubmitButton';
 
 const provincias = [
   {
@@ -27,7 +30,9 @@ const provincias = [
   // Agrega más provincias según sea necesario
 ];
 
-export const CreateCompanyForm = () => {
+export const CreateCompanyForm = ({
+  handleClose
+}) => {
   const {
     control,
     formState: {
@@ -372,6 +377,9 @@ export const CreateCompanyForm = () => {
           </Box>
         </Box>
       </Box>
+      <CancelAndSubmitButton
+        handleClose={handleClose}
+      />
     </form>
   );
 };

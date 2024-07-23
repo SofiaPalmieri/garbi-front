@@ -216,7 +216,9 @@ const CompanyPage = () => {
         }
         open={openCreateCompanyModal}
         handleClose={handleCloseCreateCompanyModal}
-        form={<CreateCompanyForm />}
+        form={<CreateCompanyForm
+          handleClose={handleCloseCreateCompanyModal}
+        />}
       />
 
       <Paper

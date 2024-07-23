@@ -233,7 +233,9 @@ export const ContainerContent = () => {
         description={'Complete los siguientes campos para agregar un nuevo contenedor'}
         open={openCreateContainerModal}
         handleClose={handleCloseCreateContainerModal}
-        form={<CreateContainerForm />}
+        form={<CreateContainerForm
+          handleClose = {handleCloseCreateContainerModal}
+        />}
       />
       <ModalCreateResource
         title={'Modificar datos del contenedor'}
@@ -241,8 +243,8 @@ export const ContainerContent = () => {
         handleClose={handleCloseModifyContainerModal}
         form={<ModifyContainerForm
           containerToModify={containerToModify}
+          handleClose = {handleCloseModifyContainerModal}
         />}
-        buttonSubmitMessage='MODIFICAR'
       />
       <ModalCreateResource
         title={'Eliminar contenedor'}
@@ -250,8 +252,8 @@ export const ContainerContent = () => {
         handleClose={handleCloseDeleteContainerModal}
         form={<DeleteContainerForm
           containerToDelete={containerToDelete}
+          handleClose = {handleCloseDeleteContainerModal}
         />}
-        buttonSubmitMessage='ELIMINAR'
       />
       <Paper
         sx={{

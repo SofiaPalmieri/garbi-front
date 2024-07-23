@@ -13,6 +13,9 @@ import {
 import {
   OutlinedInputForm 
 } from '../../components/OutlinedInputForm';
+import {
+  CancelAndSubmitButton 
+} from '../../components/CancelAndSubmitButton/CancelAndSubmitButton';
 
 const cargos = [
   {
@@ -27,9 +30,10 @@ const cargos = [
 
 
 export const ModifyContainerForm = ({
-  containerToModify
+  containerToModify,
+  handleClose
 }) => {
-  console.log('🚀 ~ ModifyContainerForm ~ containerToModify:', containerToModify)
+
   const {
     control,
     formState: {
@@ -234,6 +238,10 @@ export const ModifyContainerForm = ({
           </Box>
         </Box>
       </Box>
+      <CancelAndSubmitButton
+        handleClose={handleClose}
+        buttonSubmitMessage='MODIFICAR'
+      />
     </form>
   )
 }

@@ -211,7 +211,9 @@ export const EmployeeContent = () => {
         description={'Complete los siguientes campos para agregar un nuevo empleado a la empresa'}
         open={openCreateEmployeeModal}
         handleClose={handleCloseCreateEmployeeModal}
-        form={<CreateEmployeeForm />}
+        form={<CreateEmployeeForm
+          handleClose = {handleCloseCreateEmployeeModal}
+        />}
       />
       <Paper
         sx={{

@@ -10,6 +10,9 @@ import {
 import {
   SelectForm 
 } from '../../components/SelectForm/SelectForm';
+import {
+  CancelAndSubmitButton 
+} from '../../components/CancelAndSubmitButton/CancelAndSubmitButton';
 
 const cargos = [
   {
@@ -37,7 +40,9 @@ const turnos = [
   },
 ];
 
-export const CreateEmployeeForm = () => {
+export const CreateEmployeeForm = ({
+  handleClose
+}) => {
   const {
     control,
     formState: {
@@ -246,6 +251,9 @@ export const CreateEmployeeForm = () => {
           </Box>
         </Box>
       </Box>
+      <CancelAndSubmitButton
+        handleClose={handleClose}
+      />
     </form>
   );
 };
