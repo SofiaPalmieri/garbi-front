@@ -59,7 +59,7 @@ export const SelectForm = ({
               </MenuItem>
             ))}
           </Select>
-          {errors[name] && (
+          {errors && errors[name] && (
             <Typography
               fontSize={'0.85rem'}
               paddingLeft={1.5}
