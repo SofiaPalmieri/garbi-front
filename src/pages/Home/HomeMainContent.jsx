@@ -11,13 +11,13 @@ import {
 } from '@mui/material';
 import Button from '@mui/material/Button';
 import {
-  APIProvider, AdvancedMarker, Map 
+  APIProvider, AdvancedMarker, Map
 } from '@vis.gl/react-google-maps';
 import {
-  useEffect, useState 
+  useEffect, useState
 } from 'react';
 import {
-  useContainers 
+  useContainers
 } from '../../api/hooks/useContainers/useContainers';
 import CloseIcon from '@mui/icons-material/Close';
 import './HomeMainContent.css';
@@ -29,6 +29,12 @@ import Battery4BarIcon from '@mui/icons-material/Battery4Bar';
 import Battery5BarIcon from '@mui/icons-material/Battery5Bar';
 import Battery6BarIcon from '@mui/icons-material/Battery6Bar';
 import BatteryFullIcon from '@mui/icons-material/BatteryFull';
+import {
+  ModalCreateResource 
+} from '../../modales/ModalCreateResource';
+import {
+  GenerateOptimalRouteForm 
+} from '../../forms/GenerateOptimalRoute';
 
 const icons = [
   Battery0BarIcon,
@@ -61,7 +67,7 @@ const colors = {
 };
 
 const HtmlTooltip = styled(({
-  className, ...props 
+  className, ...props
 }) => (
   <Tooltip
     {...props}
@@ -70,7 +76,7 @@ const HtmlTooltip = styled(({
     }}
   />
 ))(({
-  theme 
+  theme
 }) => ({
   [`& .${tooltipClasses.tooltip}`]: {
     backgroundColor: '#fff',
@@ -92,13 +98,19 @@ const getColorPoint = (capacity) => {
 };
 
 export default function HomeMainContent() {
+
+  const [openGenerateOptimalRouteModal, setOpenGenerateOptimalRouteModal] = useState(true)
+
+  const handleOpenGenerateOptimalRouteModal = () => setOpenGenerateOptimalRouteModal(true)
+  const handleCloseOpenGenerateOptimalRouteModal = () => setOpenGenerateOptimalRouteModal(false)
+
   const position = {
     lat: -34.5893,
     lng: -58.3974,
   };
   const {
     getContainers: {
-      getContainers: getContainers 
+      getContainers: getContainers
     },
   } = useContainers();
   const [containers, setContainers] = useState([]);
@@ -140,6 +152,14 @@ export default function HomeMainContent() {
         width='100%'
         height={'calc(100% - 83px)'}
       >
+        <ModalCreateResource
+          title={'Generar ruta óptima'}
+          open={openGenerateOptimalRouteModal}
+          handleClose={handleCloseOpenGenerateOptimalRouteModal}
+          form={<GenerateOptimalRouteForm
+            handleClose={handleCloseOpenGenerateOptimalRouteModal}
+          />}
+        />
         <Box
           sx={{
             width: '100%',
@@ -172,6 +192,7 @@ export default function HomeMainContent() {
             sx={{
               backgroundColor: '#12422C',
             }}
+            onClick={handleOpenGenerateOptimalRouteModal}
           >
             Generar Ruta Óptima
           </Button>
@@ -179,7 +200,7 @@ export default function HomeMainContent() {
         <Box
           width='100%'
           sx={{
-            height:'calc(100% - 140px)'
+            height: 'calc(100% - 140px)'
           }}
           padding={'24px 32px 12px'}
           position={'relative'}
@@ -518,7 +539,7 @@ export default function HomeMainContent() {
 }
 
 function Marker({
-  point, setContainerSeleted 
+  point, setContainerSeleted
 }) {
   return (
     <AdvancedMarker
