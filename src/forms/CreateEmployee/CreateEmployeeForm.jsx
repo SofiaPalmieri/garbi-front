@@ -19,6 +19,9 @@ import {
 import {
   CancelAndSubmitButton 
 } from '../../components/CancelAndSubmitButton/CancelAndSubmitButton';
+import {
+  useEmployees 
+} from '../../api/hooks/useEmployees/useEmployees';
 
 const cargos = [
   {
@@ -96,8 +99,41 @@ export const CreateEmployeeForm = ({
     resolver: yupResolver(newEmployeeSchema),
   });
 
+  const {
+    createEmployee: {
+      createEmployee: createEmployee, isLoadingCreateEmployee 
+    },
+  } = useEmployees();
+
   const onSubmit = async (data) => {
-    /*TODO*/
+    try{
+      const response = await createEmployee({
+        companyId: '6642c093eb730d1cd07762b0', //todo: get it from the current user
+        name: data.firstName, 
+        surname: data.lastName, 
+        phone: data.personalPhone, 
+        email: data.personalEmail, 
+        //companyPhone: data.enterprisePhone, //TODO: add when BE is ready
+        //companyEmail: data.enterpriseEmail, //TODO: add when BE is ready
+        password: 'Contra12', //TODO: delete when BE is ready
+        workingDay: [ //TODO: decide with the team what we want from this
+          {
+            'day': 'Lunes',
+            'startTime': '2024-07-24T19:40:44.057Z',
+            'endTime': '2024-07-24T19:40:44.057Z'
+          }
+        ], 
+        role: data.jobPosition //TODO: see what the BE needs here
+      });
+  
+      if (response.success) {
+        handleClose();
+      } else {
+        console.error('Failed to submit form', response);
+      }
+    } catch (error) {
+      console.error('Error submitting form', error);
+    }
   };
 
   const errorMessages = errors ? (
@@ -327,7 +363,7 @@ export const CreateEmployeeForm = ({
 
       <CancelAndSubmitButton
         handleClose={handleClose}
-        onSubmit={onSubmit}
+        onSubmit={handleSubmit(onSubmit)}
       />
     </form>
   );
