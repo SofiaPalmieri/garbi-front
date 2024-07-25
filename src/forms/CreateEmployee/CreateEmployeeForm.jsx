@@ -1,5 +1,11 @@
 import {
-  Box, Typography 
+  yupResolver 
+} from '@hookform/resolvers/yup';
+import {
+  object, string 
+} from 'yup';
+import {
+  Alert, AlertTitle, Box, Typography 
 } from '@mui/material';
 import {
   useForm 
@@ -40,23 +46,74 @@ const turnos = [
   },
 ];
 
+const newEmployeeSchema = object({
+  lastName: string()
+    .required('El apellido es obligatorio')
+    .matches(/^[a-zA-Z\s]+$/, 'El apellido no puede contener números o caracteres especiales')
+    .min(2, 'El apellido debe tener al menos 2 caracteres')
+    .max(50, 'El apellido no debe exceder 50 caracteres'),
+  firstName: string()
+    .required('El nombre es obligatorio')
+    .matches(/^[a-zA-Z\s]+$/, 'El nombre no puede contener números o caracteres especiales')
+    .min(2, 'El nombre debe tener al menos 2 caracteres')
+    .max(50, 'El nombre no debe exceder 50 caracteres'),
+  personalPhone: string()
+    .required('El teléfono personal es obligatorio')
+    .matches(/^\+?\d{10,12}$/, 'El teléfono personal no es válido'),
+  personalEmail: string()
+    .email('El email personal no es un email válido')
+    .required('El email personal es obligatorio'),
+  jobPosition: string().required('El cargo es obligatorio'),
+  timeShift: string().required('El turno es obligatorio'),
+  enterprisePhone: string()
+    .required('El teléfono de la empresa es obligatorio')
+    .matches(/^\+?\d{10,12}$/, 'El teléfono de la empresa no es válido'),
+  enterpriseEmail: string()
+    .email('El email de la empresa no es válido')
+    .required('El email de la empresa es obligatorio')
+}).required();
+
 export const CreateEmployeeForm = ({
   handleClose
 }) => {
   const {
     control,
+    handleSubmit,
     formState: {
       errors 
     },
   } = useForm({
     defaultValues: {
-      email: '',
-      password: '',
+      lastName: '',
+      firstName: '',
+      personalPhone: '',
+      personalEmail: '',
+      jobPosition:  '',
+      timeShift: '',
+      enterprisePhone: '',
+      enterpriseEmail: ''
     },
+    resolver: yupResolver(newEmployeeSchema),
   });
 
+  const onSubmit = async (data) => {
+    /*TODO*/
+  };
+
+  const errorMessages = errors ? (
+    Object.values(errors).map((error, index) => (
+      <li 
+        key={index}
+      >
+        {error.message}
+      </li>
+    ))
+  ) : null;
+
   return (
-    <form>
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+    >
       <Box
         sx={{
           width: '100%',
@@ -99,7 +156,6 @@ export const CreateEmployeeForm = ({
                 control={control}
                 name={'lastName'}
                 label={'Apellido'}
-                errors={errors}
               />
             </Box>
             <Box
@@ -112,7 +168,6 @@ export const CreateEmployeeForm = ({
                 control={control}
                 name={'firstName'}
                 label={'Nombre'}
-                errors={errors}
               />
             </Box>
           </Box>
@@ -132,9 +187,8 @@ export const CreateEmployeeForm = ({
             >
               <InputForm
                 control={control}
-                name={'phone'}
+                name={'personalPhone'}
                 label={'Teléfono personal'}
-                errors={errors}
               />
             </Box>
             <Box
@@ -147,7 +201,6 @@ export const CreateEmployeeForm = ({
                 control={control}
                 name={'personalEmail'}
                 label={'Email personal'}
-                errors={errors}
               />
             </Box>
           </Box>
@@ -195,7 +248,6 @@ export const CreateEmployeeForm = ({
                 name={'jobPosition'}
                 label={'Cargo'}
                 control={control}
-                errors={errors}
                 options={cargos}
               />
             </Box>
@@ -209,7 +261,6 @@ export const CreateEmployeeForm = ({
                 name={'timeShift'}
                 label={'Turno'}
                 control={control}
-                errors={errors}
                 options={turnos}
               />
             </Box>
@@ -230,9 +281,8 @@ export const CreateEmployeeForm = ({
             >
               <InputForm
                 control={control}
-                name={'phoneCompany'}
+                name={'enterprisePhone'}
                 label={'Teléfono de la empresa'}
-                errors={errors}
               />
             </Box>
             <Box
@@ -245,14 +295,39 @@ export const CreateEmployeeForm = ({
                 control={control}
                 name={'enterpriseEmail'}
                 label={'Email de la empresa'}
-                errors={errors}
               />
             </Box>
           </Box>
         </Box>
       </Box>
+
+      {Object.keys(errors).length > 0 && (
+        <Box
+          sx={{
+            paddingInline: '24px'
+          }}
+        >  
+          <Alert
+            severity='error'
+          >
+            <AlertTitle>Error con los datos ingresados</AlertTitle>
+            <Box
+              component='ul'
+              sx={{
+                paddingLeft: '16px',
+                margin: 0,
+                wordWrap: 'break-word',
+              }}
+            >
+              {errorMessages}
+            </Box>
+          </Alert>
+        </Box>
+      )}
+
       <CancelAndSubmitButton
         handleClose={handleClose}
+        onSubmit={onSubmit}
       />
     </form>
   );
