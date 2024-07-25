@@ -61,16 +61,16 @@ const newEmployeeSchema = object({
     .required('El teléfono personal es obligatorio')
     .matches(/^\+?\d{10,12}$/, 'El teléfono personal no es válido'),
   personalEmail: string()
-    .email('El email personal no es un email válido')
-    .required('El email personal es obligatorio'),
+    .required('El email personal es obligatorio')
+    .email('El email personal no es un email válido'),
   jobPosition: string().required('El cargo es obligatorio'),
   timeShift: string().required('El turno es obligatorio'),
   enterprisePhone: string()
     .required('El teléfono de la empresa es obligatorio')
     .matches(/^\+?\d{10,12}$/, 'El teléfono de la empresa no es válido'),
   enterpriseEmail: string()
-    .email('El email de la empresa no es válido')
     .required('El email de la empresa es obligatorio')
+    .email('El email de la empresa no es válido')
 }).required();
 
 export const CreateEmployeeForm = ({
