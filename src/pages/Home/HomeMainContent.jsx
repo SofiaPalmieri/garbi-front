@@ -19,7 +19,7 @@ import {
 import {
   useContainers
 } from '../../api/hooks/useContainers/useContainers';
-import CloseIcon from '@mui/icons-material/Close';
+
 import './HomeMainContent.css';
 import Battery0BarIcon from '@mui/icons-material/Battery0Bar';
 import Battery1BarIcon from '@mui/icons-material/Battery1Bar';
@@ -30,11 +30,20 @@ import Battery5BarIcon from '@mui/icons-material/Battery5Bar';
 import Battery6BarIcon from '@mui/icons-material/Battery6Bar';
 import BatteryFullIcon from '@mui/icons-material/BatteryFull';
 import {
-  ModalCreateResource 
+  ModalCreateResource
 } from '../../modales/ModalCreateResource';
 import {
-  GenerateOptimalRouteForm 
+  GenerateOptimalRouteForm
 } from '../../forms/GenerateOptimalRoute';
+import {
+  RightSidePanel 
+} from '../../components/RightSidePanel/RightSidePanel';
+import {
+  RightSidePanelContainerInfo 
+} from '../../components/RightSidePanelContainerInfo/RightSidePanelContainerInfo';
+import {
+  RightSidePanelOptimalRouteIinfo 
+} from '../../components/RightSidePanelOptimalRouteInfo';
 
 const icons = [
   Battery0BarIcon,
@@ -99,10 +108,20 @@ const getColorPoint = (capacity) => {
 
 export default function HomeMainContent() {
 
-  const [openGenerateOptimalRouteModal, setOpenGenerateOptimalRouteModal] = useState(true)
+  const [openGenerateOptimalRouteModal, setOpenGenerateOptimalRouteModal] = useState(false)
+  const [openGenerateOptimalRouteRightSideInfo, setOpenGenerateOptimalRouteRightSideInfo] = useState(false)
+
+  const [containers, setContainers] = useState([]);
+  const [containerSelected, setContainerSeleted] = useState(null);
 
   const handleOpenGenerateOptimalRouteModal = () => setOpenGenerateOptimalRouteModal(true)
   const handleCloseOpenGenerateOptimalRouteModal = () => setOpenGenerateOptimalRouteModal(false)
+  const handleCloseRightSidePanelContainerInfo = () => setContainerSeleted(null)
+  const handleCloseRightSidePanelOptimalRouteInfo = () => setOpenGenerateOptimalRouteRightSideInfo(false)
+  const handleOpenRightSidePanelOptimalRouteInfo = () => {
+    handleCloseOpenGenerateOptimalRouteModal()
+    setOpenGenerateOptimalRouteRightSideInfo(true)
+  }
 
   const position = {
     lat: -34.5893,
@@ -113,13 +132,13 @@ export default function HomeMainContent() {
       getContainers: getContainers
     },
   } = useContainers();
-  const [containers, setContainers] = useState([]);
+
   const apiKeyGoogleMaps = import.meta.env.VITE_REACT_APP_API_KEY_GOOGLE_MAPS;
-  const [containerSelected, setContainerSeleted] = useState(null);
+
 
   const formatContainers = (containers) => {
     return containers.documents.map((container) => {
-      if(!container.coordinates){
+      if (!container.coordinates) {
         return {
           ...container,
           lat: 0,
@@ -149,10 +168,6 @@ export default function HomeMainContent() {
     }
   }, []);
 
-  // useEffect(() => {
-  //   console.log(containerSelected)
-  // }, [containerSelected])
-
   return (
     <>
       <Box
@@ -165,6 +180,7 @@ export default function HomeMainContent() {
           handleClose={handleCloseOpenGenerateOptimalRouteModal}
           form={<GenerateOptimalRouteForm
             handleClose={handleCloseOpenGenerateOptimalRouteModal}
+            handleOpenRightSideOptimalRouteInfo={handleOpenRightSidePanelOptimalRouteInfo}
           />}
         />
         <Box
@@ -248,211 +264,26 @@ export default function HomeMainContent() {
             </APIProvider>
           </Box>
           {containerSelected && (
-            <Paper
-              elevation={4}
-              sx={{
-                width: '320px',
-                height: 'calc(100% - 28px)',
-                backgroundColor: 'white',
-                position: 'absolute',
-                top: '26px',
-                right: '34px',
-                padding: '24px 40px',
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'space-between',
-              }}
-            >
-              <Box
-                position='relative'
-              >
-                <Button
-                  sx={{
-                    padding: 0,
-                    minWidth: 0,
-                    borderRadius: '50%',
-                    position: 'absolute',
-                    right: '-30px',
-                    top: '-15px',
-                  }}
-                  onClick={() => setContainerSeleted(null)}
-                >
-                  <CloseIcon
-                    sx={{
-                      color: 'black',
-                    }}
-                  />
-                </Button>
-                <Typography
-                  sx={{
-                    color: 'rgba(0, 0, 0, 0.60)',
-                    fontFeatureSettings: '\'clig\' off, \'liga\' off',
-                    fontFamily: 'Roboto',
-                    fontSize: '14px',
-                    fontStyle: 'normal',
-                    fontWeight: 500,
-                    lineHeight: '14px',
-                    letterSpacing: '0.1px',
-                    mb: 2,
-                  }}
-                >
-                  ID #{containerSelected.sensorId}
-                </Typography>
-                <Typography
-                  sx={{
-                    color: 'rgba(0, 0, 0, 0.87)',
-                    fontFamily: 'Roboto',
-                    fontSize: '18px',
-                    fontStyle: 'normal',
-                    fontWeight: 500,
-                    lineHeight: '32px',
-                    letterSpacing: '0.1px',
-                  }}
-                >
-                  {containerSelected.capacity}% lleno
-                </Typography>
-                <Typography
-                  sx={{
-                    color: ' rgba(0, 0, 0, 0.60)',
-                    fontFeatureSettings: '\'clig\' off, \'liga\' off',
-                    fontFamily: 'Roboto',
-                    fontSize: '12px',
-                    fontStyle: 'normal',
-                    fontWeight: 300,
-                    lineHeight: '16px',
-                    letterSpacing: '0.1px',
-                    mb: 2,
-                  }}
-                >
-                  Actualizado hace 10 min
-                </Typography>
-                <Typography
-                  sx={{
-                    color: 'rgba(0, 0, 0, 0.87)',
-                    fontFeatureSettings: '\'clig\' off, \'liga\' off',
-                    fontFamily: 'Roboto',
-                    fontSize: '14px',
-                    fontStyle: 'normal',
-                    fontWeight: 500,
-                    lineHeight: '32px',
-                    letterSpacing: '0.1px',
-                  }}
-                >
-                  Villa Pueyrredón - Área 2
-                </Typography>
-                <Typography
-                  sx={{
-                    color: 'rgba(0, 0, 0, 0.87)',
-                    fontFeatureSettings: '\'clig\' off, \'liga\' off',
-                    fontFamily: 'Roboto',
-                    fontSize: '12px',
-                    fontStyle: 'normal',
-                    fontWeight: 300,
-                    lineHeight: '24px',
-                    letterSpacing: '0.1px',
-                    mb: 2,
-                  }}
-                >
-                  Av. Honorio Pueyrredón 123
-                </Typography>
-                <Box
-                  display={'flex'}
-                  mb={2}
-                >
-                  <Typography
-                    sx={{
-                      color: 'rgba(0, 0, 0, 0.87)',
-                      fontFeatureSettings: '\'clig\' off, \'liga\' off',
-                      fontFamily: 'Roboto',
-                      fontSize: '14px',
-                      fontStyle: 'normal',
-                      fontWeight: 500,
-                      lineHeight: '32px',
-                      letterSpacing: '0.1px',
-                      mr: 0.4,
-                    }}
-                  >
-                    Última Recolección:{' '}
-                  </Typography>
-                  <Typography
-                    sx={{
-                      color: 'var(--text-primary, rgba(0, 0, 0, 0.87))',
-                      fontFeatureSettings: '\'clig\' off, \'liga\' off',
-                      fontFamily: 'Roboto',
-                      fontSize: '14px',
-                      fontStyle: 'normal',
-                      fontWeight: 400,
-                      lineHeight: '32px',
-                      letterSpacing: '0.1px',
-                    }}
-                  >
-                    26/4 - 21.35 hs
-                  </Typography>
-                </Box>
-                <Typography
-                  sx={{
-                    color: 'var(--text-primary, rgba(0, 0, 0, 0.87))',
-                    fontFeatureSettings: '\'clig\' off, \'liga\' off',
-                    fontFamily: 'Roboto',
-                    fontSize: '14px',
-                    fontStyle: 'normal',
-                    fontWeight: 300,
-                    lineHeight: '32px',
-                    letterSpacing: '0.1px',
-                    mb: 2,
-                  }}
-                >
-                  Contenedor bilateral
-                </Typography>
-                <Box
-                  sx={{
-                    display: 'flex',
-                    alignItems: 'center',
-                  }}
-                >
-                  {getBatteryIcon(containerSelected.battery)}
-                  <Typography
-                    sx={{
-                      color: 'rgba(0, 0, 0, 0.87)',
-                      fontFeatureSettings: '\'clig\' off, \'liga\' off',
-                      fontFamily: 'Roboto',
-                      fontSize: '14px',
-                      fontStyle: 'normal',
-                      fontWeight: 500,
-                      lineHeight: '32px', // 228.571%
-                      letterSpacing: '0.1px',
-                      marginRight: '0.5rem',
-                    }}
-                  >
-                    Batería:
-                  </Typography>
-                  <Typography
-                    sx={{
-                      color: 'rgba(0, 0, 0, 0.87)',
-                      fontFeatureSettings: '\'clig\' off, \'liga\' off',
-                      fontFamily: 'Roboto',
-                      fontSize: '14px',
-                      fontStyle: 'normal',
-                      fontWeight: 400,
-                      lineHeight: '32px',
-                      letterSpacing: '0.1px',
-                      marginRight: '0.5rem',
-                    }}
-                  >
-                    {containerSelected.battery}%
-                  </Typography>
-                </Box>
-              </Box>
-              <Box>
-                <Button
-                  fullWidth
-                >Reportes históricos</Button>
-                <Button
-                  fullWidth
-                >Reportes activos</Button>
-              </Box>
-            </Paper>
+            <RightSidePanel
+              handleClose={handleCloseRightSidePanelContainerInfo}
+              componentToRender={
+                <RightSidePanelContainerInfo
+                  containerSelected={containerSelected}
+                  getBatteryIcon={getBatteryIcon}
+
+                />
+              }
+            />
           )}
+          {
+            openGenerateOptimalRouteRightSideInfo && (
+              <RightSidePanel
+                disablePadding={true}
+                handleClose={handleCloseRightSidePanelOptimalRouteInfo}
+                componentToRender={<RightSidePanelOptimalRouteIinfo />}
+              />
+            )
+          }
         </Box>
         <Paper
           elevation={6}
