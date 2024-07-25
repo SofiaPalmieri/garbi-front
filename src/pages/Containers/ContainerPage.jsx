@@ -8,7 +8,8 @@ import {
 export const ContainerPage = () => {
   return (
     <FilterSideComponent
-      title={'Gestión > Contenedores'}
+      prefix={'Gestión'}
+      title={'Contenedores'}
       component={() => <ContainerContent />}
     />
   );

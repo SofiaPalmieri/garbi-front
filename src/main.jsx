@@ -24,6 +24,7 @@ import CreateAreaPage from './pages/CreateArea/CreateAreaPage.jsx';
 import HomePage from './pages/Home/HomePage.jsx';
 import RecommendationsPage from './pages/Recomendaciones/RecommendationsPage.jsx';
 import RoutesPage from './pages/Routes/RoutesPage.jsx';
+import RouteDetailPage from './pages/Routes/RouteDetailPage.jsx';
 import LoginPage from './pages/Login/LoginPage.jsx';
 import {
   ReportPage 
