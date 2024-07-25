@@ -1,21 +1,22 @@
 import {
-  Box, Typography 
+  Box, Typography
 } from '@mui/material'
 import {
-  useForm 
+  useForm
 } from 'react-hook-form';
 import {
-  SelectForm 
+  SelectForm
 } from '../../components/SelectForm/SelectForm';
 import {
-  OutlinedInputForm 
+  OutlinedInputForm
 } from '../../components/OutlinedInputForm';
 import {
-  CancelAndSubmitButton 
+  CancelAndSubmitButton
 } from '../../components/CancelAndSubmitButton/CancelAndSubmitButton';
 
-export const GenerateOptimalRouteForm = ( {
-  handleClose 
+export const GenerateOptimalRouteForm = ({
+  handleClose,
+  handleOpenRightSideOptimalRouteInfo
 }) => {
   const {
     control,
@@ -74,6 +75,7 @@ export const GenerateOptimalRouteForm = ( {
         }}
       >
         <Typography
+          component='div'
           sx={{
             fontSize: '1rem',
             fontWeight: 400,
@@ -83,11 +85,11 @@ export const GenerateOptimalRouteForm = ( {
         >
           Generar ruta que solo pase por contenedores que igualen o superen el
           <Box
-            sx= {{
-              width : '75px',
+            sx={{
+              width: '75px',
               display: 'inline-block',
               verticalAlign: 'middle',
-              m: '0 12px'  
+              m: '0 12px'
             }}
           >
             <OutlinedInputForm
@@ -104,6 +106,8 @@ export const GenerateOptimalRouteForm = ( {
       <CancelAndSubmitButton
         buttonSubmitMessage='GENERAR'
         handleClose={handleClose}
+        typeButton='button'
+        onSubmit={handleOpenRightSideOptimalRouteInfo}
       />
     </Box >
   )
