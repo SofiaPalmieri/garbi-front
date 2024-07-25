@@ -119,6 +119,13 @@ export default function HomeMainContent() {
 
   const formatContainers = (containers) => {
     return containers.documents.map((container) => {
+      if(!container.coordinates){
+        return {
+          ...container,
+          lat: 0,
+          lng: 0,
+        };
+      }
       return {
         ...container,
         lat: container.coordinates.lat,
