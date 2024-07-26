@@ -5,7 +5,7 @@ import {
   object, string 
 } from 'yup';
 import {
-  Alert, AlertTitle, Box, Typography 
+  Box, Typography 
 } from '@mui/material';
 import {
   useForm 
@@ -19,6 +19,9 @@ import {
 import {
   CancelAndSubmitButton 
 } from '../../components/CancelAndSubmitButton/CancelAndSubmitButton';
+import {
+  ErrorAlert 
+} from '../../components/ErrorAlert/ErrorAlert';
 
 const cargos = [
   {
@@ -302,27 +305,10 @@ export const CreateEmployeeForm = ({
       </Box>
 
       {Object.keys(errors).length > 0 && (
-        <Box
-          sx={{
-            paddingInline: '24px'
-          }}
-        >  
-          <Alert
-            severity='error'
-          >
-            <AlertTitle>Error con los datos ingresados</AlertTitle>
-            <Box
-              component='ul'
-              sx={{
-                paddingLeft: '16px',
-                margin: 0,
-                wordWrap: 'break-word',
-              }}
-            >
-              {errorMessages}
-            </Box>
-          </Alert>
-        </Box>
+        <ErrorAlert
+          title='Error con los datos ingresados'
+          errors={errorMessages}
+        />
       )}
 
       <CancelAndSubmitButton
