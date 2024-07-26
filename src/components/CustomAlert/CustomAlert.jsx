@@ -2,8 +2,8 @@ import {
   Alert, AlertTitle, Box
 } from '@mui/material';
 
-export const ErrorAlert = ({
-  title, errors
+export const CustomAlert = ({
+  severity, title, message
 }) => {
   return (
     <Box
@@ -12,7 +12,7 @@ export const ErrorAlert = ({
       }}
     >  
       <Alert
-        severity='error'
+        severity={severity}
       >
         <AlertTitle>{title}</AlertTitle>
         <Box
@@ -23,7 +23,7 @@ export const ErrorAlert = ({
             wordWrap: 'break-word',
           }}
         >
-          {errors}
+          {message}
         </Box>
       </Alert>
     </Box>

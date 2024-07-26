@@ -20,8 +20,8 @@ import {
   CancelAndSubmitButton 
 } from '../../components/CancelAndSubmitButton/CancelAndSubmitButton';
 import {
-  ErrorAlert 
-} from '../../components/ErrorAlert/ErrorAlert';
+  CustomAlert 
+} from '../../components/CustomAlert/CustomAlert';
 
 const cargos = [
   {
@@ -305,9 +305,10 @@ export const CreateEmployeeForm = ({
       </Box>
 
       {Object.keys(errors).length > 0 && (
-        <ErrorAlert
+        <CustomAlert
+          severity='error'
           title='Error con los datos ingresados'
-          errors={errorMessages}
+          message={errorMessages}
         />
       )}
 
