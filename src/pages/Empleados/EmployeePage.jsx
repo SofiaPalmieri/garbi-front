@@ -8,7 +8,8 @@ import {
 const EmployeePage = () => {
   return (
     <FilterSideComponent
-      title={'Gestión > Empleados'}
+      prefix={'Gestión'}
+      title={'Empleados'}
       component={() => <EmployeeContent />}
     />
   );

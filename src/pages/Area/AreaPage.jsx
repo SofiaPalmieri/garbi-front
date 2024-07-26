@@ -5,6 +5,9 @@ import AddIcon from '@mui/icons-material/Add';
 import {
   APIProvider, Map 
 } from '@vis.gl/react-google-maps';
+import {
+  BreadcrumbsComponent 
+} from '../../components/BreadcrumbsComponent';
 
 const AreaPage = () => {
   const position = {
@@ -24,18 +27,14 @@ const AreaPage = () => {
     >
       <Box
         sx={{
-          padding: '16px 64px 14px',
+          width: '100%',
+          padding: '16px 32px',
         }}
       >
-        <Typography
-          sx={{
-            fontSize: '34px',
-            fontWeight: 400,
-            lineHeight: '42px',
-          }}
-        >
-          Áreas
-        </Typography>
+        <BreadcrumbsComponent
+          prefix={'Gestión'}
+          title={'Áreas'}
+        />
       </Box>
       <Divider />
       <Box
