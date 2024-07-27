@@ -11,58 +11,59 @@ import {
   Typography,
 } from '@mui/material';
 import {
-  Controller, useForm 
+  Controller, useForm
 } from 'react-hook-form';
 import {
-  InputForm 
+  InputForm
 } from '../../components/InputForm';
 import addImage from '/src/assets/mdi_image-plus-outline.svg';
 import {
-  yupResolver 
+  yupResolver
 } from '@hookform/resolvers/yup';
 import {
-  mixed, object, string 
+  mixed, object, string
 } from 'yup';
 import {
-  useNavigate 
+  useNavigate
 } from 'react-router-dom';
 import {
-  useState 
+  useState
 } from 'react';
 import {
-  useReports 
+  useReports
 } from '../../api/hooks/useReports/useReports';
 
 const tipos = [
   {
     value: 'CONTENEDOR_ROTO',
-    label: 'Contenedor en mal estado' 
+    label: 'Contenedor en mal estado'
   },
   {
     value: 'CONTENEDOR_SUCIO',
-    label: 'Contenedor sucio' 
+    label: 'Contenedor sucio'
   },
   {
     value: 'BASURA_EN_LA_CALLE',
-    label: 'Basura en la calle' 
+    label: 'Basura en la calle'
   },
   {
     value: 'CONTENEDOR_FALTANTE',
-    label: 'Contenedor faltante' 
+    label: 'Contenedor faltante'
   },
   {
     value: 'OTROS',
-    label: 'Otro' 
+    label: 'Otro'
   },
 ];
 
 export const CreateReportForm = () => {
   const addressRegex = /^[A-ZÁÉÍÓÚÑ][a-záéíóúñA-ZÁÉÍÓÚÑ\s]*\s\d{1,4}$/;
   const [selectedImage, setSelectedImage] = useState(null);
+  const [selectedFile, setSelectedFile] = useState(null);
 
   const {
     createReport: {
-      createReport, isCreateReportLoading 
+      createReport, isCreateReportLoading
     }
   } = useReports();
 
@@ -84,8 +85,8 @@ export const CreateReportForm = () => {
 
   const {
     control, handleSubmit, formState: {
-      errors 
-    } 
+      errors
+    }
   } = useForm({
     defaultValues: {
       title: 'sasA',
@@ -101,44 +102,32 @@ export const CreateReportForm = () => {
   });
 
   const onSubmit = async (data) => {
-    console.log('🚀 ~ onSubmit ~ data:', data)
+
     const formData = new FormData();
 
     data.address = [
       {
-        'street': data.address.split(' ')[0],
-        'number': data.address.split(' ')[1],
-        'neighborhood': data.neighborhood
+        street: data.address.split(' ')[0],
+        number: data.address.split(' ')[1],
+        neighborhood: data.neighborhood
       }
-    ]
+    ];
 
-    const request = {
+    const report = {
+      containerId: data.containerId,
       title: data.title,
-      type: data.type,
       description: data.description,
       address: data.address,
-      containerId: data.containerId,
-      email: data.email,
       phone: data.phone,
-      image: selectedImage
-    }
+      email: data.email,
+      type: data.type
+    };
 
-    console.log('🚀 ~ onSubmit ~ data:', request)
-
-    // formData.append('title', data.title);
-    // formData.append('type', data.type);
-    // formData.append('description', data.description);
-    // formData.append('address', data.address);
-    // formData.append('containerId', data.containerId);
-    // formData.append('email', data.email);
-    // formData.append('phone', data.phone);
-
-    // if (selectedImage) {
-    //   formData.append('image', selectedImage);  // Añade la imagen al FormData
-    // }
+    formData.append('report', JSON.stringify(report));
+    formData.append('image', selectedFile);
 
     try {
-      const response = await createReport(request);  // Envía el FormData al backend
+      const response = await createReport(formData);  // Envía el FormData al backend
 
       if (response.success) {
         navigate('/reportes');
@@ -190,10 +179,10 @@ export const CreateReportForm = () => {
             name='type'
             control={control}
             rules={{
-              required: true 
+              required: true
             }}
             render={({
-              field 
+              field
             }) => (
               <FormControl
                 variant={'filled'}
@@ -254,7 +243,7 @@ export const CreateReportForm = () => {
             control={control}
             defaultValue=''
             render={({
-              field 
+              field
             }) => (
               <FormControl
                 fullWidth
@@ -264,17 +253,19 @@ export const CreateReportForm = () => {
                   type='file'
                   disableUnderline
                   onChange={(e) => {
+                    field.onChange(e);
+                    const file = e.target.files[0];
+                    setSelectedFile(file)
                     if (e.target.files && e.target.files[0]) {
                       const reader = new FileReader();
                       reader.onload = (event) => {
-                        field.onChange(event.target.result); // Set the base64 string to the controller
-                        setSelectedImage(event.target.result); // Update the local state with the image URL
+                        setSelectedImage(event.target.result);
                       };
                       reader.readAsDataURL(e.target.files[0]);
                     }
                   }}
                   sx={{
-                    display: 'none' 
+                    display: 'none'
                   }}
                   inputProps={{
                     accept: 'image/*',
@@ -303,7 +294,7 @@ export const CreateReportForm = () => {
                       alt='Selected'
                       style={{
                         height: '100px',
-                        width: 'auto' 
+                        width: 'auto'
                       }}
                     />
                     <Typography
@@ -397,7 +388,7 @@ export const CreateReportForm = () => {
             sx={{
               width: 1,
               display: 'flex',
-              justifyContent: 'center' 
+              justifyContent: 'center'
             }}
           >
             <Button

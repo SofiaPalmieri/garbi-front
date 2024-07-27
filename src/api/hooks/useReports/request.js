@@ -14,8 +14,13 @@ export const useCreateReport = () => {
     return commonFetch({
       uri: '/report',
       method: 'POST',
-      body: report
-    });
+      body: report,
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    },
+    
+    );
   };
 
   return {
