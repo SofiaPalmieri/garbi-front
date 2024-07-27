@@ -1,47 +1,26 @@
 import {
-  useFetch 
+  useFetch
 } from '../../../hooks/useFetch';
-  
-  
+
+
 export const useCreateReport = () => {
   const {
-    commonFetch, isLoading 
+    commonFetch, isLoading
   } = useFetch({
     url: '/api',
   });
-  
-  const createReport = ({
-    userId,
-    containerId,
-    title,
-    description,
-    address,
-    imagePath,
-    email,
-    type,  
-  }) => {
+
+  const createReport = (report) => {
     return commonFetch({
       uri: '/report',
       method: 'POST',
-      body: {
-        userId,
-        containerId,
-        title,
-        description,
-        address,
-        imagePath,
-        email,
-        type,
-      },
-      headers: {
-        'Content-Type': 'application/json',
-      },
+      body: report
     });
   };
-    
+
   return {
     createReport,
     isLoading,
   };
 };
-  
+

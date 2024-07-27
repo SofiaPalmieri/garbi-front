@@ -20,125 +20,135 @@ import addImage from '/src/assets/mdi_image-plus-outline.svg';
 import {
   yupResolver 
 } from '@hookform/resolvers/yup';
-  
 import {
-  object, string 
+  mixed, object, string 
 } from 'yup';
-  
 import {
   useNavigate 
 } from 'react-router-dom';
-  
-import {
-  useAuth 
-} from '../../api/hooks/useAuth/useAuth';
-
-
 import {
   useState 
 } from 'react';
+import {
+  useReports 
+} from '../../api/hooks/useReports/useReports';
 
-  
 const tipos = [
   {
     value: 'CONTENEDOR_ROTO',
-    label: 'Contenedor en mal estado',
+    label: 'Contenedor en mal estado' 
   },
   {
     value: 'CONTENEDOR_SUCIO',
-    label: 'Contenedor sucio',
+    label: 'Contenedor sucio' 
   },
   {
     value: 'BASURA_EN_LA_CALLE',
-    label: 'Basura en la calle',
+    label: 'Basura en la calle' 
   },
   {
     value: 'CONTENEDOR_FALTANTE',
-    label: 'Contenedor faltante',
+    label: 'Contenedor faltante' 
   },
   {
     value: 'OTROS',
-    label: 'Otro',
+    label: 'Otro' 
   },
 ];
-  
+
 export const CreateReportForm = () => {
-  
   const addressRegex = /^[A-ZÁÉÍÓÚÑ][a-záéíóúñA-ZÁÉÍÓÚÑ\s]*\s\d{1,4}$/;
-  const navigate = useNavigate();
-  const [selectedImage, setSelectedImage] = useState(addImage);
+  const [selectedImage, setSelectedImage] = useState(null);
 
-
-  
   const {
     createReport: {
-      createReport: createReport, isCreateReportLoading 
-    },
-  } = useAuth();
-  
-  
-  const createReportSchema =  object({
+      createReport, isCreateReportLoading 
+    }
+  } = useReports();
+
+  const navigate = useNavigate()
+
+  const createReportSchema = object({
     title: string().required('El titulo es un campo obligatorio'),
     type: string().required('Debe seleccionar una opcion'),
     description: string().required('La descripcion es un campo obligatorio'),
-    address: string().matches(addressRegex, 'La direccion es un campo obligatorio y su formato es por ej. "Medrano 900"')
-      .required(),
+    address: string().required(),
     containerId: string().length(6, 'El identificador del contenedor debe tener 6 caracteres')
       .optional(),
-    email: string().email()
+    email: string().email('Debe ser un email valido')
       .required('El mail es un campo obligatorio'),
-    imagePath: string().required('Añade una foto del problema'),
-    userId: string().required()
+    image: mixed(),
+    neighborhood: string().required(),
+    phone: string()
   }).required();
-  
-  
+
   const {
-    control,
-    handleSubmit,
-    formState: {
+    control, handleSubmit, formState: {
       errors 
-    },
+    } 
   } = useForm({
     defaultValues: {
-      title: '',
-      description: '',
-      type:'',
-      address:'',
-      containerId:'',
-      email:'',
-      imagePath: '',
-      userId:'66a15df077d2002dacbb8447'
+      title: 'sasA',
+      description: 'dssadsd',
+      type: 'BASURA_EN_LA_CALLE',
+      address: 'Medrano 900',
+      neighborhood: 'sasdds',
+      containerId: 'asdasd',
+      email: 'sdada@saddad.com',
+      phone: '465456465'
     },
     resolver: yupResolver(createReportSchema),
   });
-  
-  const onSubmit = async (data) => {
 
-  
-    const response =  await createReport( {
-      userId: data.userId,
-      containerId: data.containerId,
+  const onSubmit = async (data) => {
+    console.log('🚀 ~ onSubmit ~ data:', data)
+    const formData = new FormData();
+
+    data.address = [
+      {
+        'street': data.address.split(' ')[0],
+        'number': data.address.split(' ')[1],
+        'neighborhood': data.neighborhood
+      }
+    ]
+
+    const request = {
       title: data.title,
+      type: data.type,
       description: data.description,
       address: data.address,
-      imagePath: data.imagePath,
+      containerId: data.containerId,
       email: data.email,
-      type: data.type,
-      
-    });
+      phone: data.phone,
+      image: selectedImage
+    }
 
-  
-    if (response.success) {
-      navigate('/reportes');
+    console.log('🚀 ~ onSubmit ~ data:', request)
+
+    // formData.append('title', data.title);
+    // formData.append('type', data.type);
+    // formData.append('description', data.description);
+    // formData.append('address', data.address);
+    // formData.append('containerId', data.containerId);
+    // formData.append('email', data.email);
+    // formData.append('phone', data.phone);
+
+    // if (selectedImage) {
+    //   formData.append('image', selectedImage);  // Añade la imagen al FormData
+    // }
+
+    try {
+      const response = await createReport(request);  // Envía el FormData al backend
+
+      if (response.success) {
+        navigate('/reportes');
+      }
+    } catch (error) {
+      console.error('Error creating report:', error);
     }
   };
-  
-  
-  
-  let shrink = true;
-  
+
   return (
-     
     <form
       onSubmit={handleSubmit(onSubmit)}
     >
@@ -154,7 +164,7 @@ export const CreateReportForm = () => {
       >
         Ingrese los siguientes datos para realizar el reporte
       </Typography>
-      
+
       <Grid
         container
         spacing={2.5}
@@ -163,7 +173,6 @@ export const CreateReportForm = () => {
           item
           xs={6}
         >
-  
           <InputForm
             name='title'
             control={control}
@@ -177,12 +186,11 @@ export const CreateReportForm = () => {
           item
           xs={6}
         >
-
           <Controller
             name='type'
             control={control}
             rules={{
-              required: true,
+              required: true 
             }}
             render={({
               field 
@@ -192,19 +200,9 @@ export const CreateReportForm = () => {
                 size={'medium'}
                 fullWidth
               >
-                {/* i dont know why i need to put another input label when i use shrink prop */}
-                {!shrink ? (
-                  <InputLabel
-                    id={'type' + '-label'}
-                    shrink={false}
-                  >
-                    {'Tipo de Problema'}
-                  </InputLabel>
-                ) : (
-                  <InputLabel
-                    id={'type' + '-label'}
-                  >{'Tipo de Problema'}</InputLabel>
-                )}
+                <InputLabel
+                  id={'type' + '-label'}
+                >Tipo de Problema</InputLabel>
                 <Select
                   size={'medium'}
                   fullWidth
@@ -233,7 +231,6 @@ export const CreateReportForm = () => {
               </FormControl>
             )}
           />
-                
         </Grid>
         <Grid
           item
@@ -247,14 +244,13 @@ export const CreateReportForm = () => {
             variant='filled'
             size='medium'
           />
-                
         </Grid>
         <Grid
           item
           xs={12}
         >
           <Controller
-            name='imagePath'
+            name='image'
             control={control}
             defaultValue=''
             render={({
@@ -303,7 +299,7 @@ export const CreateReportForm = () => {
                     }}
                   >
                     <img
-                      src={selectedImage}
+                      src={selectedImage ? selectedImage : addImage}
                       alt='Selected'
                       style={{
                         height: '100px',
@@ -338,9 +334,20 @@ export const CreateReportForm = () => {
             variant='filled'
             size='medium'
           />
-
         </Grid>
-  
+        <Grid
+          item
+          xs={12}
+        >
+          <InputForm
+            name='neighborhood'
+            control={control}
+            errors={errors}
+            label={'Barrio *'}
+            variant='filled'
+            size='medium'
+          />
+        </Grid>
         <Grid
           item
           xs={12}
@@ -356,7 +363,7 @@ export const CreateReportForm = () => {
         </Grid>
         <Grid
           item
-          xs={12}
+          xs={6}
         >
           <InputForm
             name='email'
@@ -370,13 +377,27 @@ export const CreateReportForm = () => {
         </Grid>
         <Grid
           item
+          xs={6}
+        >
+          <InputForm
+            name='phone'
+            control={control}
+            errors={errors}
+            label={'Número de teléfono'}
+            variant='filled'
+            helperText={'Ingrese su número de teléfono para recibir novedades del reporte'}
+            size='medium'
+          />
+        </Grid>
+        <Grid
+          item
           xs={12}
         >
           <Box
             sx={{
               width: 1,
               display: 'flex',
-              justifyContent: 'center',
+              justifyContent: 'center' 
             }}
           >
             <Button
@@ -390,7 +411,6 @@ export const CreateReportForm = () => {
                 },
               }}
               type='submit'
-  
             >
               {isCreateReportLoading ? (
                 <CircularProgress
@@ -401,14 +421,9 @@ export const CreateReportForm = () => {
                 'ENVIAR'
               )}
             </Button>
-  
           </Box>
-  
         </Grid>
-  
       </Grid>
     </form>
-  
   );
 };
-  

@@ -2,7 +2,7 @@ import {
   useCreateReport 
 } from './request';
 
-export const useAuth = () => {
+export const useReports = () => {
    
   const {
     createReport, isLoading: isCreateReportLoading 
