@@ -5,7 +5,7 @@ import {
   object, string 
 } from 'yup';
 import {
-  Alert, AlertTitle, Box, Typography 
+  Box, Typography 
 } from '@mui/material';
 import {
   useForm 
@@ -19,6 +19,9 @@ import {
 import {
   CancelAndSubmitButton 
 } from '../../components/CancelAndSubmitButton/CancelAndSubmitButton';
+import {
+  CustomAlert 
+} from '../../components/CustomAlert/CustomAlert';
 
 const cargos = [
   {
@@ -61,16 +64,16 @@ const newEmployeeSchema = object({
     .required('El teléfono personal es obligatorio')
     .matches(/^\+?\d{10,12}$/, 'El teléfono personal no es válido'),
   personalEmail: string()
-    .email('El email personal no es un email válido')
-    .required('El email personal es obligatorio'),
+    .required('El email personal es obligatorio')
+    .email('El email personal no es un email válido'),
   jobPosition: string().required('El cargo es obligatorio'),
   timeShift: string().required('El turno es obligatorio'),
   enterprisePhone: string()
     .required('El teléfono de la empresa es obligatorio')
     .matches(/^\+?\d{10,12}$/, 'El teléfono de la empresa no es válido'),
   enterpriseEmail: string()
-    .email('El email de la empresa no es válido')
     .required('El email de la empresa es obligatorio')
+    .email('El email de la empresa no es válido')
 }).required();
 
 export const CreateEmployeeForm = ({
@@ -302,27 +305,11 @@ export const CreateEmployeeForm = ({
       </Box>
 
       {Object.keys(errors).length > 0 && (
-        <Box
-          sx={{
-            paddingInline: '24px'
-          }}
-        >  
-          <Alert
-            severity='error'
-          >
-            <AlertTitle>Error con los datos ingresados</AlertTitle>
-            <Box
-              component='ul'
-              sx={{
-                paddingLeft: '16px',
-                margin: 0,
-                wordWrap: 'break-word',
-              }}
-            >
-              {errorMessages}
-            </Box>
-          </Alert>
-        </Box>
+        <CustomAlert
+          severity='error'
+          title='Error con los datos ingresados'
+          message={errorMessages}
+        />
       )}
 
       <CancelAndSubmitButton
