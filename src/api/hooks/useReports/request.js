@@ -11,18 +11,30 @@ export const useCreateReport = () => {
   });
   
   const createReport = ({
-    title, typeOfProblem, description, address, containerID, email 
+    userId,
+    containerId,
+    title,
+    description,
+    address,
+    imagePath,
+    email,
+    type,  
   }) => {
     return commonFetch({
       uri: '/report',
       method: 'POST',
       body: {
-        title, 
-        typeOfProblem, 
-        description, 
-        address, 
-        containerID, 
-        email 
+        userId,
+        containerId,
+        title,
+        description,
+        address,
+        imagePath,
+        email,
+        type,
+      },
+      headers: {
+        'Content-Type': 'application/json',
       },
     });
   };
@@ -32,6 +44,4 @@ export const useCreateReport = () => {
     isLoading,
   };
 };
-  
-  
   

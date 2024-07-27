@@ -18,6 +18,9 @@ export function useFetch({
         url: url + uri,
         data: body,
         method,
+        headers: {
+          'Content-Type': 'application/json',
+        },
       });
 
       return response.data;

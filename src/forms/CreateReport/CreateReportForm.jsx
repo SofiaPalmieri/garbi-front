@@ -32,6 +32,12 @@ import {
 import {
   useAuth 
 } from '../../api/hooks/useAuth/useAuth';
+
+
+import {
+  useState 
+} from 'react';
+
   
 const tipos = [
   {
@@ -60,6 +66,9 @@ export const CreateReportForm = () => {
   
   const addressRegex = /^[A-ZÁÉÍÓÚÑ][a-záéíóúñA-ZÁÉÍÓÚÑ\s]*\s\d{1,4}$/;
   const navigate = useNavigate();
+  const [selectedImage, setSelectedImage] = useState(addImage);
+
+
   
   const {
     createReport: {
@@ -70,14 +79,16 @@ export const CreateReportForm = () => {
   
   const createReportSchema =  object({
     title: string().required('El titulo es un campo obligatorio'),
-    typeOfProblem: string().required('Debe seleccionar una opcion'),
+    type: string().required('Debe seleccionar una opcion'),
     description: string().required('La descripcion es un campo obligatorio'),
     address: string().matches(addressRegex, 'La direccion es un campo obligatorio y su formato es por ej. "Medrano 900"')
       .required(),
-    containerID: string().length(6, 'El identificador del contenedor debe tener 6 caracteres')
+    containerId: string().length(6, 'El identificador del contenedor debe tener 6 caracteres')
       .optional(),
     email: string().email()
-      .required('El mail es un campo obligatorio')
+      .required('El mail es un campo obligatorio'),
+    imagePath: string().required('Añade una foto del problema'),
+    userId: string().required()
   }).required();
   
   
@@ -91,27 +102,31 @@ export const CreateReportForm = () => {
     defaultValues: {
       title: '',
       description: '',
-      typeOfProblem:'',
+      type:'',
       address:'',
-      containerID:'',
-      email:''
+      containerId:'',
+      email:'',
+      imagePath: '',
+      userId:'66a15df077d2002dacbb8447'
     },
     resolver: yupResolver(createReportSchema),
   });
   
   const onSubmit = async (data) => {
+
   
-    const response = await createReport( {
+    const response =  await createReport( {
+      userId: data.userId,
+      containerId: data.containerId,
       title: data.title,
       description: data.description,
       address: data.address,
-      containerID: data.containerID,
-      email: data.email
+      imagePath: data.imagePath,
+      email: data.email,
+      type: data.type,
       
     });
-  
-  
-    console.log('Respuesta de createReport: ', response);
+
   
     if (response.success) {
       navigate('/reportes');
@@ -164,7 +179,7 @@ export const CreateReportForm = () => {
         >
 
           <Controller
-            name='typeOfProblem'
+            name='type'
             control={control}
             rules={{
               required: true,
@@ -180,14 +195,14 @@ export const CreateReportForm = () => {
                 {/* i dont know why i need to put another input label when i use shrink prop */}
                 {!shrink ? (
                   <InputLabel
-                    id={'typeOfProblem' + '-label'}
+                    id={'type' + '-label'}
                     shrink={false}
                   >
                     {'Tipo de Problema'}
                   </InputLabel>
                 ) : (
                   <InputLabel
-                    id={'typeOfProblem' + '-label'}
+                    id={'type' + '-label'}
                   >{'Tipo de Problema'}</InputLabel>
                 )}
                 <Select
@@ -206,13 +221,13 @@ export const CreateReportForm = () => {
                     </MenuItem>
                   ))}
                 </Select>
-                {errors['typeOfProblem'] && (
+                {errors['type'] && (
                   <Typography
                     fontSize={'0.85rem'}
                     paddingLeft={1.5}
                     color={'red'}
                   >
-                    {errors['typeOfProblem'].message}
+                    {errors['type'].message}
                   </Typography>
                 )}
               </FormControl>
@@ -239,7 +254,7 @@ export const CreateReportForm = () => {
           xs={12}
         >
           <Controller
-            name='banner'
+            name='imagePath'
             control={control}
             defaultValue=''
             render={({
@@ -249,15 +264,21 @@ export const CreateReportForm = () => {
                 fullWidth
               >
                 <Input
-                  {...field}
                   id='image-input'
                   type='file'
                   disableUnderline
                   onChange={(e) => {
-                    field.onChange(e);
+                    if (e.target.files && e.target.files[0]) {
+                      const reader = new FileReader();
+                      reader.onload = (event) => {
+                        field.onChange(event.target.result); // Set the base64 string to the controller
+                        setSelectedImage(event.target.result); // Update the local state with the image URL
+                      };
+                      reader.readAsDataURL(e.target.files[0]);
+                    }
                   }}
                   sx={{
-                    display: 'none',
+                    display: 'none' 
                   }}
                   inputProps={{
                     accept: 'image/*',
@@ -282,7 +303,12 @@ export const CreateReportForm = () => {
                     }}
                   >
                     <img
-                      src={addImage}
+                      src={selectedImage}
+                      alt='Selected'
+                      style={{
+                        height: '100px',
+                        width: 'auto' 
+                      }}
                     />
                     <Typography
                       sx={{
@@ -299,8 +325,6 @@ export const CreateReportForm = () => {
               </FormControl>
             )}
           />
-                  
-
         </Grid>
         <Grid
           item
@@ -322,7 +346,7 @@ export const CreateReportForm = () => {
           xs={12}
         >
           <InputForm
-            name='containerID'
+            name='containerId'
             control={control}
             errors={errors}
             label={'Identificador del contenedor (6 dígitos)'}

@@ -1,6 +1,11 @@
 import {
-  useChangePassword, useLogin, useCreateReport 
+  useChangePassword, useLogin 
 } from './request';
+
+import {
+  useCreateReport
+} 
+  from '../useReports/request'
 
 export const useAuth = () => {
   const {
