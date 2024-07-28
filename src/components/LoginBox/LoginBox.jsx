@@ -51,7 +51,8 @@ export const LoginBox = ({
   const [showPassword, setShowPassword] = useState(false);
   const {
     login: {
-      login: login, isLoginLoading 
+      login: login,
+      isLoginLoading 
     },
   } = useAuth();
   const navigate = useNavigate();

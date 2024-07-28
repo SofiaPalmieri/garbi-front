@@ -6,6 +6,7 @@ export const useAuth = () => {
   const {
     login, isLoading: isLoginLoading 
   } = useLogin();
+
   const {
     changePassword, isLoading: isChangePasswordLoading 
   } = useChangePassword();
@@ -18,6 +19,6 @@ export const useAuth = () => {
     changePassword: {
       changePassword,
       isChangePasswordLoading,
-    },
+    }
   };
 };
