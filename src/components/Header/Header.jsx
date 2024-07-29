@@ -41,36 +41,6 @@ const managementItems = {
   Áreas: '/areas',
 };
 
-const notifications = [ //To be updated when we receive them from the BE
-  {
-    type: 'frequencyChange',
-    title: 'Cambio de frecuencia',
-    description: 'Reduce la frecuencia en Área 2',
-  },
-  {
-    type: 'newReport',
-    title: 'Nuevo reporte',
-    description: 'Contenedor desbordado',
-  },
-  {
-    type: 'lowBattery',
-    title: 'Batería baja',
-    description: 'El contenedor #123456 tiene menos de 20% de batería',
-  },
-  {
-    type: 'fullContainers',
-    title: 'Contenedores llenos',
-    description: 'El 60% de los contenedores en zona 1 están llenos',
-    details: 'VER DETALLES'
-  },
-  {
-    type: 'fullContainers',
-    title: 'Contenedores llenos',
-    description: 'El 60% de los contenedores en zona 1 están llenos',
-    details: 'VER DETALLES'
-  }
-];
-
 export const Header = ({
   logoOnly = false 
 }) => {
@@ -114,6 +84,41 @@ export const Header = ({
   const handleClickManagementItem = (path) => () => {
     navigate(path);
     setAnchorElManagement(null);
+  };
+
+
+  const [notifications, setNotifications] = useState([
+    {
+      id: 1,
+      type: 'frequencyChange',
+      title: 'Cambio de frecuencia',
+      description: 'Reduce la frecuencia en Área 2',
+    },
+    {
+      id: 2,
+      type: 'newReport',
+      title: 'Nuevo reporte',
+      description: 'Contenedor desbordado',
+    },
+    {
+      id: 3,
+      type: 'lowBattery',
+      title: 'Batería baja',
+      description: 'El contenedor #123456 tiene menos de 20% de batería',
+    },
+    {
+      id: 4,
+      type: 'fullContainers',
+      title: 'Contenedores llenos',
+      description: 'El 60% de los contenedores en zona 1 están llenos',
+      details: 'VER DETALLES'
+    }
+  ]);
+
+  const handleRemoveNotification = (id) => {
+    setNotifications((prevNotifications) =>
+      prevNotifications.filter(notification => notification.id !== id)
+    );
   };
 
   const currentTab = Object.keys(pages).find(key => pages[key] === location.pathname) || false;
@@ -388,6 +393,7 @@ export const Header = ({
                       handleClose={handleCloseNotificationsMenu}
                       notifications={notifications}
                       anchorEl={anchorElNotifications}
+                      onRemoveNotification={handleRemoveNotification}
                     />
                   </Box>
                   <Box>

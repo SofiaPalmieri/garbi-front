@@ -9,7 +9,7 @@ import WarningIcon from '@mui/icons-material/Warning';
 import CloseIcon from '@mui/icons-material/Close';
 
 export const NotificationsMenu = ({
-  handleClose, notifications, anchorEl
+  handleClose, notifications, anchorEl, onRemoveNotification
 }) => {
   const iconStyle = {
     color: '#bdbdbd' 
@@ -63,88 +63,106 @@ export const NotificationsMenu = ({
       open={Boolean(anchorEl)}
       onClose={handleClose}
     >
-      {notifications.map((notification, index) => (
-        <MenuItem
-          key={index}
-          onClick={handleClose} //TODO
-          divider={index < notifications.length - 1}
+      {notifications.length === 0 ? (
+        <Box
           sx={{
-            width: '384px',
-            paddingY: '12px'
+            padding: 2,
+            textAlign: 'center' 
           }}
         >
-          <Box
+          <Typography
+            variant='body2'
+          >
+            No tienes ninguna notificación disponible
+          </Typography>
+        </Box>
+      ) : (
+        notifications.map((notification, index) => (
+          <MenuItem
+            key={notification.id}
+            onClick={handleClose} //TODO
+            divider={index < notifications.length - 1}
             sx={{
-              width: '100%' 
+              width: '384px',
+              paddingY: '12px'
             }}
           >
             <Box
               sx={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                mb: 0.5,
+                width: '100%' 
               }}
             >
-              <Box 
-                sx={{ 
-                  display: 'flex', 
-                  alignItems: 'center' 
+              <Box
+                sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  mb: 0.5,
                 }}
               >
-                {getIcon(notification.type)}
-                <Typography 
-                  fontWeight='medium'
+                <Box 
                   sx={{ 
-                    ml: 1,
-                    mt: 0.3
+                    display: 'flex', 
+                    alignItems: 'center' 
                   }}
                 >
-                  {notification.title}
-                </Typography>
+                  {getIcon(notification.type)}
+                  <Typography 
+                    fontWeight='medium'
+                    sx={{ 
+                      ml: 1,
+                      mt: 0.3
+                    }}
+                  >
+                    {notification.title}
+                  </Typography>
+                </Box>
+                <IconButton 
+                  size='small'
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    onRemoveNotification(notification.id);
+                  }}
+                >
+                  <CloseIcon
+                    fontSize='small'
+                  />
+                </IconButton>
               </Box>
-              <IconButton 
-                size='small'
-                onClick={handleClose}
-              >
-                <CloseIcon
-                  fontSize='small'
-                />
-              </IconButton>
-            </Box>
 
-            <Box
-              sx={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-              }}
-            >
-              <Typography 
-                variant='body2'
-                sx={{ 
-                  flex: 1,
-                  maxWidth: '200px',
-                  whiteSpace: 'pre-line',
-                  overflow: 'hidden', 
-                  textOverflow: 'ellipsis', 
-                  display: '-webkit-box', 
-                  WebkitLineClamp: 2,
-                  WebkitBoxOrient: 'vertical',
+              <Box
+                sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
                 }}
               >
-                {notification.description}
-              </Typography>
-              <Button 
-                size='small' 
-                onClick={handleClose}
-              >
-                VER DETALLES
-              </Button>
+                <Typography 
+                  variant='body2'
+                  sx={{ 
+                    flex: 1,
+                    maxWidth: '200px',
+                    whiteSpace: 'pre-line',
+                    overflow: 'hidden', 
+                    textOverflow: 'ellipsis', 
+                    display: '-webkit-box', 
+                    WebkitLineClamp: 2,
+                    WebkitBoxOrient: 'vertical',
+                  }}
+                >
+                  {notification.description}
+                </Typography>
+                <Button 
+                  size='small' 
+                  onClick={handleClose}
+                >
+                  VER DETALLES
+                </Button>
+              </Box>
             </Box>
-          </Box>
-        </MenuItem>
-      ))}
+          </MenuItem>
+        ))
+      )}
     </Menu>
   );
 };
