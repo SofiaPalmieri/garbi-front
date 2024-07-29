@@ -1,5 +1,5 @@
 import {
-  Box, Typography 
+  Box, Typography, Button 
 } from '@mui/material'
 
 export const RouteOptimalInfo = ({
@@ -61,6 +61,22 @@ export const RouteOptimalInfo = ({
           }}
         >9 km</Typography>
       </Box>
+      <Box >
+        <Button
+          variant='text'
+          color='primary'
+          size='large'
+        >
+          <Typography
+            sx={{
+              color:'#2196F3',
+            }}
+          >
+            ENVIAR RUTA 
+          </Typography>
+        </Button>
+      </Box>
+       
     </Box>
   )
 }
