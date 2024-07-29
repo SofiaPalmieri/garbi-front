@@ -1,4 +1,5 @@
 import AppBar from '@mui/material/AppBar';
+import Badge from '@mui/material/Badge';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
@@ -360,11 +361,22 @@ export const Header = ({
                         backgroundColor: '#12422c' 
                       }}
                     >
-                      <NotificationsOutlinedIcon
+                      <Badge 
+                        badgeContent={notifications.length}
+                        color='error'
                         sx={{
-                          color: 'white' 
+                          '& .MuiBadge-badge': {
+                            right: 4,
+                            top: 4,
+                          },
                         }}
-                      />
+                      >
+                        <NotificationsOutlinedIcon
+                          sx={{
+                            color: 'white' 
+                          }}
+                        />
+                      </Badge>
                     </IconButton>
                     <NotificationsMenu
                       handleClose={handleCloseNotificationsMenu}
