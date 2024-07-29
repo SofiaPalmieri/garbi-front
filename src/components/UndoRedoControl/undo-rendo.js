@@ -1,5 +1,5 @@
 import {
-  useEffect 
+  useEffect
 } from 'react';
 
 
@@ -34,7 +34,7 @@ export default function reducer(state, action) {
       const snapshot = {
       };
       const {
-        geometry 
+        geometry
       } = overlay;
 
       snapshot.path = geometry.getPath()?.getArray();
@@ -56,18 +56,21 @@ export default function reducer(state, action) {
   // We then take a snapshot of the relevant values of the new overlay and
   // add it to the "now" state. The old "now" is added to the "past" stack
   case DrawingActionKind.SET_OVERLAY: {
+    console.log('🚀 ~ reducer ~ action.payload:', action.payload)
+
     const {
-      overlay 
+      overlay: polyline
     } = action.payload;
+      
 
-    const snapshot = {
-    };
+    // const snapshot = {
+    // };
 
-    snapshot.path = overlay.getPath()?.getArray();
-    let polygonOverlay = null;
+    const path = polyline.getPath()?.getArray();
+    let polygon = null;
     if (action.payload.type === google.maps.drawing.OverlayType.POLYLINE) {
-      polygonOverlay = new google.maps.Polygon({
-        paths: snapshot.path,
+      polygon = new google.maps.Polygon({
+        paths: path,
         editable: false,
         draggable: false,
         strokeOpacity: 0,
@@ -76,24 +79,28 @@ export default function reducer(state, action) {
       });
     }
 
+    // return {
+    //   past: [...state.past, state.now],
+    //   now: [
+    //     {
+    //       type: action.payload.type,
+    //       geometry: action.payload.overlay,
+    //       snapshot
+    //     },
+    //     polygonOverlay ? {
+    //       type: google.maps.drawing.OverlayType.POLYGON,
+    //       geometry: polygonOverlay,
+    //       snapshot: {
+    //         path: polygonOverlay.getPaths().getArray() 
+    //       }
+    //     } : null
+    //   ].filter(Boolean),
+    //   future: []
+    // };
     return {
-      past: [...state.past, state.now],
-      now: [
-        {
-          type: action.payload.type,
-          geometry: action.payload.overlay,
-          snapshot
-        },
-        polygonOverlay ? {
-          type: google.maps.drawing.OverlayType.POLYGON,
-          geometry: polygonOverlay,
-          snapshot: {
-            path: polygonOverlay.getPaths().getArray() 
-          }
-        } : null
-      ].filter(Boolean),
-      future: []
-    };
+      polyline,
+      polygon
+    }
   }
 
   // This action is called when the undo button is clicked.
@@ -129,91 +136,39 @@ export default function reducer(state, action) {
 }
 
 
-export function useDrawingManagerEvents(drawingManager, overlaysShouldUpdateRef, dispatch) {
+export function useOverlaySnapshots(map, state) {
   useEffect(() => {
-    if (!drawingManager) return;
+    if (!map || !state.polyline) return;
 
-    const eventListeners = [];
+    console.log('🚀 ~ useEffect ~ state:', state)
 
-    const addUpdateListener = (eventName, drawResult) => {
-      const updateListener = google.maps.event.addListener(
-        drawResult.overlay,
-        eventName,
-        () => {
-          if (eventName === 'dragstart') {
-            overlaysShouldUpdateRef.current = false;
-          }
+    state.polyline.setMap(map)
+    state.polygon.setMap(map)
 
-          if (eventName === 'dragend') {
-            overlaysShouldUpdateRef.current = true;
-          }
 
-          if (overlaysShouldUpdateRef.current) {
-            dispatch({
-              type: DrawingActionKind.UPDATE_OVERLAYS 
-            });
-          }
-        }
-      );
+    // for (const overlay of state.now) {
+    //   overlaysShouldUpdateRef.current = false;
 
-      eventListeners.push(updateListener);
-    };
+    //   overlay.geometry.setMap(map);
 
-    const overlayCompleteListener = google.maps.event.addListener(
-      drawingManager,
-      'overlaycomplete',
-      (drawResult) => {
-        switch (drawResult.type) {
-        case google.maps.drawing.OverlayType.POLYGON:
-        case google.maps.drawing.OverlayType.POLYLINE:
-          ['mouseup'].forEach(eventName =>
-            addUpdateListener(eventName, drawResult)
-          );
-          break;
+    //   const {
+    //     path 
+    //   } = overlay.snapshot;
 
-        default:
-          break;
-        }
+    //   overlay.geometry.setPath(path ?? []);
 
-        dispatch({
-          type: DrawingActionKind.SET_OVERLAY,
-          payload: drawResult 
-        });
-      }
-    );
+    //   overlaysShouldUpdateRef.current = true;
+    // }
 
-    eventListeners.push(overlayCompleteListener);
-
+    // return () => {
+    //   for (const overlay of state.now) {
+    //     overlay.geometry.setMap(null);
+    //   }
+    // };
     return () => {
-      eventListeners.forEach(listener =>
-        google.maps.event.removeListener(listener)
-      );
-    };
-  }, [dispatch, drawingManager, overlaysShouldUpdateRef]);
-}
-
-export function useOverlaySnapshots(map, state, overlaysShouldUpdateRef) {
-  useEffect(() => {
-    if (!map || !state.now) return;
-
-    for (const overlay of state.now) {
-      overlaysShouldUpdateRef.current = false;
-
-      overlay.geometry.setMap(map);
-
-      const {
-        path 
-      } = overlay.snapshot;
-
-      overlay.geometry.setPath(path ?? []);
-
-      overlaysShouldUpdateRef.current = true;
+      state.polyline.setMap(null)
+      state.polygon.setMap(null)
     }
-
-    return () => {
-      for (const overlay of state.now) {
-        overlay.geometry.setMap(null);
-      }
-    };
-  }, [map, overlaysShouldUpdateRef, state.now]);
+  }, [map, state.polyline]);
+  
 }
