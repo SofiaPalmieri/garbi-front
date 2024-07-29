@@ -22,6 +22,9 @@ import NotificationsOutlinedIcon from '@mui/icons-material/NotificationsOutlined
 import {
   useNavigate, useLocation 
 } from 'react-router-dom';
+import {
+  NotificationsMenu 
+} from '../../components/NotificationsMenu';
 
 const pages = {
   Mapa: '/home',
@@ -37,7 +40,29 @@ const managementItems = {
   Áreas: '/areas',
 };
 
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
+const notifications = [ //To be updated when we receive them from the BE
+  {
+    type: 'frequencyChange',
+    title: 'Cambio de frecuencia',
+    description: 'Reduce la frecuencia en Área 2',
+  },
+  {
+    type: 'newReport',
+    title: 'Nuevo reporte',
+    description: 'Contenedor desbordado',
+  },
+  {
+    type: 'lowBattery',
+    title: 'Batería baja',
+    description: 'El contenedor #123456 tiene menos de 20% de batería',
+  },
+  {
+    type: 'fullContainers',
+    title: 'Contenedores llenos',
+    description: 'El 60% de los contenedores en zona 1 están llenos',
+    details: 'VER DETALLES'
+  }
+];
 
 export const Header = ({
   logoOnly = false 
@@ -46,23 +71,23 @@ export const Header = ({
   const location = useLocation();
 
   const [anchorElNav, setAnchorElNav] = useState(null);
-  const [anchorElUser, setAnchorElUser] = useState(null);
+  const [anchorElNotifications, setAnchorElNotifications] = useState(null);
   const [anchorElManagement, setAnchorElManagement] = useState(null);
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
   };
 
-  const handleOpenUserMenu = (event) => {
-    setAnchorElUser(event.currentTarget);
+  const handleOpenNotificationsMenu = (event) => {
+    setAnchorElNotifications(event.currentTarget);
   };
 
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
   };
 
-  const handleCloseUserMenu = () => {
-    setAnchorElUser(null);
+  const handleCloseNotificationsMenu = () => {
+    setAnchorElNotifications(null);
   };
 
   const handleOpenManagementMenu = (event) => {
@@ -294,18 +319,18 @@ export const Header = ({
                   </Button>
                   <Menu
                     sx={{
-                      mt: '45px' 
+                      mt: '44px' 
                     }}
                     id='menu-appbar'
                     anchorEl={anchorElManagement}
                     anchorOrigin={{
                       vertical: 'top',
-                      horizontal: 'right' 
+                      horizontal: 'left' 
                     }}
                     keepMounted
                     transformOrigin={{
                       vertical: 'top',
-                      horizontal: 'right' 
+                      horizontal: 'left' 
                     }}
                     open={Boolean(anchorElManagement)}
                     onClose={handleCloseManagementMenu}
@@ -330,7 +355,7 @@ export const Header = ({
                 >
                   <Box>
                     <IconButton
-                      onClick={handleOpenUserMenu}
+                      onClick={handleOpenNotificationsMenu}
                       sx={{
                         backgroundColor: '#12422c' 
                       }}
@@ -341,35 +366,11 @@ export const Header = ({
                         }}
                       />
                     </IconButton>
-                    <Menu
-                      sx={{
-                        mt: '45px' 
-                      }}
-                      id='menu-appbar'
-                      anchorEl={anchorElUser}
-                      anchorOrigin={{
-                        vertical: 'top',
-                        horizontal: 'right' 
-                      }}
-                      keepMounted
-                      transformOrigin={{
-                        vertical: 'top',
-                        horizontal: 'right' 
-                      }}
-                      open={Boolean(anchorElUser)}
-                      onClose={handleCloseUserMenu}
-                    >
-                      {settings.map((setting) => (
-                        <MenuItem
-                          key={setting}
-                          onClick={handleCloseUserMenu}
-                        >
-                          <Typography
-                            textAlign='center'
-                          >{setting}</Typography>
-                        </MenuItem>
-                      ))}
-                    </Menu>
+                    <NotificationsMenu
+                      handleClose={handleCloseNotificationsMenu}
+                      notifications={notifications}
+                      anchorEl={anchorElNotifications}
+                    />
                   </Box>
                   <Box>
                     <Tooltip
