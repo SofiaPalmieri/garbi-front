@@ -44,6 +44,10 @@ export const NotificationsMenu = ({
     <Menu
       sx={{
         mt: '44px',
+        '& .MuiPaper-root': {
+          maxHeight: '440px',
+          overflowY: 'auto',
+        }
       }}
       id='menu-notifications'
       anchorEl={anchorEl}

@@ -62,6 +62,12 @@ const notifications = [ //To be updated when we receive them from the BE
     title: 'Contenedores llenos',
     description: 'El 60% de los contenedores en zona 1 están llenos',
     details: 'VER DETALLES'
+  },
+  {
+    type: 'fullContainers',
+    title: 'Contenedores llenos',
+    description: 'El 60% de los contenedores en zona 1 están llenos',
+    details: 'VER DETALLES'
   }
 ];
 
