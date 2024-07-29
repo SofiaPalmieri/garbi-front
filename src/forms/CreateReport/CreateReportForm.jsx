@@ -8,8 +8,12 @@ import {
   InputLabel,
   MenuItem,
   Select,
+  styled,
+  Tooltip,
+  tooltipClasses,
   Typography,
 } from '@mui/material';
+import CircleIcon from '@mui/icons-material/Circle';
 import {
   Controller, useForm
 } from 'react-hook-form';
@@ -27,11 +31,17 @@ import {
   useNavigate
 } from 'react-router-dom';
 import {
-  useState
+  useEffect, useState
 } from 'react';
 import {
   useReports
 } from '../../api/hooks/useReports/useReports';
+import {
+  useContainers
+} from '../../api/hooks/useContainers/useContainers';
+import {
+  APIProvider, AdvancedMarker, Map
+} from '@vis.gl/react-google-maps';
 
 const tipos = [
   {
@@ -55,6 +65,30 @@ const tipos = [
     label: 'Otro'
   },
 ];
+
+const HtmlTooltip = styled(({
+  className, ...props
+}) => (
+  <Tooltip
+    {...props}
+    classes={{
+      popper: className,
+    }}
+  />
+))(({
+  theme
+}) => ({
+  [`& .${tooltipClasses.tooltip}`]: {
+    backgroundColor: '#fff',
+    padding: 0,
+    maxWidth: 220,
+    fontSize: theme.typography.pxToRem(12),
+    border: 'transparent',
+  },
+  [`& .${tooltipClasses.arrow}`]: {
+    color: '#fff',
+  },
+}));
 
 export const CreateReportForm = () => {
   const addressRegex = /^[A-ZÁÉÍÓÚÑ][a-záéíóúñA-ZÁÉÍÓÚÑ\s]*\s\d{1,4}$/;
@@ -84,7 +118,7 @@ export const CreateReportForm = () => {
   }).required();
 
   const {
-    control, handleSubmit, formState: {
+    control, handleSubmit, setValue, formState: {
       errors
     }
   } = useForm({
@@ -92,9 +126,9 @@ export const CreateReportForm = () => {
       title: 'sasA',
       description: 'dssadsd',
       type: 'BASURA_EN_LA_CALLE',
-      address: 'Medrano 900',
-      neighborhood: 'sasdds',
-      containerId: 'asdasd',
+      address: '',
+      neighborhood: '',
+      containerId: '',
       email: 'sdada@saddad.com',
       phone: '465456465'
     },
@@ -137,6 +171,62 @@ export const CreateReportForm = () => {
     }
   };
 
+
+  const [containers, setContainers] = useState([]);
+  const [containerSelected, setContainerSeleted] = useState(null);
+  
+  const position = {
+    lat: -34.5893,
+    lng: -58.3974,
+  };
+  const {
+    getContainers: {
+      getContainers: getContainers
+    },
+  } = useContainers();
+
+  const apiKeyGoogleMaps = import.meta.env.VITE_REACT_APP_API_KEY_GOOGLE_MAPS;
+
+
+  const formatContainers = (containers) => {
+    return containers.documents.map((container) => {
+      if (!container.coordinates) {
+        return {
+          ...container,
+          lat: 0,
+          lng: 0,
+        };
+      }
+      return {
+        ...container,
+        lat: container.coordinates.lat,
+        lng: container.coordinates.lng,
+      };
+    });
+  };
+
+  useEffect(() => {
+    const retrieveContainers = async () => {
+      const containersUnformated = await getContainers();
+      const containersFormated = formatContainers(containersUnformated);
+
+      setContainers(containersFormated);
+    };
+
+    try {
+      retrieveContainers();
+    } catch (e) {
+      console.log(e);
+    }
+  }, []);
+
+  const handleContainerClick = (container) => {
+    setValue('address', container.address.street +' '+ container.address.number || '');
+    setValue('neighborhood', container.address.neighborhood || '');
+    setValue('containerId', container._id.slice(-6));
+    setContainerSeleted(container);
+  };
+
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
@@ -153,6 +243,7 @@ export const CreateReportForm = () => {
       >
         Ingrese los siguientes datos para realizar el reporte
       </Typography>
+
 
       <Grid
         container
@@ -313,6 +404,47 @@ export const CreateReportForm = () => {
             )}
           />
         </Grid>
+
+        <Grid
+          item
+          xs={12}
+        >
+          <Box
+            width='100%'
+            height='400px'
+          >
+            <APIProvider
+              apiKey={apiKeyGoogleMaps}
+            >
+              <Map
+                defaultZoom={12}
+                defaultCenter={position}
+                mapId='658a52589c7a963'
+                streetViewControl={false}
+                mapTypeControl={false}
+                zoomControl={false}
+                gestureHandling={'greedy'}
+                disableDefaultUI={true}
+                id='garbi-home-map'
+                style={{
+                  outline: 'none',
+                  '&:focus': {
+                    outline: 'none',
+                  },
+                }}
+              >
+                {containers.map((p) => (
+                  <Marker
+                    setContainerSeleted={handleContainerClick}
+                    key={p._id}
+                    point={p}
+                  />
+                ))}
+              </Map>
+            </APIProvider>
+          </Box>
+        </Grid>
+
         <Grid
           item
           xs={12}
@@ -418,3 +550,58 @@ export const CreateReportForm = () => {
     </form>
   );
 };
+
+function Marker({
+  point, setContainerSeleted
+}) {
+  return (
+    <AdvancedMarker
+      position={point}
+      onClick={() => setContainerSeleted(point)}
+    >
+      <HtmlTooltip
+        placement='top'
+        arrow
+        title={
+          <Box
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              flexDirection: 'column',
+              borderRadius: '4px',
+              padding: '8px'
+            }}
+          >
+            <Typography
+              sx={{
+                fontSize: '16px',
+                fontWeight: 500,
+                color: 'black',
+              }}
+            > 
+              {point.address.street +' '+ point.address.number}
+            </Typography>
+            <Typography //TODO: update id here to receive the 6 numbers one
+              sx={{
+                fontSize: '12px',
+                fontWeight: 400,
+                color: '#9e9e9e',
+              }}
+            >
+              Contenedor #{point._id.slice(-6)}
+            </Typography>
+          </Box>
+        }
+      >
+        <div>
+          <CircleIcon
+            sx={{
+              color: 'red'
+            }}
+          />
+        </div>
+      </HtmlTooltip>
+    </AdvancedMarker>
+  );
+}
+
