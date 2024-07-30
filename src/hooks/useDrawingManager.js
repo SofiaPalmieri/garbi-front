@@ -33,7 +33,7 @@ export const useDrawingManager = (id = null) => {
         ]
       },
       polylineOptions: {
-        editable: false,
+        editable: true,
         draggable: false,
         strokeColor: '#006610',
         strokeOpacity: 0.5,
