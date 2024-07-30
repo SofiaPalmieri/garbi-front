@@ -38,7 +38,7 @@ export const UndoRedoControl = ({
     >
       <button
         onClick={() => dispatch({
-          type: DrawingActionKind.REDO
+          type: DrawingActionKind.CANCEL_OVERLAY
         })}
         disabled={!state.polygon && !state.polyline}
       >
