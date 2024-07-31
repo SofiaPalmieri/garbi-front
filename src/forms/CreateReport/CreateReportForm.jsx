@@ -40,7 +40,7 @@ import {
   useContainers
 } from '../../api/hooks/useContainers/useContainers';
 import {
-  APIProvider, AdvancedMarker, Map, useMap
+  APIProvider, AdvancedMarker, Map
 } from '@vis.gl/react-google-maps';
 
 const tipos = [
@@ -91,7 +91,8 @@ const HtmlTooltip = styled(({
 }));
 
 export const CreateReportForm = () => {
-  const addressRegex = /^[A-ZÁÉÍÓÚÑ][a-záéíóúñA-ZÁÉÍÓÚÑ\s]*\s\d{1,4}$/;
+  const apiKeyGoogleMaps = import.meta.env.VITE_REACT_APP_API_KEY_GOOGLE_MAPS;
+  //const addressRegex = /^[A-ZÁÉÍÓÚÑ][a-záéíóúñA-ZÁÉÍÓÚÑ\s]*\s\d{1,4}$/;
   const [selectedImage, setSelectedImage] = useState(null);
   const [selectedFile, setSelectedFile] = useState(null);
 
@@ -108,12 +109,12 @@ export const CreateReportForm = () => {
     type: string().required('Debe seleccionar una opcion'),
     description: string().required('La descripcion es un campo obligatorio'),
     address: string().required(),
+    neighborhood: string().required(),
     containerId: string().length(6, 'El identificador del contenedor debe tener 6 caracteres')
       .optional(),
     email: string().email('Debe ser un email valido')
       .required('El mail es un campo obligatorio'),
     image: mixed(),
-    neighborhood: string().required(),
     phone: string()
   }).required();
 
@@ -170,80 +171,21 @@ export const CreateReportForm = () => {
       console.error('Error creating report:', error);
     }
   };
+  
+
+  const position = {
+    lat: -34.5893,
+    lng: -58.3974,
+  };
 
   const [containers, setContainers] = useState([]);
   const [containerSelected, setContainerSeleted] = useState(null);
-  
-
-  const [userLocation, setUserLocation] = useState(null);
-  const [mapCenter, setMapCenter] = useState({
-    lat: -34.5893,
-    lng: -58.3974 
-  });
-
-  useEffect(() => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          const userLocation = {
-            lat: position.coords.latitude,
-            lng: position.coords.longitude,
-          };
-          setUserLocation(userLocation);
-          if (mapCenter.lat === -34.5893 && mapCenter.lng === -58.3974) {
-            setMapCenter(userLocation);
-          }
-        },
-        (error) => {
-          console.error('Error getting location: ', error);
-        }
-      );
-    }
-  }, [mapCenter]);
-
-  const UserLocationMarker = () => {
-    const map = useMap();
-  
-    useEffect(() => {
-      if (!map || !userLocation) return;
-  
-      new google.maps.Marker({
-        position: userLocation,
-        map,
-        icon: {
-          path: google.maps.SymbolPath.CIRCLE,
-          fillColor: '#4285F4',
-          fillOpacity: 0.8,
-          strokeColor: 'white',
-          strokeWeight: 2,
-          scale: 8,
-        },
-      });
-
-      new google.maps.Marker({
-        position: userLocation,
-        map,
-        icon: {
-          path: google.maps.SymbolPath.CIRCLE,
-          strokeColor: '#4285F4',
-          strokeOpacity: 0,
-          fillColor: '#4285F4',
-          fillOpacity: 0.05,
-          scale: 15,
-        },
-      });
-    }, [map, userLocation]);
-  
-    return null;
-  };
 
   const {
     getContainers: {
       getContainers: getContainers
     },
   } = useContainers();
-
-  const apiKeyGoogleMaps = import.meta.env.VITE_REACT_APP_API_KEY_GOOGLE_MAPS;
 
 
   const formatContainers = (containers) => {
@@ -275,23 +217,6 @@ export const CreateReportForm = () => {
       retrieveContainers();
     } catch (e) {
       console.log(e);
-    }
-  }, []);
-
-  
-  useEffect(() => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          setUserLocation({
-            lat: position.coords.latitude,
-            lng: position.coords.longitude,
-          });
-        },
-        (error) => {
-          console.error('Error getting location: ', error);
-        }
-      );
     }
   }, []);
 
@@ -487,13 +412,14 @@ export const CreateReportForm = () => {
           <Box
             width='100%'
             height='400px'
+            mt='24px'
           >
             <APIProvider
               apiKey={apiKeyGoogleMaps}
             >
               <Map
                 defaultZoom={16}
-                defaultCenter={mapCenter}
+                defaultCenter={position}
                 mapId='658a52589c7a963'
                 streetViewControl={false}
                 mapTypeControl={false}
@@ -508,9 +434,6 @@ export const CreateReportForm = () => {
                   },
                 }}
               >
-                {userLocation && (
-                  <UserLocationMarker />
-                )}
                 {containers.map((p) => (
                   <CustomMarker
                     setContainerSeleted={handleContainerClick}
@@ -601,7 +524,8 @@ export const CreateReportForm = () => {
             sx={{
               width: 1,
               display: 'flex',
-              justifyContent: 'center'
+              justifyContent: 'center',
+              mb: '24px'
             }}
           >
             <Button
