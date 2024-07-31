@@ -104,75 +104,6 @@ export const CreateReportForm = () => {
 
   const navigate = useNavigate()
 
-  const createReportSchema = object({
-    title: string().required('El titulo es un campo obligatorio'),
-    type: string().required('Debe seleccionar una opcion'),
-    description: string().required('La descripcion es un campo obligatorio'),
-    address: string().required(),
-    neighborhood: string().required(),
-    containerId: string().length(6, 'El identificador del contenedor debe tener 6 caracteres')
-      .optional(),
-    email: string().email('Debe ser un email valido')
-      .required('El mail es un campo obligatorio'),
-    image: mixed(),
-    phone: string()
-  }).required();
-
-  const {
-    control, handleSubmit, setValue, formState: {
-      errors
-    }
-  } = useForm({
-    defaultValues: {
-      title: 'sasA',
-      description: 'dssadsd',
-      type: 'BASURA_EN_LA_CALLE',
-      address: '',
-      neighborhood: '',
-      containerId: '',
-      email: 'sdada@saddad.com',
-      phone: '465456465'
-    },
-    resolver: yupResolver(createReportSchema),
-  });
-
-  const onSubmit = async (data) => {
-
-    const formData = new FormData();
-
-    data.address = [
-      {
-        street: data.address.split(' ')[0],
-        number: data.address.split(' ')[1],
-        neighborhood: data.neighborhood
-      }
-    ];
-
-    const report = {
-      containerId: data.containerId,
-      title: data.title,
-      description: data.description,
-      address: data.address,
-      phone: data.phone,
-      email: data.email,
-      type: data.type
-    };
-
-    formData.append('report', JSON.stringify(report));
-    formData.append('image', selectedFile);
-
-    try {
-      const response = await createReport(formData);  // Envía el FormData al backend
-
-      if (response.success) {
-        navigate('/reportes');
-      }
-    } catch (error) {
-      console.error('Error creating report:', error);
-    }
-  };
-  
-
   const position = {
     lat: -34.5893,
     lng: -58.3974,
@@ -180,6 +111,7 @@ export const CreateReportForm = () => {
 
   const [containers, setContainers] = useState([]);
   const [containerSelected, setContainerSeleted] = useState(null);
+  const [containerError, setContainerError] = useState(false);
 
   const {
     getContainers: {
@@ -226,6 +158,80 @@ export const CreateReportForm = () => {
     setValue('containerId', container._id.slice(-6));
     setContainerSeleted(container);
   };
+
+  const createReportSchema = object({
+    title: string().required('El titulo es un campo obligatorio'),
+    type: string().required('Debe seleccionar una opcion'),
+    description: string().required('La descripcion es un campo obligatorio'),
+    /*address: string().required(),
+    neighborhood: string().required(),
+    containerId: string().length(6, 'El identificador del contenedor debe tener 6 caracteres')
+      .optional(),*/
+    email: string().email('Debe ser un email valido')
+      .required('El mail es un campo obligatorio'),
+    image: mixed(),
+    phone: string()
+  }).required();
+
+  const {
+    control, handleSubmit, setValue, formState: {
+      errors
+    }
+  } = useForm({
+    defaultValues: {
+      title: 'sasA',
+      description: 'dssadsd',
+      type: 'BASURA_EN_LA_CALLE',
+      address: '',
+      neighborhood: '',
+      containerId: '',
+      email: 'sdada@saddad.com',
+      phone: '465456465'
+    },
+    resolver: yupResolver(createReportSchema),
+  });
+
+  const onSubmit = async (data) => {
+    if (!containerSelected) {
+      setContainerError(true);
+      return;
+    }
+    setContainerError(false);
+
+    const formData = new FormData();
+
+    data.address = [
+      {
+        street: data.address.split(' ')[0],
+        number: data.address.split(' ')[1],
+        neighborhood: data.neighborhood
+      }
+    ];
+
+    const report = {
+      containerId: data.containerId,
+      title: data.title,
+      description: data.description,
+      address: data.address,
+      phone: data.phone,
+      email: data.email,
+      type: data.type
+    };
+
+    formData.append('report', JSON.stringify(report));
+    formData.append('image', selectedFile);
+
+    try {
+      const response = await createReport(formData);  // Envía el FormData al backend
+
+      if (response.success) {
+        navigate('/reportes');
+      }
+    } catch (error) {
+      console.error('Error creating report:', error);
+    }
+  };
+  
 
   return (
     <form
@@ -409,10 +415,20 @@ export const CreateReportForm = () => {
           item
           xs={12}
         >
+          <Typography
+            sx={{
+              fontSize: '16px',
+              fontWeight: 400,
+              mt: '24px',
+              mb: '8px',
+              color: 'black',
+            }}
+          >
+            Seleccione el contenedor afectado en el mapa
+          </Typography>
           <Box
             width='100%'
             height='400px'
-            mt='24px'
           >
             <APIProvider
               apiKey={apiKeyGoogleMaps}
@@ -444,6 +460,17 @@ export const CreateReportForm = () => {
               </Map>
             </APIProvider>
           </Box>
+          {containerError && (
+            <Typography
+              sx={{
+                fontSize:'0.85rem',
+                color:'red',
+                mt: 1,
+              }}
+            >
+              Debe seleccionar un contenedor en el mapa.
+            </Typography>
+          )}
         </Grid>
 
         <Grid
@@ -477,6 +504,7 @@ export const CreateReportForm = () => {
         <Grid
           item
           xs={12}
+          mb='16px'
         >
           <InputForm
             name='containerId'
