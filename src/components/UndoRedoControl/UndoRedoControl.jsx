@@ -5,14 +5,15 @@ import {
   useMap
 } from '@vis.gl/react-google-maps';
 import CloseIcon from '@mui/icons-material/Close';
-
-import reducer, {
-  DrawingActionKind,
-  useOverlaySnapshots
-} from './undo-rendo';
 import {
   useDrawingManagerEvents 
-} from './useDrawingManagerEvents';
+} from '../../hooks/useDrawingManagerEvents';
+import {
+  useDrawingOverlays 
+} from '../../hooks/useDrawingOverlays';
+import reducer, {
+  DrawingActionKind 
+} from './reducer';
 
 
 export const UndoRedoControl = ({
@@ -27,7 +28,7 @@ export const UndoRedoControl = ({
   });
 
   useDrawingManagerEvents(drawingManager, dispatch);
-  useOverlaySnapshots(map, state);
+  useDrawingOverlays(map, state);
 
   return (
     <div
