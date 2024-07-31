@@ -3,7 +3,8 @@ import {
 } from 'react';
 import {
   DrawingActionKind 
-} from './undo-rendo';
+} from '../components/UndoRedoControl/reducer';
+
 
 export function useDrawingManagerEvents(drawingManager, dispatch) {
   useEffect(() => {
