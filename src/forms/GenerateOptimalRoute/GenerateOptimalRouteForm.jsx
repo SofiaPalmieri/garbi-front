@@ -1,6 +1,6 @@
 import {
   Box, Typography
-} from '@mui/material'
+} from '@mui/material';
 import {
   useForm
 } from 'react-hook-form';
@@ -20,19 +20,27 @@ export const GenerateOptimalRouteForm = ({
 }) => {
   const {
     control,
+    register,
+    handleSubmit,
     formState: {
       errors
     },
   } = useForm({
     defaultValues: {
-      email: '',
-      password: '',
+      area: '',
+      containerHeight: '',
     },
   });
 
+  const onSubmit = (data) => {
+    handleOpenRightSideOptimalRouteInfo(data);
+  };
 
   return (
-    <Box>
+    <Box
+      component='form'
+      onSubmit={handleSubmit(onSubmit)}
+    >
       <Box
         sx={{
           width: 1,
@@ -46,7 +54,6 @@ export const GenerateOptimalRouteForm = ({
             lineHeight: '1.66rem',
             letterSpacing: '0.025rem'
           }}
-
         >
           Seleccione área:
         </Typography>
@@ -97,6 +104,23 @@ export const GenerateOptimalRouteForm = ({
               name={'containerHeight'}
               label={'50'}
               errors={errors}
+              inputProps={{
+                ...register('containerHeight', {
+                  required: 'Este campo es requerido',
+                  min: {
+                    value: 0,
+                    message: 'El valor debe ser al menos 0'
+                  },
+                  max: {
+                    value: 100,
+                    message: 'El valor no debe ser más de 100'
+                  },
+                  pattern: {
+                    value: /^[0-9]+$/,
+                    message: 'Ingrese un número válido'
+                  }
+                })
+              }}
               endMessage={'%'}
             />
           </Box>
@@ -106,9 +130,8 @@ export const GenerateOptimalRouteForm = ({
       <CancelAndSubmitButton
         buttonSubmitMessage='GENERAR'
         handleClose={handleClose}
-        typeButton='button'
-        onSubmit={handleOpenRightSideOptimalRouteInfo}
+        typeButton='submit'
       />
-    </Box >
-  )
+    </Box>
+  );
 }
