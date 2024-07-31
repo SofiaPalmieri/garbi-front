@@ -40,60 +40,8 @@ import {
   useContainers
 } from '../../api/hooks/useContainers/useContainers';
 import {
-  APIProvider, AdvancedMarker, Map, useMarkerRef, useMap
+  APIProvider, AdvancedMarker, Map, useMap
 } from '@vis.gl/react-google-maps';
-
-const UserLocationMarker = () => {
-  const map = useMap();
-  const [userLocation, setUserLocation] = useState(null);
-
-  useEffect(() => {
-    if (!map) return;
-
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          const location = {
-            lat: position.coords.latitude,
-            lng: position.coords.longitude,
-          };
-          setUserLocation(location);
-
-          new google.maps.Marker({
-            position: location,
-            map,
-            icon: {
-              path: google.maps.SymbolPath.CIRCLE,
-              fillColor: '#4285F4',
-              fillOpacity: 0.8,
-              strokeColor: 'white',
-              strokeWeight: 2,
-              scale: 8,
-            },
-          });
-
-          new google.maps.Marker({
-            position: location,
-            map,
-            icon: {
-              path: google.maps.SymbolPath.CIRCLE,
-              strokeColor: '#4285F4',
-              strokeOpacity: 0,
-              fillColor: '#4285F4',
-              fillOpacity: 0.1,
-              scale: 15,
-            },
-          });
-        },
-        (error) => {
-          console.error('Error getting location', error);
-        }
-      );
-    }
-  }, [map]);
-
-  return null;
-};
 
 const tipos = [
   {
@@ -223,14 +171,72 @@ export const CreateReportForm = () => {
     }
   };
 
-
   const [containers, setContainers] = useState([]);
   const [containerSelected, setContainerSeleted] = useState(null);
   
-  const position = {
+
+  const [userLocation, setUserLocation] = useState(null);
+  const [mapCenter, setMapCenter] = useState({
     lat: -34.5893,
-    lng: -58.3974,
+    lng: -58.3974 
+  });
+
+  useEffect(() => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const userLocation = {
+            lat: position.coords.latitude,
+            lng: position.coords.longitude,
+          };
+          setUserLocation(userLocation);
+          if (mapCenter.lat === -34.5893 && mapCenter.lng === -58.3974) {
+            setMapCenter(userLocation);
+          }
+        },
+        (error) => {
+          console.error('Error getting location: ', error);
+        }
+      );
+    }
+  }, [mapCenter]);
+
+  const UserLocationMarker = () => {
+    const map = useMap();
+  
+    useEffect(() => {
+      if (!map || !userLocation) return;
+  
+      new google.maps.Marker({
+        position: userLocation,
+        map,
+        icon: {
+          path: google.maps.SymbolPath.CIRCLE,
+          fillColor: '#4285F4',
+          fillOpacity: 0.8,
+          strokeColor: 'white',
+          strokeWeight: 2,
+          scale: 8,
+        },
+      });
+
+      new google.maps.Marker({
+        position: userLocation,
+        map,
+        icon: {
+          path: google.maps.SymbolPath.CIRCLE,
+          strokeColor: '#4285F4',
+          strokeOpacity: 0,
+          fillColor: '#4285F4',
+          fillOpacity: 0.05,
+          scale: 15,
+        },
+      });
+    }, [map, userLocation]);
+  
+    return null;
   };
+
   const {
     getContainers: {
       getContainers: getContainers
@@ -272,10 +278,7 @@ export const CreateReportForm = () => {
     }
   }, []);
 
-  const [userLocation, setUserLocation] = useState({
-    lat: -34.5893,
-    lng: -58.3974 
-  });
+  
   useEffect(() => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
@@ -291,22 +294,6 @@ export const CreateReportForm = () => {
       );
     }
   }, []);
-
-  const [markerRef, marker] = useMarkerRef();
-  useEffect(() => {
-    if (!marker) {
-      return;
-    }
-
-    // do something with marker instance here
-  }, [marker]);
-
-  const map = useMap();
-  useEffect(() => {
-    if (!map) return;
-
-    // here you can interact with the imperative maps API
-  }, [map]);
 
   const handleContainerClick = (container) => {
     setValue('address', container.address.street +' '+ container.address.number || '');
@@ -506,9 +493,7 @@ export const CreateReportForm = () => {
             >
               <Map
                 defaultZoom={16}
-                //center={userLocation}
-                //center={userLocation || { lat: -34.5893, lng: -58.3974 }}
-                defaultCenter={userLocation || position}//{position}
+                defaultCenter={mapCenter}
                 mapId='658a52589c7a963'
                 streetViewControl={false}
                 mapTypeControl={false}
@@ -549,6 +534,7 @@ export const CreateReportForm = () => {
             label={'Dirección aproximada del contenedor *'}
             variant='filled'
             size='medium'
+            disabled='true'
           />
         </Grid>
         <Grid
@@ -562,6 +548,7 @@ export const CreateReportForm = () => {
             label={'Barrio *'}
             variant='filled'
             size='medium'
+            disabled='true'
           />
         </Grid>
         <Grid
@@ -575,6 +562,7 @@ export const CreateReportForm = () => {
             label={'Identificador del contenedor (6 dígitos)'}
             variant='filled'
             size='medium'
+            disabled='true'
           />
         </Grid>
         <Grid
