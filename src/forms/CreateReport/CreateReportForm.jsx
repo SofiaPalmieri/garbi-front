@@ -20,6 +20,9 @@ import {
 import {
   InputForm
 } from '../../components/InputForm';
+import {
+  MapWithContainers
+} from '../../components/MapWithContainers';
 import addImage from '/src/assets/mdi_image-plus-outline.svg';
 import {
   yupResolver
@@ -40,7 +43,7 @@ import {
   useContainers
 } from '../../api/hooks/useContainers/useContainers';
 import {
-  APIProvider, AdvancedMarker, Map
+  AdvancedMarker
 } from '@vis.gl/react-google-maps';
 
 const tipos = [
@@ -430,35 +433,18 @@ export const CreateReportForm = () => {
             width='100%'
             height='400px'
           >
-            <APIProvider
-              apiKey={apiKeyGoogleMaps}
-            >
-              <Map
-                defaultZoom={16}
-                defaultCenter={position}
-                mapId='658a52589c7a963'
-                streetViewControl={false}
-                mapTypeControl={false}
-                zoomControl={false}
-                gestureHandling={'greedy'}
-                disableDefaultUI={true}
-                id='garbi-home-map'
-                style={{
-                  outline: 'none',
-                  '&:focus': {
-                    outline: 'none',
-                  },
-                }}
-              >
-                {containers.map((p) => (
-                  <CustomMarker
-                    setContainerSeleted={handleContainerClick}
-                    key={p._id}
-                    point={p}
-                  />
-                ))}
-              </Map>
-            </APIProvider>
+            <MapWithContainers
+              apiKey = {apiKeyGoogleMaps}
+              zoom = {16}
+              centerPosition = {position}
+              containers = {containers.map((p) => (
+                <Marker
+                  setContainerSeleted={handleContainerClick}
+                  key={p._id}
+                  point={p}
+                />
+              ))}
+            />
           </Box>
           {containerError && (
             <Typography
@@ -584,7 +570,7 @@ export const CreateReportForm = () => {
   );
 };
 
-function CustomMarker({
+function Marker({
   point, setContainerSeleted
 }) {
   return (

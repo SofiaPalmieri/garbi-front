@@ -11,8 +11,11 @@ import {
 } from '@mui/material';
 import Button from '@mui/material/Button';
 import {
-  APIProvider, AdvancedMarker, Map
+  AdvancedMarker
 } from '@vis.gl/react-google-maps';
+import {
+  MapWithContainers
+} from '../../components/MapWithContainers';
 import {
   useEffect, useState
 } from 'react';
@@ -233,35 +236,18 @@ export default function HomeMainContent() {
             width={1}
             height={'110%'}
           >
-            <APIProvider
-              apiKey={apiKeyGoogleMaps}
-            >
-              <Map
-                defaultZoom={12}
-                defaultCenter={position}
-                mapId='658a52589c7a963'
-                streetViewControl={false}
-                mapTypeControl={false}
-                zoomControl={false}
-                gestureHandling={'greedy'}
-                disableDefaultUI={true}
-                id='garbi-home-map'
-                style={{
-                  outline: 'none',
-                  '&:focus': {
-                    outline: 'none',
-                  },
-                }}
-              >
-                {containers.map((p) => (
-                  <Marker
-                    setContainerSeleted={setContainerSeleted}
-                    key={p._id}
-                    point={p}
-                  />
-                ))}
-              </Map>
-            </APIProvider>
+            <MapWithContainers
+              apiKey = {apiKeyGoogleMaps}
+              zoom = {12}
+              centerPosition = {position}
+              containers = {containers.map((p) => (
+                <Marker
+                  setContainerSeleted={setContainerSeleted}
+                  key={p._id}
+                  point={p}
+                />
+              ))}
+            />
           </Box>
           {containerSelected && (
             <RightSidePanel
