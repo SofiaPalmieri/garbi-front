@@ -32,6 +32,9 @@ import {
   CreateReportPage 
 } from './pages/CreateReport/CreateReportPage.jsx';
 import EmployeePage from './pages/Empleados/EmployeePage.jsx';
+import {
+  ReportDetailsPage 
+} from './pages/ReportDetails/ReportDetailsPage.jsx';
 
 const theme = createTheme({
   palette: {
@@ -97,6 +100,10 @@ const router = createBrowserRouter([
         path: '/reportes',
         element: <ReportPage />,
       },
+      {
+        path: '/reportes/detalles',
+        element: <ReportDetailsPage />
+      }
     ],
   },
   {
