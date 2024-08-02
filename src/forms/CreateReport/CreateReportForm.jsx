@@ -8,14 +8,21 @@ import {
   InputLabel,
   MenuItem,
   Select,
+  styled,
+  Tooltip,
+  tooltipClasses,
   Typography,
 } from '@mui/material';
+import CircleIcon from '@mui/icons-material/Circle';
 import {
   Controller, useForm
 } from 'react-hook-form';
 import {
   InputForm
 } from '../../components/InputForm';
+import {
+  MapWithContainers
+} from '../../components/MapWithContainers';
 import addImage from '/src/assets/mdi_image-plus-outline.svg';
 import {
   yupResolver
@@ -27,11 +34,17 @@ import {
   useNavigate
 } from 'react-router-dom';
 import {
-  useState
+  useEffect, useState
 } from 'react';
 import {
   useReports
 } from '../../api/hooks/useReports/useReports';
+import {
+  useContainers
+} from '../../api/hooks/useContainers/useContainers';
+import {
+  AdvancedMarker
+} from '@vis.gl/react-google-maps';
 
 const tipos = [
   {
@@ -56,8 +69,33 @@ const tipos = [
   },
 ];
 
+const HtmlTooltip = styled(({
+  className, ...props
+}) => (
+  <Tooltip
+    {...props}
+    classes={{
+      popper: className,
+    }}
+  />
+))(({
+  theme
+}) => ({
+  [`& .${tooltipClasses.tooltip}`]: {
+    backgroundColor: '#fff',
+    padding: 0,
+    maxWidth: 220,
+    fontSize: theme.typography.pxToRem(12),
+    border: 'transparent',
+  },
+  [`& .${tooltipClasses.arrow}`]: {
+    color: '#fff',
+  },
+}));
+
 export const CreateReportForm = () => {
-  const addressRegex = /^[A-ZÁÉÍÓÚÑ][a-záéíóúñA-ZÁÉÍÓÚÑ\s]*\s\d{1,4}$/;
+  const apiKeyGoogleMaps = import.meta.env.VITE_REACT_APP_API_KEY_GOOGLE_MAPS;
+  //const addressRegex = /^[A-ZÁÉÍÓÚÑ][a-záéíóúñA-ZÁÉÍÓÚÑ\s]*\s\d{1,4}$/;
   const [selectedImage, setSelectedImage] = useState(null);
   const [selectedFile, setSelectedFile] = useState(null);
 
@@ -69,22 +107,77 @@ export const CreateReportForm = () => {
 
   const navigate = useNavigate()
 
+  const position = {
+    lat: -34.5893,
+    lng: -58.3974,
+  };
+
+  const [containers, setContainers] = useState([]);
+  const [containerSelected, setContainerSeleted] = useState(null);
+  const [containerError, setContainerError] = useState(false);
+
+  const {
+    getContainers: {
+      getContainers: getContainers
+    },
+  } = useContainers();
+
+
+  const formatContainers = (containers) => {
+    return containers.documents.map((container) => {
+      if (!container.coordinates) {
+        return {
+          ...container,
+          lat: 0,
+          lng: 0,
+        };
+      }
+      return {
+        ...container,
+        lat: container.coordinates.lat,
+        lng: container.coordinates.lng,
+      };
+    });
+  };
+
+  useEffect(() => {
+    const retrieveContainers = async () => {
+      const containersUnformated = await getContainers();
+      const containersFormated = formatContainers(containersUnformated);
+
+      setContainers(containersFormated);
+    };
+
+    try {
+      retrieveContainers();
+    } catch (e) {
+      console.log(e);
+    }
+  }, []);
+
+  const handleContainerClick = (container) => {
+    setValue('address', container.address.street +' '+ container.address.number || '');
+    setValue('neighborhood', container.address.neighborhood || '');
+    setValue('containerId', container._id.slice(-6));
+    setContainerSeleted(container);
+  };
+
   const createReportSchema = object({
     title: string().required('El titulo es un campo obligatorio'),
     type: string().required('Debe seleccionar una opcion'),
     description: string().required('La descripcion es un campo obligatorio'),
-    address: string().required(),
+    /*address: string().required(),
+    neighborhood: string().required(),
     containerId: string().length(6, 'El identificador del contenedor debe tener 6 caracteres')
-      .optional(),
+      .optional(),*/
     email: string().email('Debe ser un email valido')
       .required('El mail es un campo obligatorio'),
     image: mixed(),
-    neighborhood: string().required(),
     phone: string()
   }).required();
 
   const {
-    control, handleSubmit, formState: {
+    control, handleSubmit, setValue, formState: {
       errors
     }
   } = useForm({
@@ -92,9 +185,9 @@ export const CreateReportForm = () => {
       title: 'sasA',
       description: 'dssadsd',
       type: 'BASURA_EN_LA_CALLE',
-      address: 'Medrano 900',
-      neighborhood: 'sasdds',
-      containerId: 'asdasd',
+      address: '',
+      neighborhood: '',
+      containerId: '',
       email: 'sdada@saddad.com',
       phone: '465456465'
     },
@@ -102,6 +195,11 @@ export const CreateReportForm = () => {
   });
 
   const onSubmit = async (data) => {
+    if (!containerSelected) {
+      setContainerError(true);
+      return;
+    }
+    setContainerError(false);
 
     const formData = new FormData();
 
@@ -136,6 +234,7 @@ export const CreateReportForm = () => {
       console.error('Error creating report:', error);
     }
   };
+  
 
   return (
     <form
@@ -153,6 +252,7 @@ export const CreateReportForm = () => {
       >
         Ingrese los siguientes datos para realizar el reporte
       </Typography>
+
 
       <Grid
         container
@@ -313,6 +413,52 @@ export const CreateReportForm = () => {
             )}
           />
         </Grid>
+
+        <Grid
+          item
+          xs={12}
+        >
+          <Typography
+            sx={{
+              fontSize: '16px',
+              fontWeight: 400,
+              mt: '24px',
+              mb: '8px',
+              color: 'black',
+            }}
+          >
+            Seleccione el contenedor afectado en el mapa
+          </Typography>
+          <Box
+            width='100%'
+            height='400px'
+          >
+            <MapWithContainers
+              apiKey = {apiKeyGoogleMaps}
+              zoom = {16}
+              centerPosition = {position}
+              containers = {containers.map((p) => (
+                <Marker
+                  setContainerSeleted={handleContainerClick}
+                  key={p._id}
+                  point={p}
+                />
+              ))}
+            />
+          </Box>
+          {containerError && (
+            <Typography
+              sx={{
+                fontSize:'0.85rem',
+                color:'red',
+                mt: 1,
+              }}
+            >
+              Debe seleccionar un contenedor en el mapa.
+            </Typography>
+          )}
+        </Grid>
+
         <Grid
           item
           xs={12}
@@ -324,6 +470,7 @@ export const CreateReportForm = () => {
             label={'Dirección aproximada del contenedor *'}
             variant='filled'
             size='medium'
+            disabled='true'
           />
         </Grid>
         <Grid
@@ -337,11 +484,13 @@ export const CreateReportForm = () => {
             label={'Barrio *'}
             variant='filled'
             size='medium'
+            disabled='true'
           />
         </Grid>
         <Grid
           item
           xs={12}
+          mb='16px'
         >
           <InputForm
             name='containerId'
@@ -350,6 +499,7 @@ export const CreateReportForm = () => {
             label={'Identificador del contenedor (6 dígitos)'}
             variant='filled'
             size='medium'
+            disabled='true'
           />
         </Grid>
         <Grid
@@ -388,7 +538,8 @@ export const CreateReportForm = () => {
             sx={{
               width: 1,
               display: 'flex',
-              justifyContent: 'center'
+              justifyContent: 'center',
+              mb: '24px'
             }}
           >
             <Button
@@ -418,3 +569,58 @@ export const CreateReportForm = () => {
     </form>
   );
 };
+
+function Marker({
+  point, setContainerSeleted
+}) {
+  return (
+    <AdvancedMarker
+      position={point}
+      onClick={() => setContainerSeleted(point)}
+    >
+      <HtmlTooltip
+        placement='top'
+        arrow
+        title={
+          <Box
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              flexDirection: 'column',
+              borderRadius: '4px',
+              padding: '8px'
+            }}
+          >
+            <Typography
+              sx={{
+                fontSize: '16px',
+                fontWeight: 500,
+                color: 'black',
+              }}
+            > 
+              {point.address.street +' '+ point.address.number}
+            </Typography>
+            <Typography //TODO: update id here to receive the 6 numbers one
+              sx={{
+                fontSize: '12px',
+                fontWeight: 400,
+                color: '#9e9e9e',
+              }}
+            >
+              Contenedor #{point._id.slice(-6)}
+            </Typography>
+          </Box>
+        }
+      >
+        <div>
+          <CircleIcon
+            sx={{
+              color: 'red'
+            }}
+          />
+        </div>
+      </HtmlTooltip>
+    </AdvancedMarker>
+  );
+}
+
