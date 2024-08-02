@@ -78,6 +78,7 @@ const ContainerRowRender = (container) => {
       <TableCell
         component='th'
         scope='row'
+        align='center'
       >
         {container.id}
       </TableCell>
