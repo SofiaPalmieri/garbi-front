@@ -95,6 +95,7 @@ const EmployeeRowRender = (employee) => {
       <TableCell
         component='th'
         scope='row'
+        align='center'
       >
         <Typography
           sx={{
