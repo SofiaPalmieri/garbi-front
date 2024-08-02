@@ -5,7 +5,9 @@ import * as React from 'react';
 
 export default function ContainerFilters(){
 
-  const [value, selectValue] = React.useState('');
+  const [neighborhood, selectNeighborhood] = React.useState('');
+  const [typeOfCharge, selectTypeOfCharge] = React.useState('');
+
   const barrios = [
     'Agronomía',
     'Almagro',
@@ -59,10 +61,13 @@ export default function ContainerFilters(){
 
   const tipoDeCarga = ['Lateral', 'Bilateral'];
   
-  const handleChange = (event) => {
-    selectValue(event.target.value);
+  const handleNeighborhoodChange = (event) => {
+    selectNeighborhood(event.target.value);
   };
 
+  const handleTypeOfChargeChange = (event) => {
+    selectTypeOfCharge(event.target.value);
+  };
     
   return (
     <Box>
@@ -80,9 +85,9 @@ export default function ContainerFilters(){
           <Select
             labelId='select-label'
             id='select-demo'
-            value={value}
+            value={neighborhood}
             label='Barrio'
-            onChange={handleChange}
+            onChange={handleNeighborhoodChange}
           >
             {barrios.map((barrio) => (
               <MenuItem
@@ -109,9 +114,9 @@ export default function ContainerFilters(){
           <Select
             labelId='select-label'
             id='select-demo'
-            value={value}
+            value={typeOfCharge}
             label='tipoDeCarga'
-            onChange={handleChange}
+            onChange={handleTypeOfChargeChange}
           >
             {tipoDeCarga.map((tipoDeCarga) => (
               <MenuItem
