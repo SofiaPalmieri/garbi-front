@@ -1,15 +1,25 @@
+import SaveIcon from '@mui/icons-material/Save';
 import {
-  Box, Button, Divider, Paper, Typography 
+  Box, Button, Divider, Paper, Typography
 } from '@mui/material';
-import AddIcon from '@mui/icons-material/Add';
 import {
-  APIProvider, Map 
+  APIProvider
 } from '@vis.gl/react-google-maps';
 import {
-  BreadcrumbsComponent 
+  AreaDrawingMap 
+} from '../../components/AreaDrawingMap';
+import {
+  BreadcrumbsComponent
 } from '../../components/BreadcrumbsComponent';
+import {
+  useState 
+} from 'react';
+
 
 const AreaPage = () => {
+  const [areas, setAreas] = useState([]);
+  const [canAddArea, setCanAddArea] = useState(false)
+
   const position = {
     lat: 43.64,
     lng: -79.41,
@@ -65,8 +75,8 @@ const AreaPage = () => {
               },
             }}
           >
-            Nueva Area
-            <AddIcon
+            Guardar Area
+            <SaveIcon
               sx={{
                 marginLeft: '8px',
                 fontSize: '20px',
@@ -82,10 +92,11 @@ const AreaPage = () => {
           <APIProvider
             apiKey={apiKeyGoogleMaps}
           >
-            <Map
-              defaultZoom={9}
-              defaultCenter={position}
-              mapId='658a52589c7a963'
+            <AreaDrawingMap
+              areas={areas}
+              setAreas={setAreas}
+              canAddArea={canAddArea}
+              setCanAddArea={setCanAddArea}
             />
           </APIProvider>
         </Box>

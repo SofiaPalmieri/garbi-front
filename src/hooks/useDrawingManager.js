@@ -4,28 +4,25 @@ import {
 import {
   useEffect, useState 
 } from 'react';
-
-const lineSymbol = {
-  path: 'M 0,-1 0,1',
-  strokeOpacity: 1,
-  scale: 4,
-};
+import {
+  polylineConfig 
+} from '../components/AreaDrawingMap/drawAreas';
 
 
-export const useDrawingManager = (id = null) => {
+export const useDrawingManager = (id = null, canAddArea = true) => {
   const map = useMap(id);
   const drawing = useMapsLibrary('drawing');
 
   const [drawingManager, setDrawingManager] = useState(null);
 
   useEffect(() => {
-    if (!map || !drawing) return;
+    if (!map || !drawing || !canAddArea) return;
 
     // https://developers.google.com/maps/documentation/javascript/reference/drawing
     const newDrawingManager = new drawing.DrawingManager({
       map,
       drawingMode: google.maps.drawing.OverlayType.POLYLINE,
-      drawingControl: true,
+      drawingControl: canAddArea,
       drawingControlOptions: {
         position: google.maps.ControlPosition.TOP_CENTER,
         drawingModes: [
@@ -35,16 +32,7 @@ export const useDrawingManager = (id = null) => {
       polylineOptions: {
         editable: true,
         draggable: false,
-        strokeColor: '#006610',
-        strokeOpacity: 0.5,
-        strokeWeight: 3,
-        icons: [
-          {
-            icon: lineSymbol,
-            offset: '0',
-            repeat: '20px',
-          },
-        ],
+        ...polylineConfig
       }
     });
 
@@ -53,7 +41,7 @@ export const useDrawingManager = (id = null) => {
     return () => {
       newDrawingManager.setMap(null);
     };
-  }, [drawing, map]);
+  }, [drawing, map, canAddArea]);
 
   return drawingManager;
 }

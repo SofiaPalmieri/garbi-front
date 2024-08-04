@@ -4,16 +4,21 @@ import {
 
 export function useDrawingOverlays(map, state) {
   useEffect(() => {
-    if (!map || !state.polyline) return;
+    if (!map || !state) return;
   
-    state.polyline.setMap(map)
-    state.polygon.setMap(map)
+    state.forEach(area => {
+      area.polyline.setMap(map)
+      area.polygon.setMap(map)
+    })
   
     return () => {
-      state.polyline.setMap(null)
-      state.polygon.setMap(null)
+      state.map(area => {
+        area.polyline.setMap(null)
+        area.polygon.setMap(null)
+      })
     }
-  }, [map, state.polyline]);
+  }, [map, state]);
+    
   
 }
   
