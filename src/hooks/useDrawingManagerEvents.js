@@ -1,15 +1,15 @@
 import {
-  useEffect 
+  useEffect
 } from 'react';
 import {
-  DrawingActionKind 
+  DrawingActionKind
 } from '../components/UndoRedoControl/reducer';
 
 
 export function useDrawingManagerEvents(drawingManager, dispatch, state, areaSelected, setAreaSelected) {
   useEffect(() => {
-    // if (!drawingManager) return;
-  
+    if (!drawingManager) return;
+
     const eventListeners = [];
 
     const addUpdateListener = (eventName, overlay) => {
@@ -21,7 +21,7 @@ export function useDrawingManagerEvents(drawingManager, dispatch, state, areaSel
           dispatch({
             type: DrawingActionKind.UPDATE_OVERLAYS,
             payload: {
-              id: overlay.id 
+              id: overlay.id
             }
           });
         }
@@ -48,26 +48,27 @@ export function useDrawingManagerEvents(drawingManager, dispatch, state, areaSel
       );
       addClickListener(overlay);
     });
-  
-    // const overlayCompleteListener = google.maps.event.addListener(
-    //   drawingManager,
-    //   'overlaycomplete',
-    //   (drawResult) => {
-    //     if(google.maps.drawing.OverlayType.POLYLINE){
-    //       ['mouseup'].forEach(eventName =>
-    //         addUpdateListener(eventName, drawResult)
-    //       );
-    //     }
-  
-    //     dispatch({
-    //       type: DrawingActionKind.SET_OVERLAY,
-    //       payload: drawResult 
-    //     });
-    //   }
-    // );
-  
-    // eventListeners.push(overlayCompleteListener);
-  
+
+    const overlayCompleteListener = google.maps.event.addListener(
+      drawingManager,
+      'overlaycomplete',
+      (drawResult) => {
+        // if (google.maps.drawing.OverlayType.POLYLINE) {
+        //   ['mouseup'].forEach(eventName =>
+        //     addUpdateListenerOverlay(eventName, drawResult)
+        //   );
+        // }
+        drawingManager.setDrawingMode(null)
+        dispatch({
+          type: DrawingActionKind.SET_OVERLAY,
+          payload: drawResult
+        });
+        
+      }
+    );
+
+    eventListeners.push(overlayCompleteListener);
+
     return () => {
       eventListeners.forEach(listener =>
         google.maps.event.removeListener(listener)

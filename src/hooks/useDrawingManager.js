@@ -9,22 +9,21 @@ import {
 } from '../components/AreaDrawingMap/drawAreas';
 
 
-export const useDrawingManager = (id = null, canAddArea = true) => {
+export const useDrawingManager = (id = null, selectedColor) => {
   const map = useMap(id);
   const drawing = useMapsLibrary('drawing');
 
   const [drawingManager, setDrawingManager] = useState(null);
 
   useEffect(() => {
-    if (!map || !drawing || !canAddArea) return;
+    if (!map || !drawing ) return;
 
     // https://developers.google.com/maps/documentation/javascript/reference/drawing
     const newDrawingManager = new drawing.DrawingManager({
       map,
-      drawingMode: google.maps.drawing.OverlayType.POLYLINE,
-      drawingControl: canAddArea,
+      drawingMode: null,
+      drawingControl: false,
       drawingControlOptions: {
-        position: google.maps.ControlPosition.TOP_CENTER,
         drawingModes: [
           google.maps.drawing.OverlayType.POLYLINE,
         ]
@@ -32,6 +31,7 @@ export const useDrawingManager = (id = null, canAddArea = true) => {
       polylineOptions: {
         editable: true,
         draggable: false,
+        strokeColor: selectedColor,
         ...polylineConfig
       }
     });
@@ -41,7 +41,7 @@ export const useDrawingManager = (id = null, canAddArea = true) => {
     return () => {
       newDrawingManager.setMap(null);
     };
-  }, [drawing, map, canAddArea]);
+  }, [drawing, map, selectedColor]);
 
   return drawingManager;
 }

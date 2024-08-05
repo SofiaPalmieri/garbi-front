@@ -66,6 +66,10 @@ const AreaPage = () => {
       setValue('description', areaSelected.description);
       setAnimationKey(prevKey => prevKey + 1);
     }
+    return () => {
+      setValue('name', '')
+      setValue('description', '')
+    }
   }, [areaSelected, setValue]);
 
   return (
@@ -105,14 +109,14 @@ const AreaPage = () => {
             height: '3.75rem',
           }}
         >
-          {areaSelected && (
+          {(areaSelected || canAddArea) && (
             <Box
               key={animationKey}
               sx={{
                 width: '100%',
                 display: 'flex',
                 justifyContent: 'space-between',
-                animation: areaSelected ? `${slideIn} 0.5s forwards` : 'none',
+                animation: (areaSelected || canAddArea) ? `${slideIn} 0.5s forwards` : 'none',
               }}
             >
               <Box

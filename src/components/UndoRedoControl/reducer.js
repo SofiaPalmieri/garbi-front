@@ -1,5 +1,5 @@
 import {
-  polygonConfig, polylineConfig 
+  polygonConfig, polylineConfig
 } from '../AreaDrawingMap/drawAreas';
 
 export const DrawingActionKind = {
@@ -42,7 +42,7 @@ export default function reducer(state, action) {
 
   case DrawingActionKind.INIT_OVERLAYS: {
     const {
-      areas 
+      areas
     } = action.payload;
 
     // paint
@@ -71,37 +71,31 @@ export default function reducer(state, action) {
   // This action is called whenever anything changes on any overlay.
   case DrawingActionKind.UPDATE_OVERLAYS: {
     const {
-      id 
+      id
     } = action.payload;
-    console.log('🚀 ~ reducer ~ id:', id)
 
     const area = state.find(overlay => overlay.id === id);
-    console.log('🚀 ~ reducer ~ area:', area)
-      
-    
-      
     const path = area.polyline.getPath()?.getArray();
-    
+
     if (path) {
       area.polygon.setPaths(path);
     }
-    
-      
+
     return [...state];
   }
 
   case DrawingActionKind.DELETE_OVERLAY: {
     const {
-      id 
+      id
     } = action.payload;
 
     const newState = state.filter(area => area.id != id)
-  
+
     // TODO LLAMAR AL BE
 
     return [...newState];
   }
-    
+
 
   // This action is called when a new overlay is added to the map.
   case DrawingActionKind.SET_OVERLAY: {
@@ -111,27 +105,23 @@ export default function reducer(state, action) {
 
     const path = polyline.getPath()?.getArray();
     const arrayPath = getPathsAsLatLng(polyline)
+    console.log('🚀 ~ reducer ~ arrayPath:', arrayPath)
 
     // because we cannot draw a polilyne with a fill color, and we cannot draw a polygon with  
     // dotted line stroke, the decision has been made to draw a polilyne for the stroke, and a polygon
     // for the fill color
     let polygon = null;
 
-    if (action.payload.type === google.maps.drawing.OverlayType.POLYLINE) {
-      polygon = new google.maps.Polygon({
-        paths: arrayPath,
-        editable: false,
-        draggable: false,
-        strokeOpacity: 0,
-        fillColor: '#006610',
-        fillOpacity: 0.10,
-      });
-    }
+    polygon = new google.maps.Polygon({
+      paths: arrayPath,
+      editable: false,
+      draggable: false,
+      strokeOpacity: 0,
+      fillColor: '#006610',
+      fillOpacity: 0.10,
+    });
 
-    return {
-      polyline,
-      polygon
-    }
+    return state
   }
 
   // This action is called when the cancel button is clicked.

@@ -3,7 +3,8 @@ import {
   MapControl
 } from '@vis.gl/react-google-maps';
 import {
-  useEffect, useReducer
+  useEffect, useReducer,
+  useState
 } from 'react';
 import {
   PanelControlMap
@@ -12,6 +13,7 @@ import {
   useDrawingManager
 } from '../../hooks/useDrawingManager';
 import reducer from '../UndoRedoControl/reducer';
+import ColorPicker from '../ColorPicker/ColorPicker';
 
 
 
@@ -19,8 +21,15 @@ export const AreaDrawingMap = ({
   areas, setAreas, canAddArea, setCanAddArea, areaSelected, setAreaSelected
 }) => {
   const [state, dispatch] = useReducer(reducer, []);
-  const drawingManager = useDrawingManager('garbi-create-area-map', canAddArea);
+  const [selectedColor, setSelectedColor] = useState('#FF0000');
+  const drawingManager = useDrawingManager('garbi-create-area-map', selectedColor);
   
+  useEffect(() => {
+    if(drawingManager){
+      console.log('hola')
+      drawingManager.setDrawingMode(google.maps.drawing.OverlayType.POLYLINE)
+    }
+  }, [selectedColor, drawingManager])
 
   const position = {
     lat: -34.5893,
@@ -54,14 +63,14 @@ export const AreaDrawingMap = ({
         disableDefaultUI
         disableDoubleClickZoom
       >
-        {/* {canAddArea && (<MapControl
-          position={ControlPosition.TOP_CENTER}
+        {canAddArea && (<MapControl
+          position={ControlPosition.LEFT_TOP}
         >
-          <UndoRedoControl
-            drawingManager={drawingManager}
+          <ColorPicker
+            selectedColor={selectedColor}
+            setSelectedColor={setSelectedColor}
           />
-        </MapControl>)
-        } */}
+        </MapControl>)}
         <MapControl
           position={ControlPosition.TOP_RIGHT}
         >

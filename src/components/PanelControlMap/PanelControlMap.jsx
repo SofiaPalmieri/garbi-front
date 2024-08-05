@@ -4,6 +4,7 @@ import {
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
+import ControlCameraIcon from '@mui/icons-material/ControlCamera';
 import {
   useEffect, useState
 } from 'react';
@@ -21,8 +22,8 @@ import {
 } from '../../hooks/useDrawingOverlays';
 
 const areasDefault = [
-  {   
-    id:1,
+  {
+    id: 1,
     title: 'area 1',
     color: '#006610',
     description: 'triangulo 1',
@@ -97,7 +98,7 @@ export const PanelControlMap = ({
   useDrawingManagerEvents(drawingManager, dispatch, state, areaSelected, setAreaSelected)
   useDrawingOverlays(map, state)
 
-  const handleDelete = () =>{
+  const handleDelete = () => {
     setAreaSelected(null)
     dispatch({
       type: DrawingActionKind.DELETE_OVERLAY,
@@ -105,6 +106,22 @@ export const PanelControlMap = ({
         id: areaSelected.id
       }
     })
+  }
+
+  const handleSetDrawingMode = (mode) => {
+    if (drawingManager) {
+      drawingManager.setDrawingMode(mode);
+    }
+  };
+
+  const handleAddNewArea = () => {
+    setCanAddArea(true)
+    handleSetDrawingMode(google.maps.drawing.OverlayType.POLYLINE)
+  }
+
+  const handleChangeToControlCamera = () => {
+    handleSetDrawingMode(null)
+    setAreaSelected(null)
   }
 
   return (
@@ -116,6 +133,14 @@ export const PanelControlMap = ({
         gap: 1
       }}
     >
+      <Fab
+        color='secondary'
+        aria-label='pan'
+        size='small'
+        onClick={() => handleChangeToControlCamera()}
+      >
+        <ControlCameraIcon />
+      </Fab>
       <Fab
         color='secondary'
         aria-label='edit'
@@ -141,7 +166,7 @@ export const PanelControlMap = ({
         aria-label='edit'
         size='small'
         disabled={canAddArea}
-        onClick={() => setCanAddArea(true)}
+        onClick={() => handleAddNewArea()}
       >
         <AddIcon />
       </Fab>
