@@ -7,7 +7,8 @@ export const DrawingActionKind = {
   UPDATE_OVERLAYS: 'UPDATE_OVERLAYS',
   CANCEL_OVERLAY: 'CANCEL_OVERLAY',
   INIT_OVERLAYS: 'INIT_OVERLAYS',
-  CLICK_OVERLAY: 'CLICK_OVERLAY'
+  CLICK_OVERLAY: 'CLICK_OVERLAY',
+  DELETE_OVERLAY: 'DELETE_OVERLAY'
 }
 
 function getPathsAsLatLngArray(overlays) {
@@ -87,6 +88,18 @@ export default function reducer(state, action) {
     
       
     return [...state];
+  }
+
+  case DrawingActionKind.DELETE_OVERLAY: {
+    const {
+      id 
+    } = action.payload;
+
+    const newState = state.filter(area => area.id != id)
+  
+    // TODO LLAMAR AL BE
+
+    return [...newState];
   }
     
 

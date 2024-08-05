@@ -1,30 +1,72 @@
 import SaveIcon from '@mui/icons-material/Save';
 import {
-  Box, Button, Divider, Paper, Typography
+  Box, Button, Divider, keyframes, Paper, Typography
 } from '@mui/material';
 import {
   APIProvider
 } from '@vis.gl/react-google-maps';
 import {
-  AreaDrawingMap 
+  AreaDrawingMap
 } from '../../components/AreaDrawingMap';
 import {
   BreadcrumbsComponent
 } from '../../components/BreadcrumbsComponent';
 import {
-  useState 
+  useEffect,
+  useState
 } from 'react';
+import {
+  InputForm 
+} from '../../components/InputForm/InputForm';
+import {
+  useForm 
+} from 'react-hook-form';
 
+const slideIn = keyframes`
+  from {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+`;
 
 const AreaPage = () => {
   const [areas, setAreas] = useState([]);
-  const [canAddArea, setCanAddArea] = useState(false)
+  const [canAddArea, setCanAddArea] = useState(false);
+  const [areaSelected, setAreaSelected] = useState(null);
+  const [animationKey, setAnimationKey] = useState(0);
+
+  const {
+    control,
+    handleSubmit,
+    setValue,
+    formState: {
+      errors
+    }
+  } = useForm({
+    defaultValues: {
+      name: '',
+      description: ''
+    },
+  });
 
   const position = {
     lat: 43.64,
     lng: -79.41,
   };
+
   const apiKeyGoogleMaps = import.meta.env.VITE_REACT_APP_API_KEY_GOOGLE_MAPS;
+
+  useEffect(() => {
+    if (areaSelected) {
+      setValue('name', areaSelected.title);
+      setValue('description', areaSelected.description);
+      setAnimationKey(prevKey => prevKey + 1);
+    }
+  }, [areaSelected, setValue]);
 
   return (
     <Box
@@ -59,31 +101,71 @@ const AreaPage = () => {
           sx={{
             width: '100%',
             display: 'flex',
-            justifyContent: 'end',
+            justifyContent: 'space-between',
+            height: '3.75rem',
           }}
         >
-          <Button
-            size='medium'
-            sx={{
-              backgroundColor: '#12422C',
-              color: 'white',
-              height: '36px',
-              padding: '16px',
-              marginBottom: '24px',
-              '&:hover': {
-                backgroundColor: '#12422C',
-              },
-            }}
-          >
-            Guardar Area
-            <SaveIcon
+          {areaSelected && (
+            <Box
+              key={animationKey}
               sx={{
-                marginLeft: '8px',
-                fontSize: '20px',
+                width: '100%',
+                display: 'flex',
+                justifyContent: 'space-between',
+                animation: areaSelected ? `${slideIn} 0.5s forwards` : 'none',
               }}
-            />
-          </Button>
+            >
+              <Box
+                sx={{
+                  display: 'flex',
+                  flex: 1,
+                  gap: 2,
+                  pr: 2,
+                }}
+              >
+                <Box
+                  width={0.3}
+                >
+                  <InputForm
+                    control={control}
+                    label={'Nombre'}
+                    name='name'
+                  />
+                </Box>
+                <Box
+                  flex={1}
+                >
+                  <InputForm
+                    control={control}
+                    label={'Breve descripción'}
+                    name='description'
+                  />
+                </Box>
+              </Box>
+              <Button
+                size='medium'
+                sx={{
+                  backgroundColor: '#12422C',
+                  color: 'white',
+                  height: '40px',
+                  padding: '16px',
+                  borderRadius: '4px',
+                  '&:hover': {
+                    backgroundColor: '#12422C',
+                  },
+                }}
+              >
+                Guardar Area
+                <SaveIcon
+                  sx={{
+                    marginLeft: '8px',
+                    fontSize: '20px',
+                  }}
+                />
+              </Button>
+            </Box>)}
         </Box>
+
         <Box
           sx={{
             flexGrow: 1,
@@ -97,6 +179,8 @@ const AreaPage = () => {
               setAreas={setAreas}
               canAddArea={canAddArea}
               setCanAddArea={setCanAddArea}
+              areaSelected={areaSelected}
+              setAreaSelected={setAreaSelected}
             />
           </APIProvider>
         </Box>

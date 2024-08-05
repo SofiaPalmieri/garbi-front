@@ -3,24 +3,24 @@ import {
   MapControl
 } from '@vis.gl/react-google-maps';
 import {
-  useEffect, useReducer, useState 
+  useEffect, useReducer
 } from 'react';
 import {
-  PanelControlMap 
+  PanelControlMap
 } from '../PanelControlMap/PanelControlMap';
-
-
 import {
-  useDrawingManager 
+  useDrawingManager
 } from '../../hooks/useDrawingManager';
 import reducer from '../UndoRedoControl/reducer';
 
+
+
 export const AreaDrawingMap = ({
-  areas, setAreas, canAddArea, setCanAddArea 
+  areas, setAreas, canAddArea, setCanAddArea, areaSelected, setAreaSelected
 }) => {
   const [state, dispatch] = useReducer(reducer, []);
   const drawingManager = useDrawingManager('garbi-create-area-map', canAddArea);
-  const [areaSelected, setAreaSelected] = useState(null)
+  
 
   const position = {
     lat: -34.5893,
@@ -28,7 +28,7 @@ export const AreaDrawingMap = ({
   };
 
   useEffect(() => {
-    if (areaSelected) {  
+    if (areaSelected) {
       if (areaSelected.polygon) {
         areaSelected.polygon.setOptions({
           fillOpacity: 0.8,
@@ -38,7 +38,7 @@ export const AreaDrawingMap = ({
     }
     return () => {
       state.forEach(area => area.polygon.setOptions({
-        fillOpacity: 0.1 
+        fillOpacity: 0.1
       }))
     }
   }, [areaSelected]);
@@ -70,8 +70,8 @@ export const AreaDrawingMap = ({
             canAddArea={canAddArea}
             setCanAddArea={setCanAddArea}
             areas={areas}
-            state = {state}
-            dispatch = {dispatch}
+            state={state}
+            dispatch={dispatch}
             setAreas={setAreas}
             drawingManager={drawingManager}
             setAreaSelected={setAreaSelected}
