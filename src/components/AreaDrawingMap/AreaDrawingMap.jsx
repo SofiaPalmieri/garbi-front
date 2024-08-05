@@ -21,12 +21,11 @@ export const AreaDrawingMap = ({
   areas, setAreas, canAddArea, setCanAddArea, areaSelected, setAreaSelected
 }) => {
   const [state, dispatch] = useReducer(reducer, []);
-  const [selectedColor, setSelectedColor] = useState('#FF0000');
+  const [selectedColor, setSelectedColor] = useState(null);
   const drawingManager = useDrawingManager('garbi-create-area-map', selectedColor);
   
   useEffect(() => {
-    if(drawingManager){
-      console.log('hola')
+    if(drawingManager && selectedColor){
       drawingManager.setDrawingMode(google.maps.drawing.OverlayType.POLYLINE)
     }
   }, [selectedColor, drawingManager])
