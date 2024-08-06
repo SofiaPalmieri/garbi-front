@@ -4,9 +4,12 @@ import {
 import {
   DrawingActionKind
 } from '../components/UndoRedoControl/reducer';
+import {
+  DrawingActionType 
+} from '../reducers/drawReducer';
 
 
-export function useDrawingManagerEvents(drawingManager, dispatch, state, areaSelected, setAreaSelected) {
+export function useDrawingManagerEvents(drawingManager, dispatch, dispatchDraw, state, areaSelected, setAreaSelected) {
   useEffect(() => {
     if (!drawingManager) return;
 
@@ -23,6 +26,21 @@ export function useDrawingManagerEvents(drawingManager, dispatch, state, areaSel
             payload: {
               id: overlay.id
             }
+          });
+        }
+      );
+
+      eventListeners.push(updateListener);
+    };
+
+    const addUpdateListenerOverlay = (eventName, overlay) => {
+      const updateListener = google.maps.event.addListener(
+        overlay,
+        eventName,
+        () => {
+          dispatch({
+            type: DrawingActionType.UPDATE_OVERLAYS,
+            payload: overlay
           });
         }
       );
@@ -53,17 +71,17 @@ export function useDrawingManagerEvents(drawingManager, dispatch, state, areaSel
       drawingManager,
       'overlaycomplete',
       (drawResult) => {
-        // if (google.maps.drawing.OverlayType.POLYLINE) {
-        //   ['mouseup'].forEach(eventName =>
-        //     addUpdateListenerOverlay(eventName, drawResult)
-        //   );
-        // }
+        if (google.maps.drawing.OverlayType.POLYLINE) {
+          ['mouseup'].forEach(eventName =>
+            addUpdateListenerOverlay(eventName, drawResult)
+          );
+        }
         drawingManager.setDrawingMode(null)
-        dispatch({
-          type: DrawingActionKind.SET_OVERLAY,
+        dispatchDraw({
+          type: DrawingActionType.SET_DRAW,
           payload: drawResult
         });
-        
+
       }
     );
 

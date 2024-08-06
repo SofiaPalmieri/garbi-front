@@ -39,8 +39,8 @@ export const InputForm = ({
             disabled={disabled}
             sx={{
               '& .MuiInputBase-input:-webkit-autofill': { //added this to prevent weird look when the browser autofills the field
-                '-webkit-box-shadow': '0 0 0 1000px white inset',
-                '-webkit-text-fill-color': 'black',
+                'webkitBoxShadow': '0 0 0 1000px white inset',
+                'webkitTextFillColor': 'black',
               }
             }}
           />

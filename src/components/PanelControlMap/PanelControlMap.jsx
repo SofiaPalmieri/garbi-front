@@ -75,7 +75,7 @@ const areasDefault = [
 ]
 
 export const PanelControlMap = ({
-  areaSelected, canAddArea, setCanAddArea, areas, setAreas, drawingManager, setAreaSelected, state, dispatch
+  areaSelected, canAddArea, setCanAddArea, areas, setAreas,  dispatchDraw, stateDraw, drawingManager, setAreaSelected, state, dispatch
 }) => {
   const map = useMap('garbi-create-area-map');
   const [isEditing, setIsEditing] = useState(false);
@@ -95,8 +95,8 @@ export const PanelControlMap = ({
   }, [state])
 
 
-  useDrawingManagerEvents(drawingManager, dispatch, state, areaSelected, setAreaSelected)
-  useDrawingOverlays(map, state)
+  useDrawingManagerEvents(drawingManager, dispatch, dispatchDraw, state, areaSelected, setAreaSelected)
+  useDrawingOverlays(map, state, stateDraw)
 
   const handleDelete = () => {
     setAreaSelected(null)
