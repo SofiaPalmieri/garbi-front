@@ -2,13 +2,17 @@ import {
   Box 
 } from '@mui/system'
 
+import {
+  ReportDetails 
+} from './ReportDetails'
+
 export const ReportDetailsPage = () => {
   return (
     <Box
       sx={{
         height: '100%',
         width: '100%',
-        backgroundColor: 'red',
+        backgroundColor: 'white',
         display: 'flex',
         flexDirection: 'column'
       }}
@@ -17,15 +21,13 @@ export const ReportDetailsPage = () => {
         sx={{
           height: '4.5rem',
           width: 1,
-          backgroundColor: 'black'
+          backgroundColor: 'white'
         }}
-      >
-        Bread
-      </Box>
+      />
       <Box
         sx={{
           flex: 1,
-          backgroundColor: 'green',
+          backgroundColor: 'white',
           padding: '2rem 4rem 0'
         }}
       >
@@ -33,14 +35,15 @@ export const ReportDetailsPage = () => {
           sx={{
             width: 1,
             height: '100%',
-            backgroundColor: 'aquamarine'
+            backgroundColor: 'white'
           }}
         >
+          
           <Box
             sx={{
               height: 1,
               width: 1,
-              backgroundColor: 'yellowgreen',
+              backgroundColor: 'white',
               display: 'flex'
             }}
           >
@@ -48,7 +51,7 @@ export const ReportDetailsPage = () => {
               sx ={{
                 height: 1,
                 flex: 1,
-                backgroundColor: 'blue',
+                backgroundColor: 'white',
                 display: 'flex',
                 flexDirection: 'column',
                 pb: '1.5rem'
@@ -57,13 +60,13 @@ export const ReportDetailsPage = () => {
             >
               <Box
                 sx = {{
-                  backgroundColor: 'orange',
+                  backgroundColor: 'white',
                   height: '4rem',
                 }}
               />
               <Box
                 sx  ={{
-                  backgroundColor: 'red',
+                  backgroundColor: 'white',
                   height: '21.875rem',
                   mb: '1.5rem'
                 }}
@@ -79,10 +82,19 @@ export const ReportDetailsPage = () => {
               sx={{
                 width: '16rem',
                 height: '18.625rem', // borrar
-                backgroundColor: 'yellow'
+                backgroundColor: 'white'
               }}
 
             >
+              <ReportDetails
+                state='NUEVO'
+                date='19/02/2024 - 09.20 hs'
+                reportedBy='Ciudadano' 
+                neighborhood='Villa del Parque - Área 2'
+                address='Av. Honorio Pueyrredón 1234'
+                containerID='#123456'
+              />
+
               {/* {code here....} */}
             </Box>
           </Box>
