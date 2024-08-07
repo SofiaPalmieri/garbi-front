@@ -9,8 +9,18 @@ export const useCreateEmployee = () => {
     url: '/api/user',
   });
 
+  const generateRandomPassword = (length) => {
+    const charset = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()';
+    let password = '';
+    for (let i = 0; i < length; i++) {
+      const randomIndex = Math.floor(Math.random() * charset.length);
+      password += charset[randomIndex];
+    }
+    return password;
+  };
+
   const createEmployee = ({
-    companyId, name, surname, phone, email, password, workingDay, role 
+    companyId, name, surname, personalPhone, personalEmail, companyPhone, companyEmail, workingShift, role 
   }) => {
     return commonFetch({
       uri: '/register',
@@ -19,12 +29,12 @@ export const useCreateEmployee = () => {
         companyId,
         name, 
         surname, 
-        phone, 
-        email, 
-        //companyPhone, //TODO: add when BE is ready
-        //companyEmail, //TODO: add when BE is ready
-        password, 
-        workingDay,
+        personalPhone, 
+        personalEmail, 
+        companyPhone,
+        companyEmail,
+        password: generateRandomPassword(12),
+        workingShift,
         role
       },
     });

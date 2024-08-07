@@ -44,7 +44,7 @@ const turnos = [
     label: 'Tarde',
   },
   {
-    value: 'manana',
+    value: 'Manana',
     label: 'Mañana',
   },
 ];
@@ -108,21 +108,14 @@ export const CreateEmployeeForm = ({
   const onSubmit = async (data) => {
     try{
       const response = await createEmployee({
-        companyId: '6642c093eb730d1cd07762b0', //todo: get it from the current user
+        companyId: '6642c093eb730d1cd07762b0', //TODO: get it from the current user
         name: data.firstName, 
         surname: data.lastName, 
-        phone: data.personalPhone, 
-        email: data.personalEmail, 
-        //companyPhone: data.enterprisePhone, //TODO: add when BE is ready
-        //companyEmail: data.enterpriseEmail, //TODO: add when BE is ready
-        password: 'Contra12', //TODO: delete when BE is ready
-        workingDay: [ //TODO: decide with the team what we want from this
-          {
-            'day': 'Lunes',
-            'startTime': '2024-07-24T19:40:44.057Z',
-            'endTime': '2024-07-24T19:40:44.057Z'
-          }
-        ], 
+        personalPhone: data.personalPhone, 
+        personalEmail: data.personalEmail, 
+        companyPhone: data.enterprisePhone,
+        companyEmail: data.enterpriseEmail,
+        workingShift: data.timeShift,
         role: data.jobPosition //TODO: see what the BE needs here
       });
   
