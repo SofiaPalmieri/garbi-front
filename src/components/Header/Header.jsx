@@ -1,4 +1,5 @@
 import AppBar from '@mui/material/AppBar';
+import Badge from '@mui/material/Badge';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
@@ -22,11 +23,14 @@ import NotificationsOutlinedIcon from '@mui/icons-material/NotificationsOutlined
 import {
   useNavigate, useLocation 
 } from 'react-router-dom';
+import {
+  NotificationsMenu 
+} from '../../components/NotificationsMenu';
 
 const pages = {
   Mapa: '/home',
   Estadísticas: '/home',  // esta hay que cambiarla cuando la creemos
-  Recomendaciones: '/home',  // esta hay que cambiarla cuando la creemos
+  Recomendaciones: '/recomendaciones',  
   Reportes: '/reportes',
 };
 
@@ -37,8 +41,6 @@ const managementItems = {
   Áreas: '/areas',
 };
 
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
-
 export const Header = ({
   logoOnly = false 
 }) => {
@@ -46,23 +48,23 @@ export const Header = ({
   const location = useLocation();
 
   const [anchorElNav, setAnchorElNav] = useState(null);
-  const [anchorElUser, setAnchorElUser] = useState(null);
+  const [anchorElNotifications, setAnchorElNotifications] = useState(null);
   const [anchorElManagement, setAnchorElManagement] = useState(null);
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
   };
 
-  const handleOpenUserMenu = (event) => {
-    setAnchorElUser(event.currentTarget);
+  const handleOpenNotificationsMenu = (event) => {
+    setAnchorElNotifications(event.currentTarget);
   };
 
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
   };
 
-  const handleCloseUserMenu = () => {
-    setAnchorElUser(null);
+  const handleCloseNotificationsMenu = () => {
+    setAnchorElNotifications(null);
   };
 
   const handleOpenManagementMenu = (event) => {
@@ -82,6 +84,41 @@ export const Header = ({
   const handleClickManagementItem = (path) => () => {
     navigate(path);
     setAnchorElManagement(null);
+  };
+
+
+  const [notifications, setNotifications] = useState([
+    {
+      id: 1,
+      type: 'frequencyChange',
+      title: 'Cambio de frecuencia',
+      description: 'Reduce la frecuencia en Área 2',
+    },
+    {
+      id: 2,
+      type: 'newReport',
+      title: 'Nuevo reporte',
+      description: 'Contenedor desbordado',
+    },
+    {
+      id: 3,
+      type: 'lowBattery',
+      title: 'Batería baja',
+      description: 'El contenedor #123456 tiene menos de 20% de batería',
+    },
+    {
+      id: 4,
+      type: 'fullContainers',
+      title: 'Contenedores llenos',
+      description: 'El 60% de los contenedores en zona 1 están llenos',
+      details: 'VER DETALLES'
+    }
+  ]);
+
+  const handleRemoveNotification = (id) => {
+    setNotifications((prevNotifications) =>
+      prevNotifications.filter(notification => notification.id !== id)
+    );
   };
 
   const currentTab = Object.keys(pages).find(key => pages[key] === location.pathname) || false;
@@ -294,18 +331,18 @@ export const Header = ({
                   </Button>
                   <Menu
                     sx={{
-                      mt: '45px' 
+                      mt: '44px' 
                     }}
                     id='menu-appbar'
                     anchorEl={anchorElManagement}
                     anchorOrigin={{
                       vertical: 'top',
-                      horizontal: 'right' 
+                      horizontal: 'left' 
                     }}
                     keepMounted
                     transformOrigin={{
                       vertical: 'top',
-                      horizontal: 'right' 
+                      horizontal: 'left' 
                     }}
                     open={Boolean(anchorElManagement)}
                     onClose={handleCloseManagementMenu}
@@ -330,46 +367,34 @@ export const Header = ({
                 >
                   <Box>
                     <IconButton
-                      onClick={handleOpenUserMenu}
+                      onClick={handleOpenNotificationsMenu}
                       sx={{
                         backgroundColor: '#12422c' 
                       }}
                     >
-                      <NotificationsOutlinedIcon
+                      <Badge 
+                        badgeContent={notifications.length}
+                        color='error'
                         sx={{
-                          color: 'white' 
+                          '& .MuiBadge-badge': {
+                            right: 4,
+                            top: 4,
+                          },
                         }}
-                      />
+                      >
+                        <NotificationsOutlinedIcon
+                          sx={{
+                            color: 'white' 
+                          }}
+                        />
+                      </Badge>
                     </IconButton>
-                    <Menu
-                      sx={{
-                        mt: '45px' 
-                      }}
-                      id='menu-appbar'
-                      anchorEl={anchorElUser}
-                      anchorOrigin={{
-                        vertical: 'top',
-                        horizontal: 'right' 
-                      }}
-                      keepMounted
-                      transformOrigin={{
-                        vertical: 'top',
-                        horizontal: 'right' 
-                      }}
-                      open={Boolean(anchorElUser)}
-                      onClose={handleCloseUserMenu}
-                    >
-                      {settings.map((setting) => (
-                        <MenuItem
-                          key={setting}
-                          onClick={handleCloseUserMenu}
-                        >
-                          <Typography
-                            textAlign='center'
-                          >{setting}</Typography>
-                        </MenuItem>
-                      ))}
-                    </Menu>
+                    <NotificationsMenu
+                      handleClose={handleCloseNotificationsMenu}
+                      notifications={notifications}
+                      anchorEl={anchorElNotifications}
+                      onRemoveNotification={handleRemoveNotification}
+                    />
                   </Box>
                   <Box>
                     <Tooltip

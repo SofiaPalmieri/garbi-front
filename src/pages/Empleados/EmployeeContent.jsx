@@ -1,6 +1,6 @@
 import {
-  Box, Paper, 
-  TableCell, 
+  Box, Paper,
+  TableCell,
   TableRow,
   Typography
 } from '@mui/material';
@@ -8,16 +8,16 @@ import {
   useEffect, useState 
 } from 'react';
 import {
-  SearcherAndButton 
+  SearcherAndButton
 } from '../../components/SearcherAndButton';
 import {
-  CreateEmployeeForm 
+  CreateEmployeeForm
 } from '../../forms/CreateEmployee/CreateEmployeeForm';
 import {
-  ModalCreateResource 
+  ModalCreateResource
 } from '../../modales/ModalCreateResource';
 import {
-  TableWithEditAndDeleteButtons 
+  TableWithEditAndDeleteButtons
 } from '../../components/TableWithEditAndDeleteButtons';
 import {
   useEmployees
@@ -69,6 +69,7 @@ const EmployeeRowRender = (employee) => {
       <TableCell
         component='th'
         scope='row'
+        align='center'
       >
         <Typography
           sx={{

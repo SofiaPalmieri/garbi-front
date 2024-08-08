@@ -3,13 +3,18 @@ import {
 } from 'react';
 import apiClient from '../api/config/apiClient';
 
+const defaultHeaders = {
+  'Content-Type': 'application/json',
+}
+
+
 export function useFetch({
   url 
 }) {
   const [isLoading, setIsLoading] = useState(false);
 
   const commonFetch = async ({
-    uri = '', body, method 
+    uri = '', body, method, headers = defaultHeaders
   }) => {
     setIsLoading(true);
 
@@ -18,6 +23,7 @@ export function useFetch({
         url: url + uri,
         data: body,
         method,
+        headers,
       });
 
       return response.data;

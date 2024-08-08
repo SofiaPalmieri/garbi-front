@@ -1,9 +1,12 @@
 import {
-  Box, Button, Divider, Typography 
+  Box, Button, Divider, Typography
 } from '@mui/material';
+import {
+  BreadcrumbsComponent
+} from '../../components/BreadcrumbsComponent';
 
 export const FilterSideComponent = ({
-  title, component 
+  title, component, prefix, subtitle, titleLink, renderFilters
 }) => {
   return (
     <Box
@@ -24,17 +27,24 @@ export const FilterSideComponent = ({
           justifyContent: 'space-between',
         }}
       >
-        <Typography
-          height='48px'
-          fontFamily='Roboto'
-          fontSize='20px'
-          fontWeight='300'
-          sx={{
-            color: 'var(--text-secondary, #00000099)',
+        <Box
+          sx = {{
+            flex: 1
           }}
         >
-          Filtros
-        </Typography>
+          <Typography
+            height='48px'
+            fontFamily='Roboto'
+            fontSize='20px'
+            fontWeight='300'
+            sx={{
+              color: 'var(--text-secondary, #00000099)',
+            }}
+          >
+            Filtros
+          </Typography>
+          {renderFilters}
+        </Box>
         <Button
           variant='contained'
           color='primary'
@@ -59,16 +69,12 @@ export const FilterSideComponent = ({
             padding: '16px 32px',
           }}
         >
-          <Typography
-            sx={{
-              fontSize: '34px',
-              fontWeight: 400,
-              letterSpacing: '0.25px',
-              textAlign: 'left',
-            }}
-          >
-            {title}
-          </Typography>
+          <BreadcrumbsComponent
+            prefix={prefix}
+            title={title}
+            subtitle={subtitle}
+            titleLink={titleLink}
+          />
         </Box>
         <Divider />
         {component()}

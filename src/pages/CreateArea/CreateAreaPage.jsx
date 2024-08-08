@@ -15,6 +15,9 @@ import './CreateAreaPage.css';
 import {
   APIProvider 
 } from '@vis.gl/react-google-maps';
+import {
+  BreadcrumbsComponent 
+} from '../../components/BreadcrumbsComponent';
 
 
 
@@ -45,19 +48,16 @@ const CreateAreaPage = () => {
     >
       <Box
         sx={{
-          width: 1,
-          padding: '16px 64px 13px',
+          width: '100%',
+          padding: '16px 32px',
         }}
       >
-        <Typography
-          sx={{
-            fontSize: '34px',
-            fontWeight: 400,
-            lineHeight: '42px',
-          }}
-        >
-          Crear nueva área
-        </Typography>
+        <BreadcrumbsComponent
+          prefix={'Gestión'}
+          title={'Áreas'}
+          subtitle={'Nueva área'}
+          titleLink={'/areas'}
+        />
       </Box>
       <Divider />
       <Box

@@ -13,6 +13,7 @@ export const InputForm = ({
   variant = 'outlined',
   size = 'small',
   helperText = null,
+  disabled = false
 }) => {
   return (
     <Controller
@@ -35,6 +36,13 @@ export const InputForm = ({
             label={label}
             {...field}
             helperText={helperText}
+            disabled={disabled}
+            sx={{
+              '& .MuiInputBase-input:-webkit-autofill': { //added this to prevent weird look when the browser autofills the field
+                '-webkit-box-shadow': '0 0 0 1000px white inset',
+                '-webkit-text-fill-color': 'black',
+              }
+            }}
           />
           {errors && errors[name] && (
             <Typography
