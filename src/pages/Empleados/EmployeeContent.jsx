@@ -5,7 +5,7 @@ import {
   Typography
 } from '@mui/material';
 import {
-  useState 
+  useEffect, useState 
 } from 'react';
 import {
   SearcherAndButton 
@@ -19,6 +19,9 @@ import {
 import {
   TableWithEditAndDeleteButtons 
 } from '../../components/TableWithEditAndDeleteButtons';
+import {
+  useEmployees
+} from '../../api/hooks/useEmployees/useEmployees';
 
 const employeesInitial = [
   {
@@ -200,6 +203,26 @@ export const EmployeeContent = () => {
     setOpenModifyEmployeeModal(false)
     setEmployeeToModify(null);
   };
+
+  const {
+    getEmployees: {
+      getEmployees: getEmployees
+    },
+  } = useEmployees();
+
+  useEffect(() => {
+    const retrieveEmployees = async () => {
+      const fetchedEmployees = await getEmployees();
+      setEmployees(fetchedEmployees.documents);
+    };
+
+    try {
+      retrieveEmployees();
+    } catch (e) {
+      console.log(e);
+    }
+  }, []);
+
   return (
     <Box
       sx={{

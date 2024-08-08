@@ -2,6 +2,25 @@ import {
   useFetch 
 } from '../../../hooks/useFetch';
 
+export const useGetEmployees = () => {
+  const {
+    commonFetch, isLoading 
+  } = useFetch({
+    url: '/api/user',
+  });
+
+  const getEmployees = () => {
+    return commonFetch({
+      method: 'GET',
+    });
+  };
+
+  return {
+    getEmployees,
+    isLoadingGetEmployees: isLoading,
+  };
+};
+
 export const useCreateEmployee = () => {
   const {
     commonFetch, isLoading 
