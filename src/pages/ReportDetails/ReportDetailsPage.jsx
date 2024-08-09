@@ -1,18 +1,27 @@
 import {
   Box 
-} from '@mui/system'
+} from '@mui/system';
 
 import {
   ReportDetails 
-} from './ReportDetails'
+} from './ReportDetails';
 
-export const ReportDetailsPage = () => {
+export const ReportDetailsPage = ({
+  report = {
+    state: 'NUEVO',
+    date: '19/02/2024 - 09.20 hs',
+    reportedBy: 'Ciudadano',
+    neighborhood: 'Villa del Parque - Área 2',
+    address: 'Av. Honorio Pueyrredón 1234',
+    containerID: '#123456'
+  }
+}) => {
   return (
     <Box
       sx={{
         height: '100%',
         width: '100%',
-        backgroundColor: 'white',
+        backgroundColor: 'red',
         display: 'flex',
         flexDirection: 'column'
       }}
@@ -21,13 +30,13 @@ export const ReportDetailsPage = () => {
         sx={{
           height: '4.5rem',
           width: 1,
-          backgroundColor: 'white'
+          backgroundColor: 'black'
         }}
       />
       <Box
         sx={{
           flex: 1,
-          backgroundColor: 'white',
+          backgroundColor: 'green',
           padding: '2rem 4rem 0'
         }}
       >
@@ -35,15 +44,14 @@ export const ReportDetailsPage = () => {
           sx={{
             width: 1,
             height: '100%',
-            backgroundColor: 'white'
+            backgroundColor: 'aquamarine'
           }}
         >
-          
           <Box
             sx={{
               height: 1,
               width: 1,
-              backgroundColor: 'white',
+              backgroundColor: 'yellowgreen',
               display: 'flex'
             }}
           >
@@ -51,22 +59,21 @@ export const ReportDetailsPage = () => {
               sx ={{
                 height: 1,
                 flex: 1,
-                backgroundColor: 'white',
+                backgroundColor: 'blue',
                 display: 'flex',
                 flexDirection: 'column',
                 pb: '1.5rem'
               }}
-                        
             >
               <Box
                 sx = {{
-                  backgroundColor: 'white',
+                  backgroundColor: 'orange',
                   height: '4rem',
                 }}
               />
               <Box
                 sx  ={{
-                  backgroundColor: 'white',
+                  backgroundColor: 'red',
                   height: '21.875rem',
                   mb: '1.5rem'
                 }}
@@ -81,20 +88,13 @@ export const ReportDetailsPage = () => {
             <Box
               sx={{
                 width: '16rem',
-                height: '18.625rem', // borrar
+                height: '18.625rem',
                 backgroundColor: 'white'
               }}
-
             >
               <ReportDetails
-                state='NUEVO'
-                date='19/02/2024 - 09.20 hs'
-                reportedBy='Ciudadano' 
-                neighborhood='Villa del Parque - Área 2'
-                address='Av. Honorio Pueyrredón 1234'
-                containerID='#123456'
+                report={report}
               />
-
               {/* {code here....} */}
             </Box>
           </Box>
@@ -102,8 +102,7 @@ export const ReportDetailsPage = () => {
             {/* {code here....} */}
           </Box>
         </Box>
-
       </Box>
     </Box>
-  )
-}
+  );
+};
