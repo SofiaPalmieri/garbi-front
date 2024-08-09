@@ -7,11 +7,20 @@ export const ReportDetailsDescriptionContent = ({
   description 
 }) => {
   return (
-    <Box>
+    <Box
+      sx={{
+        border: '1px solid var(--divider, #0000001F)', 
+        borderRadius:'4px'
+      }}
+    >
       <Box
         sx={{
           display: 'flex',
-          alignItems: 'center' // Alinea verticalmente los textos
+          alignItems: 'center',
+          height:'100%',
+          width:'100%',
+          padding: '16px 8px 0 12px',
+          
         }}
       >
         <Typography
@@ -22,9 +31,6 @@ export const ReportDetailsDescriptionContent = ({
             lineHeight: '26.56px',
             letterSpacing: '0.4px',
             textAlign: 'left',
-            marginRight: '8px',
-            marginLeft:'12px',
-            marginTop:'16px'
 
           }}
         >
@@ -37,9 +43,7 @@ export const ReportDetailsDescriptionContent = ({
             fontWeight: '400',
             lineHeight: '26.56px',
             letterSpacing: '0.4px',
-            textAlign: 'left',
-            marginTop:'16px'
-
+            textAlign: 'left'
           }}
         >
           {description}
@@ -47,17 +51,20 @@ export const ReportDetailsDescriptionContent = ({
       </Box>
       <Box
         sx={{
-          marginTop: '16px',
           width:'368px',
           height:'272px',
-          marginLeft:'12px'
+          padding:'16px 0px 0px 12px'
         }}
       >
         <img
           src={contenedorRoto}
-          height='240'
-          width='320'
           alt='Descripción de la imagen'
+          style={{
+            maxWidth: '320px',
+            maxHeight: '240px',
+            width: '100%',
+            height: 'auto',
+          }}
         />
       </Box>
     </Box>

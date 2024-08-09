@@ -11,6 +11,8 @@ export const ReportDetailsDescriptionHeader = ({
         sx={{
           display: 'flex',
           alignItems: 'center', 
+          height:'100%',
+          width:'100%'
         }}
       >
         <Typography
@@ -33,8 +35,6 @@ export const ReportDetailsDescriptionHeader = ({
           sx={{
             marginLeft: '20px', 
             padding: '3px 4px',
-            gap: '0px',
-            border: '1px 0px 0px 0px'
           }}
         />
       </Box>

@@ -14,7 +14,7 @@ export const ReportDetailsPage = () => {
       sx={{
         height: '100%',
         width: '100%',
-        backgroundColor: 'white',
+        backgroundColor: 'red',
         display: 'flex',
         flexDirection: 'column'
       }}
@@ -23,13 +23,13 @@ export const ReportDetailsPage = () => {
         sx={{
           height: '4.5rem',
           width: 1,
-          backgroundColor: 'white'
+          backgroundColor: 'black'
         }}
       />
       <Box
         sx={{
           flex: 1,
-          backgroundColor: 'white',
+          backgroundColor: 'green',
           padding: '2rem 4rem 0'
         }}
       >
@@ -37,14 +37,14 @@ export const ReportDetailsPage = () => {
           sx={{
             width: 1,
             height: '100%',
-            backgroundColor: 'white'
+            backgroundColor: 'aquamarine'
           }}
         >
           <Box
             sx={{
               height: 1,
               width: 1,
-              backgroundColor: 'white',
+              backgroundColor: 'yellowgreen',
               display: 'flex'
             }}
           >
@@ -52,7 +52,7 @@ export const ReportDetailsPage = () => {
               sx ={{
                 height: 1,
                 flex: 1,
-                backgroundColor: 'white',
+                backgroundColor: 'blue',
                 display: 'flex',
                 flexDirection: 'column',
                 pb: '1.5rem'
@@ -75,8 +75,6 @@ export const ReportDetailsPage = () => {
                   backgroundColor: 'white',
                   height: '21.875rem',
                   mb: '1.5rem',
-                  border: '1px solid var(--divider, #0000001F)', 
-                  borderRadius:'4px'
                 }}
               >
                 <ReportDetailsDescriptionContent
@@ -94,7 +92,7 @@ export const ReportDetailsPage = () => {
               sx={{
                 width: '16rem',
                 height: '18.625rem', // borrar
-                backgroundColor: 'white'
+                backgroundColor: 'yellow'
               }}
             />
           </Box>
