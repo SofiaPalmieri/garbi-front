@@ -11,6 +11,9 @@ import {
   useForm 
 } from 'react-hook-form';
 import {
+  jwtDecode 
+} from 'jwt-decode';
+import {
   InputForm 
 } from '../../components/InputForm';
 import {
@@ -108,10 +111,14 @@ export const CreateEmployeeForm = ({
     },
   } = useEmployees();
 
+  const token = localStorage.getItem('token');
+  const decodedToken = jwtDecode(token);
+  const companyId = decodedToken.user.companyId;
+
   const onSubmit = async (data) => {
-    try{
+    try {
       const response = await createEmployee({
-        companyId: '6642c093eb730d1cd07762b0', //TODO: get it from the current user
+        companyId: companyId,
         name: data.firstName, 
         surname: data.lastName, 
         personalPhone: data.personalPhone, 

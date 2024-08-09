@@ -28,16 +28,6 @@ export const useCreateEmployee = () => {
     url: '/api/user',
   });
 
-  const generateRandomPassword = (length) => {
-    const charset = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()';
-    let password = '';
-    for (let i = 0; i < length; i++) {
-      const randomIndex = Math.floor(Math.random() * charset.length);
-      password += charset[randomIndex];
-    }
-    return password;
-  };
-
   const createEmployee = ({
     companyId, name, surname, personalPhone, personalEmail, companyPhone, companyEmail, workingShift, role 
   }) => {
@@ -52,7 +42,7 @@ export const useCreateEmployee = () => {
         personalEmail, 
         companyPhone,
         companyEmail,
-        password: generateRandomPassword(12),
+        password: '', //TODO: delete when BE is ready
         workingShift,
         role
       },
