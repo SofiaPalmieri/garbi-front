@@ -10,7 +10,8 @@ export const ReportDetailsDescriptionContent = ({
     <Box
       sx={{
         border: '1px solid var(--divider, #0000001F)', 
-        borderRadius:'4px'
+        borderRadius:'4px',
+        padding: '12px 24px 16px',
       }}
     >
       <Box
@@ -19,8 +20,6 @@ export const ReportDetailsDescriptionContent = ({
           alignItems: 'center',
           height:'100%',
           width:'100%',
-          padding: '16px 8px 0 12px',
-          
         }}
       >
         <Typography
@@ -53,7 +52,6 @@ export const ReportDetailsDescriptionContent = ({
         sx={{
           width:'368px',
           height:'272px',
-          padding:'16px 0px 0px 12px'
         }}
       >
         <img
