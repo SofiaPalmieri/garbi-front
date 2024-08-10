@@ -1,6 +1,12 @@
 import {
   Box 
 } from '@mui/system'
+import {
+  ReportDetailsDescriptionHeader 
+} from './ReportDetailsDescriptionHeader'
+import {
+  ReportDetailsDescriptionContent 
+} from './ReportDetailsDescriptionContent'
 
 export const ReportDetailsPage = () => {
   return (
@@ -19,9 +25,7 @@ export const ReportDetailsPage = () => {
           width: 1,
           backgroundColor: 'black'
         }}
-      >
-        Bread
-      </Box>
+      />
       <Box
         sx={{
           flex: 1,
@@ -57,17 +61,27 @@ export const ReportDetailsPage = () => {
             >
               <Box
                 sx = {{
-                  backgroundColor: 'orange',
+                  backgroundColor: 'white',
                   height: '4rem',
                 }}
-              />
+              >
+                <ReportDetailsDescriptionHeader
+                  title='Contenedor roto'
+                  state='Contenedor en mal estado'
+                />
+              </Box>
               <Box
                 sx  ={{
-                  backgroundColor: 'red',
+                  backgroundColor: 'white',
                   height: '21.875rem',
-                  mb: '1.5rem'
+                  padding: '0 24px',
+                  mb: '1.5rem',
                 }}
-              />
+              >
+                <ReportDetailsDescriptionContent
+                  description='la tapa del contenedor esta rota'
+                />
+              </Box>
               <Box
                 sx ={{
                   flex: 1,
@@ -81,10 +95,7 @@ export const ReportDetailsPage = () => {
                 height: '18.625rem', // borrar
                 backgroundColor: 'yellow'
               }}
-
-            >
-              {/* {code here....} */}
-            </Box>
+            />
           </Box>
           <Box>
             {/* {code here....} */}
