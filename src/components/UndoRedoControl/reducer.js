@@ -1,4 +1,7 @@
 import {
+  completeEditablePath 
+} from '../../reducers/drawReducer';
+import {
   polygonConfig, polylineConfig
 } from '../AreaDrawingMap/drawAreas';
 
@@ -75,6 +78,9 @@ export default function reducer(state, action) {
     } = action.payload;
 
     const area = state.find(overlay => overlay.id === id);
+
+    completeEditablePath(area.polyline);
+
     const path = area.polyline.getPath()?.getArray();
 
     if (path) {

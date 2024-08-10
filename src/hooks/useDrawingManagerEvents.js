@@ -33,18 +33,20 @@ export function useDrawingManagerEvents(drawingManager, dispatch, dispatchDraw, 
       eventListeners.push(updateListener);
     };
 
-    const addUpdateListenerOverlay = (eventName, overlay) => {
+    const addUpdateListenerOverlay = (eventName, drawResult) => {
+      console.log('🚀 ~ addUpdateListenerOverlay ~ eventName:', eventName)
+      console.log('🚀 ~ addUpdateListenerOverlay ~ overlay:', drawResult)
       const updateListener = google.maps.event.addListener(
-        overlay,
+        drawResult.overlay,
         eventName,
         () => {
-          dispatch({
-            type: DrawingActionType.UPDATE_OVERLAYS,
-            payload: overlay
+          console.log('EJECUTADNO FUNCION ')
+          dispatchDraw({
+            type: DrawingActionType.UPDATE_DRAW
           });
         }
       );
-
+      console.log('ACTUALIZANDO EL EVENT LISTENER')
       eventListeners.push(updateListener);
     };
 
@@ -60,6 +62,7 @@ export function useDrawingManagerEvents(drawingManager, dispatch, dispatchDraw, 
       eventListeners.push(clickListener);
     };
 
+    // drawed overlays
     state.forEach(overlay => {
       ['mouseup'].forEach(eventName =>
         addUpdateListener(eventName, overlay)
@@ -67,6 +70,7 @@ export function useDrawingManagerEvents(drawingManager, dispatch, dispatchDraw, 
       addClickListener(overlay);
     });
 
+    // for new overlays
     const overlayCompleteListener = google.maps.event.addListener(
       drawingManager,
       'overlaycomplete',
