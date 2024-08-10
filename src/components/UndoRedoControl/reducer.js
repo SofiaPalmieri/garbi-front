@@ -1,17 +1,18 @@
 import {
-  completeEditablePath 
+  completeEditablePath
 } from '../../reducers/drawReducer';
 import {
   polygonConfig, polylineConfig
 } from '../AreaDrawingMap/drawAreas';
 
 export const DrawingActionKind = {
-  SET_OVERLAY: 'SET_OVERLAY',
-  UPDATE_OVERLAYS: 'UPDATE_OVERLAYS',
+  UPDATE_DRAW_OVERLAY: 'UPDATE_DRAW_OVERLAY',
+  UPDATE_OVERLAY: 'UPDATE_OVERLAY',
   CANCEL_OVERLAY: 'CANCEL_OVERLAY',
   INIT_OVERLAYS: 'INIT_OVERLAYS',
   CLICK_OVERLAY: 'CLICK_OVERLAY',
-  DELETE_OVERLAY: 'DELETE_OVERLAY'
+  DELETE_OVERLAY: 'DELETE_OVERLAY',
+  ADD_OVERLAY: 'ADD_OVERLAY'
 }
 
 function getPathsAsLatLngArray(overlays) {
@@ -41,6 +42,10 @@ function getPathsAsLatLng(overlay) {
 }
 
 export default function reducer(state, action) {
+
+  const searchArea = (id) => state.find(area => area.id === id);
+
+
   switch (action.type) {
 
   case DrawingActionKind.INIT_OVERLAYS: {
@@ -72,7 +77,7 @@ export default function reducer(state, action) {
   }
 
   // This action is called whenever anything changes on any overlay.
-  case DrawingActionKind.UPDATE_OVERLAYS: {
+  case DrawingActionKind.UPDATE_DRAW_OVERLAY: {
     const {
       id
     } = action.payload;
@@ -89,6 +94,23 @@ export default function reducer(state, action) {
 
     return [...state];
   }
+  // This actoins is called for update title or description on any overlay.
+  case DrawingActionKind.UPDATE_OVERLAY: {
+    const {
+      id,
+      title,
+      description
+    } = action.payload
+
+    const area = searchArea(id)
+    console.log('🚀 ~ reducer ~ area:', area)
+
+    area.title = title
+    area.description = description
+    console.log('🚀 ~ reducer ~ state:', state)
+
+    return [...state];
+  }
 
   case DrawingActionKind.DELETE_OVERLAY: {
     const {
@@ -102,30 +124,22 @@ export default function reducer(state, action) {
     return [...newState];
   }
 
-
-  // This action is called when a new overlay is added to the map.
-  case DrawingActionKind.SET_OVERLAY: {
+  case DrawingActionKind.ADD_OVERLAY: {
     const {
       overlay: polyline
     } = action.payload;
 
-    const path = polyline.getPath()?.getArray();
-    const arrayPath = getPathsAsLatLng(polyline)
-    console.log('🚀 ~ reducer ~ arrayPath:', arrayPath)
 
-    // because we cannot draw a polilyne with a fill color, and we cannot draw a polygon with  
-    // dotted line stroke, the decision has been made to draw a polilyne for the stroke, and a polygon
-    // for the fill color
     let polygon = null;
 
-    polygon = new google.maps.Polygon({
-      paths: arrayPath,
-      editable: false,
-      draggable: false,
-      strokeOpacity: 0,
-      fillColor: '#006610',
-      fillOpacity: 0.10,
-    });
+    // polygon = new google.maps.Polygon({
+    //   paths: arrayPath,
+    //   editable: false,
+    //   draggable: false,
+    //   strokeOpacity: 0,
+    //   fillColor: '#006610',
+    //   fillOpacity: 0.10,
+    // });
 
     return state
   }

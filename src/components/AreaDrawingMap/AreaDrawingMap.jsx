@@ -3,7 +3,7 @@ import {
   MapControl
 } from '@vis.gl/react-google-maps';
 import {
-  useEffect, useReducer,
+  useEffect,
   useState
 } from 'react';
 import {
@@ -12,22 +12,15 @@ import {
 import {
   useDrawingManager
 } from '../../hooks/useDrawingManager';
-import reducer from '../UndoRedoControl/reducer';
 import ColorPicker from '../ColorPicker/ColorPicker';
-import {
-  drawReducer 
-} from '../../reducers/drawReducer';
+
+
 
 
 
 export const AreaDrawingMap = ({
-  areas, setAreas, canAddArea, setCanAddArea, areaSelected, setAreaSelected
+  areas, setAreas, canAddArea, setCanAddArea, areaSelected, setAreaSelected, state, dispatch, stateDraw, dispatchDraw
 }) => {
-  const [state, dispatch] = useReducer(reducer, []);
-  const [stateDraw, dispatchDraw] = useReducer(drawReducer, {
-    polyline: null,
-    polygon: null
-  });
   const [selectedColor, setSelectedColor] = useState(null);
   const drawingManager = useDrawingManager('garbi-create-area-map', selectedColor);
   

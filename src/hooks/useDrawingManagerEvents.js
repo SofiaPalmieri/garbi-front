@@ -5,7 +5,7 @@ import {
   DrawingActionKind
 } from '../components/UndoRedoControl/reducer';
 import {
-  DrawingActionType 
+  DrawingActionType
 } from '../reducers/drawReducer';
 
 
@@ -22,7 +22,7 @@ export function useDrawingManagerEvents(drawingManager, dispatch, dispatchDraw, 
         eventName,
         () => {
           dispatch({
-            type: DrawingActionKind.UPDATE_OVERLAYS,
+            type: DrawingActionKind.UPDATE_DRAW_OVERLAY,
             payload: {
               id: overlay.id
             }
@@ -92,7 +92,8 @@ export function useDrawingManagerEvents(drawingManager, dispatch, dispatchDraw, 
     eventListeners.push(overlayCompleteListener);
 
     return () => {
-      eventListeners.forEach(listener =>
+      console.log
+      eventListeners?.forEach(listener =>
         google.maps.event.removeListener(listener)
       );
     };

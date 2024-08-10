@@ -13,14 +13,21 @@ import {
 } from '../../components/BreadcrumbsComponent';
 import {
   useEffect,
+  useReducer,
   useState
 } from 'react';
 import {
-  InputForm 
+  InputForm
 } from '../../components/InputForm/InputForm';
 import {
-  useForm 
+  useForm
 } from 'react-hook-form';
+import reducer, {
+  DrawingActionKind 
+} from '../../components/UndoRedoControl/reducer';
+import {
+  drawReducer 
+} from '../../reducers/drawReducer';
 
 const slideIn = keyframes`
   from {
@@ -38,6 +45,11 @@ const AreaPage = () => {
   const [canAddArea, setCanAddArea] = useState(false);
   const [areaSelected, setAreaSelected] = useState(null);
   const [animationKey, setAnimationKey] = useState(0);
+  const [state, dispatch] = useReducer(reducer, []);
+  const [stateDraw, dispatchDraw] = useReducer(drawReducer, {
+    polyline: null,
+    polygon: null
+  });
 
   const {
     control,
@@ -71,6 +83,19 @@ const AreaPage = () => {
       setValue('description', '')
     }
   }, [areaSelected, setValue]);
+
+  const saveArea = (data) => {
+    console.log('🚀 ~ saveArea ~ data:', data)
+    console.log('GUARDANDO AREAAAAAAAAAAAAA')
+    dispatch({
+      type: DrawingActionKind.UPDATE_OVERLAY,
+      payload: {
+        id: areaSelected.id,
+        title: data.name,
+        description: data.description
+      }
+    })
+  }
 
   return (
     <Box
@@ -112,6 +137,8 @@ const AreaPage = () => {
           {(areaSelected || canAddArea) && (
             <Box
               key={animationKey}
+              component={'form'}
+              onSubmit={handleSubmit(saveArea)}
               sx={{
                 width: '100%',
                 display: 'flex',
@@ -148,6 +175,7 @@ const AreaPage = () => {
               </Box>
               <Button
                 size='medium'
+                type='submit'
                 sx={{
                   backgroundColor: '#12422C',
                   color: 'white',
@@ -159,7 +187,7 @@ const AreaPage = () => {
                   },
                 }}
               >
-                Guardar Area
+                Guardar Área
                 <SaveIcon
                   sx={{
                     marginLeft: '8px',
@@ -185,6 +213,10 @@ const AreaPage = () => {
               setCanAddArea={setCanAddArea}
               areaSelected={areaSelected}
               setAreaSelected={setAreaSelected}
+              state={state}
+              dispatch={dispatch}
+              stateDraw={stateDraw}
+              dispatchDraw={dispatchDraw}
             />
           </APIProvider>
         </Box>
