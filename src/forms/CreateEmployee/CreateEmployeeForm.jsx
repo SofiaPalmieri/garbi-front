@@ -11,6 +11,9 @@ import {
   useForm 
 } from 'react-hook-form';
 import {
+  jwtDecode 
+} from 'jwt-decode';
+import {
   InputForm 
 } from '../../components/InputForm';
 import {
@@ -19,6 +22,9 @@ import {
 import {
   CancelAndSubmitButton 
 } from '../../components/CancelAndSubmitButton/CancelAndSubmitButton';
+import {
+  useEmployees 
+} from '../../api/hooks/useEmployees/useEmployees';
 import {
   CustomAlert 
 } from '../../components/CustomAlert/CustomAlert';
@@ -44,7 +50,7 @@ const turnos = [
     label: 'Tarde',
   },
   {
-    value: 'manana',
+    value: 'Manana',
     label: 'Mañana',
   },
 ];
@@ -99,8 +105,38 @@ export const CreateEmployeeForm = ({
     resolver: yupResolver(newEmployeeSchema),
   });
 
+  const {
+    createEmployee: {
+      createEmployee: createEmployee, isLoadingCreateEmployee 
+    },
+  } = useEmployees();
+
+  const token = localStorage.getItem('token');
+  const decodedToken = jwtDecode(token);
+  const companyId = decodedToken.user.companyId;
+
   const onSubmit = async (data) => {
-    /*TODO*/
+    try {
+      const response = await createEmployee({
+        companyId: companyId,
+        name: data.firstName, 
+        surname: data.lastName, 
+        personalPhone: data.personalPhone, 
+        personalEmail: data.personalEmail, 
+        companyPhone: data.enterprisePhone,
+        companyEmail: data.enterpriseEmail,
+        workingShift: data.timeShift,
+        role: data.jobPosition //TODO: see what the BE needs here
+      });
+  
+      if (response.success) {
+        handleClose();
+      } else {
+        console.error('Failed to submit form', response);
+      }
+    } catch (error) {
+      console.error('Error submitting form', error);
+    }
   };
 
   const errorMessages = errors ? (
@@ -314,7 +350,7 @@ export const CreateEmployeeForm = ({
 
       <CancelAndSubmitButton
         handleClose={handleClose}
-        onSubmit={onSubmit}
+        onSubmit={handleSubmit(onSubmit)}
       />
     </form>
   );
