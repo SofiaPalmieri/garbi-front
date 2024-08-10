@@ -74,6 +74,7 @@ export const ReportDetailsPage = () => {
                 sx  ={{
                   backgroundColor: 'white',
                   height: '21.875rem',
+                  padding: '0 24px',
                   mb: '1.5rem',
                 }}
               >
