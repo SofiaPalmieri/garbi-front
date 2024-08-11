@@ -5,14 +5,8 @@ import {
 export const DrawingActionType = {
   SET_DRAW: 'SET_DRAW',
   UPDATE_DRAW: 'UPDATE_DRAW',
-  // CANCEL_OVERLAY: 'CANCEL_OVERLAY',
-  // INIT_OVERLAYS: 'INIT_OVERLAYS',
-  // CLICK_OVERLAY: 'CLICK_OVERLAY',
-  // DELETE_OVERLAY: 'DELETE_OVERLAY'
+  CLEAR_DRAW: 'CLEAR_DRAW'
 }
-
-
-
 
 export function drawReducer(state, action) {
   switch (action.type) {
@@ -41,10 +35,6 @@ export function drawReducer(state, action) {
   }
 
   case DrawingActionType.UPDATE_DRAW: {
-
-
-    console.log('ACTUALIZANDOOOO')
-
     completeEditablePath(state.polyline)
 
     const path = state.polyline.getPath()?.getArray();
@@ -53,9 +43,13 @@ export function drawReducer(state, action) {
     return state
   }
 
-    // TODO: EDIT DRAW
+  case DrawingActionType.CLEAR_DRAW: {
+    return {
+      polyline: null,
+      polygon: null
+    }
   }
-
+  }
 }
 
 // this func should be called every time we try to update a polyline
@@ -94,6 +88,7 @@ function completePath(polyline) {
     }
   }
 }
+
 function getPathsAsLatLng(overlay) {
   if (overlay.getPath) {
     return overlay

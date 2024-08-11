@@ -45,7 +45,6 @@ export default function reducer(state, action) {
 
   const searchArea = (id) => state.find(area => area.id === id);
 
-
   switch (action.type) {
 
   case DrawingActionKind.INIT_OVERLAYS: {
@@ -94,6 +93,7 @@ export default function reducer(state, action) {
 
     return [...state];
   }
+    
   // This actoins is called for update title or description on any overlay.
   case DrawingActionKind.UPDATE_OVERLAY: {
     const {
@@ -103,11 +103,9 @@ export default function reducer(state, action) {
     } = action.payload
 
     const area = searchArea(id)
-    console.log('🚀 ~ reducer ~ area:', area)
 
     area.title = title
     area.description = description
-    console.log('🚀 ~ reducer ~ state:', state)
 
     return [...state];
   }
@@ -126,22 +124,25 @@ export default function reducer(state, action) {
 
   case DrawingActionKind.ADD_OVERLAY: {
     const {
-      overlay: polyline
+      id,
+      title,
+      description,
+      polyline,
+      polygon
     } = action.payload;
 
+    polyline.setEditable(false)
 
-    let polygon = null;
+    const newArea = {
+      id,
+      description,
+      title,
+      path: getPathsAsLatLng(polyline),
+      polyline,
+      polygon
+    }
 
-    // polygon = new google.maps.Polygon({
-    //   paths: arrayPath,
-    //   editable: false,
-    //   draggable: false,
-    //   strokeOpacity: 0,
-    //   fillColor: '#006610',
-    //   fillOpacity: 0.10,
-    // });
-
-    return state
+    return [...state, newArea]
   }
 
   // This action is called when the cancel button is clicked.

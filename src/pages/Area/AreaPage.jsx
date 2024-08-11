@@ -23,10 +23,11 @@ import {
   useForm
 } from 'react-hook-form';
 import reducer, {
-  DrawingActionKind 
+  DrawingActionKind
 } from '../../components/UndoRedoControl/reducer';
 import {
-  drawReducer 
+  DrawingActionType,
+  drawReducer
 } from '../../reducers/drawReducer';
 
 const slideIn = keyframes`
@@ -43,8 +44,11 @@ const slideIn = keyframes`
 const AreaPage = () => {
   const [areas, setAreas] = useState([]);
   const [canAddArea, setCanAddArea] = useState(false);
+  const [isAddingNewArea, setIsAddingNewArea] = useState(false);
   const [areaSelected, setAreaSelected] = useState(null);
   const [animationKey, setAnimationKey] = useState(0);
+  const [count, setCount] = useState(0);
+  const [selectedColor, setSelectedColor] = useState(null);
   const [state, dispatch] = useReducer(reducer, []);
   const [stateDraw, dispatchDraw] = useReducer(drawReducer, {
     polyline: null,
@@ -85,16 +89,36 @@ const AreaPage = () => {
   }, [areaSelected, setValue]);
 
   const saveArea = (data) => {
-    console.log('🚀 ~ saveArea ~ data:', data)
-    console.log('GUARDANDO AREAAAAAAAAAAAAA')
-    dispatch({
-      type: DrawingActionKind.UPDATE_OVERLAY,
-      payload: {
-        id: areaSelected.id,
-        title: data.name,
-        description: data.description
-      }
-    })
+    if (canAddArea) {
+      const newPolyline =  stateDraw.polyline
+      const newPolygon = stateDraw.polygon
+
+      dispatchDraw({
+        type: DrawingActionType.CLEAR_DRAW
+      })
+
+      dispatch({
+        type: DrawingActionKind.ADD_OVERLAY,
+        payload: {
+          id: 'AREA-' + count,
+          title: data.name,
+          description: data.description,
+          polyline: newPolyline,
+          color: selectedColor,
+          polygon: newPolygon
+        }
+      })
+      setCount(prev => prev + 1)
+    } else {
+      dispatch({
+        type: DrawingActionKind.UPDATE_OVERLAY,
+        payload: {
+          id: areaSelected.id,
+          title: data.name,
+          description: data.description
+        }
+      })
+    }
   }
 
   return (
@@ -213,6 +237,9 @@ const AreaPage = () => {
               setCanAddArea={setCanAddArea}
               areaSelected={areaSelected}
               setAreaSelected={setAreaSelected}
+              setIsAddingNewArea={setIsAddingNewArea}
+              setSelectedColor={setSelectedColor}
+              selectedColor={selectedColor}
               state={state}
               dispatch={dispatch}
               stateDraw={stateDraw}

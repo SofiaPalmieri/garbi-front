@@ -3,8 +3,7 @@ import {
   MapControl
 } from '@vis.gl/react-google-maps';
 import {
-  useEffect,
-  useState
+  useEffect
 } from 'react';
 import {
   PanelControlMap
@@ -19,9 +18,9 @@ import ColorPicker from '../ColorPicker/ColorPicker';
 
 
 export const AreaDrawingMap = ({
-  areas, setAreas, canAddArea, setCanAddArea, areaSelected, setAreaSelected, state, dispatch, stateDraw, dispatchDraw
+  areas, setAreas, canAddArea,selectedColor, setSelectedColor, setCanAddArea, areaSelected, setAreaSelected, setIsAddingNewArea, state, dispatch, stateDraw, dispatchDraw
 }) => {
-  const [selectedColor, setSelectedColor] = useState(null);
+  
   const drawingManager = useDrawingManager('garbi-create-area-map', selectedColor);
   
   useEffect(() => {
@@ -85,6 +84,7 @@ export const AreaDrawingMap = ({
             setAreas={setAreas}
             drawingManager={drawingManager}
             setAreaSelected={setAreaSelected}
+            setIsAddingNewArea={setIsAddingNewArea}
           />
         </MapControl>
       </Map>
