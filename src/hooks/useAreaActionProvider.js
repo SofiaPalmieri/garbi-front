@@ -4,41 +4,58 @@ import {
 
 export const useAreaActionStatesProvider = () => {
   const [enabledAddArea, setEnabledAddArea] = useState(true);
-  const [enabledEditArea, setEnableEditArea] = useState(false);
+  const [enabledEditArea, setEnabledEditArea] = useState(false);
   const [enabledDeleteArea, setEnabledDeleteArea] = useState(false);
 
   const [isAddingArea, setIsAddingArea] = useState(false);
+  const [isEditingArea, setIsEditingArea] = useState(false);
 
   const enableAddArea = () => {
     setEnabledAddArea(true)
     setEnabledDeleteArea(false);
-    setEnableEditArea(false);
+    setEnabledEditArea(false);
   }
     
   const enableEditArea = () => {
-    setEnableEditArea(true)
+    setEnabledEditArea(true)
     setEnabledAddArea(false)
     setEnabledDeleteArea(true)
   }
 
   const addingArea = () => {
-    console.log('adsklsadklsad')
     setIsAddingArea(true)
     setEnabledAddArea(false)
     setEnabledDeleteArea(false);
-    setEnableEditArea(false);
+    setEnabledEditArea(false);
+  }
+
+  const editingArea = () => {
+    setIsEditingArea(true);
+    setIsAddingArea(false);
+    setEnabledEditArea(false);
   }
 
   const disableEditArea = () =>{
-    setEnableEditArea(false)
+    setEnabledEditArea(false)
     setEnabledAddArea(true)
     setEnabledDeleteArea(false)
   }
 
   const resetStates = () => {
-    setEnableEditArea(true)
-    setEnableEditArea(false)
+    setEnabledAddArea(true)
+    setEnabledEditArea(false)
     setEnabledDeleteArea(false)
+    setIsAddingArea(false)
+    setIsEditingArea(false)
+  }
+
+  const controlCamera = () => {
+    if(isAddingArea){
+      enableAddArea();
+    } else {
+      enableEditArea();
+      setIsEditingArea(false);
+    }
   }
 
     
@@ -47,12 +64,15 @@ export const useAreaActionStatesProvider = () => {
       enableAddArea,
       enableEditArea,
       isAddingArea,
+      isEditingArea,
       addingArea,
+      editingArea,
       enabledAddArea,
       enabledEditArea,
       enabledDeleteArea,
       disableEditArea,
-      resetStates
+      resetStates,
+      controlCamera
     }
   }
 }

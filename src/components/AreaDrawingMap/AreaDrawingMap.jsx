@@ -12,6 +12,9 @@ import {
   useDrawingManager
 } from '../../hooks/useDrawingManager';
 import ColorPicker from '../ColorPicker/ColorPicker';
+import {
+  DrawingActionType 
+} from '../../reducers/drawReducer';
 
 
 
@@ -38,6 +41,10 @@ export const AreaDrawingMap = ({
 
   useEffect(() => {
     if (areaSelected) {
+      dispatchDraw({
+        type: DrawingActionType.CLEAR_DRAW
+      })
+
       if (areaSelected.polygon) {
         areaSelected.polygon.setOptions({
           fillOpacity: 0.8,
@@ -48,6 +55,9 @@ export const AreaDrawingMap = ({
     return () => {
       areaSelected?.polygon?.setOptions({
         fillOpacity: 0.1
+      })
+      areaSelected?.polyline?.setOptions({
+        editable: false
       })
     }
   }, [areaSelected]);

@@ -56,6 +56,8 @@ const AreaPage = () => {
     enabledAddArea,
     enabledEditArea,
     enabledDeleteArea,
+    isEditingArea,
+    resetStates,
     disableEditArea
   } = areaActionStates
   const [canAddArea, setCanAddArea] = useState(false);
@@ -137,7 +139,9 @@ const AreaPage = () => {
           description: data.description
         }
       })
+      setAreaSelected(null)
     }
+    resetStates()
   }
 
   return (
@@ -177,7 +181,7 @@ const AreaPage = () => {
             height: '3.75rem',
           }}
         >
-          {(areaSelected || isAddingArea) && (
+          {(isAddingArea || areaSelected) && (
             <Box
               key={animationKey}
               component={'form'}

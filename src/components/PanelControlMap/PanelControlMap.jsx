@@ -77,12 +77,13 @@ const areasDefault = [
 export const PanelControlMap = ({
   areaSelected, canAddArea, areaActionStates, setCanAddArea, areas, setAreas,  dispatchDraw, stateDraw, drawingManager, setAreaSelected, state, dispatch
 }) => {
-  console.log('🚀 ~ areaActionStates:', areaActionStates)
   const map = useMap('garbi-create-area-map');
   const [isEditing, setIsEditing] = useState(false);
   const {
     addingArea,
     enableEditArea,
+    editingArea,
+    controlCamera,
     enabledAddArea,
     enabledEditArea,
     enabledDeleteArea
@@ -131,9 +132,11 @@ export const PanelControlMap = ({
   const handleChangeToControlCamera = () => {
     handleSetDrawingMode(null)
     setAreaSelected(null)
+    controlCamera()
   }
 
   const handleEditArea = () => {
+    editingArea()
     areaSelected.polyline.setOptions({
       editable: true
     })
