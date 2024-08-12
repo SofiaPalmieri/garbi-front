@@ -5,7 +5,7 @@ import {
   Typography
 } from '@mui/material';
 import {
-  useState
+  useEffect, useState 
 } from 'react';
 import {
   SearcherAndButton
@@ -19,36 +19,10 @@ import {
 import {
   TableWithEditAndDeleteButtons
 } from '../../components/TableWithEditAndDeleteButtons';
+import {
+  useEmployees
+} from '../../api/hooks/useEmployees/useEmployees';
 
-const employeesInitial = [
-  {
-    id: 1,
-    lastName: 'García',
-    firstName: 'Juan',
-    position: 'Developer',
-    shift: 'Morning',
-    companyEmail: 'juan.garcia@empresa.com',
-    companyPhone: '+34 600 123 456'
-  },
-  {
-    id: 2,
-    lastName: 'Martínez',
-    firstName: 'Ana',
-    position: 'Designer',
-    shift: 'Afternoon',
-    companyEmail: 'ana.martinez@empresa.com',
-    companyPhone: '+34 600 654 321'
-  },
-  {
-    id: 3,
-    lastName: 'López',
-    firstName: 'Carlos',
-    position: 'Manager',
-    shift: 'Evening',
-    companyEmail: 'carlos.lopez@empresa.com',
-    companyPhone: '+34 600 789 012'
-  }
-];
 
 const tableHeaders = [
   {
@@ -105,7 +79,7 @@ const EmployeeRowRender = (employee) => {
             color: '#000000DE'
           }}
         >
-          {employee.lastName}
+          {employee.surname}
         </Typography>
       </TableCell>
       <TableCell
@@ -119,7 +93,7 @@ const EmployeeRowRender = (employee) => {
             color: '#000000DE'
           }}
         >
-          {employee.firstName}
+          {employee.name}
         </Typography>
       </TableCell>
       <TableCell
@@ -132,7 +106,7 @@ const EmployeeRowRender = (employee) => {
             color: '#000000DE'
           }}
       >
-          {employee.position}
+          {employee.role}
         </Typography>
       </TableCell>
       <TableCell
@@ -146,7 +120,7 @@ const EmployeeRowRender = (employee) => {
             color: '#000000DE'
           }}
         >
-          {employee.shift}
+          {employee.workingShift}
         </Typography>
       </TableCell>
       <TableCell
@@ -185,7 +159,7 @@ const EmployeeRowRender = (employee) => {
 
 
 export const EmployeeContent = () => {
-  const [employees, setEmployees] = useState(employeesInitial)
+  const [employees, setEmployees] = useState([])
   const [openCreateEmployeeModal, setOpenCreateEmployeeModal] = useState(false);
   const handleOpenCreateEmployeeModal = () => setOpenCreateEmployeeModal(true);
   const handleCloseCreateEmployeeModal = () => setOpenCreateEmployeeModal(false);
@@ -201,6 +175,26 @@ export const EmployeeContent = () => {
     setOpenModifyEmployeeModal(false)
     setEmployeeToModify(null);
   };
+
+  const {
+    getEmployees: {
+      getEmployees: getEmployees
+    },
+  } = useEmployees();
+
+  useEffect(() => {
+    const retrieveEmployees = async () => {
+      const fetchedEmployees = await getEmployees();
+      setEmployees(fetchedEmployees.documents);
+    };
+
+    try {
+      retrieveEmployees();
+    } catch (e) {
+      console.log(e);
+    }
+  }, []);
+
   return (
     <Box
       sx={{

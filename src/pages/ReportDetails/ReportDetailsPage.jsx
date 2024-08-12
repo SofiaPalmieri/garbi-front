@@ -121,14 +121,24 @@ export const ReportDetailsPage = ({
                   backgroundColor: 'orange',
                   height: '4rem',
                 }}
-              />
+              >
+                <ReportDetailsDescriptionHeader
+                  title='Contenedor roto'
+                  state='Contenedor en mal estado'
+                />
+              </Box>
               <Box
                 sx={{
                   backgroundColor: 'red',
                   height: '21.875rem',
-                  mb: '1.5rem'
+                  padding: '0 24px',
+                  mb: '1.5rem',
                 }}
-              />
+              >
+                <ReportDetailsDescriptionContent
+                  description='la tapa del contenedor esta rota'
+                />
+              </Box>
               <Box
                 sx={{
                   flex: 1,
