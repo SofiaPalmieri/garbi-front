@@ -11,12 +11,9 @@ export const DrawingActionType = {
 export function drawReducer(state, action) {
   switch (action.type) {
   case DrawingActionType.SET_DRAW: {
-
     const {
       overlay: polyline
     } = action.payload
-    console.log('🚀 ~ drawReducer ~ action.payload:', action.payload)
-    console.log('🚀 ~ drawReducer ~ polyline:', polyline)
 
     completePath(polyline);
 

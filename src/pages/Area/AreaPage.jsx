@@ -29,6 +29,9 @@ import {
   DrawingActionType,
   drawReducer
 } from '../../reducers/drawReducer';
+import {
+  useAreaActionStatesProvider 
+} from '../../hooks/useAreaActionProvider';
 
 const slideIn = keyframes`
   from {
@@ -43,12 +46,25 @@ const slideIn = keyframes`
 
 const AreaPage = () => {
   const [areas, setAreas] = useState([]);
+  const {
+    areaActionStates
+  } = useAreaActionStatesProvider();
+  const {
+    enableAddArea,
+    enableEditArea,
+    isAddingArea,
+    enabledAddArea,
+    enabledEditArea,
+    enabledDeleteArea,
+    disableEditArea
+  } = areaActionStates
   const [canAddArea, setCanAddArea] = useState(false);
   const [isAddingNewArea, setIsAddingNewArea] = useState(false);
   const [areaSelected, setAreaSelected] = useState(null);
   const [animationKey, setAnimationKey] = useState(0);
   const [count, setCount] = useState(0);
   const [selectedColor, setSelectedColor] = useState(null);
+  // TODO RENOMBRAR ESTOS ESTADOS
   const [state, dispatch] = useReducer(reducer, []);
   const [stateDraw, dispatchDraw] = useReducer(drawReducer, {
     polyline: null,
@@ -78,9 +94,12 @@ const AreaPage = () => {
 
   useEffect(() => {
     if (areaSelected) {
+      enableEditArea()
       setValue('name', areaSelected.title);
       setValue('description', areaSelected.description);
       setAnimationKey(prevKey => prevKey + 1);
+    } else {
+      disableEditArea()
     }
     return () => {
       setValue('name', '')
@@ -89,8 +108,8 @@ const AreaPage = () => {
   }, [areaSelected, setValue]);
 
   const saveArea = (data) => {
-    if (canAddArea) {
-      const newPolyline =  stateDraw.polyline
+    if (isAddingArea) {
+      const newPolyline = stateDraw.polyline
       const newPolygon = stateDraw.polygon
 
       dispatchDraw({
@@ -158,7 +177,7 @@ const AreaPage = () => {
             height: '3.75rem',
           }}
         >
-          {(areaSelected || canAddArea) && (
+          {(areaSelected || isAddingArea) && (
             <Box
               key={animationKey}
               component={'form'}
@@ -167,7 +186,7 @@ const AreaPage = () => {
                 width: '100%',
                 display: 'flex',
                 justifyContent: 'space-between',
-                animation: (areaSelected || canAddArea) ? `${slideIn} 0.5s forwards` : 'none',
+                animation: (areaSelected || enableAddArea) ? `${slideIn} 0.5s forwards` : 'none',
               }}
             >
               <Box
@@ -233,8 +252,7 @@ const AreaPage = () => {
             <AreaDrawingMap
               areas={areas}
               setAreas={setAreas}
-              canAddArea={canAddArea}
-              setCanAddArea={setCanAddArea}
+              areaActionStates={areaActionStates}
               areaSelected={areaSelected}
               setAreaSelected={setAreaSelected}
               setIsAddingNewArea={setIsAddingNewArea}

@@ -75,10 +75,19 @@ const areasDefault = [
 ]
 
 export const PanelControlMap = ({
-  areaSelected, canAddArea, setCanAddArea, areas, setAreas,  dispatchDraw, stateDraw, drawingManager, setAreaSelected, state, dispatch
+  areaSelected, canAddArea, areaActionStates, setCanAddArea, areas, setAreas,  dispatchDraw, stateDraw, drawingManager, setAreaSelected, state, dispatch
 }) => {
+  console.log('🚀 ~ areaActionStates:', areaActionStates)
   const map = useMap('garbi-create-area-map');
   const [isEditing, setIsEditing] = useState(false);
+  const {
+    addingArea,
+    enableEditArea,
+    enabledAddArea,
+    enabledEditArea,
+    enabledDeleteArea
+  } = areaActionStates
+
 
   useEffect(() => {
     dispatch({
@@ -115,13 +124,19 @@ export const PanelControlMap = ({
   };
 
   const handleAddNewArea = () => {
-    setCanAddArea(true)
+    addingArea()
     handleSetDrawingMode(google.maps.drawing.OverlayType.POLYLINE)
   }
 
   const handleChangeToControlCamera = () => {
     handleSetDrawingMode(null)
     setAreaSelected(null)
+  }
+
+  const handleEditArea = () => {
+    areaSelected.polyline.setOptions({
+      editable: true
+    })
   }
 
   return (
@@ -137,7 +152,7 @@ export const PanelControlMap = ({
         color='secondary'
         aria-label='pan'
         size='small'
-        onClick={() => handleChangeToControlCamera()}
+        onClick={handleChangeToControlCamera}
       >
         <ControlCameraIcon />
       </Fab>
@@ -145,10 +160,8 @@ export const PanelControlMap = ({
         color='secondary'
         aria-label='edit'
         size='small'
-        disabled={!areaSelected}
-        onClick={() => areaSelected.polyline.setOptions({
-          editable: true
-        })}
+        disabled={!enabledEditArea}
+        onClick={handleEditArea}
       >
         <EditIcon />
       </Fab>
@@ -156,7 +169,7 @@ export const PanelControlMap = ({
         color='secondary'
         aria-label='edit'
         size='small'
-        disabled={!areaSelected}
+        disabled={!enabledDeleteArea}
         onClick={handleDelete}
       >
         <DeleteIcon />
@@ -165,8 +178,8 @@ export const PanelControlMap = ({
         color='secondary'
         aria-label='edit'
         size='small'
-        disabled={canAddArea}
-        onClick={() => handleAddNewArea()}
+        disabled={!enabledAddArea}
+        onClick={handleAddNewArea}
       >
         <AddIcon />
       </Fab>

@@ -18,13 +18,15 @@ import ColorPicker from '../ColorPicker/ColorPicker';
 
 
 export const AreaDrawingMap = ({
-  areas, setAreas, canAddArea,selectedColor, setSelectedColor, setCanAddArea, areaSelected, setAreaSelected, setIsAddingNewArea, state, dispatch, stateDraw, dispatchDraw
+  areas, setAreas, areaActionStates, selectedColor, setSelectedColor, areaSelected, setAreaSelected, setIsAddingNewArea, state, dispatch, stateDraw, dispatchDraw
 }) => {
-  
   const drawingManager = useDrawingManager('garbi-create-area-map', selectedColor);
-  
+  const {
+    isAddingArea,
+  } = areaActionStates
+
   useEffect(() => {
-    if(drawingManager && selectedColor){
+    if (drawingManager && selectedColor) {
       drawingManager.setDrawingMode(google.maps.drawing.OverlayType.POLYLINE)
     }
   }, [selectedColor, drawingManager])
@@ -44,9 +46,9 @@ export const AreaDrawingMap = ({
       }
     }
     return () => {
-      state.forEach(area => area.polygon.setOptions({
+      areaSelected?.polygon?.setOptions({
         fillOpacity: 0.1
-      }))
+      })
     }
   }, [areaSelected]);
 
@@ -61,7 +63,7 @@ export const AreaDrawingMap = ({
         disableDefaultUI
         disableDoubleClickZoom
       >
-        {canAddArea && (<MapControl
+        {isAddingArea && (<MapControl
           position={ControlPosition.LEFT_TOP}
         >
           <ColorPicker
@@ -74,8 +76,7 @@ export const AreaDrawingMap = ({
         >
           <PanelControlMap
             areaSelected={areaSelected}
-            canAddArea={canAddArea}
-            setCanAddArea={setCanAddArea}
+            areaActionStates={areaActionStates}
             dispatchDraw={dispatchDraw}
             areas={areas}
             state={state}
@@ -84,7 +85,6 @@ export const AreaDrawingMap = ({
             setAreas={setAreas}
             drawingManager={drawingManager}
             setAreaSelected={setAreaSelected}
-            setIsAddingNewArea={setIsAddingNewArea}
           />
         </MapControl>
       </Map>
