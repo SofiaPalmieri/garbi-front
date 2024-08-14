@@ -16,7 +16,6 @@ export function useDrawingManagerEvents(drawingManager, dispatch, dispatchDraw, 
     const eventListeners = [];
 
     const addUpdateListener = (eventName, overlay) => {
-      console.log('🚀 ~ addUpdateListener ~ overlay:', overlay)
       const updateListener = google.maps.event.addListener(
         overlay.polyline,
         eventName,
@@ -34,19 +33,15 @@ export function useDrawingManagerEvents(drawingManager, dispatch, dispatchDraw, 
     };
 
     const addUpdateListenerOverlay = (eventName, drawResult) => {
-      console.log('🚀 ~ addUpdateListenerOverlay ~ eventName:', eventName)
-      console.log('🚀 ~ addUpdateListenerOverlay ~ overlay:', drawResult)
       const updateListener = google.maps.event.addListener(
         drawResult.overlay,
         eventName,
         () => {
-          console.log('EJECUTADNO FUNCION ')
           dispatchDraw({
             type: DrawingActionType.UPDATE_DRAW
           });
         }
       );
-      console.log('ACTUALIZANDO EL EVENT LISTENER')
       eventListeners.push(updateListener);
     };
 
@@ -92,7 +87,6 @@ export function useDrawingManagerEvents(drawingManager, dispatch, dispatchDraw, 
     eventListeners.push(overlayCompleteListener);
 
     return () => {
-      console.log
       eventListeners?.forEach(listener =>
         google.maps.event.removeListener(listener)
       );

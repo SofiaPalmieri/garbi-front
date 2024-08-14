@@ -13,7 +13,7 @@ import {
 } from '../../hooks/useDrawingManager';
 import ColorPicker from '../ColorPicker/ColorPicker';
 import {
-  DrawingActionType 
+  DrawingActionType
 } from '../../reducers/drawReducer';
 
 
@@ -21,7 +21,7 @@ import {
 
 
 export const AreaDrawingMap = ({
-  areas, setAreas, areaActionStates, selectedColor, setSelectedColor, areaSelected, setAreaSelected, setIsAddingNewArea, state, dispatch, stateDraw, dispatchDraw
+  areas, setAreas, areaActionStates, setOpenDeleteAreaForm, selectedColor, setSelectedColor, areaSelected, setAreaSelected, setIsAddingNewArea, state, dispatch, stateDraw, dispatchDraw
 }) => {
   const drawingManager = useDrawingManager('garbi-create-area-map', selectedColor);
   const {
@@ -95,6 +95,7 @@ export const AreaDrawingMap = ({
             setAreas={setAreas}
             drawingManager={drawingManager}
             setAreaSelected={setAreaSelected}
+            onDeleteClick={setOpenDeleteAreaForm}
           />
         </MapControl>
       </Map>

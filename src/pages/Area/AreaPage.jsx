@@ -30,8 +30,14 @@ import {
   drawReducer
 } from '../../reducers/drawReducer';
 import {
-  useAreaActionStatesProvider 
+  useAreaActionStatesProvider
 } from '../../hooks/useAreaActionProvider';
+import {
+  ModalCreateResource 
+} from '../../modales/ModalCreateResource';
+import {
+  DeleteAreaForm 
+} from '../../forms/DeleteArea/DeleteAreaForm';
 
 const slideIn = keyframes`
   from {
@@ -66,6 +72,7 @@ const AreaPage = () => {
   const [animationKey, setAnimationKey] = useState(0);
   const [count, setCount] = useState(0);
   const [selectedColor, setSelectedColor] = useState(null);
+  const [openDeleteAreaForm, setOpenDeleteAreaForm] = useState(false);
   // TODO RENOMBRAR ESTOS ESTADOS
   const [state, dispatch] = useReducer(reducer, []);
   const [stateDraw, dispatchDraw] = useReducer(drawReducer, {
@@ -144,6 +151,18 @@ const AreaPage = () => {
     resetStates()
   }
 
+  const handleDeleteArea = (e) => {
+    e.preventDefault();
+    setAreaSelected(null)
+    setOpenDeleteAreaForm(false)
+    dispatch({
+      type: DrawingActionKind.DELETE_OVERLAY,
+      payload: {
+        id: areaSelected.id
+      }
+    })
+  }
+
   return (
     <Box
       sx={{
@@ -153,6 +172,17 @@ const AreaPage = () => {
         flexDirection: 'column',
       }}
     >
+      <ModalCreateResource
+        title={'Eliminar área'}
+        open={openDeleteAreaForm}
+        handleClose={() => setOpenDeleteAreaForm(false)}
+        form={<DeleteAreaForm
+          areaName={areaSelected?.title}
+          handleClose={() => setOpenDeleteAreaForm(false)}
+          onSubmit={handleDeleteArea}
+        />}
+      />
+
       <Box
         sx={{
           width: '100%',
@@ -261,6 +291,7 @@ const AreaPage = () => {
               setAreaSelected={setAreaSelected}
               setIsAddingNewArea={setIsAddingNewArea}
               setSelectedColor={setSelectedColor}
+              setOpenDeleteAreaForm={setOpenDeleteAreaForm}
               selectedColor={selectedColor}
               state={state}
               dispatch={dispatch}
