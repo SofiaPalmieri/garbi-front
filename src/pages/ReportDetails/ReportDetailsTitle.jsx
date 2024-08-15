@@ -10,14 +10,14 @@ export const ReportDetailsTitle = ({
   return (
     <Box
       sx={{
-        width: '1,440px',
+        width: '100%',
         height: '42px',
         padding: '0px 64px 0px 64px',
       }}
     >
       <Typography
         sx={{
-          width: '1288px',
+          width: '80%',
           height: '42px',
           fontFamily: 'Roboto',
           fontSize: '34px',
