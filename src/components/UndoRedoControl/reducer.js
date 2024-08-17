@@ -128,6 +128,7 @@ export default function reducer(state, action) {
       title,
       description,
       polyline,
+      color,
       polygon
     } = action.payload;
 
@@ -139,6 +140,7 @@ export default function reducer(state, action) {
       title,
       path: getPathsAsLatLng(polyline),
       polyline,
+      color,
       polygon
     }
 
