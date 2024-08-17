@@ -66,7 +66,6 @@ const AreaPage = () => {
     resetStates,
     disableEditArea
   } = areaActionStates
-  const [canAddArea, setCanAddArea] = useState(false);
   const [isAddingNewArea, setIsAddingNewArea] = useState(false);
   const [areaSelected, setAreaSelected] = useState(null);
   const [animationKey, setAnimationKey] = useState(0);
@@ -118,6 +117,7 @@ const AreaPage = () => {
 
   const saveArea = (data) => {
     if (isAddingArea) {
+      // TODO: VALIDAR QUE NO SE PUEDA GUARDAR SIN HABER DIBUJADO
       const newPolyline = stateDraw.polyline
       const newPolygon = stateDraw.polygon
 
