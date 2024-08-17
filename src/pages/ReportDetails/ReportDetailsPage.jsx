@@ -9,6 +9,15 @@ import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined
 import {
   ReportDetails 
 } from '../ReportDetails/ReportDetails';
+import {
+  ReportDetailsDescriptionHeader 
+} from './ReportDetailsDescriptionHeader';
+import {
+  ReportDetailsDescriptionContent
+} from './ReportDetailsDescriptionContent'
+import {
+  ReportDetailsTitle 
+} from './ReportDetailsTitle';
 
 export const ReportDetailsPage = ({
   content = [
@@ -81,9 +90,14 @@ export const ReportDetailsPage = ({
         sx={{
           height: '4.5rem',
           width: 1,
-          backgroundColor: 'black'
+          backgroundColor: 'white'
         }}
-      />
+      >
+        <ReportDetailsTitle
+          title='#123456'
+        />
+      </Box>
+
       <Box
         sx={{
           flex: 1,
@@ -118,7 +132,7 @@ export const ReportDetailsPage = ({
             >
               <Box
                 sx={{
-                  backgroundColor: 'orange',
+                  backgroundColor: 'white',
                   height: '4rem',
                 }}
               >
@@ -129,7 +143,7 @@ export const ReportDetailsPage = ({
               </Box>
               <Box
                 sx={{
-                  backgroundColor: 'red',
+                  backgroundColor: 'white',
                   height: '21.875rem',
                   padding: '0 24px',
                   mb: '1.5rem',
