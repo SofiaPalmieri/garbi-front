@@ -6,7 +6,7 @@ export const useGetEmployees = () => {
   const {
     commonFetch, isLoading 
   } = useFetch({
-    url: '/api/user',
+    url: '/integration/user',
   });
 
   const getEmployees = () => {

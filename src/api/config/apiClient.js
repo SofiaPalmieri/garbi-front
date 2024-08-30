@@ -2,7 +2,7 @@ import axios from 'axios';
 
 // Configura la instancia de axios
 const apiClient = axios.create({
-  baseURL: 'http://54.152.182.89',
+  baseURL: 'https://1r9y6bh0g9.execute-api.us-east-1.amazonaws.com',
   headers: {
     'Content-Type': 'application/json',
   },

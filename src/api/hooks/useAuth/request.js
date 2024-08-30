@@ -6,17 +6,17 @@ export const useLogin = () => {
   const {
     commonFetch, isLoading 
   } = useFetch({
-    url: '/public-api',
+    url: '/integration/user',
   });
 
   const login = ({
-    email, password 
+    personalEmail, password 
   }) => {
     return commonFetch({
-      uri: '/login',
+      uri: '/authenticate',
       method: 'POST',
       body: {
-        email,
+        personalEmail,
         password,
       },
     });

@@ -39,7 +39,7 @@ import {
 } from '../../api/hooks/useAuth/useAuth';
 
 const userLoginSchema = object({
-  email: string().email()
+  personalEmail: string().email()
     .required(),
   password: string().max(16)
     .required(),
@@ -70,15 +70,15 @@ export const LoginBox = ({
     },
   } = useForm({
     defaultValues: {
-      email: 'string@admin.com',
-      password: 'admin1234',
+      personalEmail: 'lucas.ezequiel001@gmail.com',
+      password: '1234',
     },
     resolver: yupResolver(userLoginSchema),
   });
 
   const onSubmit = async (data) => {
     const response = await login({
-      email: data.email,
+      personalEmail: data.personalEmail,
       password: data.password,
     });
 
@@ -157,7 +157,7 @@ export const LoginBox = ({
               padding={1}
             >
               <Controller
-                name='email'
+                name='personalEmail'
                 control={control}
                 rules={{
                   required: true,
@@ -176,13 +176,13 @@ export const LoginBox = ({
                       label='Email'
                       {...field}
                     />
-                    {errors.email && (
+                    {errors.personalEmail && (
                       <Typography
                         fontSize={'0.85rem'}
                         paddingLeft={1.5}
                         color={'red'}
                       >
-                        {errors.email.message}
+                        {errors.personalEmail.message}
                       </Typography>
                     )}
                   </FormControl>
