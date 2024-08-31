@@ -16,6 +16,11 @@ export const ProfileIconMenu = ({
     handleClose();
   };
 
+  const userData = JSON.parse(localStorage.getItem('user'));
+  const userName = userData.name
+  const userSurname = userData.surname
+  const userEmail = userData.email
+
   return (
     <Menu
       sx={{
@@ -46,7 +51,7 @@ export const ProfileIconMenu = ({
             fontWeight: 400,
           }}
         >
-          John Doe
+          {userName} {userSurname}
         </Typography>
         <Typography
           sx={{
@@ -54,7 +59,7 @@ export const ProfileIconMenu = ({
             fontWeight: 300,
           }}
         >
-          johndoe@cliba.com
+          {userEmail}
         </Typography>
       </Box>
       <Divider />
