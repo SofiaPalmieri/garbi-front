@@ -1,5 +1,5 @@
 import {
-  Avatar, Box, Divider, Paper, Typography
+  Box, Divider
 } from '@mui/material'
 import {
   APIProvider, Map, useMap
@@ -16,6 +16,12 @@ import {
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import AccessTimeOutlinedIcon from '@mui/icons-material/AccessTimeOutlined';
 import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined';
+import {
+  PaperDetailRoute 
+} from '../../../components/PaperDetailRoute';
+import {
+  PaperDetailWorkersOnATrip 
+} from '../../../components/PaperDetailWorkersOnATrip';
 
 const routesDetailArray = [
   {
@@ -105,7 +111,7 @@ export const RouteDetailPage = () => {
         <Box
           sx={{
             width: 1,
-            p: '0px 24px 32px',
+            p: '0px 1.5rem 2rem',
           }}
         >
           <Box
@@ -116,96 +122,12 @@ export const RouteDetailPage = () => {
               justifyContent: 'space-between',
             }}
           >
-            <Paper
-              elevation={1}
-              sx={{
-                height: 1
-              }}
-            >
-              {
-                routesDetailArray.map(r => (
-                  <RouteBoxDetail
-                    key={r.type}
-                    icon={r.icon}
-                    title={r.title}
-                    description={r.description}
-                  />
-                ))
-              }
-            </Paper>
-            <Paper
-              elevation={1}
-              sx={{
-                height: 1,
-                p: '1rem',
-                display: 'flex'
-              }}
-            >
-
-              <Box
-                sx={{
-                  pr: '3rem'
-                }}
-              >
-                <Typography
-                  sx={{
-                    fontSize: '16px',
-                    fontWeight: 600,
-                    lineHeight: '24px',
-                    mb: '0.5rem'
-                  }}
-
-                >
-                  Supervisor
-                </Typography>
-                {
-                  users.supervisores.map(s => (
-                    <AvatarFullNameInline
-                      key={s.id}
-                      avatar={s.avatar}
-                      fullName={s.fullName}
-                    />
-                  ))
-                }
-              </Box>
-              <Divider
-                orientation='vertical'
-              />
-              <Box
-                sx={{
-                  pl: '3rem'
-                }}
-              >
-                <Typography
-                  align='center'
-                  sx={{
-                    fontSize: '16px',
-                    fontWeight: 600,
-                    lineHeight: '24px',
-                    mb: '0.5rem'
-                  }}
-
-                >
-                  Recolectores
-                </Typography>
-                <Box
-                  sx={{
-                    display: 'flex',
-                    gap: '.5rem'
-                  }}
-                >
-                  {
-                    users.recoletores.map(r => (
-                      <AvatarFullNameInline
-                        key={r.id}
-                        avatar={r.avatar}
-                        fullName={r.fullName}
-                      />
-                    ))
-                  }
-                </Box>
-              </Box>
-            </Paper>
+            <PaperDetailRoute
+              routesDetailArray={routesDetailArray}
+            />
+            <PaperDetailWorkersOnATrip
+              workers={users}
+            />
           </Box>
         </Box>
         <Box
@@ -240,99 +162,6 @@ export const RouteDetailPage = () => {
     </Box>
   )
 }
-
-export const RouteBoxDetail = ({
-  icon: Icon, title, description, iconColor = '#0000004D'
-}) => {
-  return (
-    <Box
-      sx={{
-        padding: '1rem',
-        display: 'inline-block',
-        verticalAlign: 'top'
-      }}
-    >
-      <Box
-        sx={{
-          display: 'flex',
-          gap: '.5rem',
-          alignItems: 'center'
-        }}
-      >
-        <Icon
-          sx={{
-            color: iconColor
-          }}
-        />
-        <Typography
-          sx={{
-            fontSize: '1rem',
-            fontWeight: 400,
-            lineHeight: '1.5rem',
-            color: '#000000DE'
-          }}
-        >
-          {title}
-        </Typography>
-      </Box>
-      {description && (
-        <Box
-          sx={{
-            pt: '0.5rem',
-            pl: '2rem'
-          }}
-        >
-          <Typography
-            sx={{
-              fontSize: '.875rem',
-              fontWeight: 400,
-              lineHeight: '1.3125rem',
-              whiteSpace: 'pre-line'
-            }}
-          >
-            {description}
-          </Typography>
-        </Box>)}
-    </Box >
-  )
-}
-
-export const AvatarFullNameInline = ({
-  avatar, fullName
-}) => {
-
-  function stringAvatar(name) {
-    return {
-      children: `${name.split(' ')[0][0]}${name.split(' ')[1][0]}`,
-    };
-  }
-
-  return (
-    <Box
-      sx={{
-        display: 'inline-flex',
-        alignItems: 'center',
-        gap: '0.5rem',
-        minWidth: '10.5625rem'
-      }}
-    >
-      <Avatar
-        src={avatar}
-        {...stringAvatar(fullName)}
-      />
-      <Typography
-        sx={{
-          fontSize: '1rem',
-          fontWeight: 400,
-          lineHeight: '1.5rem',
-        }}
-      >
-        {fullName}
-      </Typography>
-    </Box>
-  )
-}
-
 
 function Directions() {
   const map = useMap();
