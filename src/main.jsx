@@ -38,6 +38,7 @@ import {
 import {
   RouteDetailPage 
 } from './pages/Routes/Detail/RouteDetailPage.jsx';
+import PerfilPage from './pages/Perfil/PerfilPage.jsx';
 
 const theme = createTheme({
   palette: {
@@ -110,7 +111,11 @@ const router = createBrowserRouter([
       {
         path: '/reportes/detalles',
         element: <ReportDetailsPage />
-      }
+      },
+      {
+        path: '/perfil',
+        element: <PerfilPage />,
+      },
     ],
   },
   {
