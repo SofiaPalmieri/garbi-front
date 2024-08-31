@@ -136,10 +136,10 @@ export const ReportDetailsPage = ({
                   height: '4rem',
                 }}
               >
-                <ReportDetailsDescriptionHeader
+                {/* <ReportDetailsDescriptionHeader
                   title='Contenedor roto'
                   state='Contenedor en mal estado'
-                />
+                /> */}
               </Box>
               <Box
                 sx={{
@@ -149,9 +149,9 @@ export const ReportDetailsPage = ({
                   mb: '1.5rem',
                 }}
               >
-                <ReportDetailsDescriptionContent
+                {/* <ReportDetailsDescriptionContent
                   description='la tapa del contenedor esta rota'
-                />
+                /> */}
               </Box>
               <Box
                 sx={{
