@@ -64,7 +64,6 @@ export const ProfileIconMenu = ({
       </Box>
       <Divider />
       <MenuItem
-        key={0}
         onClick={handleClickProfileItem()}
         sx={{
           marginTop: 1
@@ -77,10 +76,7 @@ export const ProfileIconMenu = ({
         </ListItemIcon>
         <ListItemText>Perfil</ListItemText>
       </MenuItem>
-      <MenuItem
-        key={1}
-        //onClick={ } //TODO
-      >
+      <MenuItem >
         <ListItemIcon>
           <LogoutIcon
             fontSize='small'

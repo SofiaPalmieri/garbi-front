@@ -9,12 +9,10 @@ import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined
 import {
   ReportDetails 
 } from '../ReportDetails/ReportDetails';
-import {
-  ReportDetailsDescriptionHeader 
-} from './ReportDetailsDescriptionHeader';
-import {
-  ReportDetailsDescriptionContent
-} from './ReportDetailsDescriptionContent'
+
+
+
+
 import {
   ReportDetailsTitle 
 } from './ReportDetailsTitle';

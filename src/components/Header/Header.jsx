@@ -379,9 +379,6 @@ export const Header = ({
                   <Box>
                     <IconButton
                       onClick={handleOpenNotificationsMenu}
-                      sx={{
-                        backgroundColor: '#12422c' 
-                      }}
                     >
                       <Badge 
                         badgeContent={notifications.length}
@@ -410,9 +407,6 @@ export const Header = ({
                   <Box>
                     <IconButton
                       onClick={handleOpenProfileMenu}
-                      sx={{
-                        backgroundColor: '#12422c' 
-                      }}
                     >
                       <PersonIcon
                         sx={{
