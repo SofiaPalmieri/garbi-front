@@ -6,15 +6,15 @@ const apiClient = axios.create({
   headers: {
     'Content-Type': 'application/json',
   },
+  
 });
 
 // Interceptores para manejar tokens y errores globales
 apiClient.interceptors.request.use(
   (config) => {
-    // Puedes añadir tokens de autenticación aquí si es necesario
     const token = localStorage.getItem('token');
     if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
+      config.headers.token = `Bearer ${token}`;
     }
     return config;
   },
