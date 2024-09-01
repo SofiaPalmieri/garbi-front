@@ -40,12 +40,6 @@ export const ResolveReportForm = ({
     resolver: yupResolver(changeReportStatusSchema),
   });
 
-  /*const { //todo
-    changeReportStatus: {
-      changeReportStatus: changeReportStatus, isLoadingChangeReportStatus 
-    },
-  } = useReports();*/
-
   const onSubmit = async (data) => {
     //TODO
   };
