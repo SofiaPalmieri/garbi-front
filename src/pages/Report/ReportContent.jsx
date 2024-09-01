@@ -17,6 +17,15 @@ import {
   styled,
 } from '@mui/material';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import {
+  ModalReportResolved 
+} from '../../modales/ModalReportResolved/ModalReportResolved';
+import {
+  useState 
+} from 'react';
+import {
+  ResolveReportForm 
+} from '../../forms/ResolveReport/ResolveReportForm';
 
 const SmallKeyboardArrowDownIcon = (color) =>
   styled(KeyboardArrowDownIcon)(({
@@ -100,12 +109,25 @@ const rows = [
 ];
 
 export const ReportContent = () => {
+  const [openModalReportResolved, setOpenModalReportResolved] = useState(false);
+  const handleOpenModalReportResolved = () => setOpenModalReportResolved(true);
+  const handleCloseModalReportResolved = () => setOpenModalReportResolved(false);
+  
   return (
     <Box
       sx={{
         padding: '32px',
       }}
     >
+      <ModalReportResolved
+        title={'Cambiar a resuelto'} //todo change to actual status
+        description={'Para confirmar el cambio de estado del reporte, ingrese un mensaje para el recolector/ciudadano que reportó el problema.'}
+        open={openModalReportResolved}
+        handleClose={handleCloseModalReportResolved}
+        form={<ResolveReportForm
+          handleClose = {handleCloseModalReportResolved}
+        />}
+      />
       <Paper
         sx={{
           width: '100%',
@@ -249,11 +271,17 @@ export const ReportContent = () => {
                         {estados[row.estado].text}
                       </InputLabel>
                       <Select
-                        labelId='provincia-label'
-                        id='provincia-select'
+                        labelId='estado-label'
+                        id='estado-select'
                         IconComponent={SmallKeyboardArrowDownIcon(estados[row.estado].colorText)}
                         sx={{
                           height: '30px',
+                        }}
+                        onChange={(event) => {
+                          const selectedValue = event.target.value;
+                          if (selectedValue === 3 || selectedValue === 4) {
+                            handleOpenModalReportResolved();
+                          }
                         }}
                       >
                         <MenuItem
