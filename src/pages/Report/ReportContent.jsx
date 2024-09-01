@@ -26,7 +26,7 @@ const SmallKeyboardArrowDownIcon = (color) =>
     color: color + '!important',
   }));
 
-const estados = {
+export const reportStates = {
   NUEVO: {
     color: '#EF6C0080',
     colorText: '#EF6C00',
@@ -224,13 +224,13 @@ export const ReportContent = () => {
                             right: '20px',
                           },
                           '& fieldset': {
-                            borderColor: estados[row.estado].color,
+                            borderColor: reportStates[row.estado].color,
                           },
                           '&:hover fieldset': {
-                            borderColor: estados[row.estado].color,
+                            borderColor: reportStates[row.estado].color,
                           },
                           '&.Mui-focused fieldset': {
-                            borderColor: estados[row.estado].color,
+                            borderColor: reportStates[row.estado].color,
                           },
                         },
                       }}
@@ -241,17 +241,17 @@ export const ReportContent = () => {
                           fontSize: '13px',
                           fontWeight: 500,
                           lineHeight: '22px',
-                          color: estados[row.estado].colorText + ' !important',
+                          color: reportStates[row.estado].colorText + ' !important',
                           left: '50px',
                           transform: 'translateX(-50%) translate(14px, 4px) scale(1)',
                         }}
                       >
-                        {estados[row.estado].text}
+                        {reportStates[row.estado].text}
                       </InputLabel>
                       <Select
                         labelId='provincia-label'
                         id='provincia-select'
-                        IconComponent={SmallKeyboardArrowDownIcon(estados[row.estado].colorText)}
+                        IconComponent={SmallKeyboardArrowDownIcon(reportStates[row.estado].colorText)}
                         sx={{
                           height: '30px',
                         }}
