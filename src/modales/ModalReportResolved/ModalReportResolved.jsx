@@ -14,7 +14,7 @@ const style = {
 };
 
 export const ModalReportResolved = ({
-  title, description, open, handleClose, form, buttonSubmitMessage = 'CREAR'
+  title, open, handleClose, form, buttonSubmitMessage = 'CREAR'
 }) => {
   return (
     <Modal
@@ -72,7 +72,7 @@ export const ModalReportResolved = ({
               lineHeight: '26.56px',
             }}
           >
-            {description}
+            Para confirmar el cambio de estado del reporte, ingrese un mensaje para el recolector/ciudadano que reportó el problema.
           </Typography>
         </Box>
         {form}

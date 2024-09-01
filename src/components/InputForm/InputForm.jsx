@@ -13,7 +13,9 @@ export const InputForm = ({
   variant = 'outlined',
   size = 'small',
   helperText = null,
-  disabled = false
+  disabled = false,
+  multiline = false,
+  rows = 1
 }) => {
   return (
     <Controller
@@ -37,6 +39,8 @@ export const InputForm = ({
             {...field}
             helperText={helperText}
             disabled={disabled}
+            multiline={multiline}
+            rows={rows}
             sx={{
               '& .MuiInputBase-input:-webkit-autofill': { //added this to prevent weird look when the browser autofills the field
                 'webkitBoxShadow': '0 0 0 1000px white inset',

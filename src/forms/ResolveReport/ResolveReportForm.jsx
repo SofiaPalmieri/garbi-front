@@ -5,18 +5,17 @@ import {
   object, string 
 } from 'yup';
 import {
-  Box, TextField
+  Box
 } from '@mui/material';
 import {
   useForm 
 } from 'react-hook-form';
-
-
-
-
 import {
   CancelAndSubmitButton 
 } from '../../components/CancelAndSubmitButton/CancelAndSubmitButton';
+import {
+  InputForm 
+} from '../../components/InputForm';
 
 
 const changeReportStatusSchema = object({
@@ -24,7 +23,7 @@ const changeReportStatusSchema = object({
 }).required();
 
 export const ResolveReportForm = ({
-  handleClose
+  handleClose, reportId
 }) => {
   const {
     control,
@@ -34,6 +33,7 @@ export const ResolveReportForm = ({
     },
   } = useForm({
     defaultValues: {
+      id: reportId,
       status: '',
       message: ''
     },
@@ -60,14 +60,13 @@ export const ResolveReportForm = ({
           padding: '4px 24px',
         }}
       >
-        <TextField //todo: create component or add props to InputForm
+        <InputForm
           name={'message'}
           label={'Mensaje'}
-          errors={errors}
           control={control}
-          multiline
+          errors={errors}
+          multiline={true}
           rows={4}
-          fullWidth
         />
       </Box>
 

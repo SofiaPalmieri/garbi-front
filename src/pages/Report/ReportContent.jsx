@@ -110,7 +110,14 @@ const rows = [
 
 export const ReportContent = () => {
   const [openModalReportResolved, setOpenModalReportResolved] = useState(false);
-  const handleOpenModalReportResolved = () => setOpenModalReportResolved(true);
+  const [selectedReportId, setSelectedReportId] = useState(null);
+  const [modalReportResolvedTitle, setModalReportResolvedTitle] = useState('');
+
+  const handleOpenModalReportResolved = (reportId, title) => {
+    setSelectedReportId(reportId);
+    setModalReportResolvedTitle(title);
+    setOpenModalReportResolved(true);
+  };
   const handleCloseModalReportResolved = () => setOpenModalReportResolved(false);
   
   return (
@@ -120,12 +127,12 @@ export const ReportContent = () => {
       }}
     >
       <ModalReportResolved
-        title={'Cambiar a resuelto'} //todo change to actual status
-        description={'Para confirmar el cambio de estado del reporte, ingrese un mensaje para el recolector/ciudadano que reportó el problema.'}
+        title={modalReportResolvedTitle}
         open={openModalReportResolved}
         handleClose={handleCloseModalReportResolved}
         form={<ResolveReportForm
           handleClose = {handleCloseModalReportResolved}
+          reportId={selectedReportId}
         />}
       />
       <Paper
@@ -279,8 +286,10 @@ export const ReportContent = () => {
                         }}
                         onChange={(event) => {
                           const selectedValue = event.target.value;
-                          if (selectedValue === 3 || selectedValue === 4) {
-                            handleOpenModalReportResolved();
+                          if (selectedValue === 3) {
+                            handleOpenModalReportResolved(row.id, 'Cambiar a Rechazado');
+                          } else if (selectedValue === 4) {
+                            handleOpenModalReportResolved(row.id, 'Cambiar a Resuelto');
                           }
                         }}
                       >
