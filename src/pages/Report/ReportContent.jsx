@@ -1,12 +1,7 @@
 import {
-  Avatar,
   Box,
   Chip,
-  FormControl,
-  InputLabel,
-  MenuItem,
   Paper,
-  Select,
   Table,
   TableBody,
   TableCell,
@@ -14,9 +9,7 @@ import {
   TablePagination,
   TableRow,
   Typography,
-  styled,
 } from '@mui/material';
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import {
   ModalReportResolved 
 } from '../../modales/ModalReportResolved/ModalReportResolved';
@@ -26,40 +19,14 @@ import {
 import {
   ResolveReportForm 
 } from '../../forms/ResolveReport/ResolveReportForm';
+import {
+  ReportStatusSelect 
+} from '../../components/ReportStatusSelect';
+import {
+  AvatarWithTooltip 
+} from '../../components/AvatarWithTooltip';
+import profilePicture from '../../assets/profile_picture.jpg';
 
-const SmallKeyboardArrowDownIcon = (color) =>
-  styled(KeyboardArrowDownIcon)(({
-    _ 
-  }) => ({
-    fontSize: '16px',
-    color: color + '!important',
-  }));
-
-const estados = {
-  NUEVO: {
-    color: '#EF6C0080',
-    colorText: '#EF6C00',
-    text: 'NUEVO',
-  },
-
-  'EN REVISION': {
-    color: '#2196F380',
-    colorText: '#2196F3',
-    text: 'EN REVISIÓN',
-  },
-
-  RECHAZADO: {
-    color: '#2E7D32',
-    colorText: '#2E7D32',
-    text: 'RECHAZADO',
-  },
-
-  RESUELTO: {
-    color: '#2E7D32',
-    colorText: '#2E7D32',
-    text: 'RESUELTO',
-  },
-};
 
 const rows = [
   {
@@ -72,6 +39,8 @@ const rows = [
     lugar: 'Villa del Parque',
     area: 'Área 1',
     estado: 'NUEVO',
+    creadorNombre: 'Juan Perez',
+    creadorFoto: null
   },
   {
     id: 2,
@@ -83,6 +52,8 @@ const rows = [
     lugar: 'Villa del Parque',
     area: 'Área 1',
     estado: 'EN REVISION',
+    creadorNombre: 'Juan Perez',
+    creadorFoto: profilePicture
   },
   {
     id: 3,
@@ -94,6 +65,8 @@ const rows = [
     lugar: 'Villa del Parque',
     area: 'Área 1',
     estado: 'RECHAZADO',
+    creadorNombre: null,
+    creadorFoto: null
   },
   {
     id: 4,
@@ -105,6 +78,8 @@ const rows = [
     lugar: 'Villa del Parque',
     area: 'Área 1',
     estado: 'RESUELTO',
+    creadorNombre: 'Juan Perez',
+    creadorFoto: null
   },
 ];
 
@@ -120,6 +95,7 @@ export const ReportContent = () => {
   };
   const handleCloseModalReportResolved = () => setOpenModalReportResolved(false);
   
+
   return (
     <Box
       sx={{
@@ -242,76 +218,18 @@ export const ReportContent = () => {
                   <TableCell
                     align='center'
                   >
-                    <FormControl
-                      size='small'
-                      sx={{
-                        width: '144px',
-                        display: 'flex',
-                        justifyContent: 'center',
-                        '& .MuiOutlinedInput-root': {
-                          '& .MuiSvgIcon-root': {
-                            right: '20px',
-                          },
-                          '& fieldset': {
-                            borderColor: estados[row.estado].color,
-                          },
-                          '&:hover fieldset': {
-                            borderColor: estados[row.estado].color,
-                          },
-                          '&.Mui-focused fieldset': {
-                            borderColor: estados[row.estado].color,
-                          },
-                        },
-                      }}
-                    >
-                      <InputLabel
-                        shrink={false}
-                        sx={{
-                          fontSize: '13px',
-                          fontWeight: 500,
-                          lineHeight: '22px',
-                          color: estados[row.estado].colorText + ' !important',
-                          left: '50px',
-                          transform: 'translateX(-50%) translate(14px, 4px) scale(1)',
-                        }}
-                      >
-                        {estados[row.estado].text}
-                      </InputLabel>
-                      <Select
-                        labelId='estado-label'
-                        id='estado-select'
-                        IconComponent={SmallKeyboardArrowDownIcon(estados[row.estado].colorText)}
-                        sx={{
-                          height: '30px',
-                        }}
-                        onChange={(event) => {
-                          const selectedValue = event.target.value;
-                          if (selectedValue === 3) {
-                            handleOpenModalReportResolved(row.id, 'Cambiar a Rechazado');
-                          } else if (selectedValue === 4) {
-                            handleOpenModalReportResolved(row.id, 'Cambiar a Resuelto');
-                          }
-                        }}
-                      >
-                        <MenuItem
-                          value={1}
-                        >NUEVO</MenuItem>
-                        <MenuItem
-                          value={2}
-                        >EN REVISIÓN</MenuItem>
-                        <MenuItem
-                          value={3}
-                        >RECHAZADO</MenuItem>
-                        <MenuItem
-                          value={4}
-                        >RESUELTO</MenuItem>
-                      </Select>
-                    </FormControl>
+                    <ReportStatusSelect
+                      row={row}
+                      handleOpenModalReportResolved={handleOpenModalReportResolved}
+                    />
                   </TableCell>
                   <TableCell
                     align='center'
                   >
-                    <Avatar>H</Avatar>
+                    <AvatarWithTooltip
+                      name={row.creadorNombre}
+                      profilePicture={row.creadorFoto}
+                    />
                   </TableCell>
                 </TableRow>
               ))}

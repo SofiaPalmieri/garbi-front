@@ -1,7 +1,7 @@
-import CloseIcon from '@mui/icons-material/Close';
 import {
   Box, Button, Divider, Modal, Typography
 } from '@mui/material';
+import CloseIcon from '@mui/icons-material/Close';
 
 const style = {
   position: 'absolute',
