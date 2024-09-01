@@ -11,21 +11,17 @@ export const ReportDetailsTitle = ({
     <Box
       sx={{
         width: '100%',
-        height: '42px',
-        padding: '0px 64px 0px 64px',
+        height: 1,
+        padding: '1rem 4rem .8125rem 4rem',
       }}
     >
       <Typography
         sx={{
-          width: '80%',
-          height: '42px',
-          fontFamily: 'Roboto',
-          fontSize: '34px',
+          fontSize: '2.125rem',
           fontWeight: '400',
-          lineHeight: '41.99px',
-          letterSpacing: '0.25px',
+          lineHeight: '2.6244rem',
+          letterSpacing: '.0156rem',
           textAlign: 'left',
-          marginTop: '20px'
         }}
       >
         {navigationTitle} {title}
