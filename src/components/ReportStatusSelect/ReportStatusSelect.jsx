@@ -54,9 +54,9 @@ export const ReportStatusSelect = ({
     const newValue = event.target.value;
     setSelectedValue(newValue);
 
-    if (newValue === 'RECHAZADO') {
+    if (newValue === estados.RECHAZADO.text) {
       handleOpenModalReportResolved(row.id, 'Cambiar a Rechazado');
-    } else if (newValue === 'RESUELTO') {
+    } else if (newValue === estados.RESUELTO.text) {
       handleOpenModalReportResolved(row.id, 'Cambiar a Resuelto');
     }
   };
@@ -65,7 +65,7 @@ export const ReportStatusSelect = ({
     <FormControl
       size='small'
       sx={{
-        width: '144px',
+        width: '100%',
         display: 'flex',
         justifyContent: 'center',
         '& .MuiOutlinedInput-root': {
@@ -99,7 +99,7 @@ export const ReportStatusSelect = ({
         <MenuItem 
           value='NUEVO'
           sx={{
-            color: selectedValue === 'NUEVO' ? estados['NUEVO'].colorText : 'inherit',
+            color: selectedValue === estados.NUEVO.text ? estados['NUEVO'].colorText : 'inherit',
           }}
         >
           NUEVO
@@ -107,7 +107,7 @@ export const ReportStatusSelect = ({
         <MenuItem
           value='EN REVISION'
           sx={{
-            color: selectedValue === 'EN REVISION' ? estados['EN REVISION'].colorText : 'inherit',
+            color: selectedValue === estados['EN REVISION'].text ? estados['EN REVISION'].colorText : 'inherit',
           }}
         >
           EN REVISIÓN
@@ -115,7 +115,7 @@ export const ReportStatusSelect = ({
         <MenuItem
           value='RECHAZADO'
           sx={{
-            color: selectedValue === 'RECHAZADO' ? estados['RECHAZADO'].colorText : 'inherit',
+            color: selectedValue === estados.RECHAZADO.text ? estados['RECHAZADO'].colorText : 'inherit',
           }}
         >
           RECHAZADO
@@ -123,7 +123,7 @@ export const ReportStatusSelect = ({
         <MenuItem
           value='RESUELTO'
           sx={{
-            color: selectedValue === 'RESUELTO' ? estados['RESUELTO'].colorText : 'inherit',
+            color: selectedValue === estados.RESUELTO.text ? estados['RESUELTO'].colorText : 'inherit',
           }}
         >
           RESUELTO

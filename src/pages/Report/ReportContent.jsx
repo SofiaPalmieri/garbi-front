@@ -34,7 +34,7 @@ const rows = [
     fecha: '19/02/24',
     hora: '09:20 hs',
     recolector: 'Recolector | #123458',
-    descripcion: 'Contenedor roto',
+    descripcion: 'Contenedor roto: no se puede abrir la tapa porque el pedal está roto porque está trabado',
     tipoDeReporte: 'Contenedor en mal estado',
     lugar: 'Villa del Parque',
     area: 'Área 1',
@@ -49,7 +49,7 @@ const rows = [
     recolector: 'Recolector | #123458',
     descripcion: 'Contenedor roto',
     tipoDeReporte: 'Basura en la calle',
-    lugar: 'Villa del Parque',
+    lugar: 'Villa Pueyrredon',
     area: 'Área 1',
     estado: 'EN REVISION',
     creadorNombre: 'Juan Perez',
@@ -62,7 +62,7 @@ const rows = [
     recolector: 'Recolector | #123458',
     descripcion: 'Contenedor roto',
     tipoDeReporte: 'Basura en la calle',
-    lugar: 'Villa del Parque',
+    lugar: 'Caballito',
     area: 'Área 1',
     estado: 'RECHAZADO',
     creadorNombre: null,
@@ -130,7 +130,12 @@ export const ReportContent = () => {
                 <TableRow
                   key={row.id}
                 >
-                  <TableCell>
+                  <TableCell
+                    sx={{
+                      width: '1%',
+                      padding: '16px' 
+                    }}
+                  >
                     <Box>
                       <Typography
                         sx={{
@@ -158,6 +163,9 @@ export const ReportContent = () => {
                   </TableCell>
                   <TableCell
                     align='left'
+                    sx={{
+                      minWidth: 240,
+                    }}
                   >
                     <Typography
                       sx={{
@@ -177,6 +185,10 @@ export const ReportContent = () => {
                         lineHeight: '24px',
                         textAlign: 'left',
                         color: '#000000DE',
+                        overflow: 'hidden',
+                        display: '-webkit-box',
+                        WebkitBoxOrient: 'vertical',
+                        WebkitLineClamp: 2,
                       }}
                     >
                       {row.descripcion}
@@ -184,6 +196,9 @@ export const ReportContent = () => {
                   </TableCell>
                   <TableCell
                     align='right'
+                    sx={{
+                      width: '1%',
+                    }}
                   >
                     <Chip
                       size='small'
@@ -193,6 +208,9 @@ export const ReportContent = () => {
                   </TableCell>
                   <TableCell
                     align='right'
+                    sx={{
+                      width: 176
+                    }}
                   >
                     <Typography
                       sx={{
@@ -217,6 +235,10 @@ export const ReportContent = () => {
                   </TableCell>
                   <TableCell
                     align='center'
+                    sx={{
+                      width: 192,
+                      paddingX: '24px'
+                    }}
                   >
                     <ReportStatusSelect
                       row={row}
@@ -225,6 +247,10 @@ export const ReportContent = () => {
                   </TableCell>
                   <TableCell
                     align='center'
+                    sx={{
+                      width: 88,
+                      paddingLeft: '16px'
+                    }}
                   >
                     <AvatarWithTooltip
                       name={row.creadorNombre}
