@@ -10,6 +10,9 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import {
   styled 
 } from '@mui/system';
+import {
+  reportStates 
+} from '../../enums/reportStates';
 
 const SmallKeyboardArrowDownIcon = (color) =>
   styled(KeyboardArrowDownIcon)(({
@@ -18,32 +21,6 @@ const SmallKeyboardArrowDownIcon = (color) =>
     fontSize: '16px',
     color: color + '!important',
   }));
-
-const estados = {
-  NUEVO: {
-    color: '#EF6C0080',
-    colorText: '#EF6C00',
-    text: 'NUEVO',
-  },
-
-  'EN REVISION': {
-    color: '#2196F380',
-    colorText: '#2196F3',
-    text: 'EN REVISIÓN',
-  },
-
-  RECHAZADO: {
-    color: '#2E7D32',
-    colorText: '#2E7D32',
-    text: 'RECHAZADO',
-  },
-
-  RESUELTO: {
-    color: '#2E7D32',
-    colorText: '#2E7D32',
-    text: 'RESUELTO',
-  },
-};
 
 export const ReportStatusSelect = ({
   row, handleOpenModalReportResolved 
@@ -54,9 +31,9 @@ export const ReportStatusSelect = ({
     const newValue = event.target.value;
     setSelectedValue(newValue);
 
-    if (newValue === estados.RECHAZADO.text) {
+    if (newValue === reportStates.RECHAZADO.text) {
       handleOpenModalReportResolved(row.id, 'Cambiar a Rechazado');
-    } else if (newValue === estados.RESUELTO.text) {
+    } else if (newValue === reportStates.RESUELTO.text) {
       handleOpenModalReportResolved(row.id, 'Cambiar a Resuelto');
     }
   };
@@ -73,13 +50,13 @@ export const ReportStatusSelect = ({
             right: '20px',
           },
           '& fieldset': {
-            borderColor: estados[selectedValue].color,
+            borderColor: reportStates[selectedValue].color,
           },
           '&:hover fieldset': {
-            borderColor: estados[selectedValue].color,
+            borderColor: reportStates[selectedValue].color,
           },
           '&.Mui-focused fieldset': {
-            borderColor: estados[selectedValue].color,
+            borderColor: reportStates[selectedValue].color,
           },
         },
       }}
@@ -87,10 +64,10 @@ export const ReportStatusSelect = ({
       <Select
         value={selectedValue}
         onChange={handleChange}
-        IconComponent={SmallKeyboardArrowDownIcon(estados[selectedValue].colorText)}
+        IconComponent={SmallKeyboardArrowDownIcon(reportStates[selectedValue].colorText)}
         sx={{
           height: '30px',
-          color: estados[selectedValue].colorText,
+          color: reportStates[selectedValue].colorText,
           fontSize: '13px',
           fontWeight: 500,
           lineHeight: '22px',
@@ -99,7 +76,7 @@ export const ReportStatusSelect = ({
         <MenuItem 
           value='NUEVO'
           sx={{
-            color: selectedValue === estados.NUEVO.text ? estados['NUEVO'].colorText : 'inherit',
+            color: selectedValue === reportStates.NUEVO.text ? reportStates['NUEVO'].colorText : 'inherit',
           }}
         >
           NUEVO
@@ -107,7 +84,7 @@ export const ReportStatusSelect = ({
         <MenuItem
           value='EN REVISION'
           sx={{
-            color: selectedValue === estados['EN REVISION'].text ? estados['EN REVISION'].colorText : 'inherit',
+            color: selectedValue === reportStates['EN REVISION'].text ? reportStates['EN REVISION'].colorText : 'inherit',
           }}
         >
           EN REVISIÓN
@@ -115,7 +92,7 @@ export const ReportStatusSelect = ({
         <MenuItem
           value='RECHAZADO'
           sx={{
-            color: selectedValue === estados.RECHAZADO.text ? estados['RECHAZADO'].colorText : 'inherit',
+            color: selectedValue === reportStates.RECHAZADO.text ? reportStates['RECHAZADO'].colorText : 'inherit',
           }}
         >
           RECHAZADO
@@ -123,7 +100,7 @@ export const ReportStatusSelect = ({
         <MenuItem
           value='RESUELTO'
           sx={{
-            color: selectedValue === estados.RESUELTO.text ? estados['RESUELTO'].colorText : 'inherit',
+            color: selectedValue === reportStates.RESUELTO.text ? reportStates['RESUELTO'].colorText : 'inherit',
           }}
         >
           RESUELTO

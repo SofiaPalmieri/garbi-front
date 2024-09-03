@@ -7,7 +7,7 @@ import {
 import Arrow from '/src/assets/Arrow.svg';
 import {
   reportStates 
-} from '../../pages/Report/ReportContent';
+} from '../../enums/reportStates';
 
 export const ReportDetailStateFlow = ({
   usersReports 
