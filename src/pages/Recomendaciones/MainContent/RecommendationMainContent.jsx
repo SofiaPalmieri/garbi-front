@@ -27,7 +27,7 @@ export default function RecommendationMainContent() {
       title: 'Añadir un contenedor',
       subtitle: 'en Hilario Pueyrredón 1234 - Villa Crespo',
       date: '20/02',
-      read: true,
+      read: false,
       Icon: DeleteIcon
     },
     {
@@ -40,6 +40,30 @@ export default function RecommendationMainContent() {
     },
     {
       id: 3,
+      title: 'Reducir la frecuencia de recolección',
+      subtitle: 'en el Área 2 de Villa del Parque',
+      date: '16/05',
+      read: false,
+      Icon: UpdateIcon
+    },
+    {
+      id: 4,
+      title: 'Añadir un contenedor',
+      subtitle: 'en Hilario Pueyrredón 1234 - Villa Crespo',
+      date: '20/02',
+      read: true,
+      Icon: DeleteIcon
+    },
+    {
+      id: 5,
+      title: 'Eliminar un contenedor',
+      subtitle: 'en Hilario Pueyrredón 1234 - Villa Crespo',
+      date: '20/02',
+      read: true,
+      Icon: DeleteIcon
+    },
+    {
+      id: 6,
       title: 'Reducir la frecuencia de recolección',
       subtitle: 'en el Área 2 de Villa del Parque',
       date: '16/05',
@@ -84,7 +108,15 @@ export default function RecommendationMainContent() {
                 <TableRow
                   key={row.id}
                   sx={{
-                    backgroundColor: row.read ? '#F5F5F5' : 'inherit'
+                    backgroundColor: row.read ? '#F5F5F5' : 'inherit',
+                    transition: 'box-shadow 0.1s ease, z-index 0.1s ease',
+                    position: 'relative',
+                    zIndex: 1,
+                    '&:hover': {
+                      boxShadow: '0px 1px 8px rgba(0, 0, 0, 0.3)',
+                      zIndex: 10,
+                      cursor: 'pointer'
+                    }
                   }}
                 >
                   <TableCell 
