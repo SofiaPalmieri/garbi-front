@@ -1,12 +1,7 @@
 import {
-  Avatar,
   Box,
   Chip,
-  FormControl,
-  InputLabel,
-  MenuItem,
   Paper,
-  Select,
   Table,
   TableBody,
   TableCell,
@@ -14,43 +9,24 @@ import {
   TablePagination,
   TableRow,
   Typography,
-  styled,
 } from '@mui/material';
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import {
+  ModalReportResolved 
+} from '../../modales/ModalReportResolved/ModalReportResolved';
+import {
+  useState 
+} from 'react';
+import {
+  ResolveReportForm 
+} from '../../forms/ResolveReport/ResolveReportForm';
+import {
+  ReportStatusSelect 
+} from '../../components/ReportStatusSelect';
+import {
+  AvatarWithTooltip 
+} from '../../components/AvatarWithTooltip';
+import profilePicture from '../../assets/profile_picture.jpg';
 
-const SmallKeyboardArrowDownIcon = (color) =>
-  styled(KeyboardArrowDownIcon)(({
-    _ 
-  }) => ({
-    fontSize: '16px',
-    color: color + '!important',
-  }));
-
-export const reportStates = {
-  NUEVO: {
-    color: '#EF6C0080',
-    colorText: '#EF6C00',
-    text: 'NUEVO',
-  },
-
-  'EN REVISION': {
-    color: '#2196F380',
-    colorText: '#2196F3',
-    text: 'EN REVISIÓN',
-  },
-
-  RECHAZADO: {
-    color: '#2E7D32',
-    colorText: '#2E7D32',
-    text: 'RECHAZADO',
-  },
-
-  RESUELTO: {
-    color: '#2E7D32',
-    colorText: '#2E7D32',
-    text: 'RESUELTO',
-  },
-};
 
 const rows = [
   {
@@ -58,11 +34,13 @@ const rows = [
     fecha: '19/02/24',
     hora: '09:20 hs',
     recolector: 'Recolector | #123458',
-    descripcion: 'Contenedor roto',
+    descripcion: 'Contenedor roto: no se puede abrir la tapa porque el pedal está roto porque está trabado',
     tipoDeReporte: 'Contenedor en mal estado',
     lugar: 'Villa del Parque',
     area: 'Área 1',
     estado: 'NUEVO',
+    creadorNombre: 'Juan Perez',
+    creadorFoto: null
   },
   {
     id: 2,
@@ -71,9 +49,11 @@ const rows = [
     recolector: 'Recolector | #123458',
     descripcion: 'Contenedor roto',
     tipoDeReporte: 'Basura en la calle',
-    lugar: 'Villa del Parque',
+    lugar: 'Villa Pueyrredon',
     area: 'Área 1',
     estado: 'EN REVISION',
+    creadorNombre: 'Juan Perez',
+    creadorFoto: profilePicture
   },
   {
     id: 3,
@@ -82,9 +62,11 @@ const rows = [
     recolector: 'Recolector | #123458',
     descripcion: 'Contenedor roto',
     tipoDeReporte: 'Basura en la calle',
-    lugar: 'Villa del Parque',
+    lugar: 'Caballito',
     area: 'Área 1',
     estado: 'RECHAZADO',
+    creadorNombre: null,
+    creadorFoto: null
   },
   {
     id: 4,
@@ -96,16 +78,39 @@ const rows = [
     lugar: 'Villa del Parque',
     area: 'Área 1',
     estado: 'RESUELTO',
+    creadorNombre: 'Juan Perez',
+    creadorFoto: null
   },
 ];
 
 export const ReportContent = () => {
+  const [openModalReportResolved, setOpenModalReportResolved] = useState(false);
+  const [selectedReportId, setSelectedReportId] = useState(null);
+  const [modalReportResolvedTitle, setModalReportResolvedTitle] = useState('');
+
+  const handleOpenModalReportResolved = (reportId, title) => {
+    setSelectedReportId(reportId);
+    setModalReportResolvedTitle(title);
+    setOpenModalReportResolved(true);
+  };
+  const handleCloseModalReportResolved = () => setOpenModalReportResolved(false);
+  
+
   return (
     <Box
       sx={{
         padding: '32px',
       }}
     >
+      <ModalReportResolved
+        title={modalReportResolvedTitle}
+        open={openModalReportResolved}
+        handleClose={handleCloseModalReportResolved}
+        form={<ResolveReportForm
+          handleClose = {handleCloseModalReportResolved}
+          reportId={selectedReportId}
+        />}
+      />
       <Paper
         sx={{
           width: '100%',
@@ -125,7 +130,12 @@ export const ReportContent = () => {
                 <TableRow
                   key={row.id}
                 >
-                  <TableCell>
+                  <TableCell
+                    sx={{
+                      width: '1%',
+                      padding: '16px' 
+                    }}
+                  >
                     <Box>
                       <Typography
                         sx={{
@@ -153,6 +163,9 @@ export const ReportContent = () => {
                   </TableCell>
                   <TableCell
                     align='left'
+                    sx={{
+                      minWidth: 240,
+                    }}
                   >
                     <Typography
                       sx={{
@@ -172,6 +185,10 @@ export const ReportContent = () => {
                         lineHeight: '24px',
                         textAlign: 'left',
                         color: '#000000DE',
+                        overflow: 'hidden',
+                        display: '-webkit-box',
+                        WebkitBoxOrient: 'vertical',
+                        WebkitLineClamp: 2,
                       }}
                     >
                       {row.descripcion}
@@ -179,6 +196,9 @@ export const ReportContent = () => {
                   </TableCell>
                   <TableCell
                     align='right'
+                    sx={{
+                      width: '1%',
+                    }}
                   >
                     <Chip
                       size='small'
@@ -188,6 +208,9 @@ export const ReportContent = () => {
                   </TableCell>
                   <TableCell
                     align='right'
+                    sx={{
+                      width: 176
+                    }}
                   >
                     <Typography
                       sx={{
@@ -212,69 +235,27 @@ export const ReportContent = () => {
                   </TableCell>
                   <TableCell
                     align='center'
+                    sx={{
+                      width: 192,
+                      paddingX: '24px'
+                    }}
                   >
-                    <FormControl
-                      size='small'
-                      sx={{
-                        width: '144px',
-                        display: 'flex',
-                        justifyContent: 'center',
-                        '& .MuiOutlinedInput-root': {
-                          '& .MuiSvgIcon-root': {
-                            right: '20px',
-                          },
-                          '& fieldset': {
-                            borderColor: reportStates[row.estado].color,
-                          },
-                          '&:hover fieldset': {
-                            borderColor: reportStates[row.estado].color,
-                          },
-                          '&.Mui-focused fieldset': {
-                            borderColor: reportStates[row.estado].color,
-                          },
-                        },
-                      }}
-                    >
-                      <InputLabel
-                        shrink={false}
-                        sx={{
-                          fontSize: '13px',
-                          fontWeight: 500,
-                          lineHeight: '22px',
-                          color: reportStates[row.estado].colorText + ' !important',
-                          left: '50px',
-                          transform: 'translateX(-50%) translate(14px, 4px) scale(1)',
-                        }}
-                      >
-                        {reportStates[row.estado].text}
-                      </InputLabel>
-                      <Select
-                        labelId='provincia-label'
-                        id='provincia-select'
-                        IconComponent={SmallKeyboardArrowDownIcon(reportStates[row.estado].colorText)}
-                        sx={{
-                          height: '30px',
-                        }}
-                      >
-                        <MenuItem
-                          value={1}
-                        >NUEVO</MenuItem>
-                        <MenuItem
-                          value={2}
-                        >EN REVISIÓN</MenuItem>
-                        <MenuItem
-                          value={3}
-                        >RECHAZADO</MenuItem>
-                        <MenuItem
-                          value={4}
-                        >RESUELTO</MenuItem>
-                      </Select>
-                    </FormControl>
+                    <ReportStatusSelect
+                      row={row}
+                      handleOpenModalReportResolved={handleOpenModalReportResolved}
+                    />
                   </TableCell>
                   <TableCell
                     align='center'
+                    sx={{
+                      width: 88,
+                      paddingLeft: '16px'
+                    }}
                   >
-                    <Avatar>H</Avatar>
+                    <AvatarWithTooltip
+                      name={row.creadorNombre}
+                      profilePicture={row.creadorFoto}
+                    />
                   </TableCell>
                 </TableRow>
               ))}
