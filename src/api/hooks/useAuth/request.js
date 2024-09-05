@@ -6,7 +6,7 @@ export const useLogin = () => {
   const {
     commonFetch, isLoading 
   } = useFetch({
-    url: '/integration/user',
+    baseUri: '/integration/user',
   });
 
   const login = ({
