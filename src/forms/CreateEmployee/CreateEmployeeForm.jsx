@@ -49,7 +49,7 @@ const turnos = [
     label: 'Tarde',
   },
   {
-    value: 'Manana',
+    value: 'Mañana',
     label: 'Mañana',
   },
 ];
@@ -82,7 +82,7 @@ const newEmployeeSchema = object({
 }).required();
 
 export const CreateEmployeeForm = ({
-  handleClose
+  handleClose, onSuccess
 }) => {
   const {
     control,
@@ -136,6 +136,7 @@ export const CreateEmployeeForm = ({
       if (response && response.message === 'User created successfully!') {
         console.log('Form submission successful, closing modal');
         handleClose();
+        onSuccess();
       } else {
         console.error('Failed to submit form', response);
       }

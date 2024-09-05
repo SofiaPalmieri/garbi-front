@@ -181,8 +181,21 @@ export const EmployeeContent = () => {
     setEmployeeToModify(null);
   };
 
-  
+  const refreshEmployeeList = async () => {
+    try {
+      const employeesResponse = await fetchEmployees();
+      setEmployees(employeesResponse.result);
+    } catch (error) {
+      console.error('Error fetching employees:', error);
+    }
+  };
+
   useEffect(() => {
+    refreshEmployeeList();
+  }, []);
+
+  
+  /*useEffect(() => {
     const asyncFetchEmployees = async () => {
       try {
         const employeesReponse = await fetchEmployees();
@@ -193,7 +206,7 @@ export const EmployeeContent = () => {
     };
 
     asyncFetchEmployees();
-  }, []);
+  }, []);*/
 
   return (
     <Box
@@ -208,6 +221,7 @@ export const EmployeeContent = () => {
         handleClose={handleCloseCreateEmployeeModal}
         form={<CreateEmployeeForm
           handleClose = {handleCloseCreateEmployeeModal}
+          onSuccess={refreshEmployeeList}
         />}
       />
       <Paper
