@@ -10,9 +10,8 @@ import {
 import {
   useForm 
 } from 'react-hook-form';
-import {
-  jwtDecode 
-} from 'jwt-decode';
+
+
 import {
   InputForm 
 } from '../../components/InputForm';
@@ -93,6 +92,7 @@ export const CreateEmployeeForm = ({
     },
   } = useForm({
     defaultValues: {
+      companyId: '',
       lastName: '',
       firstName: '',
       personalPhone: '',
@@ -107,13 +107,13 @@ export const CreateEmployeeForm = ({
 
   const {
     createEmployee: {
-      createEmployee: createEmployee, isLoadingCreateEmployee 
+      createEmployee,
+      isCreateEmployeeLoading 
     },
   } = useEmployees();
 
-  const token = localStorage.getItem('token');
-  const decodedToken = jwtDecode(token);
-  const companyId = decodedToken.user.companyId;
+  const user = JSON.parse(localStorage.getItem('user'));
+  const companyId = user.companyId;
 
   const onSubmit = async (data) => {
     try {

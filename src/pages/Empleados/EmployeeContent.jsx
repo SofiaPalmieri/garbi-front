@@ -155,14 +155,19 @@ const EmployeeRowRender = (employee) => {
   )
 }
 
-
-
-
 export const EmployeeContent = () => {
   const [employees, setEmployees] = useState([])
   const [openCreateEmployeeModal, setOpenCreateEmployeeModal] = useState(false);
   const handleOpenCreateEmployeeModal = () => setOpenCreateEmployeeModal(true);
   const handleCloseCreateEmployeeModal = () => setOpenCreateEmployeeModal(false);
+
+  const [lastKey, setLastKey] = useState(null)
+  const {
+    fetchEmployees: {
+      fetchEmployees,
+      isLoadingFetchEmployees
+    }
+  } = useEmployees();
 
   const [openModifyEmployeeModal, setOpenModifyEmployeeModal] = useState(false);
   const [employeeToModify, setEmployeeToModify] = useState(false);
@@ -176,23 +181,20 @@ export const EmployeeContent = () => {
     setEmployeeToModify(null);
   };
 
-  const {
-    getEmployees: {
-      getEmployees: getEmployees
-    },
-  } = useEmployees();
-
+  
   useEffect(() => {
-    const retrieveEmployees = async () => {
-      const fetchedEmployees = await getEmployees();
-      setEmployees(fetchedEmployees.documents);
+    const asyncFetchEmployees = async () => {
+      try {
+        const employeesReponse = await fetchEmployees();
+        console.log('🚀 ~ asyncFetchEmployees ~ employeesReponse:', employeesReponse)
+
+        setEmployees(employeesReponse.result)
+      } catch (error) {
+        console.error('Error fetching employees:', error);
+      }
     };
 
-    try {
-      retrieveEmployees();
-    } catch (e) {
-      console.log(e);
-    }
+    asyncFetchEmployees();
   }, []);
 
   return (
