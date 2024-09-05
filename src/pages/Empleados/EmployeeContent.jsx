@@ -195,19 +195,6 @@ export const EmployeeContent = () => {
   }, []);
 
   
-  /*useEffect(() => {
-    const asyncFetchEmployees = async () => {
-      try {
-        const employeesReponse = await fetchEmployees();
-        setEmployees(employeesReponse.result)
-      } catch (error) {
-        console.error('Error fetching employees:', error);
-      }
-    };
-
-    asyncFetchEmployees();
-  }, []);*/
-
   return (
     <Box
       sx={{
