@@ -128,8 +128,13 @@ export const CreateEmployeeForm = ({
         workingShift: data.timeShift,
         role: data.jobPosition //TODO: see what the BE needs here
       });
+
+      console.log('API Response:', response);
   
-      if (response.success) {
+      //if (response.success) { //not working
+      //if (response.status === 200) { //not working because BE is only sending a message in the response.
+      if (response && response.message === 'User created successfully!') {
+        console.log('Form submission successful, closing modal');
         handleClose();
       } else {
         console.error('Failed to submit form', response);

@@ -186,8 +186,6 @@ export const EmployeeContent = () => {
     const asyncFetchEmployees = async () => {
       try {
         const employeesReponse = await fetchEmployees();
-        console.log('🚀 ~ asyncFetchEmployees ~ employeesReponse:', employeesReponse)
-
         setEmployees(employeesReponse.result)
       } catch (error) {
         console.error('Error fetching employees:', error);
