@@ -129,12 +129,9 @@ export const CreateEmployeeForm = ({
         role: data.jobPosition //TODO: see what the BE needs here
       });
 
-      if (response && response.message === 'User created successfully!') {
-        handleClose();
-        onSuccess();
-      } else {
-        console.error('Failed to submit form', response);
-      }
+      //TODO later: validar que la respuesta sea la esperada, y sino tirar error.
+      handleClose();
+      onSuccess();
     } catch (error) {
       console.error('Error submitting form', error);
     }
