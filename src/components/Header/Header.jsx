@@ -53,6 +53,9 @@ export const Header = ({
   const [anchorElNotifications, setAnchorElNotifications] = useState(null);
   const [anchorElProfile, setAnchorElProfile] = useState(null);
   const [anchorElManagement, setAnchorElManagement] = useState(null);
+  const [hoveredTabs, setHoveredTabs] = useState({
+  });
+
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -95,6 +98,20 @@ export const Header = ({
   const handleClickManagementItem = (path) => () => {
     navigate(path);
     setAnchorElManagement(null);
+  };
+
+  const handleMouseEnter = (page) => {
+    setHoveredTabs((prev) => ({
+      ...prev,
+      [page]: true 
+    }));
+  };
+
+  const handleMouseLeave = (page) => {
+    setHoveredTabs((prev) => ({
+      ...prev,
+      [page]: false 
+    }));
   };
 
 
@@ -314,23 +331,38 @@ export const Header = ({
                     <Button
                       key={page}
                       onClick={handleClickTab(pages[page])}
+                      onMouseEnter={() => handleMouseEnter(page)}
+                      onMouseLeave={() => handleMouseLeave(page)}
                       sx={{
+                        backgroundColor: hoveredTabs[page] ? '#0c3020' : '#12422c',
                         color: 'white',
                         textTransform: 'unset',
-                        borderBottom: currentTab === page ? '2px solid white' : 'none',
+                        borderBottom:
+                      location.pathname === pages[page] ? '2px solid white' : 'none',
+                        transition: 'background-color 0.3s ease',
+                        '&:hover': {
+                          backgroundColor: '#0c3020',
+                        },
                       }}
                     >
                       {page}
                     </Button>
                   ))}
-             
+                          
                   <Button
                     onClick={handleOpenManagementMenu}
+                    onMouseEnter={() => handleMouseEnter('Gestión')}
+                    onMouseLeave={() => handleMouseLeave('Gestión')}
                     sx={{
+                      backgroundColor: hoveredTabs['Gestión'] ? '#0c3020' : '#12422c',
                       color: 'white',
                       textTransform: 'unset',
-                      display: 'flex',
-                      alignItems: 'center',
+                      borderBottom:
+                      location.pathname === 'Gestión' ? '2px solid white' : 'none',
+                      transition: 'background-color 0.3s ease',
+                      '&:hover': {
+                        backgroundColor: '#0c3020',
+                      },
                     }}
                   >
                     Gestión
