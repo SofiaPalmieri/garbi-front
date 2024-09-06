@@ -4,8 +4,10 @@ import {
 import {
   Box,
   Button,
+  Checkbox,
   CircularProgress,
   FormControl,
+  FormControlLabel,
   IconButton,
   InputAdornment,
   InputLabel,
@@ -126,6 +128,7 @@ export const ChangePasswordBox = () => {
     });
 
     if (response.success) {
+      console.log('aaaaaaaaaaaaaaa')
       navigate('/home');
     }
   };
@@ -482,6 +485,39 @@ export const ChangePasswordBox = () => {
                         {errors.password.message}
                       </Typography>
                     )}
+                  </FormControl>
+                )}
+              />
+              
+              <Controller
+                name='passwordRepeated'
+                control={control}
+                rules={{
+                  required: true,
+                }}
+                render={({
+                  field 
+                }) => (
+                  <FormControl
+                    fullWidth
+                    sx={{
+                      minHeight: '80px',
+                    }}
+                  >
+                    <FormControlLabel 
+                      required
+                      control={
+                        <Checkbox 
+                          sx={{
+                            color: '#ffffff',
+                            '&.Mui-checked': {
+                              color: '#ffffff',
+                            },
+                          }}
+                        />
+                      } 
+                      label='He leído y acepto los Términos y Condiciones' 
+                    />
                   </FormControl>
                 )}
               />
