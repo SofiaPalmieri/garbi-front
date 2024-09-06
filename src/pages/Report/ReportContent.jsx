@@ -102,12 +102,12 @@ const mapper = (reports) => {
 
       return {
         id: r.id,
-        fecha: date,
-        hora: time,
-        estado: state.status,
+        date: date,
+        time: time,
+        state: state.status,
         // recolector o ciudadano,
-        descripcion: r.description,
-        tipoDeReporte: r.type.replace('_',' '),
+        description: r.description,
+        reportType: r.type.replace('_',' '),
         // falta lugar
         // falta area,
         // falta nombre del que report,
@@ -204,7 +204,7 @@ export const ReportContent = () => {
                           color: '#00000099',
                         }}
                       >
-                        {row.fecha}
+                        {row.date}
                       </Typography>
                       <Typography
                         sx={{
@@ -215,7 +215,7 @@ export const ReportContent = () => {
                           color: '#00000099',
                         }}
                       >
-                        {row.hora}
+                        {row.time}
                       </Typography>
                     </Box>
                   </TableCell>
@@ -234,7 +234,7 @@ export const ReportContent = () => {
                         color: '#00000099',
                       }}
                     >
-                      {row.recolector}
+                      {row.typeOfUser}
                     </Typography>
                     <Typography
                       sx={{
@@ -249,7 +249,7 @@ export const ReportContent = () => {
                         WebkitLineClamp: 2,
                       }}
                     >
-                      {row.descripcion}
+                      {row.description}
                     </Typography>
                   </TableCell>
                   <TableCell
@@ -260,7 +260,7 @@ export const ReportContent = () => {
                   >
                     <Chip
                       size='small'
-                      label={row.tipoDeReporte}
+                      label={row.reportType}
                       variant='outlined'
                     />
                   </TableCell>
@@ -278,7 +278,7 @@ export const ReportContent = () => {
                         color: '#00000099',
                       }}
                     >
-                      {row.lugar}
+                      {row.place}
                     </Typography>
                     <Typography
                       sx={{
@@ -299,7 +299,8 @@ export const ReportContent = () => {
                     }}
                   >
                     <ReportStatusSelect
-                      row={row}
+                      reportId={row.id}
+                      reportState={row.state}
                       handleOpenModalReportResolved={handleOpenModalReportResolved}
                     />
                   </TableCell>
@@ -311,8 +312,8 @@ export const ReportContent = () => {
                     }}
                   >
                     <AvatarWithTooltip
-                      name={row.creadorNombre}
-                      profilePicture={row.creadorFoto}
+                      name={row.creatorName}
+                      profilePicture={row.creatorPhoto}
                     />
                   </TableCell>
                 </TableRow>
