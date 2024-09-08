@@ -1,6 +1,7 @@
 import {
-  useCreateEmployee ,
-  useFetchEmployees
+  useCreateEmployee,
+  useFetchEmployees,
+  useModifyEmployee
 } from './request';
 
 export const useEmployees = () => {
@@ -15,6 +16,11 @@ export const useEmployees = () => {
     isLoading: isLoadingFetchEmployees
   } = useFetchEmployees();
 
+  const {
+    modifyEmployee, 
+    isLoading: isModifyEmployeeLoading 
+  } = useModifyEmployee();
+
   return {
     createEmployee: {
       createEmployee,
@@ -23,6 +29,10 @@ export const useEmployees = () => {
     fetchEmployees: {
       fetchEmployees,
       isLoadingFetchEmployees
-    }
+    },
+    modifyEmployee: {
+      modifyEmployee,
+      isModifyEmployeeLoading,
+    },
   };
 };

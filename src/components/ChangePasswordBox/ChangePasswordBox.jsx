@@ -28,15 +28,15 @@ import logo from '/src/assets/garbi-login.png';
 import {
   ModalTermsAndConditions
 } from '../../modales/ModalTermsAndConditions';
-
-
-
 import {
   useNavigate 
 } from 'react-router-dom';
 import {
   useAuth 
 } from '../../api/hooks/useAuth/useAuth';
+import {
+  useEmployees 
+} from '../../api/hooks/useEmployees/useEmployees';
 
 const passwordStatusInitial = {
   atLeast8Characters: false,
@@ -81,10 +81,12 @@ export const ChangePasswordBox = () => {
     changePassword: {
       changePassword: changePassword, isChangePasswordLoading 
     },
-    acceptTerms: {
-      acceptTerms: acceptTerms, isAcceptTermsLoading 
-    },
   } = useAuth();
+  const {
+    modifyEmployee: {
+      modifyEmployee: modifyEmployee, isModifyEmployeeLoading 
+    },
+  } = useEmployees();
   const navigate = useNavigate();
 
   const {
@@ -105,7 +107,7 @@ export const ChangePasswordBox = () => {
 
   const passwordWatched = watch('password');
   const passwordRepeatedWatched = watch('passwordRepeated');
-  const termsAndConditionsWatched = watch('termsAndConditions');
+  //const termsAndConditionsWatched = watch('termsAndConditions');
   const passwordDebounced = useDebounce(passwordWatched, 500);
   const passwordRepeatedDebounced = useDebounce(passwordRepeatedWatched, 500);
 
@@ -134,13 +136,14 @@ export const ChangePasswordBox = () => {
   }, [passwordRepeatedDebounced]);
 
   useEffect(() => {
-    // Verificar si todos los valores son true
+    // Verifica si todos los valores son true
     const allValid = Object.values(passwordStatus).every((status) => status);
     setPasswordChecked(allValid);
   }, [passwordStatus]);
 
   const onSubmit = async (data) => {
-    if (!passwordChecked || !termsAndConditionsWatched) return;
+    console.log('xxxxxxxxxxxxxxxxx');
+    if (!passwordChecked || !checkboxChecked) return;
 
     console.log(data);
 
@@ -154,17 +157,14 @@ export const ChangePasswordBox = () => {
       newPassword: passwordDebounced,
       password: data.oldPassword,
     });
-    console.log('----------')
-    const termsResponse = await acceptTerms({
+
+    const termsResponse = await modifyEmployee({
       userId: user.id,
       termsAndConditions: data.termsAndConditions
     });
-    console.log('000000000000000')
 
-    if (response.success) {
-      console.log('aaaaaaaaaaaaaaa')
-      navigate('/home');
-    }
+    //TODO later: validar que la respuesta sea la esperada, y sino tirar error.
+    navigate('/home');
   };
 
 
@@ -604,7 +604,7 @@ export const ChangePasswordBox = () => {
                       color: (theme) => theme.palette.grey[900], // Color de texto gris más oscuro
                     },
                   }}
-                  disabled={!passwordChecked || !termsAndConditionsWatched}
+                  disabled={!passwordChecked || !checkboxChecked}
                   fullWidth
                   type='submit'
                 >

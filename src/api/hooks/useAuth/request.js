@@ -62,7 +62,7 @@ export const useChangePassword = () => {
 };
 
 
-export const useAcceptTerms = () => {
+/*export const useAcceptTerms = () => {
   const {
     commonFetch, isLoading
   } = useFetch({
@@ -85,4 +85,4 @@ export const useAcceptTerms = () => {
     acceptTerms,
     isLoading,
   };
-};
+};*/
