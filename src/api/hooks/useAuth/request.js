@@ -60,29 +60,3 @@ export const useChangePassword = () => {
     isLoading,
   };
 };
-
-
-/*export const useAcceptTerms = () => {
-  const {
-    commonFetch, isLoading
-  } = useFetch({
-    baseUri: baseAuthUri,
-  });
-
-  const acceptTerms = ({
-    userId, termsAndConditions
-  }) => {
-    return commonFetch({
-      uri: '/' + userId,
-      method: 'PUT',
-      body: {
-        termsAndConditions,
-      },
-    });
-  };
-
-  return {
-    acceptTerms,
-    isLoading,
-  };
-};*/

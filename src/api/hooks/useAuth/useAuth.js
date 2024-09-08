@@ -11,7 +11,6 @@ export const useAuth = () => {
     changePassword, isLoading: isChangePasswordLoading
   } = useChangePassword();
 
-
   return {
     login: {
       login,

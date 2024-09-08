@@ -107,7 +107,6 @@ export const ChangePasswordBox = () => {
 
   const passwordWatched = watch('password');
   const passwordRepeatedWatched = watch('passwordRepeated');
-  //const termsAndConditionsWatched = watch('termsAndConditions');
   const passwordDebounced = useDebounce(passwordWatched, 500);
   const passwordRepeatedDebounced = useDebounce(passwordRepeatedWatched, 500);
 
@@ -142,7 +141,6 @@ export const ChangePasswordBox = () => {
   }, [passwordStatus]);
 
   const onSubmit = async (data) => {
-    console.log('xxxxxxxxxxxxxxxxx');
     if (!passwordChecked || !checkboxChecked) return;
 
     console.log(data);
@@ -550,7 +548,7 @@ export const ChangePasswordBox = () => {
                       <FormControlLabel 
                         control={
                           <Checkbox 
-                            {...field} //todo delete later maybe?
+                            {...field}
                             checked={checkboxChecked}
                             sx={{
                               color: '#ffffff',
