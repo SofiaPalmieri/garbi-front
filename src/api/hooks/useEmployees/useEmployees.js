@@ -1,32 +1,28 @@
 import {
-  useGetEmployees, useCreateEmployee, useModifyEmployee
+  useCreateEmployee ,
+  useFetchEmployees
 } from './request';
 
 export const useEmployees = () => {
-  const {
-    getEmployees, isLoading: isLoadingGetEmployees
-  } = useGetEmployees();
 
   const {
-    createEmployee, isLoading: isLoadingCreateEmployee
+    createEmployee, 
+    isLoading: isCreateEmployeeLoading 
   } = useCreateEmployee();
 
   const {
-    modifyEmployee, isLoading: isLoadingModifyEmployee
-  } = useModifyEmployee();
+    fetchEmployees,
+    isLoading: isLoadingFetchEmployees
+  } = useFetchEmployees();
 
   return {
-    getEmployees: {
-      getEmployees,
-      isLoadingGetEmployees,
-    },
     createEmployee: {
       createEmployee,
-      isLoadingCreateEmployee,
+      isCreateEmployeeLoading,
     },
-    modifyEmployee: {
-      modifyEmployee,
-      isLoadingModifyEmployee,
+    fetchEmployees: {
+      fetchEmployees,
+      isLoadingFetchEmployees
     }
   };
 };

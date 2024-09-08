@@ -1,14 +1,19 @@
 import {
-  Typography 
+  Typography
 } from '@mui/material'
 import {
-  Box 
+  Box
 } from '@mui/system'
 import {
-  RouteOptimalInfo 
+  RouteOptimalInfo
 } from '../RouteOptimalInfo/RouteOptimalInfo'
 
-export const RightSidePanelOptimalRouteIinfo = () => {
+export const RightSidePanelOptimalRouteIinfo = ({
+  routeSelected, optimalRoutes, setRouteSelected 
+}) => {
+
+  if (!routeSelected) return;
+
   return (
     <Box
       sx={{
@@ -19,7 +24,11 @@ export const RightSidePanelOptimalRouteIinfo = () => {
     >
       <Typography
         sx={{
-          padding: '.5rem 1rem'
+          padding: '.5rem 1rem',
+          color: '#000',
+          fontSize: '1rem',
+          fontWeight: 500,
+          lineHeight: '160%'
         }}
       >
         Rutas óptimas
@@ -31,10 +40,25 @@ export const RightSidePanelOptimalRouteIinfo = () => {
         }}
       >
         <RouteOptimalInfo
-          selected = {true}
+          name={'Solo contenedores llenos'}
+          color={'#2E7D32'}
+          colorNoSelected={'rgba(46, 125, 50, 0.30)'}
+          selected={routeSelected.id == optimalRoutes.optimalRouteFull.id}
+          onClick={() => setRouteSelected(optimalRoutes.optimalRouteFull)}
         />
         <RouteOptimalInfo
-          selected = {false}
+          name={'Contenedores llenos y próximos a llenarse'}
+          color={'#EF6C00'}
+          colorNoSelected={'rgba(239, 108, 0, 0.30)'}
+          selected={routeSelected.id == optimalRoutes.optimalRouteWarningAndFull.id}
+          onClick={() => setRouteSelected(optimalRoutes.optimalRouteWarningAndFull)}
+        />
+        <RouteOptimalInfo
+          name={'Solo contenedores llenos'}
+          color={'#D32F2F'}
+          colorNoSelected={'rgba(211, 47, 47, 0.30)'}
+          selected={routeSelected.id == optimalRoutes.optimalRouteAll.id}
+          onClick={() => setRouteSelected(optimalRoutes.optimalRouteAll)}
         />
       </Box>
     </Box >
