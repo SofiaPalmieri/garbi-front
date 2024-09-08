@@ -205,10 +205,10 @@ export default function HomeMainContent() {
 
   const fetchOptimalRoutes = async (areaId) => {
     // lo comento para usar el mock y no generar bill
-    // const optimalRoutes = await getOptimalRoutes(areaId)
+    const optimalRoutes = await getOptimalRoutes(areaId)
 
     // TODO BORRAR ESTO Y PONER LA LINEA DE ARRIBA
-    const optimalRoutes = getOptimalRoutesMocked()
+    // const optimalRoutes = getOptimalRoutesMocked()
 
     setOptimalRoutes(optimalRoutes)
     setOptimalRouteSelected(optimalRoutes.optimalRouteFull)
@@ -315,7 +315,7 @@ export default function HomeMainContent() {
             />
           )}
           {
-            true && (
+            openGenerateOptimalRouteRightSideInfo && (
               <RightSidePanel
                 disablePadding={true}
                 handleClose={handleCloseRightSidePanelOptimalRouteInfo}

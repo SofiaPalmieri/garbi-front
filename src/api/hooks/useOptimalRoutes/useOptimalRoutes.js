@@ -1,5 +1,5 @@
 import {
-  useGetOptimalRoutes 
+  useGetOptimalRoutes
 } from './request'
 
 export const useOptimalRoutes = () => {
@@ -7,7 +7,6 @@ export const useOptimalRoutes = () => {
     isLoading: isLoadingGetOptimalRoutes,
     getOptimalRoutes
   } = useGetOptimalRoutes()
-
 
   return {
     getOptimalRoutes: {

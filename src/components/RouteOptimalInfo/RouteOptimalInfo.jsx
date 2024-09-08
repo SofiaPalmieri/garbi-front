@@ -6,10 +6,13 @@ import RouteIcon from '@mui/icons-material/Route';
 
 export const RouteOptimalInfo = ({
   name,
+  timeInMinutes,
+  distanceInKms,
   color,
   colorNoSelected,
   selected,
-  onClick
+  onClick,
+  onSendRoute
 }) => {
   return (
     <Box
@@ -67,7 +70,7 @@ export const RouteOptimalInfo = ({
               lineHeight: '1.5rem'
             }}
           >
-            n hs
+            {timeInMinutes + ' mts'}
           </Typography>
         </Box>
         <Box
@@ -89,7 +92,9 @@ export const RouteOptimalInfo = ({
               fontWeight: 400,
               lineHeight: '1.5rem'
             }}
-          >9 km</Typography>
+          >
+            {distanceInKms + ' km'}
+          </Typography>
         </Box>
       </Box>
       <Box >
@@ -97,6 +102,7 @@ export const RouteOptimalInfo = ({
           variant='text'
           color='primary'
           size='large'
+          onClick={onSendRoute}
         >
           <Typography
             sx={{
