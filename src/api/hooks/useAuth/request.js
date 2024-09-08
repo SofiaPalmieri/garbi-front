@@ -34,8 +34,6 @@ export const useLogin = () => {
 };
 
 
-
-
 export const useChangePassword = () => {
   const {
     commonFetch, isLoading
@@ -59,6 +57,32 @@ export const useChangePassword = () => {
 
   return {
     changePassword,
+    isLoading,
+  };
+};
+
+
+export const useAcceptTerms = () => {
+  const {
+    commonFetch, isLoading
+  } = useFetch({
+    baseUri: baseAuthUri,
+  });
+
+  const acceptTerms = ({
+    userId, termsAndConditions
+  }) => {
+    return commonFetch({
+      uri: '/' + userId,
+      method: 'PUT',
+      body: {
+        termsAndConditions,
+      },
+    });
+  };
+
+  return {
+    acceptTerms,
     isLoading,
   };
 };
