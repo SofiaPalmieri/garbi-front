@@ -158,7 +158,7 @@ export const ChangePasswordBox = () => {
 
     const termsResponse = await modifyEmployee({
       userId: user.id,
-      termsAndConditions: data.termsAndConditions
+      termsAndConditions: checkboxChecked
     });
 
     //TODO later: validar que la respuesta sea la esperada, y sino tirar error.
@@ -429,7 +429,7 @@ export const ChangePasswordBox = () => {
                             </IconButton>
                           </InputAdornment>
                         }
-                        label='Contraseña'
+                        label='Nueva Contraseña'
                         sx={{
                           '& .MuiOutlinedInput-notchedOutline': {
                             borderColor: 'white',
@@ -515,7 +515,7 @@ export const ChangePasswordBox = () => {
                             </IconButton>
                           </InputAdornment>
                         }
-                        label='Repetir Contraseña'
+                        label='Repetir nueva contraseña'
                       />
                       {errors.password && (
                         <Typography
@@ -533,9 +533,6 @@ export const ChangePasswordBox = () => {
                 <Controller
                   name='termsAndConditions'
                   control={control}
-                  rules={{
-                    required: true,
-                  }}
                   render={({
                     field 
                   }) => (
@@ -545,46 +542,51 @@ export const ChangePasswordBox = () => {
                         minHeight: '80px',
                       }}
                     >
-                      <FormControlLabel 
-                        control={
-                          <Checkbox 
-                            {...field}
-                            checked={checkboxChecked}
-                            sx={{
-                              color: '#ffffff',
-                              '&.Mui-checked': {
+                      <Box
+                        sx={{ 
+                          display: 'flex', 
+                          alignItems: 'center',
+                        }}
+                      >
+                        <FormControlLabel 
+                          control={
+                            <Checkbox 
+                              {...field}
+                              checked={checkboxChecked}
+                              sx={{
+                                paddingRight: '0px',
                                 color: '#ffffff',
-                              },
+                                '&.Mui-checked': {
+                                  color: '#ffffff',
+                                },
+                              }}
+                              onChange={(e) => {
+                                field.onChange(e);
+                                setCheckboxChecked(e.target.checked);
+                              }}
+                            />
+                          } 
+                        />
+                        <Typography
+                          sx={{
+                            color: '#ffffff',
+                          }}
+                        >
+                          He leído y acepto{' '}
+                          <span
+                            onClick={(e) => {
+                              handleOpenTermsModal();
                             }}
-                            onChange={(e) => {
-                              field.onChange(e);
-                              setCheckboxChecked(e.target.checked);
-                            }}
-                          />
-                        } 
-                        label={
-                          <Typography
-                            sx={{
+                            style={{
                               color: '#ffffff',
+                              textDecoration: 'underline',
+                              cursor: 'pointer',
                             }}
                           >
-                            He leído y acepto{' '}
-                            <span
-                              onClick={(e) => {
-                                e.preventDefault();
-                                handleOpenTermsModal();
-                              }}
-                              style={{
-                                color: '#ffffff',
-                                textDecoration: 'underline',
-                                cursor: 'pointer',
-                              }}
-                            >
-                              Términos y Condiciones
-                            </span>
-                          </Typography>
-                        }
-                      />
+                            Términos y Condiciones
+                          </span>
+                        </Typography>
+                      </Box>
                     </FormControl>
                   )}
                 />

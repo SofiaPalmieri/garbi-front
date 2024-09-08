@@ -2,6 +2,9 @@ import CloseIcon from '@mui/icons-material/Close';
 import {
   Box, Button, Divider, Modal, Typography
 } from '@mui/material';
+import {
+  CancelAndSubmitButton 
+} from '../../components/CancelAndSubmitButton/CancelAndSubmitButton';
 
 const style = {
   position: 'absolute',
@@ -81,51 +84,12 @@ export const ModalTermsAndConditions = ({
             </Typography>
           </Box></>)}
         <Divider />
-        <Box
-          sx={{
-            width: '100%',
-            height: '68px',
-            padding: '16px 24px',
-          }}
-        >
-          <Box
-            sx={{
-              display: 'flex',
-              justifyContent: 'end',
-              gap: '8px',
-            }}
-          >
-            <Button
-              color='secondary'
-              sx={{
-                backgroundColor: 'secondary.main',
-                color: 'secondary.contrastText',
-                padding: '8px',
-                '&:hover': {
-                  backgroundColor: 'secondary.dark',
-                },
-              }}
-              onClick={handleClose}
-            >
-              Cerrar
-            </Button>
-            <Button
-              sx={{
-                backgroundColor: '#12422C',
-                color: 'white',
-                paddingLeft: '16px',
-                paddingRight: '16px',
-                '&:hover': {
-                  backgroundColor: '#0a2e1f',
-                },
-              }}
-              onClick={handleAccept}
-              //type={typeButton}
-            >
-              ACEPTAR
-            </Button>
-          </Box>
-        </Box>
+        <CancelAndSubmitButton
+          handleClose={handleClose}
+          onSubmit={handleAccept}
+          buttonSubmitMessage = 'ACEPTAR'
+          secondaryButtonMessage = 'Cerrar'
+        />
       </Box>
     </Modal>
   );
