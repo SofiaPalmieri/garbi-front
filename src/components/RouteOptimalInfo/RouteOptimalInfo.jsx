@@ -70,7 +70,7 @@ export const RouteOptimalInfo = ({
               lineHeight: '1.5rem'
             }}
           >
-            {timeInMinutes + ' mts'}
+            {timeInMinutes + ' min'}
           </Typography>
         </Box>
         <Box
