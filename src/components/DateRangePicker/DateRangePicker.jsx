@@ -1,4 +1,5 @@
 import {
+  InputAdornment,
   TextField
 } from '@mui/material';
 import {
@@ -14,6 +15,7 @@ import {
 import {
   subDays 
 } from 'date-fns'
+import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 
 export const DateRangePicker = () => {
   const defaultStartDate = subDays(new Date(), 7);
@@ -33,9 +35,18 @@ export const DateRangePicker = () => {
         ref={ref}
         sx={{
           mt: 1,
-          width: '224px' 
+          width: '248px' 
         }}
         size='small'
+        InputProps={{
+          startAdornment: (
+            <InputAdornment
+              position='start'
+            >
+              <CalendarTodayIcon />
+            </InputAdornment>
+          ),
+        }}
       />
     ),
   );

@@ -75,11 +75,11 @@
 
 /* Adjust circle position. */
 .react-datepicker__day--range-start::before {
-  margin-left: 0px;
+  margin-left: 2px;
   transform: translate(1px, -50%);
 }
 .react-datepicker__day--range-end::before {
-  margin-left: 13px;
+  margin-left: 12.5px;
   transform: translate(-10px, -50%);
 }
 
