@@ -100,19 +100,6 @@ export const Header = ({
     setAnchorElManagement(null);
   };
 
-  const handleMouseEnter = (page) => {
-    setHoveredTabs((prev) => ({
-      ...prev,
-      [page]: true 
-    }));
-  };
-
-  const handleMouseLeave = (page) => {
-    setHoveredTabs((prev) => ({
-      ...prev,
-      [page]: false 
-    }));
-  };
 
 
   const [notifications, setNotifications] = useState([
@@ -331,8 +318,6 @@ export const Header = ({
                     <Button
                       key={page}
                       onClick={handleClickTab(pages[page])}
-                      onMouseEnter={() => handleMouseEnter(page)}
-                      onMouseLeave={() => handleMouseLeave(page)}
                       sx={{
                         backgroundColor: hoveredTabs[page] ? '#0c3020' : '#12422c',
                         color: 'white',
@@ -351,8 +336,6 @@ export const Header = ({
                           
                   <Button
                     onClick={handleOpenManagementMenu}
-                    onMouseEnter={() => handleMouseEnter('Gestión')}
-                    onMouseLeave={() => handleMouseLeave('Gestión')}
                     sx={{
                       backgroundColor: hoveredTabs['Gestión'] ? '#0c3020' : '#12422c',
                       color: 'white',
