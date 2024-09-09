@@ -21,77 +21,87 @@ import {
 } from '../../../components/AvatarWithTooltip';
 import profilePicture from '../../../assets/profile_picture.jpg';
 import useMediaQuery from '@mui/material/useMediaQuery';
+import {
+  TimestampUtil 
+} from '../../../utils/timestampUtil';
+
+
+const mapper = (routes) => {
+  return routes
+    .filter(r => r.status.some(statusItem => statusItem.status === 'FINISHED')) //Excluye recorridos in progress, pq esta pantalla solo muestra los terminados.
+    .map(r => {
+      const {
+        date: date 
+      } = TimestampUtil.convertToDateAndHour(r.timestamp)
+
+      const totalMinutes = Math.round(r.directions.total_duration / 60);
+      const hours = Math.floor(totalMinutes / 60);
+      const minutes = totalMinutes % 60;
+      let duration;
+      if (hours > 0 && minutes != 0) {
+        duration = `${hours} hr  ${minutes} min`;
+      } else if (minutes == 0) {
+        duration = `${hours} hr`;
+      } else {
+        duration = `${minutes} min`;
+      }
+
+      const startedStatus = r.status.find(statusItem => statusItem.status === 'STARTED');
+      const startedTimestamp = startedStatus.timestamp;
+      const {
+        time: startTime 
+      } = TimestampUtil.convertToDateAndHour(startedTimestamp);
+
+      const finishedStatus = r.status.find(statusItem => statusItem.status === 'FINISHED');
+      const finishedTimestamp = finishedStatus.timestamp;
+      const {
+        time: endTime 
+      } = TimestampUtil.convertToDateAndHour(finishedTimestamp);
+
+
+      return {
+        id: r.id.slice(-6),
+        date: date,
+        area: 'Área 1', // falta recibir nombre de area del BE.
+        duration: duration,
+        startTime: '20.31',
+        //startTime: startTime,
+        endTime: endTime,
+        manager: 'Hernan Ramirez', //falta recibir bien del BE supervisor y recolector. ahora es cualquier cosa.
+        manager_picture: profilePicture,
+        collector1: 'Pepe Pepin',
+        collector1_picture: null,
+        collector2: 'Roberto Roberti',
+        collector2_picture: null
+      }
+    }
+    )
+}
 
 export default function RouteMainContent() {
   const {
-    getRoutes: {
-      getRoutes: getRoutes 
+    fetchRoutes: {
+      fetchRoutes: fetchRoutes 
     },
   } = useRoutes();
   const [routes, setRoutes] = useState([]);
 
   useEffect(() => {
-    const retrieveRoutes = async () => {
-      const routes = await getRoutes();
-      setRoutes(routes);
+    const asyncFetchRoutes = async () => {
+      try {
+        const routesReponse = await fetchRoutes();
+        console.log('🚀 ~ asyncFetchRoutes ~ routesReponse:', routesReponse)
+        const routesMapped = mapper(routesReponse.result)
+
+        setRoutes(routesMapped)
+      } catch (error) {
+        console.error('Error fetching routes:', error);
+      }
     };
 
-    try {
-      retrieveRoutes();
-      console.log('routes: ' + routes.documents[0].managerId); //BE to create some
-    } catch (e) {
-      console.log(e);
-    }
+    asyncFetchRoutes();
   }, []);
   
-  const rows = [
-    {
-      id: 1,
-      fecha: '19/02/24',
-      codigo: '#123456',
-      lugar: 'Villa del Parque',
-      area: 'Área 2',
-      duracion: '55 min',
-      horario: '20:30 - 21:25 hs',
-      supervisor: 'Hernan Ramirez',
-      supervisor_picture: profilePicture,
-      recolector1: 'Pepe Pepin',
-      recolector1_picture: profilePicture,
-      recolector2: 'Roberto Roberti',
-      recolector2_picture: null
-    },
-    {
-      id: 2,
-      fecha: '20/02/24',
-      codigo: '#123457',
-      lugar: 'Palermo',
-      area: 'Área 1',
-      duracion: '1hr 20min',
-      horario: '5:00 - 6:20 hs',
-      supervisor: 'Hernan Ramirez de la Serna',
-      supervisor_picture: null,
-      recolector1: 'Pepe Pepin',
-      recolector1_picture: profilePicture,
-      recolector2: 'Roberto Roberti',
-      recolector2_picture: profilePicture
-    },
-    {
-      id: 3,
-      fecha: '20/02/24',
-      codigo: '#123456',
-      lugar: 'Palermo',
-      area: 'Área 1',
-      duracion: '1hr 30min',
-      horario: '22:13 - 23:43 hs',
-      supervisor: 'Hernan Ramirez',
-      supervisor_picture: profilePicture,
-      recolector1: 'Pepe Pepin',
-      recolector1_picture: null,
-      recolector2: null,
-      recolector2_picture: null
-    },
-  ];
-
   const isLargeScreen = useMediaQuery('(min-width:1200px)');
   const isMediumScreen = useMediaQuery('(min-width:900px)');
 
@@ -113,7 +123,7 @@ export default function RouteMainContent() {
             aria-label='simple table'
           >
             <TableBody>
-              {rows.map((row) => (
+              {routes.map((row) => (
                 <TableRow
                   key={row.id}
                 >
@@ -130,7 +140,7 @@ export default function RouteMainContent() {
                         color: '#616161',
                       }}
                     >
-                      {row.fecha}
+                      {row.date}
                     </Typography>
                   </TableCell>
                   <TableCell
@@ -145,7 +155,7 @@ export default function RouteMainContent() {
                         color: '#212121',
                       }}
                     >
-                      {row.lugar}
+                      {row.area}
                       <Typography
                         component='span'
                         sx={{
@@ -154,16 +164,8 @@ export default function RouteMainContent() {
                           marginLeft: '16px'
                         }}
                       >
-                        {row.codigo}
+                        #{row.id}
                       </Typography>
-                    </Typography>
-                    <Typography
-                      sx={{
-                        fontSize: '16px',
-                        color: '#616161',
-                      }}
-                    >
-                      {row.area}
                     </Typography>
                   </TableCell>
                   <TableCell
@@ -178,7 +180,7 @@ export default function RouteMainContent() {
                         color: '#212121',
                       }}
                     >
-                      {row.horario}
+                      {row.duration}
                     </Typography>
                     <Typography
                       sx={{
@@ -186,7 +188,7 @@ export default function RouteMainContent() {
                         color: '#616161',
                       }}
                     >
-                      {row.duracion}
+                      {row.startTime} - {row.endTime}
                     </Typography>
                   </TableCell>
                   {isMediumScreen && (
@@ -216,8 +218,8 @@ export default function RouteMainContent() {
                         }}
                       >
                         <AvatarWithTooltip
-                          name={row.supervisor}
-                          profilePicture={row.supervisor_picture}
+                          name={row.manager}
+                          profilePicture={row.manager_picture}
                         />
                       </TableCell>
                     </>
@@ -252,12 +254,12 @@ export default function RouteMainContent() {
                           max={2}
                         >
                           <AvatarWithTooltip
-                            name={row.recolector1}
-                            profilePicture={row.recolector1_picture}
+                            name={row.collector1}
+                            profilePicture={row.collector1_picture}
                           />
                           <AvatarWithTooltip
-                            name={row.recolector2}
-                            profilePicture={row.recolector2_picture}
+                            name={row.collector2}
+                            profilePicture={row.collector2_picture}
                           />
                         </AvatarGroup>
                       </TableCell>
