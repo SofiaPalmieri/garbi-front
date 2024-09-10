@@ -248,15 +248,39 @@ export default function HomeMainContent() {
             pr: '32px',
           }}
         >
-          <InfoOutlinedIcon
-            sx={{
-              color: '#0000008F',
-            }}
-            widht='24px'
-            height='24px'
-            top='2px'
-            left='2px'
-          />
+          <Tooltip
+            title={
+              <Box
+                sx={{
+                  display: 'flex',
+                  alignItems: 'center' 
+                }}
+              >
+                <Typography
+                  sx={{
+                    fontFamily: 'Roboto',
+                    fontWeight: '500',
+                    fontSize: '14px',
+                    lineHeight: '14px',
+                    color: '#FFFFFF',
+                    textAlign:'center'
+                  }}
+                >
+                  Automáticamente se genera a las 20hs cada día
+                </Typography>
+              </Box>
+            }
+            placement='bottom'
+            arrow
+          >
+            <InfoOutlinedIcon
+              sx={{
+                color: '#0000008F',
+                fontSize: '24px',
+                cursor: 'pointer',
+              }}
+            />
+          </Tooltip>
           <Button
             width='177px'
             height='26px'
