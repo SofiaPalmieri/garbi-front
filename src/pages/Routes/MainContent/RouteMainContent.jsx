@@ -29,6 +29,7 @@ import {
 const mapper = (routes) => {
   return routes
     .filter(r => r.status.some(statusItem => statusItem.status === 'FINISHED')) //Excluye recorridos in progress, pq esta pantalla solo muestra los terminados.
+    .filter(r => r.status.some(statusItem => statusItem.status === 'STARTED')) //el BE tiene rutas sin STARTED asiq pongo esto asi no se ve feo en una demo. TODO: borrar esta linea.
     .map(r => {
       const {
         date: date 
@@ -64,10 +65,9 @@ const mapper = (routes) => {
         date: date,
         area: 'Área 1', // falta recibir nombre de area del BE.
         duration: duration,
-        startTime: '20.31',
-        //startTime: startTime,
+        startTime: startTime,
         endTime: endTime,
-        manager: 'Hernan Ramirez', //falta recibir bien del BE supervisor y recolector. ahora es cualquier cosa.
+        manager: 'Hernan Ramirez', //falta recibir bien del BE supervisor y recolectores. ahora es cualquier cosa.
         manager_picture: profilePicture,
         collector1: 'Pepe Pepin',
         collector1_picture: null,
