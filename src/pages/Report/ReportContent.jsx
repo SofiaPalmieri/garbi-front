@@ -32,6 +32,9 @@ import {
 import {
   TimestampUtil 
 } from '../../utils/timestampUtil';
+import {
+  DateRangePicker
+} from '../../components/DateRangePicker';
 
 
 const rows = [
@@ -174,6 +177,7 @@ export const ReportContent = () => {
           width: '100%',
         }}
       >
+        <DateRangePicker/>
         <TableContainer
           component={Paper}
         >
