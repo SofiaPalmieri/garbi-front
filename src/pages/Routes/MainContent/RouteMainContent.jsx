@@ -1,7 +1,7 @@
 import {
   AvatarGroup,
   Box,
-  LinearProgress,
+  CircularProgress,
   Paper,
   Table,
   TableBody,
@@ -124,10 +124,13 @@ export default function RouteMainContent() {
           {isLoadingFetchRoutes ? (
             <Box
               sx={{ 
-                color: '#13422c' 
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                color: '#13422c',
               }}
             >
-              <LinearProgress
+              <CircularProgress
                 color='inherit'
               />
             </Box>
