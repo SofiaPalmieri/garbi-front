@@ -53,6 +53,9 @@ import {
 import {
   useAreas 
 } from '../../api/hooks/useAreas/useAreas';
+import {
+  formatContainers 
+} from '../../api/hooks/useReports/mappers';
 
 const icons = [
   Battery0BarIcon,
@@ -115,22 +118,6 @@ const getColorPoint = (capacity) => {
   }
 };
 
-const formatContainers = (containers) => {
-  return containers.map((container) => {
-    if (!container.coordinates) {
-      return {
-        ...container,
-        lat: 0,
-        lng: 0,
-      };
-    }
-    return {
-      ...container,
-      lat: container.coordinates.lat,
-      lng: container.coordinates.lng,
-    };
-  });
-};
 
 export default function HomeMainContent() {
 
