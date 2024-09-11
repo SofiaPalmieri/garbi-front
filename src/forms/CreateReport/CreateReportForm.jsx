@@ -45,6 +45,9 @@ import {
 import {
   AdvancedMarker
 } from '@vis.gl/react-google-maps';
+import {
+  formatContainers 
+} from '../../api/hooks/useReports/mappers';
 
 const tipos = [
   {
@@ -122,28 +125,10 @@ export const CreateReportForm = () => {
     },
   } = useContainers();
 
-
-  const formatContainers = (containers) => {
-    return containers.documents.map((container) => {
-      if (!container.coordinates) {
-        return {
-          ...container,
-          lat: 0,
-          lng: 0,
-        };
-      }
-      return {
-        ...container,
-        lat: container.coordinates.lat,
-        lng: container.coordinates.lng,
-      };
-    });
-  };
-
   useEffect(() => {
     const retrieveContainers = async () => {
       const containersUnformated = await getContainers();
-      const containersFormated = formatContainers(containersUnformated);
+      const containersFormated = formatContainers(containersUnformated.result);
 
       setContainers(containersFormated);
     };
@@ -158,7 +143,7 @@ export const CreateReportForm = () => {
   const handleContainerClick = (container) => {
     setValue('address', container.address.street +' '+ container.address.number || '');
     setValue('neighborhood', container.address.neighborhood || '');
-    setValue('containerId', container._id.slice(-6));
+    setValue('containerId', container.id);
     setContainerSeleted(container);
   };
 
@@ -607,7 +592,7 @@ function Marker({
                 color: '#9e9e9e',
               }}
             >
-              Contenedor #{point._id.slice(-6)}
+              Contenedor #{point.id}
             </Typography>
           </Box>
         }
