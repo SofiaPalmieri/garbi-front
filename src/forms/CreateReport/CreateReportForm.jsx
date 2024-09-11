@@ -46,7 +46,7 @@ import {
   AdvancedMarker
 } from '@vis.gl/react-google-maps';
 import {
-  formatContainers 
+  formatContainers
 } from '../../api/hooks/useReports/mappers';
 
 const tipos = [
@@ -141,7 +141,7 @@ export const CreateReportForm = () => {
   }, []);
 
   const handleContainerClick = (container) => {
-    setValue('address', container.address.street +' '+ container.address.number || '');
+    setValue('address', container.address.street + ' ' + container.address.number || '');
     setValue('neighborhood', container.address.neighborhood || '');
     setValue('containerId', container.id);
     setContainerSeleted(container);
@@ -219,7 +219,7 @@ export const CreateReportForm = () => {
       console.error('Error creating report:', error);
     }
   };
-  
+
 
   return (
     <form
@@ -419,10 +419,10 @@ export const CreateReportForm = () => {
             height='400px'
           >
             <MapWithContainers
-              apiKey = {apiKeyGoogleMaps}
-              zoom = {16}
-              centerPosition = {position}
-              containers = {containers.map((p) => (
+              apiKey={apiKeyGoogleMaps}
+              zoom={16}
+              centerPosition={position}
+              containers={containers.map((p) => (
                 <Marker
                   setContainerSeleted={handleContainerClick}
                   key={p._id}
@@ -434,8 +434,8 @@ export const CreateReportForm = () => {
           {containerError && (
             <Typography
               sx={{
-                fontSize:'0.85rem',
-                color:'red',
+                fontSize: '0.85rem',
+                color: 'red',
                 mt: 1,
               }}
             >
@@ -582,8 +582,8 @@ function Marker({
                 fontWeight: 500,
                 color: 'black',
               }}
-            > 
-              {point.address.street +' '+ point.address.number}
+            >
+              {point.address.street + ' ' + point.address.number}
             </Typography>
             <Typography //TODO: update id here to receive the 6 numbers one
               sx={{
