@@ -92,7 +92,7 @@ const rows = [
   },
 ];
 
-/*const mapper = (reports) => {
+const mapper = (reports) => {
   return reports.map(
     r => {
       const {
@@ -110,35 +110,10 @@ const rows = [
         reportType: r.type.replace('_',' '),
         // falta lugar
         // falta area,
-        // falta nombre del que report,
-        // falta foto
+        // falta nombre apellido y foto del supervisor
       }
     }
   )
-}*/
-const mapper = (reports) => {
-  if (reports.length === 0) return []; // Return empty array if no reports
-  
-  const [firstReport] = reports; // Destructure to get the first report
-  
-  const {
-    date, time 
-  } = TimestampUtil.convertToDateAndHour(firstReport.timestamp)
-  const state = firstReport.status[firstReport.status.length - 1]
-
-  return [{
-    id: firstReport.id,
-    date: date,
-    time: time,
-    state: state.status,
-    // recolector o ciudadano,
-    description: firstReport.description,
-    reportType: firstReport.type.replace('_',' '),
-    // falta lugar
-    // falta area,
-    // falta nombre del que report,
-    // falta foto
-  }]
 }
 
 
@@ -160,7 +135,6 @@ export const ReportContent = () => {
 
   const handleOpenModalReportResolved = (reportId, title, reportStatus) => {
     setStatusUpdated(false);
-    console.log('setStatusUpdated:' + setStatusUpdated)
     setSelectedReportId(reportId);
     setSelectedReportStatus(reportStatus);
     setModalReportResolvedTitle(title);
@@ -168,12 +142,7 @@ export const ReportContent = () => {
   };
   const handleCloseModalReportResolved = () => setOpenModalReportResolved(false);
 
-  //const handleStatusUpdated = () => setStatusUpdated(true);
-  const handleStatusUpdated = () => {
-    console.log('in handleStatusUpdated')
-    setStatusUpdated(true);
-    console.log('finish handleStatusUpdated')
-  }
+  const handleStatusUpdated = () => setStatusUpdated(true);
 
 
   useEffect(() => {
