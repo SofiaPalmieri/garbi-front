@@ -93,9 +93,6 @@ const rows = [
 ];
 
 const mapper = (reports) => {
-
-
-
   return reports.map(
     r => {
       const {
@@ -123,6 +120,7 @@ const mapper = (reports) => {
 export const ReportContent = () => {
   const [openModalReportResolved, setOpenModalReportResolved] = useState(false);
   const [selectedReportId, setSelectedReportId] = useState(null);
+  const [selectedReportStatus, setSelectedReportStatus] = useState(null);
   const [reports, setReports] = useState([])
   const [modalReportResolvedTitle, setModalReportResolvedTitle] = useState('');
   const [lastKey, setLastKey] = useState(null)
@@ -133,8 +131,9 @@ export const ReportContent = () => {
     }
   } = useReports();
 
-  const handleOpenModalReportResolved = (reportId, title) => {
+  const handleOpenModalReportResolved = (reportId, title, reportStatus) => {
     setSelectedReportId(reportId);
+    setSelectedReportStatus(reportStatus);
     setModalReportResolvedTitle(title);
     setOpenModalReportResolved(true);
   };
@@ -170,6 +169,7 @@ export const ReportContent = () => {
         form={<ResolveReportForm
           handleClose={handleCloseModalReportResolved}
           reportId={selectedReportId}
+          reportStatus={selectedReportStatus}
         />}
       />
       <Paper

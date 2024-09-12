@@ -16,6 +16,12 @@ import {
 import {
   InputForm 
 } from '../../components/InputForm';
+import {
+  reportStates 
+} from '../../enums/reportStates';
+import {
+  useReports 
+} from '../../api/hooks/useReports/useReports';
 
 
 const changeReportStatusSchema = object({
@@ -23,7 +29,7 @@ const changeReportStatusSchema = object({
 }).required();
 
 export const ResolveReportForm = ({
-  handleClose, reportId
+  handleClose, reportId, reportStatus
 }) => {
   const {
     control,
@@ -40,8 +46,33 @@ export const ResolveReportForm = ({
     resolver: yupResolver(changeReportStatusSchema),
   });
 
+  const {
+    closeReport: {
+      closeReport,
+      isCloseReportLoading 
+    },
+  } = useReports(); 
+
+  const user = JSON.parse(localStorage.getItem('user'));
+  const userPersonalEmail = user.personalEmail;
+
   const onSubmit = async (data) => {
-    //TODO
+    try {
+      const rejected = reportStatus === reportStates.RECHAZADO.text ? true : false
+
+      const closeReportBody = {
+        email: userPersonalEmail,
+        rejected: rejected,
+        observation: data.message
+      }
+      
+      const response = await closeReport(reportId, closeReportBody);
+
+      //TODO later: validar que la respuesta sea la esperada, y sino tirar error.
+      handleClose();
+    } catch (error) {
+      console.error('Error submitting form', error);
+    }
   };
 
   return (

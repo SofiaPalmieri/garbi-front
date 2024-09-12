@@ -14,7 +14,7 @@ const style = {
 };
 
 export const ModalReportResolved = ({
-  title, open, handleClose, form, buttonSubmitMessage = 'CREAR'
+  title, open, handleClose, form
 }) => {
   return (
     <Modal

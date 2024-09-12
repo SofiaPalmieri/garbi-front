@@ -13,6 +13,9 @@ import {
 import {
   reportStates 
 } from '../../enums/reportStates';
+import {
+  useReports 
+} from '../../api/hooks/useReports/useReports';
 
 const SmallKeyboardArrowDownIcon = (color) =>
   styled(KeyboardArrowDownIcon)(({
@@ -27,14 +30,38 @@ export const ReportStatusSelect = ({
 }) => {
   const [selectedValue, setSelectedValue] = useState(reportState);
 
-  const handleChange = (event) => {
+  const {
+    reviewReport: {
+      reviewReport,
+      isReviewReportLoading 
+    },
+  } = useReports(); 
+
+  const user = JSON.parse(localStorage.getItem('user'));
+  const userPersonalEmail = user.personalEmail;
+  const userId = user.id;
+
+  const handleChange = async (event) => {
     const newValue = event.target.value;
     setSelectedValue(newValue);
 
     if (newValue === reportStates.RECHAZADO.text) {
-      handleOpenModalReportResolved(reportId, 'Cambiar a Rechazado');
+      handleOpenModalReportResolved(reportId, 'Cambiar a Rechazado', reportStates.RECHAZADO.text);
     } else if (newValue === reportStates.RESUELTO.text) {
-      handleOpenModalReportResolved(reportId, 'Cambiar a Resuelto');
+      handleOpenModalReportResolved(reportId, 'Cambiar a Resuelto', reportStates.RESUELTO.text);
+    } else if (newValue === reportStates['EN REVISIÓN'].text) {
+      try {
+        const reviewReportBody = {
+          email: userPersonalEmail,
+          managerId: userId,
+        }
+
+        const response = await reviewReport(reportId, reviewReportBody);
+
+        //TODO later: validar que la respuesta sea la esperada, y sino tirar error.
+      } catch (error) {
+        console.error('Error submitting form', error);
+      }
     }
   };
 
@@ -82,9 +109,9 @@ export const ReportStatusSelect = ({
           NUEVO
         </MenuItem>
         <MenuItem
-          value='EN REVISION'
+          value='EN REVISIÓN'
           sx={{
-            color: selectedValue === reportStates['EN REVISION'].text ? reportStates['EN REVISION'].colorText : 'inherit',
+            color: selectedValue === reportStates['EN REVISIÓN'].text ? reportStates['EN REVISIÓN'].colorText : 'inherit',
           }}
         >
           EN REVISIÓN

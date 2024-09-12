@@ -5,7 +5,7 @@ export const reportStates = {
     text: 'NUEVO',
   },
   
-  'EN REVISION': {
+  'EN REVISIÓN': {
     color: '#2196F380',
     colorText: '#2196F3',
     text: 'EN REVISIÓN',
