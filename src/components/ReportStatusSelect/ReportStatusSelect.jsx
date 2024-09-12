@@ -1,5 +1,6 @@
 import {
-  useState 
+  useEffect,
+  useState
 } from 'react';
 import {
   FormControl,
@@ -26,9 +27,24 @@ const SmallKeyboardArrowDownIcon = (color) =>
   }));
 
 export const ReportStatusSelect = ({
-  reportId, reportState, handleOpenModalReportResolved 
+  reportId, reportState, handleOpenModalReportResolved, statusUpdated
 }) => {
+  useEffect(() => {
+    // This effect will run whenever `statusUpdated` changes
+    if (statusUpdated) {
+      // Trigger necessary actions or re-render logic here
+      // For example, you might want to reset or update some local state
+      console.log('Status has been updated, re-rendering or handling changes...');
+      console.log('statusUpdated: ' + statusUpdated)
+      console.log('reportState: ' + reportState)
+      console.log('selectedValueTest: ' + selectedValueTest)
+      setSelectedValue(selectedValueTest);
+    }
+  }, [statusUpdated]);
+  console.log('out useEffect')
+
   const [selectedValue, setSelectedValue] = useState(reportState);
+  const [selectedValueTest, setSelectedValueTest] = useState(reportState);
 
   const {
     reviewReport: {
@@ -43,13 +59,29 @@ export const ReportStatusSelect = ({
 
   const handleChange = async (event) => {
     const newValue = event.target.value;
-    setSelectedValue(newValue);
-
+    setSelectedValueTest(newValue);
+    //setSelectedValue(newValue);
+    console.log('out useEffect - in hadleChange')
     if (newValue === reportStates.RECHAZADO.text) {
+      console.log('out useEffect in RECHAZADO')
       handleOpenModalReportResolved(reportId, 'Cambiar a Rechazado', reportStates.RECHAZADO.text);
+      /*if (statusUpdated) {
+        console.log("inside statusupdated if")
+        setSelectedValue(newValue);
+      } else {
+        console.log("NOT in status rechazado")
+      }*/
     } else if (newValue === reportStates.RESUELTO.text) {
+      console.log('out useEffect in RESUELTO')
       handleOpenModalReportResolved(reportId, 'Cambiar a Resuelto', reportStates.RESUELTO.text);
+      /*if (statusUpdated) {
+        console.log("inside statusupdated if")
+        setSelectedValue(newValue);
+      } else {
+        console.log("NOT in status resuelto")
+      }*/
     } else if (newValue === reportStates['EN REVISIÓN'].text) {
+      setSelectedValue(newValue);
       try {
         const reviewReportBody = {
           email: userPersonalEmail,

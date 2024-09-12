@@ -92,7 +92,7 @@ const rows = [
   },
 ];
 
-const mapper = (reports) => {
+/*const mapper = (reports) => {
   return reports.map(
     r => {
       const {
@@ -115,15 +115,42 @@ const mapper = (reports) => {
       }
     }
   )
+}*/
+const mapper = (reports) => {
+  if (reports.length === 0) return []; // Return empty array if no reports
+  
+  const [firstReport] = reports; // Destructure to get the first report
+  
+  const {
+    date, time 
+  } = TimestampUtil.convertToDateAndHour(firstReport.timestamp)
+  const state = firstReport.status[firstReport.status.length - 1]
+
+  return [{
+    id: firstReport.id,
+    date: date,
+    time: time,
+    state: state.status,
+    // recolector o ciudadano,
+    description: firstReport.description,
+    reportType: firstReport.type.replace('_',' '),
+    // falta lugar
+    // falta area,
+    // falta nombre del que report,
+    // falta foto
+  }]
 }
+
 
 export const ReportContent = () => {
   const [openModalReportResolved, setOpenModalReportResolved] = useState(false);
   const [selectedReportId, setSelectedReportId] = useState(null);
   const [selectedReportStatus, setSelectedReportStatus] = useState(null);
+  const [statusUpdated, setStatusUpdated] = useState(false);
   const [reports, setReports] = useState([])
   const [modalReportResolvedTitle, setModalReportResolvedTitle] = useState('');
   const [lastKey, setLastKey] = useState(null)
+
   const {
     fetchReports: {
       fetchReports,
@@ -132,12 +159,21 @@ export const ReportContent = () => {
   } = useReports();
 
   const handleOpenModalReportResolved = (reportId, title, reportStatus) => {
+    setStatusUpdated(false);
+    console.log('setStatusUpdated:' + setStatusUpdated)
     setSelectedReportId(reportId);
     setSelectedReportStatus(reportStatus);
     setModalReportResolvedTitle(title);
     setOpenModalReportResolved(true);
   };
   const handleCloseModalReportResolved = () => setOpenModalReportResolved(false);
+
+  //const handleStatusUpdated = () => setStatusUpdated(true);
+  const handleStatusUpdated = () => {
+    console.log('in handleStatusUpdated')
+    setStatusUpdated(true);
+    console.log('finish handleStatusUpdated')
+  }
 
 
   useEffect(() => {
@@ -170,6 +206,7 @@ export const ReportContent = () => {
           handleClose={handleCloseModalReportResolved}
           reportId={selectedReportId}
           reportStatus={selectedReportStatus}
+          statusUpdated={handleStatusUpdated}
         />}
       />
       <Paper
@@ -306,6 +343,7 @@ export const ReportContent = () => {
                       reportId={row.id}
                       reportState={row.state}
                       handleOpenModalReportResolved={handleOpenModalReportResolved}
+                      statusUpdated={statusUpdated}
                     />
                   </TableCell>
                   <TableCell

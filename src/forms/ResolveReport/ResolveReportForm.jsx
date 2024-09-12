@@ -29,7 +29,7 @@ const changeReportStatusSchema = object({
 }).required();
 
 export const ResolveReportForm = ({
-  handleClose, reportId, reportStatus
+  handleClose, reportId, reportStatus, statusUpdated
 }) => {
   const {
     control,
@@ -69,6 +69,7 @@ export const ResolveReportForm = ({
       const response = await closeReport(reportId, closeReportBody);
 
       //TODO later: validar que la respuesta sea la esperada, y sino tirar error.
+      statusUpdated();
       handleClose();
     } catch (error) {
       console.error('Error submitting form', error);
