@@ -33,8 +33,8 @@ import {
   TimestampUtil 
 } from '../../utils/timestampUtil';
 import {
-  DateRangePicker
-} from '../../components/DateRangePicker';
+  SearcherAndDatePicker
+} from '../../components/SearcherAndDatePicker';
 
 
 const rows = [
@@ -177,7 +177,10 @@ export const ReportContent = () => {
           width: '100%',
         }}
       >
-        <DateRangePicker/>
+        <SearcherAndDatePicker
+          placeholderInput={'Buscar por ID, Título o Contenedor'}
+          inputWidth={'20rem'}
+        />
         <TableContainer
           component={Paper}
         >
