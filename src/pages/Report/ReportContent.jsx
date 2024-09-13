@@ -180,6 +180,7 @@ export const ReportContent = () => {
         <SearcherAndDatePicker
           placeholderInput={'Buscar por ID, Título o Contenedor'}
           inputWidth={'20rem'}
+          datePicker={false}
         />
         <TableContainer
           component={Paper}

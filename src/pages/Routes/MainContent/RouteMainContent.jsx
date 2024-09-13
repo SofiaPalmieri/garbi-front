@@ -19,6 +19,9 @@ import {
 import {
   AvatarWithTooltip 
 } from '../../../components/AvatarWithTooltip';
+import {
+  SearcherAndDatePicker
+} from '../../../components/SearcherAndDatePicker';
 import profilePicture from '../../../assets/profile_picture.jpg';
 import useMediaQuery from '@mui/material/useMediaQuery';
 
@@ -106,6 +109,10 @@ export default function RouteMainContent() {
           width: '100%',
         }}
       >
+        <SearcherAndDatePicker
+          placeholderInput={'Buscar por Recolector o Supervisor'}
+          inputWidth={'20rem'}
+        />
         <TableContainer
           component={Paper}
         >

@@ -5,11 +5,14 @@ import {
   SearchBox
 } from '../../components/SearchBox';
 import {
+  DatePickerCustom
+} from '../../components/DatePickerCustom';
+import {
   DateRangePicker
 } from '../../components/DateRangePicker';
 
 export const SearcherAndDatePicker = ({
-  placeholderInput, inputWidth 
+  placeholderInput, inputWidth, datePicker=true
 }) => {
   return (
     <Box
@@ -29,7 +32,7 @@ export const SearcherAndDatePicker = ({
           flexShrink: 0 
         }}
       >
-        <DateRangePicker />
+        {datePicker ? <DatePickerCustom /> : <DateRangePicker />}
       </Box>
     </Box>
   );
