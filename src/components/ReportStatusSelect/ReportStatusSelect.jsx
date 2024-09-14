@@ -31,12 +31,12 @@ export const ReportStatusSelect = ({
 }) => {
   useEffect(() => {
     if (statusUpdated) {
-      setSelectedValue(selectedValueTest);
+      setSelectedValue(newSelectedValue);
     }
   }, [statusUpdated]);
 
   const [selectedValue, setSelectedValue] = useState(reportState);
-  const [selectedValueTest, setSelectedValueTest] = useState(reportState);
+  const [newSelectedValue, setNewSelectedValue] = useState(reportState);
 
   const {
     reviewReport: {
@@ -47,7 +47,7 @@ export const ReportStatusSelect = ({
 
   const handleChange = async (event) => {
     const newValue = event.target.value;
-    setSelectedValueTest(newValue);
+    setNewSelectedValue(newValue);
     
     if (newValue === reportStates.RECHAZADO.text) {
       handleOpenModalReportResolved(reportId, 'Cambiar a Rechazado', reportStates.RECHAZADO.text);

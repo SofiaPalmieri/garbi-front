@@ -58,7 +58,7 @@ export const ResolveReportForm = ({
 
   const onSubmit = async (data) => {
     try {
-      const rejected = reportStatus === reportStates.RECHAZADO.text ? true : false
+      const rejected = reportStatus === reportStates.RECHAZADO.text
 
       const closeReportBody = {
         email: userPersonalEmail,
