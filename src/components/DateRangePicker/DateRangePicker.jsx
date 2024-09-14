@@ -34,7 +34,6 @@ export const DateRangePicker = () => {
         variant='outlined'
         ref={ref}
         sx={{
-          mt: 1,
           width: '248px' 
         }}
         size='small'

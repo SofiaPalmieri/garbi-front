@@ -9,19 +9,19 @@ import {
 } from '../../config';
 
 export const FilterSideComponent = ({
-  title, component, prefix, subtitle, titleLink, renderFilters
+  title, component, prefix, subtitle, titleLink, renderFilters, height = '100%'
 }) => {
   return (
     <Box
       sx={{
         width: '100%',
         display: 'flex',
-        height: '100%',
+        height: height,
       }}
     >
       <Box
         sx={{
-          width: '256px',
+          width: '16rem',
           boxShadow: '0px 3px 1px -2px #00000033',
           backgroundColor: '#F5F5F5',
           padding: '16px',
@@ -29,16 +29,16 @@ export const FilterSideComponent = ({
           flexDirection: 'column',
           justifyContent: 'space-between',
           height: `calc(100vh - ${HEIGHT_HEADER})`,
-          position: 'sticky'
+          position: 'fixed'
         }}
       >
         <Box
           sx = {{
-            flex: 1
+            flex: 1,
           }}
         >
           <Typography
-            height='48px'
+            height='3rem'
             fontFamily='Roboto'
             fontSize='20px'
             fontWeight='300'
@@ -65,7 +65,7 @@ export const FilterSideComponent = ({
       <Box
         sx={{
           flexGrow: 1,
-          overflow: 'hidden'
+          ml: '16rem'
         }}
       >
         <Box
