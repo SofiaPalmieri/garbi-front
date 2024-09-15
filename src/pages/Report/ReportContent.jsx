@@ -1,6 +1,8 @@
 import {
   Box,
+  Button,
   Chip,
+  CircularProgress,
   Paper,
   Table,
   TableBody,
@@ -14,7 +16,6 @@ import {
 } from '../../modales/ModalReportResolved/ModalReportResolved';
 import {
   useEffect,
-  useRef,
   useState
 } from 'react';
 import {
@@ -37,17 +38,16 @@ import {
   DateRangePicker
 } from '../../components/DateRangePicker';
 import {
-  Searcher 
+  Searcher
 } from '../../components/Seacher/Searcher';
 import {
-  reportsMocks 
+  reportsMocks
 } from './reportsMock';
 import {
-  HEIGHT_FILTER_SIDE_COMPONENT 
+  HEIGHT_FILTER_SIDE_COMPONENT
 } from '../../config';
-import {
-  InfiniteScroll 
-} from '../../components/InfiniteScroll/InfiniteScroll';
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
+import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 
 
 const rows = [
@@ -138,9 +138,11 @@ export const ReportContent = () => {
   const [selectedReportId, setSelectedReportId] = useState(null);
   const [reports, setReports] = useState([])
   const [modalReportResolvedTitle, setModalReportResolvedTitle] = useState('');
-  const [lastKey, setLastKey] = useState(null)
-  const scrollContainerRef = useRef(null);
   const [isLoadingMock, setIsLoadingMock] = useState(false)
+
+  const [actualKey, setActualKey] = useState(null)
+  const [nextKey, setNextKey] = useState(null)
+  const [searchStack, setSearchStack] = useState([])
 
   const {
     fetchReports: {
@@ -186,13 +188,16 @@ export const ReportContent = () => {
     }
   };
 
-  const asyncFetchReports = async () => {
+  const asyncFetchReports = async (key = null) => {
+    
     try {
-      // const reportsReponse = await fetchReports();
-      const reportsReponse = fetchReportsMocks();
+      console.log('🚀 ~ asyncFetchReports ~ key:', key)
+      const reportsReponse = await fetchReports(key);
+
+      setActualKey(reportsReponse.lastKey)
+      setNextKey(reportsReponse.nextKey)
 
       const reportsMapped = mapper(reportsReponse.result)
-      console.log('🚀 ~ asyncFetchReports ~ reportsMapped:', reportsMapped)
 
       setReports(reportsMapped)
     } catch (error) {
@@ -200,8 +205,27 @@ export const ReportContent = () => {
     }
   };
 
+
+  const prevFetch = () => {
+    const newStack = [...searchStack]
+   
+    const prevKey = newStack.pop()
+
+    setSearchStack(newStack)
+    asyncFetchReports(prevKey)
+  }
+
+  const nextFetch = async () => {
+    const newStack = [...searchStack]
+    newStack.push(actualKey)
+
+    setSearchStack(newStack)
+
+    asyncFetchReports(nextKey)
+  }
+
   useEffect(() => {
-    asyncFetchReportsMock();
+    asyncFetchReports(actualKey);
   }, []);
 
   return (
@@ -247,39 +271,101 @@ export const ReportContent = () => {
             <Searcher
               placeholderInput={'Buscar por ID, Título o Contenedor'}
             />
-            <DateRangePicker />
+            <Box
+              sx={{
+                display: 'flex'
+              }}
+            >
+              <Box
+                sx = {{
+                  mr: 2,
+                  '& .MuiButtonBase-root': {
+                    minWidth: 'unset'
+                  }
+                }}
+              >
+                <Button
+                  disabled = {searchStack.length == 0}
+                  onClick={prevFetch}
+                >
+                  <ChevronLeftIcon />
+                </Button>
+                <Button
+                  disabled = {nextKey  == null}
+                  onClick={nextFetch}
+                >
+                  <ChevronRightIcon />
+                </Button>
+              </Box>
+              <DateRangePicker />
+            </Box>
           </Box>
           <Box
-            ref={scrollContainerRef}
             sx={{
               height: 'calc(100% - 4.5rem)',
               overflow: 'auto'
             }}
           >
-            <InfiniteScroll
-              containerRef={scrollContainerRef}
-              onReload={(asyncFetchReportsMock)}
-              hasMore={true}
-              isLoading={isLoadingMock}
-            >
-              <Table
-                sx={{
-                  minWidth: 650,
-                }}
-                aria-label='simple table'
-              >
-                <TableBody >
-                  {reports.map((row) => (
-                    <TableRow
-                      key={row.id}
-                    >
-                      <TableCell
-                        sx={{
-                          width: '1%',
-                          padding: '16px'
-                        }}
+            {
+              isLoadingFetchReports ? 
+                <Box
+                  sx ={{
+                    width: 1,
+                    display: 'flex',
+                    p: 2,
+                    justifyContent: 'center'
+                  }}
+                >
+                  <CircularProgress />
+                </Box> :
+                <Table
+                  sx={{
+                    minWidth: 650,
+                  }}
+                  aria-label='simple table'
+                >
+                  <TableBody>
+                    {reports.map((row) => (
+                      <TableRow
+                        key={row.id}
                       >
-                        <Box>
+                        <TableCell
+                          sx={{
+                            width: '1%',
+                            padding: '16px'
+                          }}
+                        >
+                          <Box>
+                            <Typography
+                              sx={{
+                                fontSize: '14px',
+                                fontWeight: 400,
+                                lineHeight: '21px',
+                                textAlign: 'left',
+                                color: '#00000099',
+                              }}
+                            >
+                              {row.date}
+                            </Typography>
+                            <Typography
+                              sx={{
+                                fontSize: '14px',
+                                fontWeight: 400,
+                                lineHeight: '21px',
+                                textAlign: 'left',
+                                color: '#00000099',
+                              }}
+                            >
+                              {row.time}
+                            </Typography>
+                          </Box>
+                        </TableCell>
+                        <TableCell
+                          align='left'
+                          sx={{
+                            minWidth: 240,
+                          }}
+                        >
                           <Typography
                             sx={{
                               fontSize: '14px',
@@ -289,123 +375,92 @@ export const ReportContent = () => {
                               color: '#00000099',
                             }}
                           >
-                            {row.date}
+                            {row.typeOfUser}
+                          </Typography>
+                          <Typography
+                            sx={{
+                              fontSize: '16px',
+                              fontWeight: 400,
+                              lineHeight: '24px',
+                              textAlign: 'left',
+                              color: '#000000DE',
+                              overflow: 'hidden',
+                              display: '-webkit-box',
+                              WebkitBoxOrient: 'vertical',
+                              WebkitLineClamp: 2,
+                            }}
+                          >
+                            {row.description}
+                          </Typography>
+                        </TableCell>
+                        <TableCell
+                          align='right'
+                          sx={{
+                            width: '1%',
+                          }}
+                        >
+                          <Chip
+                            size='small'
+                            label={row.reportType}
+                            variant='outlined'
+                          />
+                        </TableCell>
+                        <TableCell
+                          align='right'
+                          sx={{
+                            width: 176
+                          }}
+                        >
+                          <Typography
+                            sx={{
+                              fontSize: '16px',
+                              fontWeight: 400,
+                              lineHeight: '24px',
+                              color: '#00000099',
+                            }}
+                          >
+                            {row.place}
                           </Typography>
                           <Typography
                             sx={{
                               fontSize: '14px',
                               fontWeight: 400,
                               lineHeight: '21px',
-                              textAlign: 'left',
                               color: '#00000099',
                             }}
                           >
-                            {row.time}
+                            {row.area}
                           </Typography>
-                        </Box>
-                      </TableCell>
-                      <TableCell
-                        align='left'
-                        sx={{
-                          minWidth: 240,
-                        }}
-                      >
-                        <Typography
+                        </TableCell>
+                        <TableCell
+                          align='center'
                           sx={{
-                            fontSize: '14px',
-                            fontWeight: 400,
-                            lineHeight: '21px',
-                            textAlign: 'left',
-                            color: '#00000099',
+                            width: 192,
+                            paddingX: '24px'
                           }}
                         >
-                          {row.typeOfUser}
-                        </Typography>
-                        <Typography
+                          <ReportStatusSelect
+                            reportId={row.id}
+                            reportState={row.state}
+                            handleOpenModalReportResolved={handleOpenModalReportResolved}
+                          />
+                        </TableCell>
+                        <TableCell
+                          align='center'
                           sx={{
-                            fontSize: '16px',
-                            fontWeight: 400,
-                            lineHeight: '24px',
-                            textAlign: 'left',
-                            color: '#000000DE',
-                            overflow: 'hidden',
-                            display: '-webkit-box',
-                            WebkitBoxOrient: 'vertical',
-                            WebkitLineClamp: 2,
+                            width: 88,
+                            paddingLeft: '16px'
                           }}
                         >
-                          {row.description}
-                        </Typography>
-                      </TableCell>
-                      <TableCell
-                        align='right'
-                        sx={{
-                          width: '1%',
-                        }}
-                      >
-                        <Chip
-                          size='small'
-                          label={row.reportType}
-                          variant='outlined'
-                        />
-                      </TableCell>
-                      <TableCell
-                        align='right'
-                        sx={{
-                          width: 176
-                        }}
-                      >
-                        <Typography
-                          sx={{
-                            fontSize: '16px',
-                            fontWeight: 400,
-                            lineHeight: '24px',
-                            color: '#00000099',
-                          }}
-                        >
-                          {row.place}
-                        </Typography>
-                        <Typography
-                          sx={{
-                            fontSize: '14px',
-                            fontWeight: 400,
-                            lineHeight: '21px',
-                            color: '#00000099',
-                          }}
-                        >
-                          {row.area}
-                        </Typography>
-                      </TableCell>
-                      <TableCell
-                        align='center'
-                        sx={{
-                          width: 192,
-                          paddingX: '24px'
-                        }}
-                      >
-                        <ReportStatusSelect
-                          reportId={row.id}
-                          reportState={row.state}
-                          handleOpenModalReportResolved={handleOpenModalReportResolved}
-                        />
-                      </TableCell>
-                      <TableCell
-                        align='center'
-                        sx={{
-                          width: 88,
-                          paddingLeft: '16px'
-                        }}
-                      >
-                        <AvatarWithTooltip
-                          name={row.creatorName}
-                          profilePicture={row.creatorPhoto}
-                        />
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </InfiniteScroll>
+                          <AvatarWithTooltip
+                            name={row.creatorName}
+                            profilePicture={row.creatorPhoto}
+                          />
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>}
           </Box>
         </TableContainer>
       </Paper>

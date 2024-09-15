@@ -1,23 +1,21 @@
 
 import {
-  Box, CircularProgress 
+  Box, CircularProgress
 } from '@mui/material'
 import {
-  useEffect 
+  useEffect
 } from 'react'
 
 export const InfiniteScroll = ({
-  children, onReload, isLoading, containerRef, hasMore 
+  children, onReload, isLoading, containerRef, hasMore
 }) => {
 
   const handleScroll = () => {
     const container = containerRef.current;
-    if (container && container.scrollTop + container.clientHeight >= container.scrollHeight - 50) {
-
+    if (container && container.scrollTop + container.clientHeight >= container.scrollHeight - 100) {
       if (!isLoading) {
         onReload();
       }
-
     }
   };
 
@@ -36,7 +34,7 @@ export const InfiniteScroll = ({
 
   return (
     <Box
-      sx = {{
+      sx={{
         height: 1
       }}
     >
@@ -47,10 +45,10 @@ export const InfiniteScroll = ({
       >
         {children}
       </Box>
-
       <Box
         sx={{
           width: 1,
+          height: '64px',
           display: 'flex',
           justifyContent: 'center',
           padding: 2,
