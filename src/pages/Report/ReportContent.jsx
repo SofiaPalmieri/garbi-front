@@ -10,10 +10,6 @@ import {
 import {
   useReports
 } from '../../api/hooks/useReports/useReports';
-
-
-
-
 import {
   SearcherDateRangerPickerPaginated 
 } from '../../components/SearcherDateRangePickerPaginated';
@@ -35,6 +31,7 @@ import {
 import {
   ReportTable 
 } from '../../tables/ReportTable/ReportTable';
+
 
 
 const mapper = (reports) => {
