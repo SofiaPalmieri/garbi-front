@@ -30,9 +30,8 @@ import {
 import {
   mixed, object, string
 } from 'yup';
-import {
-  useNavigate
-} from 'react-router-dom';
+
+
 import {
   useEffect, useState
 } from 'react';
@@ -96,19 +95,14 @@ const HtmlTooltip = styled(({
   },
 }));
 
-export const CreateReportForm = () => {
+export const CreateReportForm = ({
+  onSuccess
+}) => {
   const apiKeyGoogleMaps = import.meta.env.VITE_REACT_APP_API_KEY_GOOGLE_MAPS;
   //const addressRegex = /^[A-ZÁÉÍÓÚÑ][a-záéíóúñA-ZÁÉÍÓÚÑ\s]*\s\d{1,4}$/;
   const [selectedImage, setSelectedImage] = useState(null);
   const [selectedFile, setSelectedFile] = useState(null);
 
-  const {
-    createReport: {
-      createReport, isCreateReportLoading
-    }
-  } = useReports();
-
-  const navigate = useNavigate()
 
   const position = {
     lat: -34.5893,
@@ -118,6 +112,13 @@ export const CreateReportForm = () => {
   const [containers, setContainers] = useState([]);
   const [containerSelected, setContainerSeleted] = useState(null);
   const [containerError, setContainerError] = useState(false);
+
+  const {
+    createReport: {
+      createReport,
+      isCreateReportLoading 
+    },
+  } = useReports();
 
   const {
     getContainers: {
@@ -167,17 +168,22 @@ export const CreateReportForm = () => {
     }
   } = useForm({
     defaultValues: {
+      userId:'',
+      containerId: '',
       title: 'sasA',
       description: 'dssadsd',
-      type: 'BASURA_EN_LA_CALLE',
       address: '',
-      neighborhood: '',
-      containerId: '',
+      phone: '465456465',
       email: 'sdada@saddad.com',
-      phone: '465456465'
+      type: 'BASURA_EN_LA_CALLE',
+      image:''
     },
     resolver: yupResolver(createReportSchema),
   });
+
+  const user = JSON.parse(localStorage.getItem('user'));
+  const userId = user.id;
+
 
   const onSubmit = async (data) => {
     if (!containerSelected) {
@@ -185,41 +191,33 @@ export const CreateReportForm = () => {
       return;
     }
     setContainerError(false);
-
+    
     const formData = new FormData();
 
-    data.address = [
-      {
-        street: data.address.split(' ')[0],
-        number: data.address.split(' ')[1],
-        neighborhood: data.neighborhood
-      }
-    ];
+    const user = JSON.parse(localStorage.getItem('user'));
+    const imagePath = selectedFile ? `uploads/${selectedFile.name}` : ' ';
+
 
     const report = {
+      userId: userId,
       containerId: data.containerId,
       title: data.title,
       description: data.description,
-      address: data.address,
+      address: data.address + ', ' + data.neighborhood,
       phone: data.phone,
       email: data.email,
-      type: data.type
+      type: data.type,
+      image: imagePath
     };
 
+
     formData.append('report', JSON.stringify(report));
-    formData.append('image', selectedFile);
-
     try {
-      const response = await createReport(formData);  // Envía el FormData al backend
-
-      if (response.success) {
-        navigate('/reportes');
-      }
+      await createReport(report);
     } catch (error) {
       console.error('Error creating report:', error);
     }
-  };
-
+  }
 
   return (
     <form

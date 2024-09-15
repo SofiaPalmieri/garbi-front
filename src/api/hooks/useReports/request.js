@@ -1,5 +1,5 @@
 import {
-  useFetch
+  useFetch 
 } from '../../../hooks/useFetch';
 import {
   baseIntegrationUri 
@@ -9,26 +9,32 @@ import {
 } from '../../config/HTTPMethods';
 import QueryBuilder from '../../queryBuilder/QueryBuilder';
 
-const baseReportUri = baseIntegrationUri + '/report'
+const baseReportsUri = baseIntegrationUri + '/report'
 
 export const useCreateReport = () => {
   const {
     commonFetch, isLoading
   } = useFetch({
-    url: baseReportUri,
+    baseUri: baseReportsUri,
   });
 
-  const createReport = (report) => {
+  const createReport = ({
+    userId,containerId,title,description,address,phone,email,type,image 
+  }) => {
     return commonFetch({
-      uri: '/report',
-      method: 'POST',
-      body: report,
-      headers: {
-        'Content-Type': 'multipart/form-data'
-      }
-    },
-    
-    );
+      method: HTTPMethods.POST,
+      body: {
+        userId,
+        containerId,
+        title,
+        description,
+        address,
+        phone,
+        email,
+        type,
+        image 
+      },
+    });
   };
 
   return {
@@ -39,9 +45,9 @@ export const useCreateReport = () => {
 
 export const useFetchReports = () => {
   const {
-    commonFetch, isLoading
+    commonFetch, isLoading 
   } = useFetch({
-    baseUri: baseReportUri,
+    baseUri: baseReportsUri,
   });
 
   const fetchReports = (lastKey = null) => {

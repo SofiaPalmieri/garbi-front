@@ -1,10 +1,10 @@
 import {
-  useCreateReport, 
+  useCreateReport ,
   useFetchReports
 } from './request';
 
 export const useReports = () => {
-   
+
   const {
     createReport, 
     isLoading: isCreateReportLoading 
@@ -14,7 +14,7 @@ export const useReports = () => {
     fetchReports,
     isLoading: isLoadingFetchReports
   } = useFetchReports();
-  
+
   return {
     createReport: {
       createReport,
@@ -26,4 +26,3 @@ export const useReports = () => {
     }
   };
 };
-  
