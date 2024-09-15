@@ -12,7 +12,7 @@ import {
 } from '../DateRangePicker';
 
 export const SearcherDateRangerPickerPaginated = ({
-  prevFetch, nextFetch, disabledPrevBtn, disabledNextBtn
+  prevFetch, nextFetch, disabledPrevBtn, disabledNextBtn, placeholderInput = 'Buscar por ID, Título'
 }) => {
   return (
     <Box
@@ -26,7 +26,7 @@ export const SearcherDateRangerPickerPaginated = ({
       }}
     >
       <Searcher
-        placeholderInput={'Buscar por ID, Título o Contenedor'}
+        placeholderInput={placeholderInput}
       />
       <Box
         sx={{

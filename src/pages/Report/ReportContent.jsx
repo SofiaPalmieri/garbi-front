@@ -5,6 +5,7 @@ import {
   TableContainer
 } from '@mui/material';
 import {
+  useEffect,
   useState
 } from 'react';
 import {
@@ -60,10 +61,15 @@ const mapper = (reports) => {
   )
 }
 
+// DEPRECADO
 export const ReportContent = () => {
   const [openModalReportResolved, setOpenModalReportResolved] = useState(false);
   const [selectedReportId, setSelectedReportId] = useState(null);
   const [modalReportResolvedTitle, setModalReportResolvedTitle] = useState('');
+
+  useEffect(() => {
+    console.warn('ReportContent is deprecated and will be removed in future versions.');
+  }, []);
 
   const {
     fetchReports: {

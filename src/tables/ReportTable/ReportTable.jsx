@@ -16,7 +16,7 @@ import {
 
 
 export const ReportTable = ({
-  reports, handleOpenModalReportResolved 
+  data: reports
 }) => {
   return (
     <Table
@@ -143,7 +143,6 @@ export const ReportTable = ({
               <ReportStatusSelect
                 reportId={row.id}
                 reportState={row.state}
-                handleOpenModalReportResolved={handleOpenModalReportResolved}
               />
             </TableCell>
             <TableCell
