@@ -50,13 +50,13 @@ export const ReportStatusSelect = ({
             right: '20px',
           },
           '& fieldset': {
-            borderColor: reportStates[selectedValue].color,
+            borderColor: reportStates[selectedValue]?.color,
           },
           '&:hover fieldset': {
-            borderColor: reportStates[selectedValue].color,
+            borderColor: reportStates[selectedValue]?.color,
           },
           '&.Mui-focused fieldset': {
-            borderColor: reportStates[selectedValue].color,
+            borderColor: reportStates[selectedValue]?.color,
           },
         },
       }}
@@ -64,10 +64,10 @@ export const ReportStatusSelect = ({
       <Select
         value={selectedValue}
         onChange={handleChange}
-        IconComponent={SmallKeyboardArrowDownIcon(reportStates[selectedValue].colorText)}
+        IconComponent={SmallKeyboardArrowDownIcon(reportStates[selectedValue]?.colorText)}
         sx={{
           height: '30px',
-          color: reportStates[selectedValue].colorText,
+          color: reportStates[selectedValue]?.colorText,
           fontSize: '13px',
           fontWeight: 500,
           lineHeight: '22px',
@@ -76,7 +76,7 @@ export const ReportStatusSelect = ({
         <MenuItem 
           value='NUEVO'
           sx={{
-            color: selectedValue === reportStates.NUEVO.text ? reportStates['NUEVO'].colorText : 'inherit',
+            color: selectedValue === reportStates.NUEVO.text ? reportStates['NUEVO']?.colorText : 'inherit',
           }}
         >
           NUEVO
@@ -84,7 +84,7 @@ export const ReportStatusSelect = ({
         <MenuItem
           value='EN REVISION'
           sx={{
-            color: selectedValue === reportStates['EN REVISION'].text ? reportStates['EN REVISION'].colorText : 'inherit',
+            color: selectedValue === reportStates['EN REVISION'].text ? reportStates['EN REVISION']?.colorText : 'inherit',
           }}
         >
           EN REVISIÓN
@@ -92,7 +92,7 @@ export const ReportStatusSelect = ({
         <MenuItem
           value='RECHAZADO'
           sx={{
-            color: selectedValue === reportStates.RECHAZADO.text ? reportStates['RECHAZADO'].colorText : 'inherit',
+            color: selectedValue === reportStates.RECHAZADO.text ? reportStates['RECHAZADO']?.colorText : 'inherit',
           }}
         >
           RECHAZADO
@@ -100,7 +100,7 @@ export const ReportStatusSelect = ({
         <MenuItem
           value='RESUELTO'
           sx={{
-            color: selectedValue === reportStates.RESUELTO.text ? reportStates['RESUELTO'].colorText : 'inherit',
+            color: selectedValue === reportStates.RESUELTO.text ? reportStates['RESUELTO']?.colorText : 'inherit',
           }}
         >
           RESUELTO

@@ -15,6 +15,7 @@ export const SearcherAndButton = ({
         padding: '16px',
       }}
     >
+      {/* TODO: CAMBIAR AL COMPONENTE SEARCHER */}
       <FormControl
         sx={{
           width: inputWidth,

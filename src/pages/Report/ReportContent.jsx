@@ -1,6 +1,8 @@
 import {
   Box,
+  Button,
   Chip,
+  CircularProgress,
   Paper,
   Table,
   TableBody,
@@ -27,14 +29,25 @@ import {
 } from '../../components/AvatarWithTooltip';
 import profilePicture from '../../assets/profile_picture.jpg';
 import {
-  useReports 
+  useReports
 } from '../../api/hooks/useReports/useReports';
 import {
-  TimestampUtil 
+  TimestampUtil
 } from '../../utils/timestampUtil';
 import {
   DateRangePicker
 } from '../../components/DateRangePicker';
+import {
+  Searcher
+} from '../../components/Seacher/Searcher';
+import {
+  reportsMocks
+} from './reportsMock';
+import {
+  HEIGHT_FILTER_SIDE_COMPONENT
+} from '../../config';
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
+import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 
 
 const rows = [
@@ -99,7 +112,7 @@ const mapper = (reports) => {
   return reports.map(
     r => {
       const {
-        date, time 
+        date, time
       } = TimestampUtil.convertToDateAndHour(r.timestamp)
       const state = r.status[r.status.length - 1]
 
@@ -110,7 +123,7 @@ const mapper = (reports) => {
         state: state.status,
         // recolector o ciudadano,
         description: r.description,
-        reportType: r.type.replace('_',' '),
+        reportType: r.type.replace('_', ' '),
         // falta lugar
         // falta area,
         // falta nombre del que report,
@@ -125,7 +138,12 @@ export const ReportContent = () => {
   const [selectedReportId, setSelectedReportId] = useState(null);
   const [reports, setReports] = useState([])
   const [modalReportResolvedTitle, setModalReportResolvedTitle] = useState('');
-  const [lastKey, setLastKey] = useState(null)
+  const [isLoadingMock, setIsLoadingMock] = useState(false)
+
+  const [actualKey, setActualKey] = useState(null)
+  const [nextKey, setNextKey] = useState(null)
+  const [searchStack, setSearchStack] = useState([])
+
   const {
     fetchReports: {
       fetchReports,
@@ -140,27 +158,81 @@ export const ReportContent = () => {
   };
   const handleCloseModalReportResolved = () => setOpenModalReportResolved(false);
 
+  const fetchReportsMocks = () => {
+    return reportsMocks
+  }
+  const [count, setCount] = useState(0)
+
+  const asyncFetchReportsMock = async () => {
+    try {
+      // const reportsReponse = await fetchReports();
+      setIsLoadingMock(true)
+
+      setTimeout(() => {
+        const reportsReponse = fetchReportsMocks();
+        const reportsMapped = mapper(reportsReponse.result.slice(0, 15)).map((r, index) => {
+          return {
+            ...r,
+            id: index + count,
+          }
+        })
+
+        setCount(prev => prev + 15)
+
+        setReports(prev => [...prev, ...reportsMapped])
+        setIsLoadingMock(false)
+      }, 1000)
+
+    } catch (error) {
+      console.error('Error fetching reports:', error);
+    }
+  };
+
+  const asyncFetchReports = async (key = null) => {
+    
+    try {
+      console.log('🚀 ~ asyncFetchReports ~ key:', key)
+      const reportsReponse = await fetchReports(key);
+
+      setActualKey(reportsReponse.lastKey)
+      setNextKey(reportsReponse.nextKey)
+
+      const reportsMapped = mapper(reportsReponse.result)
+
+      setReports(reportsMapped)
+    } catch (error) {
+      console.error('Error fetching reports:', error);
+    }
+  };
+
+
+  const prevFetch = () => {
+    const newStack = [...searchStack]
+   
+    const prevKey = newStack.pop()
+
+    setSearchStack(newStack)
+    asyncFetchReports(prevKey)
+  }
+
+  const nextFetch = async () => {
+    const newStack = [...searchStack]
+    newStack.push(actualKey)
+
+    setSearchStack(newStack)
+
+    asyncFetchReports(nextKey)
+  }
 
   useEffect(() => {
-    const asyncFetchReports = async () => {
-      try {
-        const reportsReponse = await fetchReports();
-        console.log('🚀 ~ asyncFetchReports ~ reportsReponse:', reportsReponse)
-        const reportsMapped = mapper(reportsReponse.result)
-
-        setReports(reportsMapped)
-      } catch (error) {
-        console.error('Error fetching reports:', error);
-      }
-    };
-
-    asyncFetchReports();
+    asyncFetchReports(actualKey);
   }, []);
 
   return (
     <Box
       sx={{
         padding: '32px',
+        height: `calc(100% - ${HEIGHT_FILTER_SIDE_COMPONENT})`,
       }}
     >
       <ModalReportResolved
@@ -175,155 +247,221 @@ export const ReportContent = () => {
       <Paper
         sx={{
           width: '100%',
+          height: '100%'
         }}
       >
-        <DateRangePicker/>
         <TableContainer
           component={Paper}
+          sx={{
+            paddingX: '1rem',
+            height: '100%',
+            overflow: 'hidden'
+          }}
         >
-          <Table
+          <Box
             sx={{
-              minWidth: 650,
+              height: '4.5rem',
+              width: 1,
+              padding: '1rem 0rem',
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center'
             }}
-            aria-label='simple table'
           >
-            <TableBody >
-              {reports.map((row) => (
-                <TableRow
-                  key={row.id}
+            <Searcher
+              placeholderInput={'Buscar por ID, Título o Contenedor'}
+            />
+            <Box
+              sx={{
+                display: 'flex'
+              }}
+            >
+              <Box
+                sx = {{
+                  mr: 2,
+                  '& .MuiButtonBase-root': {
+                    minWidth: 'unset'
+                  }
+                }}
+              >
+                <Button
+                  disabled = {searchStack.length == 0}
+                  onClick={prevFetch}
                 >
-                  <TableCell
-                    sx={{
-                      width: '1%',
-                      padding: '16px'
-                    }}
-                  >
-                    <Box>
-                      <Typography
-                        sx={{
-                          fontSize: '14px',
-                          fontWeight: 400,
-                          lineHeight: '21px',
-                          textAlign: 'left',
-                          color: '#00000099',
-                        }}
+                  <ChevronLeftIcon />
+                </Button>
+                <Button
+                  disabled = {nextKey  == null}
+                  onClick={nextFetch}
+                >
+                  <ChevronRightIcon />
+                </Button>
+              </Box>
+              <DateRangePicker />
+            </Box>
+          </Box>
+          <Box
+            sx={{
+              height: 'calc(100% - 4.5rem)',
+              overflow: 'auto'
+            }}
+          >
+            {
+              isLoadingFetchReports ? 
+                <Box
+                  sx ={{
+                    width: 1,
+                    display: 'flex',
+                    p: 2,
+                    justifyContent: 'center'
+                  }}
+                >
+                  <CircularProgress />
+                </Box> :
+                <Table
+                  sx={{
+                    minWidth: 650,
+                  }}
+                  aria-label='simple table'
+                >
+                  <TableBody>
+                    {reports.map((row) => (
+                      <TableRow
+                        key={row.id}
                       >
-                        {row.date}
-                      </Typography>
-                      <Typography
-                        sx={{
-                          fontSize: '14px',
-                          fontWeight: 400,
-                          lineHeight: '21px',
-                          textAlign: 'left',
-                          color: '#00000099',
-                        }}
-                      >
-                        {row.time}
-                      </Typography>
-                    </Box>
-                  </TableCell>
-                  <TableCell
-                    align='left'
-                    sx={{
-                      minWidth: 240,
-                    }}
-                  >
-                    <Typography
-                      sx={{
-                        fontSize: '14px',
-                        fontWeight: 400,
-                        lineHeight: '21px',
-                        textAlign: 'left',
-                        color: '#00000099',
-                      }}
-                    >
-                      {row.typeOfUser}
-                    </Typography>
-                    <Typography
-                      sx={{
-                        fontSize: '16px',
-                        fontWeight: 400,
-                        lineHeight: '24px',
-                        textAlign: 'left',
-                        color: '#000000DE',
-                        overflow: 'hidden',
-                        display: '-webkit-box',
-                        WebkitBoxOrient: 'vertical',
-                        WebkitLineClamp: 2,
-                      }}
-                    >
-                      {row.description}
-                    </Typography>
-                  </TableCell>
-                  <TableCell
-                    align='right'
-                    sx={{
-                      width: '1%',
-                    }}
-                  >
-                    <Chip
-                      size='small'
-                      label={row.reportType}
-                      variant='outlined'
-                    />
-                  </TableCell>
-                  <TableCell
-                    align='right'
-                    sx={{
-                      width: 176
-                    }}
-                  >
-                    <Typography
-                      sx={{
-                        fontSize: '16px',
-                        fontWeight: 400,
-                        lineHeight: '24px',
-                        color: '#00000099',
-                      }}
-                    >
-                      {row.place}
-                    </Typography>
-                    <Typography
-                      sx={{
-                        fontSize: '14px',
-                        fontWeight: 400,
-                        lineHeight: '21px',
-                        color: '#00000099',
-                      }}
-                    >
-                      {row.area}
-                    </Typography>
-                  </TableCell>
-                  <TableCell
-                    align='center'
-                    sx={{
-                      width: 192,
-                      paddingX: '24px'
-                    }}
-                  >
-                    <ReportStatusSelect
-                      reportId={row.id}
-                      reportState={row.state}
-                      handleOpenModalReportResolved={handleOpenModalReportResolved}
-                    />
-                  </TableCell>
-                  <TableCell
-                    align='center'
-                    sx={{
-                      width: 88,
-                      paddingLeft: '16px'
-                    }}
-                  >
-                    <AvatarWithTooltip
-                      name={row.creatorName}
-                      profilePicture={row.creatorPhoto}
-                    />
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
+                        <TableCell
+                          sx={{
+                            width: '1%',
+                            padding: '16px'
+                          }}
+                        >
+                          <Box>
+                            <Typography
+                              sx={{
+                                fontSize: '14px',
+                                fontWeight: 400,
+                                lineHeight: '21px',
+                                textAlign: 'left',
+                                color: '#00000099',
+                              }}
+                            >
+                              {row.date}
+                            </Typography>
+                            <Typography
+                              sx={{
+                                fontSize: '14px',
+                                fontWeight: 400,
+                                lineHeight: '21px',
+                                textAlign: 'left',
+                                color: '#00000099',
+                              }}
+                            >
+                              {row.time}
+                            </Typography>
+                          </Box>
+                        </TableCell>
+                        <TableCell
+                          align='left'
+                          sx={{
+                            minWidth: 240,
+                          }}
+                        >
+                          <Typography
+                            sx={{
+                              fontSize: '14px',
+                              fontWeight: 400,
+                              lineHeight: '21px',
+                              textAlign: 'left',
+                              color: '#00000099',
+                            }}
+                          >
+                            {row.typeOfUser}
+                          </Typography>
+                          <Typography
+                            sx={{
+                              fontSize: '16px',
+                              fontWeight: 400,
+                              lineHeight: '24px',
+                              textAlign: 'left',
+                              color: '#000000DE',
+                              overflow: 'hidden',
+                              display: '-webkit-box',
+                              WebkitBoxOrient: 'vertical',
+                              WebkitLineClamp: 2,
+                            }}
+                          >
+                            {row.description}
+                          </Typography>
+                        </TableCell>
+                        <TableCell
+                          align='right'
+                          sx={{
+                            width: '1%',
+                          }}
+                        >
+                          <Chip
+                            size='small'
+                            label={row.reportType}
+                            variant='outlined'
+                          />
+                        </TableCell>
+                        <TableCell
+                          align='right'
+                          sx={{
+                            width: 176
+                          }}
+                        >
+                          <Typography
+                            sx={{
+                              fontSize: '16px',
+                              fontWeight: 400,
+                              lineHeight: '24px',
+                              color: '#00000099',
+                            }}
+                          >
+                            {row.place}
+                          </Typography>
+                          <Typography
+                            sx={{
+                              fontSize: '14px',
+                              fontWeight: 400,
+                              lineHeight: '21px',
+                              color: '#00000099',
+                            }}
+                          >
+                            {row.area}
+                          </Typography>
+                        </TableCell>
+                        <TableCell
+                          align='center'
+                          sx={{
+                            width: 192,
+                            paddingX: '24px'
+                          }}
+                        >
+                          <ReportStatusSelect
+                            reportId={row.id}
+                            reportState={row.state}
+                            handleOpenModalReportResolved={handleOpenModalReportResolved}
+                          />
+                        </TableCell>
+                        <TableCell
+                          align='center'
+                          sx={{
+                            width: 88,
+                            paddingLeft: '16px'
+                          }}
+                        >
+                          <AvatarWithTooltip
+                            name={row.creatorName}
+                            profilePicture={row.creatorPhoto}
+                          />
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>}
+          </Box>
         </TableContainer>
       </Paper>
     </Box>
