@@ -1,12 +1,13 @@
 import {
-  useGetRoutes,
+  useFetchRoutes,
   useSelectOptimalRoutes
 } from './request';
 
 export const useRoutes = () => {
   const {
-    getRoutes, isLoadingGetRoutes
-  } = useGetRoutes();
+    fetchRoutes,
+    isLoading: isLoadingFetchRoutes
+  } = useFetchRoutes();
 
   const {
     isLoading: isLoadingSelectRoute,
@@ -14,9 +15,9 @@ export const useRoutes = () => {
   } = useSelectOptimalRoutes()
 
   return {
-    getRoutes: {
-      getRoutes,
-      isLoadingGetRoutes,
+    fetchRoutes: {
+      fetchRoutes,
+      isLoadingFetchRoutes
     },
     selectOptimalRoute: {
       isLoadingSelectRoute,
