@@ -65,4 +65,46 @@ export const useFetchReports = () => {
     fetchReports,
     isLoading
   }
-}
+};
+
+export const useReviewReport = () => {
+  const {
+    commonFetch, isLoading
+  } = useFetch({
+    baseUri: baseReportUri,
+  });
+
+  const reviewReport = (reportId, reviewReportBody) => {
+    return commonFetch({
+      uri: '/review/' + reportId,
+      method: HTTPMethods.PUT,
+      body: reviewReportBody
+    })
+  }
+
+  return {
+    reviewReport,
+    isLoading
+  }
+};
+
+export const useCloseReport = () => {
+  const {
+    commonFetch, isLoading
+  } = useFetch({
+    baseUri: baseReportUri,
+  });
+
+  const closeReport = (reportId, closeReportBody) => {
+    return commonFetch({
+      uri: '/close/' + reportId,
+      method: HTTPMethods.PUT,
+      body: closeReportBody
+    })
+  }
+
+  return {
+    closeReport,
+    isLoading
+  }
+};

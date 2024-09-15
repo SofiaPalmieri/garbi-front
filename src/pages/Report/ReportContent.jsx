@@ -9,20 +9,8 @@ import {
   useState
 } from 'react';
 import {
-  useReports
-} from '../../api/hooks/useReports/useReports';
-import {
-  SearcherDateRangerPickerPaginated 
-} from '../../components/SearcherDateRangePickerPaginated';
-import {
-  HEIGHT_HEADER_FILTER_SIDE_COMPONENT
-} from '../../config';
-import {
-  ResolveReportForm
-} from '../../forms/ResolveReport/ResolveReportForm';
-import {
-  usePagination 
-} from '../../hooks/usePagination';
+  ReportStatusSelect
+} from '../../components/ReportStatusSelect';
 import {
   ModalReportResolved
 } from '../../modales/ModalReportResolved/ModalReportResolved';
@@ -36,7 +24,6 @@ import {
 
 
 const mapper = (reports) => {
-
   return reports.map(
     r => {
       const {
@@ -54,22 +41,20 @@ const mapper = (reports) => {
         reportType: r.type.replace('_', ' '),
         // falta lugar
         // falta area,
-        // falta nombre del que report,
-        // falta foto
+        // falta nombre apellido y foto del supervisor
       }
     }
   )
 }
 
+
 // DEPRECADO
 export const ReportContent = () => {
-  const [openModalReportResolved, setOpenModalReportResolved] = useState(false);
-  const [selectedReportId, setSelectedReportId] = useState(null);
-  const [modalReportResolvedTitle, setModalReportResolvedTitle] = useState('');
-
+  
   useEffect(() => {
     console.warn('ReportContent is deprecated and will be removed in future versions.');
   }, []);
+
 
   const {
     fetchReports: {
@@ -77,24 +62,6 @@ export const ReportContent = () => {
       isLoadingFetchReports
     }
   } = useReports();
-
-  const {
-    data: reports,
-    prevFetch,
-    nextFetch,
-    disabledPrevBtn,
-    disabledNextBtn
-  } = usePagination({
-    fetch: fetchReports,
-    mapper
-  })
-
-  const handleOpenModalReportResolved = (reportId, title) => {
-    setSelectedReportId(reportId);
-    setModalReportResolvedTitle(title);
-    setOpenModalReportResolved(true);
-  };
-  const handleCloseModalReportResolved = () => setOpenModalReportResolved(false);
 
 
   return (
@@ -104,15 +71,6 @@ export const ReportContent = () => {
         height: `calc(100% - ${HEIGHT_HEADER_FILTER_SIDE_COMPONENT})`,
       }}
     >
-      <ModalReportResolved
-        title={modalReportResolvedTitle}
-        open={openModalReportResolved}
-        handleClose={handleCloseModalReportResolved}
-        form={<ResolveReportForm
-          handleClose={handleCloseModalReportResolved}
-          reportId={selectedReportId}
-        />}
-      />
       <Paper
         sx={{
           width: '100%',
@@ -149,6 +107,7 @@ export const ReportContent = () => {
                     justifyContent: 'center'
                   }}
                 >
+
                   <CircularProgress />
                 </Box>
                 :
