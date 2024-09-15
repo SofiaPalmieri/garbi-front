@@ -17,6 +17,13 @@ import {
 import {
   useReports 
 } from '../../api/hooks/useReports/useReports';
+import {
+  ModalReportResolved
+} from '../../modales/ModalReportResolved/ModalReportResolved';
+import {
+  ResolveReportForm
+} from '../../forms/ResolveReport/ResolveReportForm';
+
 
 const SmallKeyboardArrowDownIcon = (color) =>
   styled(KeyboardArrowDownIcon)(({
@@ -27,16 +34,15 @@ const SmallKeyboardArrowDownIcon = (color) =>
   }));
 
 export const ReportStatusSelect = ({
-  reportId, reportState, handleOpenModalReportResolved, statusUpdated
+  reportId, reportState
 }) => {
-  useEffect(() => {
-    if (statusUpdated) {
-      setSelectedValue(newSelectedValue);
-    }
-  }, [statusUpdated]);
-
   const [selectedValue, setSelectedValue] = useState(reportState);
   const [newSelectedValue, setNewSelectedValue] = useState(reportState);
+  const [openModalReportResolved, setOpenModalReportResolved] = useState(false);
+  const [modalReportResolvedTitle, setModalReportResolvedTitle] = useState('');
+  const [selectedReportId, setSelectedReportId] = useState(null);
+  const [selectedReportStatus, setSelectedReportStatus] = useState(null);
+  const [statusUpdated, setStatusUpdated] = useState(false);
 
   const {
     reviewReport: {
@@ -44,15 +50,33 @@ export const ReportStatusSelect = ({
       isReviewReportLoading 
     },
   } = useReports(); 
+  
+  useEffect(() => {
+    if (statusUpdated) {
+      setSelectedValue(newSelectedValue);
+    }
+  }, [statusUpdated]);
+
+  const handleOpenModalReportResolved = (title, reportStatus) => {
+    setStatusUpdated(false);
+    setSelectedReportId(reportId);
+    setSelectedReportStatus(reportStatus);
+    setModalReportResolvedTitle(title);
+    setOpenModalReportResolved(true);
+  };
+
+  const handleCloseModalReportResolved = () => setOpenModalReportResolved(false);
+  const handleStatusUpdated = () => setStatusUpdated(true);
+
 
   const handleChange = async (event) => {
     const newValue = event.target.value;
     setNewSelectedValue(newValue);
     
     if (newValue === reportStates.RECHAZADO.text) {
-      handleOpenModalReportResolved(reportId, 'Cambiar a Rechazado', reportStates.RECHAZADO.text);
+      handleOpenModalReportResolved('Cambiar a Rechazado', reportStates.RECHAZADO.text);
     } else if (newValue === reportStates.RESUELTO.text) {
-      handleOpenModalReportResolved(reportId, 'Cambiar a Resuelto', reportStates.RESUELTO.text);
+      handleOpenModalReportResolved('Cambiar a Resuelto', reportStates.RESUELTO.text);
     } else if (newValue === reportStates['EN REVISIÓN'].text) {
       setSelectedValue(newValue);
       
@@ -74,73 +98,89 @@ export const ReportStatusSelect = ({
   };
 
   return (
-    <FormControl
-      size='small'
-      sx={{
-        width: '100%',
-        display: 'flex',
-        justifyContent: 'center',
-        '& .MuiOutlinedInput-root': {
-          '& .MuiSvgIcon-root': {
-            right: '20px',
-          },
-          '& fieldset': {
-            borderColor: reportStates[selectedValue].color,
-          },
-          '&:hover fieldset': {
-            borderColor: reportStates[selectedValue].color,
-          },
-          '&.Mui-focused fieldset': {
-            borderColor: reportStates[selectedValue].color,
-          },
-        },
-      }}
-    >
-      <Select
-        value={selectedValue}
-        onChange={handleChange}
-        IconComponent={SmallKeyboardArrowDownIcon(reportStates[selectedValue].colorText)}
+    <>
+      <FormControl
+        size='small'
         sx={{
-          height: '30px',
-          color: reportStates[selectedValue].colorText,
-          fontSize: '13px',
-          fontWeight: 500,
-          lineHeight: '22px',
+          width: '100%',
+          display: 'flex',
+          justifyContent: 'center',
+          '& .MuiOutlinedInput-root': {
+            '& .MuiSvgIcon-root': {
+              right: '20px',
+            },
+            '& fieldset': {
+              borderColor: reportStates[selectedValue].color,
+            },
+            '&:hover fieldset': {
+              borderColor: reportStates[selectedValue].color,
+            },
+            '&.Mui-focused fieldset': {
+              borderColor: reportStates[selectedValue].color,
+            },
+          },
         }}
       >
-        <MenuItem 
-          value='NUEVO'
+        <Select
+          value={selectedValue}
+          onChange={handleChange}
+          IconComponent={SmallKeyboardArrowDownIcon(reportStates[selectedValue].colorText)}
           sx={{
-            color: selectedValue === reportStates.NUEVO.text ? reportStates['NUEVO'].colorText : 'inherit',
+            height: '30px',
+            color: reportStates[selectedValue].colorText,
+            fontSize: '13px',
+            fontWeight: 500,
+            lineHeight: '22px',
           }}
         >
-          NUEVO
-        </MenuItem>
-        <MenuItem
-          value='EN REVISIÓN'
-          sx={{
-            color: selectedValue === reportStates['EN REVISIÓN'].text ? reportStates['EN REVISIÓN'].colorText : 'inherit',
-          }}
-        >
-          EN REVISIÓN
-        </MenuItem>
-        <MenuItem
-          value='RECHAZADO'
-          sx={{
-            color: selectedValue === reportStates.RECHAZADO.text ? reportStates['RECHAZADO'].colorText : 'inherit',
-          }}
-        >
-          RECHAZADO
-        </MenuItem>
-        <MenuItem
-          value='RESUELTO'
-          sx={{
-            color: selectedValue === reportStates.RESUELTO.text ? reportStates['RESUELTO'].colorText : 'inherit',
-          }}
-        >
-          RESUELTO
-        </MenuItem>
-      </Select>
-    </FormControl>
+          <MenuItem 
+            value='NUEVO'
+            sx={{
+              color: selectedValue === reportStates.NUEVO.text ? reportStates['NUEVO'].colorText : 'inherit',
+            }}
+          >
+            NUEVO
+          </MenuItem>
+          <MenuItem
+            value='EN REVISIÓN'
+            sx={{
+              color: selectedValue === reportStates['EN REVISIÓN'].text ? reportStates['EN REVISIÓN'].colorText : 'inherit',
+            }}
+          >
+            EN REVISIÓN
+          </MenuItem>
+          <MenuItem
+            value='RECHAZADO'
+            sx={{
+              color: selectedValue === reportStates.RECHAZADO.text ? reportStates['RECHAZADO'].colorText : 'inherit',
+            }}
+          >
+            RECHAZADO
+          </MenuItem>
+          <MenuItem
+            value='RESUELTO'
+            sx={{
+              color: selectedValue === reportStates.RESUELTO.text ? reportStates['RESUELTO'].colorText : 'inherit',
+            }}
+          >
+            RESUELTO
+          </MenuItem>
+        </Select>
+      </FormControl>
+
+      {openModalReportResolved && (
+        <ModalReportResolved
+          title={modalReportResolvedTitle}
+          open={openModalReportResolved}
+          handleClose={handleCloseModalReportResolved}
+          form={<ResolveReportForm
+            handleClose={handleCloseModalReportResolved}
+            reportId={selectedReportId}
+            reportStatus={selectedReportStatus}
+            statusUpdated={handleStatusUpdated}
+          />}
+        />
+      )}
+    </>
   );
 };

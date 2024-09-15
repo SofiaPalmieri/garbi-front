@@ -10,15 +10,9 @@ import {
   Typography,
 } from '@mui/material';
 import {
-  ModalReportResolved
-} from '../../modales/ModalReportResolved/ModalReportResolved';
-import {
   useEffect,
   useState
 } from 'react';
-import {
-  ResolveReportForm
-} from '../../forms/ResolveReport/ResolveReportForm';
 import {
   ReportStatusSelect
 } from '../../components/ReportStatusSelect';
@@ -118,12 +112,7 @@ const mapper = (reports) => {
 
 
 export const ReportContent = () => {
-  const [openModalReportResolved, setOpenModalReportResolved] = useState(false);
-  const [selectedReportId, setSelectedReportId] = useState(null);
-  const [selectedReportStatus, setSelectedReportStatus] = useState(null);
-  const [statusUpdated, setStatusUpdated] = useState(false);
   const [reports, setReports] = useState([])
-  const [modalReportResolvedTitle, setModalReportResolvedTitle] = useState('');
   const [lastKey, setLastKey] = useState(null)
 
   const {
@@ -132,17 +121,6 @@ export const ReportContent = () => {
       isLoadingFetchReports
     }
   } = useReports();
-
-  const handleOpenModalReportResolved = (reportId, title, reportStatus) => {
-    setStatusUpdated(false);
-    setSelectedReportId(reportId);
-    setSelectedReportStatus(reportStatus);
-    setModalReportResolvedTitle(title);
-    setOpenModalReportResolved(true);
-  };
-  const handleCloseModalReportResolved = () => setOpenModalReportResolved(false);
-
-  const handleStatusUpdated = () => setStatusUpdated(true);
 
 
   useEffect(() => {
@@ -167,17 +145,6 @@ export const ReportContent = () => {
         padding: '32px',
       }}
     >
-      <ModalReportResolved
-        title={modalReportResolvedTitle}
-        open={openModalReportResolved}
-        handleClose={handleCloseModalReportResolved}
-        form={<ResolveReportForm
-          handleClose={handleCloseModalReportResolved}
-          reportId={selectedReportId}
-          reportStatus={selectedReportStatus}
-          statusUpdated={handleStatusUpdated}
-        />}
-      />
       <Paper
         sx={{
           width: '100%',
@@ -311,8 +278,6 @@ export const ReportContent = () => {
                     <ReportStatusSelect
                       reportId={row.id}
                       reportState={row.state}
-                      handleOpenModalReportResolved={handleOpenModalReportResolved}
-                      statusUpdated={statusUpdated}
                     />
                   </TableCell>
                   <TableCell
