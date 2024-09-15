@@ -1,4 +1,7 @@
 import {
+  LIMIT_DEFAULT 
+} from '../../../config';
+import {
   useFetch
 } from '../../../hooks/useFetch';
 import {
@@ -44,11 +47,12 @@ export const useFetchReports = () => {
     baseUri: baseReportUri,
   });
 
-  const fetchReports = (lastKey = null) => {
+  const fetchReports = (lastKey = null, limit = LIMIT_DEFAULT) => {
     const queryBuilder = new QueryBuilder()
 
     const uri = queryBuilder
       .addParam('lastKey', lastKey)
+      .addParam('limit', limit)
       .build()
 
     return commonFetch({
@@ -61,4 +65,46 @@ export const useFetchReports = () => {
     fetchReports,
     isLoading
   }
-}
+};
+
+export const useReviewReport = () => {
+  const {
+    commonFetch, isLoading
+  } = useFetch({
+    baseUri: baseReportUri,
+  });
+
+  const reviewReport = (reportId, reviewReportBody) => {
+    return commonFetch({
+      uri: '/review/' + reportId,
+      method: HTTPMethods.PUT,
+      body: reviewReportBody
+    })
+  }
+
+  return {
+    reviewReport,
+    isLoading
+  }
+};
+
+export const useCloseReport = () => {
+  const {
+    commonFetch, isLoading
+  } = useFetch({
+    baseUri: baseReportUri,
+  });
+
+  const closeReport = (reportId, closeReportBody) => {
+    return commonFetch({
+      uri: '/close/' + reportId,
+      method: HTTPMethods.PUT,
+      body: closeReportBody
+    })
+  }
+
+  return {
+    closeReport,
+    isLoading
+  }
+};

@@ -20,7 +20,6 @@ import CompanyPage from './pages/Company/CompanyPage.jsx';
 import {
   ContainerPage 
 } from './pages/Containers/ContainerPage.jsx';
-import CreateAreaPage from './pages/CreateArea/CreateAreaPage.jsx';
 import HomePage from './pages/Home/HomePage.jsx';
 import RecommendationsPage from './pages/Recomendaciones/RecommendationsPage.jsx';
 import RoutesPage from './pages/Routes/RoutesPage.jsx';
@@ -100,10 +99,10 @@ const router = createBrowserRouter([
         path: '/routes/detail',
         element: <RouteDetailPage />,
       },
-      {
-        path: '/areas/new',
-        element: <CreateAreaPage />,
-      },
+      // {
+      //   path: '/areas/new',
+      //   element: <CreateAreaPage />,
+      // },
       {
         path: '/reportes',
         element: <ReportPage />,
@@ -136,7 +135,7 @@ const router = createBrowserRouter([
 ]);
 
 ReactDOM.createRoot(document.getElementById('root')).render(
-  <React.StrictMode>
+  <React.Fragment>
     <ThemeProvider
       theme={theme}
     >
@@ -145,5 +144,5 @@ ReactDOM.createRoot(document.getElementById('root')).render(
         router={router}
       />
     </ThemeProvider>
-  </React.StrictMode>,
+  </React.Fragment>,
 );
