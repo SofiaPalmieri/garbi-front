@@ -54,9 +54,14 @@ export const usePagination = ({
     asyncFetchData(nextKey)
   }
 
+  const disabledPrevBtn = searchStack.length == 0
+  const disabledNextBtn = nextKey  == null
+
   return {
     data,
     prevFetch,
-    nextFetch
+    nextFetch,
+    disabledPrevBtn,
+    disabledNextBtn
   }
 } 
