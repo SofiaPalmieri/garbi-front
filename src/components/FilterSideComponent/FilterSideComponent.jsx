@@ -5,11 +5,12 @@ import {
   BreadcrumbsComponent
 } from '../../components/BreadcrumbsComponent';
 import {
+  HEIGHT_FULL_SCREEN,
   HEIGHT_HEADER 
 } from '../../config';
 
 export const FilterSideComponent = ({
-  title, component, prefix, subtitle, titleLink, renderFilters, height = '100%'
+  title, component, prefix, subtitle, titleLink, renderFilters, height = HEIGHT_FULL_SCREEN
 }) => {
   return (
     <Box

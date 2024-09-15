@@ -14,7 +14,7 @@ import {
   SearcherDateRangerPickerPaginated 
 } from '../../components/SearcherDateRangePickerPaginated';
 import {
-  HEIGHT_FILTER_SIDE_COMPONENT
+  HEIGHT_HEADER_FILTER_SIDE_COMPONENT
 } from '../../config';
 import {
   ResolveReportForm
@@ -95,7 +95,7 @@ export const ReportContent = () => {
     <Box
       sx={{
         padding: '32px',
-        height: `calc(100% - ${HEIGHT_FILTER_SIDE_COMPONENT})`,
+        height: `calc(100% - ${HEIGHT_HEADER_FILTER_SIDE_COMPONENT})`,
       }}
     >
       <ModalReportResolved

@@ -56,6 +56,9 @@ import {
 import {
   formatContainers 
 } from '../../api/hooks/useReports/mappers';
+import {
+  HEIGHT_HEADER_FILTER_SIDE_COMPONENT 
+} from '../../config';
 
 const icons = [
   Battery0BarIcon,
@@ -211,7 +214,7 @@ export default function HomeMainContent() {
     <>
       <Box
         width='100%'
-        height={'calc(100% - 83px)'}
+        height={`calc(100% - ${HEIGHT_HEADER_FILTER_SIDE_COMPONENT})`}
       >
         <ModalCreateResource
           title={'Generar ruta óptima'}
