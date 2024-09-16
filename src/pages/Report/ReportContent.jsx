@@ -20,7 +20,6 @@
 // import {
 //   ReportTable 
 // } from '../../tables/ReportTable/ReportTable';
-// import { HEIGHT_HEADER_FILTER_SIDE_COMPONENT } from '../../config';
 
 
 
