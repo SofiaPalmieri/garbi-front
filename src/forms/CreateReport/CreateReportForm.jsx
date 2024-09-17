@@ -96,13 +96,11 @@ const HtmlTooltip = styled(({
 }));
 
 export const CreateReportForm = ({
-  onSuccess
+  onSuccess 
 }) => {
   const apiKeyGoogleMaps = import.meta.env.VITE_REACT_APP_API_KEY_GOOGLE_MAPS;
-  //const addressRegex = /^[A-ZÁÉÍÓÚÑ][a-záéíóúñA-ZÁÉÍÓÚÑ\s]*\s\d{1,4}$/;
   const [selectedImage, setSelectedImage] = useState(null);
   const [selectedFile, setSelectedFile] = useState(null);
-
 
   const position = {
     lat: -34.5893,
@@ -115,22 +113,19 @@ export const CreateReportForm = ({
 
   const {
     createReport: {
-      createReport,
-      isCreateReportLoading 
-    },
+      createReport, isCreateReportLoading 
+    } 
   } = useReports();
-
   const {
     getContainers: {
-      getContainers: getContainers
-    },
+      getContainers 
+    } 
   } = useContainers();
 
   useEffect(() => {
     const retrieveContainers = async () => {
       const containersUnformated = await getContainers();
       const containersFormated = formatContainers(containersUnformated.result);
-
       setContainers(containersFormated);
     };
 
@@ -148,27 +143,43 @@ export const CreateReportForm = ({
     setContainerSeleted(container);
   };
 
+  const convertBase64 = (file) => {
+    return new Promise((resolve, reject) => {
+      const fileReader = new FileReader();
+      fileReader.readAsDataURL(file);
+      fileReader.onload = () => {
+        resolve(fileReader.result);
+      };
+      fileReader.onerror = (error) => {
+        reject(error);
+      };
+    });
+  };
+
+  const handleFileRead = async (event) => {
+    const file = event.target.files[0];
+    const base64 = await convertBase64(file);
+    console.log(base64);
+    setSelectedImage(base64);
+  };
+
   const createReportSchema = object({
     title: string().required('El titulo es un campo obligatorio'),
     type: string().required('Debe seleccionar una opcion'),
     description: string().required('La descripcion es un campo obligatorio'),
-    /*address: string().required(),
-    neighborhood: string().required(),
-    containerId: string().length(6, 'El identificador del contenedor debe tener 6 caracteres')
-      .optional(),*/
     email: string().email('Debe ser un email valido')
       .required('El mail es un campo obligatorio'),
     image: mixed(),
-    phone: string()
+    phone: string(),
   }).required();
 
   const {
     control, handleSubmit, setValue, formState: {
-      errors
+      errors 
     }
   } = useForm({
     defaultValues: {
-      userId:'',
+      userId: '',
       containerId: '',
       title: 'sasA',
       description: 'dssadsd',
@@ -176,7 +187,7 @@ export const CreateReportForm = ({
       phone: '465456465',
       email: 'sdada@saddad.com',
       type: 'BASURA_EN_LA_CALLE',
-      image:''
+      image: '',
     },
     resolver: yupResolver(createReportSchema),
   });
@@ -184,19 +195,12 @@ export const CreateReportForm = ({
   const user = JSON.parse(localStorage.getItem('user'));
   const userId = user.id;
 
-
   const onSubmit = async (data) => {
     if (!containerSelected) {
       setContainerError(true);
       return;
     }
     setContainerError(false);
-    
-    const formData = new FormData();
-
-    const user = JSON.parse(localStorage.getItem('user'));
-    const imagePath = selectedFile ? `uploads/${selectedFile.name}` : ' ';
-
 
     const report = {
       userId: userId,
@@ -207,17 +211,15 @@ export const CreateReportForm = ({
       phone: data.phone,
       email: data.email,
       type: data.type,
-      image: imagePath
+      image: selectedImage,
     };
 
-
-    formData.append('report', JSON.stringify(report));
     try {
       await createReport(report);
     } catch (error) {
       console.error('Error creating report:', error);
     }
-  }
+  };
 
   return (
     <form
@@ -326,7 +328,7 @@ export const CreateReportForm = ({
             control={control}
             defaultValue=''
             render={({
-              field
+              field 
             }) => (
               <FormControl
                 fullWidth
@@ -336,16 +338,10 @@ export const CreateReportForm = ({
                   type='file'
                   disableUnderline
                   onChange={(e) => {
+                    handleFileRead(e);
                     field.onChange(e);
                     const file = e.target.files[0];
-                    setSelectedFile(file)
-                    if (e.target.files && e.target.files[0]) {
-                      const reader = new FileReader();
-                      reader.onload = (event) => {
-                        setSelectedImage(event.target.result);
-                      };
-                      reader.readAsDataURL(e.target.files[0]);
-                    }
+                    setSelectedFile(file);
                   }}
                   sx={{
                     display: 'none'
