@@ -32,7 +32,7 @@ export const usePagination = ({
 
       setData(dataFetched)
     } catch (error) {
-      console.error('Error fetching reports:', error);
+      console.error('Error fetching data:', error);
     }
   };
 

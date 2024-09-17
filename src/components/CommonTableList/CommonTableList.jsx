@@ -16,7 +16,7 @@ import {
 
 
 export const CommonTableList = ({
-  table: Table, fetchData, isLoadingFetchData, mapper, placeHolderInput 
+  table: Table, fetchData, isLoadingFetchData, mapper, placeHolderInput, inputWidth, datePicker=true
 }) => {
 
   const {
@@ -57,6 +57,8 @@ export const CommonTableList = ({
             disabledNextBtn={disabledNextBtn}
             disabledPrevBtn={disabledPrevBtn}
             placeholderInput={placeHolderInput}
+            inputWidth={inputWidth}
+            datePicker={datePicker}
           />
           <Box
             sx={{
