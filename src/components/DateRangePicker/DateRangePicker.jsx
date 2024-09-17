@@ -17,10 +17,11 @@ import {
 } from 'date-fns'
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 
-export const DateRangePicker = () => {
-  const defaultStartDate = subDays(new Date(), 7);
-  const defaultEndDate = subDays(new Date(), 1);
-  const [dateRange, setDateRange] = useState([defaultStartDate, defaultEndDate]);
+export const DateRangePicker = ({
+  defaultStartDate = subDays(new Date(), 6), 
+  lastAvailableDate = new Date()
+}) => {
+  const [dateRange, setDateRange] = useState([defaultStartDate, lastAvailableDate]);
   const [startDate, endDate] = dateRange;
 
   const CustomInput = forwardRef(
@@ -67,7 +68,7 @@ export const DateRangePicker = () => {
       locale={es}
       customInput={<CustomInput/>}
       dateFormat='dd/MM/yyyy'
-      maxDate={defaultEndDate}
+      maxDate={lastAvailableDate}
       calendarStartDay={7}
     />
   );
