@@ -53,8 +53,7 @@ export const Header = ({
   const [anchorElNotifications, setAnchorElNotifications] = useState(null);
   const [anchorElProfile, setAnchorElProfile] = useState(null);
   const [anchorElManagement, setAnchorElManagement] = useState(null);
-  const [hoveredTabs, setHoveredTabs] = useState({
-  });
+  
 
 
   const handleOpenNavMenu = (event) => {
@@ -319,12 +318,9 @@ export const Header = ({
                       key={page}
                       onClick={handleClickTab(pages[page])}
                       sx={{
-                        backgroundColor: hoveredTabs[page] ? '#0c3020' : '#12422c',
                         color: 'white',
                         textTransform: 'unset',
-                        borderBottom:
-                      location.pathname === pages[page] ? '2px solid white' : 'none',
-                        transition: 'background-color 0.3s ease',
+                        borderBottom: currentTab === page ? '2px solid white' : 'none',
                         '&:hover': {
                           backgroundColor: '#0c3020',
                         },
@@ -337,12 +333,9 @@ export const Header = ({
                   <Button
                     onClick={handleOpenManagementMenu}
                     sx={{
-                      backgroundColor: hoveredTabs['Gestión'] ? '#0c3020' : '#12422c',
                       color: 'white',
                       textTransform: 'unset',
-                      borderBottom:
-                      location.pathname === 'Gestión' ? '2px solid white' : 'none',
-                      transition: 'background-color 0.3s ease',
+                      borderBottom: currentTab === 'Gestión' ? '2px solid white' : 'none',
                       '&:hover': {
                         backgroundColor: '#0c3020',
                       },

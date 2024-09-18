@@ -5,23 +5,30 @@ import {
   TableContainer
 } from '@mui/material';
 import {
-  useEffect,
-  useState
+  useEffect
 } from 'react';
-import {
-  ReportStatusSelect
-} from '../../components/ReportStatusSelect';
-import {
-  ModalReportResolved
-} from '../../modales/ModalReportResolved/ModalReportResolved';
+
+
+
+
 import {
   TimestampUtil
 } from '../../utils/timestampUtil';
 import {
-  ReportTable 
+  ReportTable, reports, handleOpenModalReportResolved 
 } from '../../tables/ReportTable/ReportTable';
-
-
+import {
+  SearcherDateRangerPickerPaginated
+} from '../../components/SearcherDateRangePickerPaginated';
+import {
+  useReports 
+} from '../../api/hooks/useReports/useReports';
+import {
+  HEIGHT_HEADER_FILTER_SIDE_COMPONENT 
+} from '../../config';
+import {
+  prevFetch, nextFetch, disabledNextBtn,disabledPrevBtn
+} from '../../hooks/usePagination';
 
 const mapper = (reports) => {
   return reports.map(
