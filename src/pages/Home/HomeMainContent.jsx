@@ -17,11 +17,10 @@ import {
   MapWithContainers
 } from '../../components/MapWithContainers';
 import {
-  useEffect, useState
+  useState
 } from 'react';
-import {
-  useContainers
-} from '../../api/hooks/useContainers/useContainers';
+
+
 
 import './HomeMainContent.css';
 import Battery0BarIcon from '@mui/icons-material/Battery0Bar';
@@ -50,12 +49,10 @@ import {
 import {
   useOptimalRoutes 
 } from '../../api/hooks/useOptimalRoutes/useOptimalRoutes';
-import {
-  useAreas 
-} from '../../api/hooks/useAreas/useAreas';
-import {
-  formatContainers 
-} from '../../api/hooks/useReports/mappers';
+
+
+
+
 import {
   HEIGHT_HEADER_FILTER_SIDE_COMPONENT 
 } from '../../config';
@@ -122,7 +119,9 @@ const getColorPoint = (capacity) => {
 };
 
 
-export default function HomeMainContent() {
+export default function HomeMainContent({
+  containers, areas, containerSelected, setContainerSelected
+}) {
 
   const [openGenerateOptimalRouteModal, setOpenGenerateOptimalRouteModal] = useState(false)
   const [openGenerateOptimalRouteRightSideInfo, setOpenGenerateOptimalRouteRightSideInfo] = useState(false)
@@ -131,14 +130,10 @@ export default function HomeMainContent() {
 
   const [optimalRoutes, setOptimalRoutes] = useState(null)
 
-  const [containers, setContainers] = useState([]);
-  const [containerSelected, setContainerSeleted] = useState(null);
-
-  const [areas, setAreas] = useState([])
 
   const handleOpenGenerateOptimalRouteModal = () => setOpenGenerateOptimalRouteModal(true)
   const handleCloseOpenGenerateOptimalRouteModal = () => setOpenGenerateOptimalRouteModal(false)
-  const handleCloseRightSidePanelContainerInfo = () => setContainerSeleted(null)
+  const handleCloseRightSidePanelContainerInfo = () => setContainerSelected(null)
   const handleCloseRightSidePanelOptimalRouteInfo = () => setOpenGenerateOptimalRouteRightSideInfo(false)
   const handleOpenRightSidePanelOptimalRouteInfo = () => {
     handleCloseOpenGenerateOptimalRouteModal()
@@ -149,49 +144,17 @@ export default function HomeMainContent() {
     lat: -34.5893,
     lng: -58.3974,
   };
-  const {
-    getContainers: {
-      getContainers: getContainers
-    },
-  } = useContainers();
+
   const {
     getOptimalRoutes: {
       getOptimalRoutes,
       isLoadingGetOptimalRoutes
     }
   } = useOptimalRoutes()
-  const {
-    getAreas: {
-      getAreas,
-      isLoadingGetAreas
-    }
-  } = useAreas()
+
 
   const apiKeyGoogleMaps = import.meta.env.VITE_REACT_APP_API_KEY_GOOGLE_MAPS;
 
-  useEffect(() => {
-    const retrieveContainers = async () => {
-      const containersUnformated = await getContainers();
-      const containersFormated = formatContainers(containersUnformated.result);
-
-      setContainers(containersFormated);
-    };
-
-    try {
-      retrieveContainers();
-    } catch (e) {
-      console.log(e);
-    }
-  }, []);
-
-  useEffect(() => {
-    const fetchAreas = async () => {
-      const areasRetrieved = await getAreas()
-      setAreas(areasRetrieved.result)
-    }
-
-    fetchAreas()
-  }, [])
 
   const fetchOptimalRoutes = async (areaId) => {
     // lo comento para usar el mock y no generar bill
@@ -232,7 +195,7 @@ export default function HomeMainContent() {
             width: '100%',
             display: 'flex',
             justifyContent: 'end',
-            marginTop: '24px',
+            pt: '24px',
             alignItems: 'center',
             gap: '11px',
             pr: '32px',
@@ -310,7 +273,7 @@ export default function HomeMainContent() {
               containers={containers.map((p) => (
                 <Marker
                   key={p.id}
-                  setContainerSeleted={setContainerSeleted}
+                  setContainerSeleted={setContainerSelected}
                   point={p}
                 />
               ))}
