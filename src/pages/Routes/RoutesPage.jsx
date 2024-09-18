@@ -21,37 +21,49 @@ import profilePicture from '../../assets/profile_picture.jpg';
 
 const mapper = (routes) => {
   return routes
-    .filter(r => r.status.some(statusItem => statusItem.status === 'FINISHED')) //Excluye recorridos in progress, pq esta pantalla solo muestra los terminados.
-    .filter(r => r.status.some(statusItem => statusItem.status === 'STARTED')) //el BE tiene rutas sin STARTED asiq pongo esto asi no se ve feo en una demo. TODO: borrar esta linea.
     .map(r => {
       const {
         date: date 
       } = TimestampUtil.convertToDateAndHour(r.timestamp)
 
-      const totalMinutes = Math.round(r.directions.total_duration / 60);
-      const hours = Math.floor(totalMinutes / 60);
-      const minutes = totalMinutes % 60;
-      let duration;
-      if (hours > 0 && minutes != 0) {
-        duration = `${hours} hr  ${minutes} min`;
-      } else if (minutes == 0) {
-        duration = `${hours} hr`;
-      } else {
-        duration = `${minutes} min`;
-      }
+      let startTime = null;
+      let endTime = null;
+      let duration = 'Pendiente';
 
       const startedStatus = r.status.find(statusItem => statusItem.status === 'STARTED');
-      const startedTimestamp = startedStatus.timestamp;
-      const {
-        time: startTime 
-      } = TimestampUtil.convertToDateAndHour(startedTimestamp);
-
       const finishedStatus = r.status.find(statusItem => statusItem.status === 'FINISHED');
-      const finishedTimestamp = finishedStatus.timestamp;
-      const {
-        time: endTime 
-      } = TimestampUtil.convertToDateAndHour(finishedTimestamp);
 
+      if (startedStatus) { //recorrido empezado. Si no estuviera empezado, queda Pendiente.
+        const startedTimestamp = startedStatus.timestamp;
+        const {
+          time: startedTime 
+        } = TimestampUtil.convertToDateAndHour(startedTimestamp);
+        startTime = startedTime;
+
+        if (finishedStatus) { //recorrido finalizado
+          const finishedTimestamp = finishedStatus.timestamp;
+          const {
+            time: finishedTime 
+          } = TimestampUtil.convertToDateAndHour(finishedTimestamp);
+          endTime = finishedTime;
+          
+          const totalMinutes = Math.round(r.directions.total_duration / 60);
+          const hours = Math.floor(totalMinutes / 60);
+          const minutes = totalMinutes % 60;
+
+          if (hours > 0 && minutes != 0) {
+            duration = `${hours} hr  ${minutes} min`;
+          } else if (minutes == 0) {
+            duration = `${hours} hr`;
+          } else {
+            duration = `${minutes} min`;
+          }
+        } else { //recorridos en curso: empezado pero no finalizado
+          duration = 'En curso';
+          startTime = `Comienzo: ${startTime}`;
+          endTime = null;
+        }
+      }
 
       return {
         id: r.id.slice(-6),

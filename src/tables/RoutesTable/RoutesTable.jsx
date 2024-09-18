@@ -82,14 +82,17 @@ export const RoutesTable = ({
               >
                 {row.duration}
               </Typography>
-              <Typography
-                sx={{
-                  fontSize: '14px',
-                  color: '#616161',
-                }}
-              >
-                {row.startTime} - {row.endTime}
-              </Typography>
+
+              {row.startTime && (
+                <Typography
+                  sx={{
+                    fontSize: '14px',
+                    color: '#616161',
+                  }}
+                >
+                  {row.startTime} - {row.endTime}
+                </Typography>
+              )}
             </TableCell>
             {isMediumScreen && (
               <>
