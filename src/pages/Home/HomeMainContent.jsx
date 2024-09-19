@@ -1,5 +1,4 @@
 import CircleIcon from '@mui/icons-material/Circle';
-import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import {
   Box,
   LinearProgress,
@@ -201,39 +200,6 @@ export default function HomeMainContent({
             pr: '32px',
           }}
         >
-          <Tooltip
-            title={
-              <Box
-                sx={{
-                  display: 'flex',
-                  alignItems: 'center' 
-                }}
-              >
-                <Typography
-                  sx={{
-                    fontFamily: 'Roboto',
-                    fontWeight: '500',
-                    fontSize: '14px',
-                    lineHeight: '14px',
-                    color: '#FFFFFF',
-                    textAlign:'center'
-                  }}
-                >
-                  Automáticamente se genera a las 20hs cada día
-                </Typography>
-              </Box>
-            }
-            placement='bottom'
-            arrow
-          >
-            <InfoOutlinedIcon
-              sx={{
-                color: '#0000008F',
-                fontSize: '24px',
-                cursor: 'pointer',
-              }}
-            />
-          </Tooltip>
           <Button
             width='177px'
             height='26px'

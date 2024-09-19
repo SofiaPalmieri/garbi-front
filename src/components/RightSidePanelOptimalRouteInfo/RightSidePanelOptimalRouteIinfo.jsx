@@ -72,8 +72,8 @@ export const RightSidePanelOptimalRouteIinfo = ({
       >
         <RouteOptimalInfo
           name={'Solo contenedores llenos'}
-          color={'#2E7D32'}
-          colorNoSelected={'rgba(46, 125, 50, 0.30)'}
+          color={'#D32F2F'}
+          colorNoSelected={'rgba(211, 47, 47, 0.30)'}
           selected={routeSelected.id == optimalRoutes.optimalRouteFull.id}
           onClick={() => setRouteSelected(optimalRoutes.optimalRouteFull)}
           onSendRoute={() => onSelectOptimalRoute(optimalRoutes.optimalRouteFull.id)}
@@ -91,9 +91,9 @@ export const RightSidePanelOptimalRouteIinfo = ({
           distanceInKms={(optimalRoutes.optimalRouteWarningAndFull.total_distance/1000).toFixed(1)}
         />
         <RouteOptimalInfo
-          name={'Solo contenedores llenos'}
-          color={'#D32F2F'}
-          colorNoSelected={'rgba(211, 47, 47, 0.30)'}
+          name={'Todos los contenedores'}
+          color={'#2E7D32'}
+          colorNoSelected={'rgba(46, 125, 50, 0.30)'}
           selected={routeSelected.id == optimalRoutes.optimalRouteAll.id}
           onClick={() => setRouteSelected(optimalRoutes.optimalRouteAll)}
           onSendRoute={() => onSelectOptimalRoute(optimalRoutes.optimalRouteAll.id)}
