@@ -79,7 +79,7 @@ export const GenerateOptimalRouteForm = ({
               field
             }) => (
               <FormControl
-                variant='filled'
+                variant='outlined'
                 size='medium'
                 fullWidth
               >
@@ -91,7 +91,7 @@ export const GenerateOptimalRouteForm = ({
                 <Select
                   size='medium'
                   fullWidth
-                  variant='filled'
+                  variant='outlined'
                   label='Área'
                   {...field}
                 >
@@ -147,7 +147,7 @@ export const GenerateOptimalRouteForm = ({
               control={control}
               errors={errors}
               label={''}
-              variant='filled'
+              variant='outlined'
               size='medium'
               endMessage={'%'}
             />
