@@ -294,8 +294,8 @@ export default function HomeMainContent({
           >
             <CircleIcon
               sx={{
-                color: colors.LOW_CAPACITY,
-                mr: '16px',
+                color: colors.HIGH_CAPACITY,
+                mr: '8px',
               }}
             />
             <Typography
@@ -307,7 +307,7 @@ export default function HomeMainContent({
               }}
             >
               {' '}
-              +75%
+              -25%
             </Typography>
           </Box>
           <Box
@@ -318,7 +318,7 @@ export default function HomeMainContent({
             <CircleIcon
               sx={{
                 color: colors.MEDIUM_CAPACITY,
-                mr: '16px',
+                mr: '8px',
               }}
             />
             <Typography
@@ -340,8 +340,8 @@ export default function HomeMainContent({
           >
             <CircleIcon
               sx={{
-                color: colors.HIGH_CAPACITY,
-                mr: '16px',
+                color: colors.LOW_CAPACITY,
+                mr: '8px',
               }}
             />
             <Typography
@@ -353,7 +353,7 @@ export default function HomeMainContent({
               }}
             >
               {' '}
-              -25%
+              +75%
             </Typography>
           </Box>
         </Paper>
