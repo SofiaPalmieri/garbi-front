@@ -12,14 +12,11 @@ import '../DateRangePicker/DateRangePicker.css';
 import {
   es 
 } from 'date-fns/locale'; 
-import {
-  subDays 
-} from 'date-fns'
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 
 export const DatePickerCustom = () => {
-  const defaultEndDate = subDays(new Date(), 1);
-  const [startDate, setStartDate] = useState(subDays(new Date(), 1));
+  const defaultEndDate = new Date();
+  const [startDate, setStartDate] = useState(defaultEndDate);
 
   const CustomInput = forwardRef(
     ({

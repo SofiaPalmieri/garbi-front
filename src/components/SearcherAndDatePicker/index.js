@@ -1,3 +1,0 @@
-export {
-  SearcherAndDatePicker 
-} from './SearcherAndDatePicker';

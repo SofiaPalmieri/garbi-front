@@ -1,3 +1,4 @@
+/* DEPRECADO.
 import {
   AvatarGroup,
   Box,
@@ -305,3 +306,4 @@ export default function RouteMainContent() {
     </Box>
   );
 }
+*/
