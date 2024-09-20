@@ -1,6 +1,8 @@
 import {
-  useCreateReport ,
-  useFetchReports
+  useCreateReport, 
+  useFetchReports,
+  useReviewReport,
+  useCloseReport,
 } from './request';
 
 export const useReports = () => {
@@ -15,6 +17,16 @@ export const useReports = () => {
     isLoading: isLoadingFetchReports
   } = useFetchReports();
 
+  const {
+    reviewReport, 
+    isLoading: isReviewReportLoading 
+  } = useReviewReport();
+
+  const {
+    closeReport, 
+    isLoading: isCloseReportLoading 
+  } = useCloseReport();
+  
   return {
     createReport: {
       createReport,
@@ -23,6 +35,14 @@ export const useReports = () => {
     fetchReports: {
       fetchReports,
       isLoadingFetchReports
-    }
+    },
+    reviewReport: {
+      reviewReport,
+      isReviewReportLoading,
+    },
+    closeReport: {
+      closeReport,
+      isCloseReportLoading,
+    },
   };
 };

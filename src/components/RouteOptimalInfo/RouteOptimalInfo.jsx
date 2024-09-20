@@ -59,7 +59,8 @@ export const RouteOptimalInfo = ({
           <AccessTimeIcon
             sx={{
               fontSize: '1.25rem',
-              mr: '2px'
+              mr: '4px',
+              color: 'rgba(0, 0, 0, 0.56)'
             }}
 
           />
@@ -82,7 +83,8 @@ export const RouteOptimalInfo = ({
           <RouteIcon
             sx={{
               fontSize: '1.25rem',
-              mr: '2px'
+              mr: '4px',
+              color: 'rgba(0, 0, 0, 0.56)'
             }}
 
           />
@@ -97,7 +99,11 @@ export const RouteOptimalInfo = ({
           </Typography>
         </Box>
       </Box>
-      <Box >
+      <Box 
+        sx={{
+          mt: '2px',
+        }}
+      >
         <Button
           variant='text'
           color='primary'

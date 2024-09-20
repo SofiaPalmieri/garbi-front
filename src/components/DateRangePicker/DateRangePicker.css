@@ -73,6 +73,15 @@
   z-index: -1;
 }
 
+/* Selected date for date picker. */
+.react-datepicker__day--selected {
+  background-color: #13422c !important;
+  color: white !important;
+  position: relative !important;
+  z-index: 1 !important;
+  border-radius: 50% !important;
+}
+
 /* Adjust circle position. */
 .react-datepicker__day--range-start::before {
   margin-left: 2px;
@@ -97,4 +106,28 @@
 
 .react-datepicker__day--outside-month {
   color: #888;
+}
+
+.react-datepicker-popper {
+  z-index: 1;
+
+  line-height: 0;
+
+  .react-datepicker__triangle {
+    stroke: #e0e0e0;
+  }
+
+  &[data-placement^="bottom"] {
+    .react-datepicker__triangle {
+      fill: #fff;
+      color: #fff;
+    }
+  }
+
+  &[data-placement^="top"] {
+    .react-datepicker__triangle {
+      fill: #fff;
+      color: #fff;
+    }
+  }
 }

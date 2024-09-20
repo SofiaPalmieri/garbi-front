@@ -34,7 +34,6 @@ export const DateRangePicker = () => {
         variant='outlined'
         ref={ref}
         sx={{
-          mt: 1,
           width: '248px' 
         }}
         size='small'
@@ -43,7 +42,11 @@ export const DateRangePicker = () => {
             <InputAdornment
               position='start'
             >
-              <CalendarTodayIcon />
+              <CalendarTodayIcon 
+                sx={{ 
+                  color: '#bdbdbd'
+                }} 
+              />
             </InputAdornment>
           ),
         }}
@@ -64,7 +67,7 @@ export const DateRangePicker = () => {
       locale={es}
       customInput={<CustomInput/>}
       dateFormat='dd/MM/yyyy'
-      maxDate={new Date()}
+      maxDate={defaultEndDate}
       calendarStartDay={7}
     />
   );

@@ -7,26 +7,35 @@ import {
 import {
   HTTPMethods 
 } from '../../config/HTTPMethods';
+import QueryBuilder from '../../queryBuilder/QueryBuilder';
 
 const baseIntegrationRoute = baseIntegrationUri + '/route'
 
-export const useGetRoutes = () => {
+export const useFetchRoutes = () => {
   const {
-    isLoading, commonFetch 
+    commonFetch, isLoading 
   } = useFetch({
-    url: '/api/route',
+    baseUri: baseIntegrationRoute,
   });
 
-  const getRoutes = () => {
+  const fetchRoutes = (lastKey = null) => {
+    const queryBuilder = new QueryBuilder()
+
+    const uri = queryBuilder
+      .addParam('lastKey', lastKey)
+      .build()
+
     return commonFetch({
-      method: 'GET',
-    });
-  };
+      uri,
+      method: HTTPMethods.GET,
+      timeout: 10000
+    })
+  }
 
   return {
-    getRoutes,
-    isLoadingGetRoutes: isLoading,
-  };
+    fetchRoutes,
+    isLoading
+  }
 };
 
 export const useSelectOptimalRoutes = () => {
