@@ -56,14 +56,14 @@ const router = createBrowserRouter([
   {
     path: '/',
     element: <Navigate
-      to='/login'
+      to='/ingresar'
     />,
   },
   {
     element: <Base />,
     children: [
       {
-        path: '/login',
+        path: '/ingresar',
         element: <LoginPage />,
       },
     ],
@@ -72,11 +72,11 @@ const router = createBrowserRouter([
     element: <BaseWithHeader />,
     children: [
       {
-        path: '/containers',
+        path: '/contenedores',
         element: <ContainerPage />,
       },
       {
-        path: '/home',
+        path: '/inicio',
         element: <HomePage />,
       },
       {
@@ -92,15 +92,15 @@ const router = createBrowserRouter([
         element: <RecommendationsPage />,
       },
       {
-        path: '/routes',
+        path: '/recorridos',
         element: <RoutesPage />,
       },
       {
-        path: '/routes/detail',
+        path: '/recorridos/detalle',
         element: <RouteDetailPage />,
       },
       // {
-      //   path: '/areas/new',
+      //   path: '/areas/nueva',
       //   element: <CreateAreaPage />,
       // },
       {
@@ -108,7 +108,7 @@ const router = createBrowserRouter([
         element: <ReportPage />,
       },
       {
-        path: '/reportes/detalles',
+        path: '/reportes/detalle',
         element: <ReportDetailsPage />
       },
       {
@@ -127,7 +127,7 @@ const router = createBrowserRouter([
         element: <CompanyPage />,
       },
       {
-        path: 'reportes/new',
+        path: 'reportes/nuevo',
         element: <CreateReportPage />,
       },
     ],

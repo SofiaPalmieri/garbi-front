@@ -30,16 +30,16 @@ import {
 } from '../../components/ProfileIconMenu';
 
 const pages = {
-  Mapa: '/home',
-  Estadísticas: '/home',  // esta hay que cambiarla cuando la creemos
+  Mapa: '/inicio',
+  Estadísticas: '/inicio',  // esta hay que cambiarla cuando la creemos
   Recomendaciones: '/recomendaciones',  
   Reportes: '/reportes',
 };
 
 const managementItems = {
   Empleados: '/empleados',
-  Contenedores: '/containers',  
-  Recorridos: '/routes',  
+  Contenedores: '/contenedores',  
+  Recorridos: '/recorridos',  
   Áreas: '/areas',
 };
 
@@ -185,7 +185,7 @@ export const Header = ({
                   border: 'none' 
                 }}
                 component={'button'}
-                onClick={() => navigate('/home')}
+                onClick={() => navigate('/inicio')}
               >
                 <img
                   src={garbiLogo}
@@ -217,7 +217,7 @@ export const Header = ({
                     border: 'none' 
                   }}
                   component={'button'}
-                  onClick={() => navigate('/home')}
+                  onClick={() => navigate('/inicio')}
                 >
                   <img
                     src={garbiLogo}
