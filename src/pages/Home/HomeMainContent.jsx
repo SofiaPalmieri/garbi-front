@@ -1,5 +1,4 @@
 import CircleIcon from '@mui/icons-material/Circle';
-import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import {
   Box,
   LinearProgress,
@@ -201,39 +200,6 @@ export default function HomeMainContent({
             pr: '32px',
           }}
         >
-          <Tooltip
-            title={
-              <Box
-                sx={{
-                  display: 'flex',
-                  alignItems: 'center' 
-                }}
-              >
-                <Typography
-                  sx={{
-                    fontFamily: 'Roboto',
-                    fontWeight: '500',
-                    fontSize: '14px',
-                    lineHeight: '14px',
-                    color: '#FFFFFF',
-                    textAlign:'center'
-                  }}
-                >
-                  Automáticamente se genera a las 20hs cada día
-                </Typography>
-              </Box>
-            }
-            placement='bottom'
-            arrow
-          >
-            <InfoOutlinedIcon
-              sx={{
-                color: '#0000008F',
-                fontSize: '24px',
-                cursor: 'pointer',
-              }}
-            />
-          </Tooltip>
           <Button
             width='177px'
             height='26px'
@@ -328,8 +294,8 @@ export default function HomeMainContent({
           >
             <CircleIcon
               sx={{
-                color: colors.LOW_CAPACITY,
-                mr: '16px',
+                color: colors.HIGH_CAPACITY,
+                mr: '8px',
               }}
             />
             <Typography
@@ -341,7 +307,7 @@ export default function HomeMainContent({
               }}
             >
               {' '}
-              +75%
+              -25%
             </Typography>
           </Box>
           <Box
@@ -352,7 +318,7 @@ export default function HomeMainContent({
             <CircleIcon
               sx={{
                 color: colors.MEDIUM_CAPACITY,
-                mr: '16px',
+                mr: '8px',
               }}
             />
             <Typography
@@ -374,8 +340,8 @@ export default function HomeMainContent({
           >
             <CircleIcon
               sx={{
-                color: colors.HIGH_CAPACITY,
-                mr: '16px',
+                color: colors.LOW_CAPACITY,
+                mr: '8px',
               }}
             />
             <Typography
@@ -387,7 +353,7 @@ export default function HomeMainContent({
               }}
             >
               {' '}
-              -25%
+              +75%
             </Typography>
           </Box>
         </Paper>

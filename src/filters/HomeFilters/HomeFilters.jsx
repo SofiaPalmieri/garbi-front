@@ -53,7 +53,7 @@ export const HomeFilters = ({
               <InputForm
                 control={control}
                 name={'minLlenado'}
-                label={'Minimo %'}
+                label={'Mínimo %'}
                 styleInput={{
                   '& .MuiFormLabel-root': {
                     fontFamily: 'Roboto',
@@ -128,7 +128,7 @@ export const HomeFilters = ({
               <InputForm
                 control={control}
                 name={'minBateria'}
-                label={'Minimo %'}
+                label={'Mínimo %'}
                 styleInput={{
                   '& .MuiFormLabel-root': {
                     fontFamily: 'Roboto',
