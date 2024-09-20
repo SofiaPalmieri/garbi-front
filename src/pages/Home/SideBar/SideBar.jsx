@@ -1,7 +1,7 @@
 import Box from '@mui/material/Box';
 import TextFieldBox from './Utils/TextFieldBox';
 import {
-  Typography 
+  Typography
 } from '@mui/material';
 import SelectAreaBox from './Utils/SelectAreaBox';
 

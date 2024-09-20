@@ -162,7 +162,7 @@ export const ChangePasswordBox = () => {
     });
 
     //TODO later: validar que la respuesta sea la esperada, y sino tirar error.
-    navigate('/home');
+    navigate('/inicio');
   };
 
 

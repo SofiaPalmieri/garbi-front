@@ -1,5 +1,4 @@
 import CircleIcon from '@mui/icons-material/Circle';
-import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import {
   Box,
   LinearProgress,
@@ -17,11 +16,10 @@ import {
   MapWithContainers
 } from '../../components/MapWithContainers';
 import {
-  useEffect, useState
+  useState
 } from 'react';
-import {
-  useContainers
-} from '../../api/hooks/useContainers/useContainers';
+
+
 
 import './HomeMainContent.css';
 import Battery0BarIcon from '@mui/icons-material/Battery0Bar';
@@ -50,12 +48,10 @@ import {
 import {
   useOptimalRoutes 
 } from '../../api/hooks/useOptimalRoutes/useOptimalRoutes';
-import {
-  useAreas 
-} from '../../api/hooks/useAreas/useAreas';
-import {
-  formatContainers 
-} from '../../api/hooks/useReports/mappers';
+
+
+
+
 import {
   HEIGHT_HEADER_FILTER_SIDE_COMPONENT 
 } from '../../config';
@@ -122,7 +118,9 @@ const getColorPoint = (capacity) => {
 };
 
 
-export default function HomeMainContent() {
+export default function HomeMainContent({
+  containers, areas, containerSelected, setContainerSelected
+}) {
 
   const [openGenerateOptimalRouteModal, setOpenGenerateOptimalRouteModal] = useState(false)
   const [openGenerateOptimalRouteRightSideInfo, setOpenGenerateOptimalRouteRightSideInfo] = useState(false)
@@ -131,14 +129,10 @@ export default function HomeMainContent() {
 
   const [optimalRoutes, setOptimalRoutes] = useState(null)
 
-  const [containers, setContainers] = useState([]);
-  const [containerSelected, setContainerSeleted] = useState(null);
-
-  const [areas, setAreas] = useState([])
 
   const handleOpenGenerateOptimalRouteModal = () => setOpenGenerateOptimalRouteModal(true)
   const handleCloseOpenGenerateOptimalRouteModal = () => setOpenGenerateOptimalRouteModal(false)
-  const handleCloseRightSidePanelContainerInfo = () => setContainerSeleted(null)
+  const handleCloseRightSidePanelContainerInfo = () => setContainerSelected(null)
   const handleCloseRightSidePanelOptimalRouteInfo = () => setOpenGenerateOptimalRouteRightSideInfo(false)
   const handleOpenRightSidePanelOptimalRouteInfo = () => {
     handleCloseOpenGenerateOptimalRouteModal()
@@ -149,49 +143,17 @@ export default function HomeMainContent() {
     lat: -34.5893,
     lng: -58.3974,
   };
-  const {
-    getContainers: {
-      getContainers: getContainers
-    },
-  } = useContainers();
+
   const {
     getOptimalRoutes: {
       getOptimalRoutes,
       isLoadingGetOptimalRoutes
     }
   } = useOptimalRoutes()
-  const {
-    getAreas: {
-      getAreas,
-      isLoadingGetAreas
-    }
-  } = useAreas()
+
 
   const apiKeyGoogleMaps = import.meta.env.VITE_REACT_APP_API_KEY_GOOGLE_MAPS;
 
-  useEffect(() => {
-    const retrieveContainers = async () => {
-      const containersUnformated = await getContainers();
-      const containersFormated = formatContainers(containersUnformated.result);
-
-      setContainers(containersFormated);
-    };
-
-    try {
-      retrieveContainers();
-    } catch (e) {
-      console.log(e);
-    }
-  }, []);
-
-  useEffect(() => {
-    const fetchAreas = async () => {
-      const areasRetrieved = await getAreas()
-      setAreas(areasRetrieved.result)
-    }
-
-    fetchAreas()
-  }, [])
 
   const fetchOptimalRoutes = async (areaId) => {
     // lo comento para usar el mock y no generar bill
@@ -232,45 +194,12 @@ export default function HomeMainContent() {
             width: '100%',
             display: 'flex',
             justifyContent: 'end',
-            marginTop: '24px',
+            pt: '24px',
             alignItems: 'center',
             gap: '11px',
             pr: '32px',
           }}
         >
-          <Tooltip
-            title={
-              <Box
-                sx={{
-                  display: 'flex',
-                  alignItems: 'center' 
-                }}
-              >
-                <Typography
-                  sx={{
-                    fontFamily: 'Roboto',
-                    fontWeight: '500',
-                    fontSize: '14px',
-                    lineHeight: '14px',
-                    color: '#FFFFFF',
-                    textAlign:'center'
-                  }}
-                >
-                  Automáticamente se genera a las 20hs cada día
-                </Typography>
-              </Box>
-            }
-            placement='bottom'
-            arrow
-          >
-            <InfoOutlinedIcon
-              sx={{
-                color: '#0000008F',
-                fontSize: '24px',
-                cursor: 'pointer',
-              }}
-            />
-          </Tooltip>
           <Button
             width='177px'
             height='26px'
@@ -310,7 +239,7 @@ export default function HomeMainContent() {
               containers={containers.map((p) => (
                 <Marker
                   key={p.id}
-                  setContainerSeleted={setContainerSeleted}
+                  setContainerSeleted={setContainerSelected}
                   point={p}
                 />
               ))}
@@ -365,8 +294,8 @@ export default function HomeMainContent() {
           >
             <CircleIcon
               sx={{
-                color: colors.LOW_CAPACITY,
-                mr: '16px',
+                color: colors.HIGH_CAPACITY,
+                mr: '8px',
               }}
             />
             <Typography
@@ -378,7 +307,7 @@ export default function HomeMainContent() {
               }}
             >
               {' '}
-              +75%
+              -25%
             </Typography>
           </Box>
           <Box
@@ -389,7 +318,7 @@ export default function HomeMainContent() {
             <CircleIcon
               sx={{
                 color: colors.MEDIUM_CAPACITY,
-                mr: '16px',
+                mr: '8px',
               }}
             />
             <Typography
@@ -411,8 +340,8 @@ export default function HomeMainContent() {
           >
             <CircleIcon
               sx={{
-                color: colors.HIGH_CAPACITY,
-                mr: '16px',
+                color: colors.LOW_CAPACITY,
+                mr: '8px',
               }}
             />
             <Typography
@@ -424,7 +353,7 @@ export default function HomeMainContent() {
               }}
             >
               {' '}
-              -25%
+              +75%
             </Typography>
           </Box>
         </Paper>

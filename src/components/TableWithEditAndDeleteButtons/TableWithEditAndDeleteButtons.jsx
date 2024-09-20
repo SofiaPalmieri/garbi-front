@@ -8,9 +8,9 @@ import {
   TableCell,
   TableContainer,
   TableHead,
-  TablePagination,
   TableRow
 } from '@mui/material';
+
 
 
 export const TableWithEditAndDeleteButtons = ({
@@ -124,15 +124,6 @@ export const TableWithEditAndDeleteButtons = ({
           </TableContainer>
         </Box>
       </Box>
-      <TablePagination
-        rowsPerPageOptions={[5, 10, 25]}
-        component='div'
-        count={3}
-        rowsPerPage={3}
-        page={6}
-
-      />
-
     </>
   )
 }

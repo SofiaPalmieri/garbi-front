@@ -9,9 +9,22 @@ import {
   HEIGHT_HEADER 
 } from '../../config';
 
+
+const DefaultEmpty = () => <></>
+
+
 export const FilterSideComponent = ({
-  title, component, prefix, subtitle, titleLink, renderFilters, height = HEIGHT_FULL_SCREEN
+  title, 
+  component, 
+  prefix, 
+  subtitle, 
+  titleLink, 
+  renderFilters: Filters = DefaultEmpty, 
+  height = HEIGHT_FULL_SCREEN,
+  handleSubmit =  () => {}, 
+  whenFiltersSubmit
 }) => {
+  
   return (
     <Box
       sx={{
@@ -32,6 +45,8 @@ export const FilterSideComponent = ({
           height: `calc(100vh - ${HEIGHT_HEADER})`,
           position: 'fixed'
         }}
+        component={'form'}
+        onSubmit={handleSubmit(whenFiltersSubmit)}
       >
         <Box
           sx = {{
@@ -49,13 +64,14 @@ export const FilterSideComponent = ({
           >
             Filtros
           </Typography>
-          {renderFilters}
+          {<Filters />}
         </Box>
         <Button
           variant='contained'
           color='primary'
           size='large'
           fullWidth
+          type='submit'
           sx={{
             backgroundColor: '#12422C',
           }}
@@ -66,7 +82,8 @@ export const FilterSideComponent = ({
       <Box
         sx={{
           flexGrow: 1,
-          ml: '16rem'
+          ml: '16rem',
+          maxWidth: 'calc(100% - 16rem)',
         }}
       >
         <Box

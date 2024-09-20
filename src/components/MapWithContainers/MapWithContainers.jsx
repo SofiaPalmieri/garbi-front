@@ -3,13 +3,13 @@ import {
   useMap
 } from '@vis.gl/react-google-maps';
 import {
-  useEffect 
+  useEffect
 } from 'react';
 import {
-  polygonConfig, polylineConfig 
+  polygonConfig, polylineConfig
 } from '../AreaDrawingMap/drawAreas';
 import {
-  completePath 
+  completePath
 } from '../../reducers/drawReducer';
 
 export const MapWithContainers = ({
@@ -22,7 +22,7 @@ export const MapWithContainers = ({
     >
       <DrawOptionals
         routes={routes}
-        route = {route}
+        route={route}
         areas={areas}
       />
       <Map
@@ -49,7 +49,7 @@ export const MapWithContainers = ({
 };
 
 const DrawOptionals = ({
-  routes, areas, route 
+  routes, areas, route
 }) => {
   const map = useMap('garbi-home-map')
 
@@ -91,29 +91,41 @@ const DrawOptionals = ({
   useEffect(() => {
     if (areas == null || map == null) return;
 
-    areas.map(area => {
+    const newPolygons = [];
+    const newPolylines = [];
+
+
+    areas.forEach(area => {
       const path = completePath(
         area.coordinates.map(
           c => new google.maps.LatLng(c)
         )
       )
 
-      new google.maps.Polygon({
+      const polygon = new google.maps.Polygon({
         paths: path,
         editable: false,
         fillColor: 'a0e58c',
         ...polygonConfig,
         map
       });
-      new google.maps.Polyline({
+      newPolygons.push(polygon);
+
+      const polyline = new google.maps.Polyline({
         path: path,
         strokeColor: 'a0e58c',
         editable: false,
         ...polylineConfig,
         map
       });
+      newPolylines.push(polyline);
     })
-  }, [areas])
+    
+    return () => {
+      newPolygons.forEach(polygon => polygon.setMap(null)); // Eliminar polígonos del mapa
+      newPolylines.forEach(polyline => polyline.setMap(null));
+    };
+  }, [areas, map])
 }
 
 function decodePolyline(encoded) {

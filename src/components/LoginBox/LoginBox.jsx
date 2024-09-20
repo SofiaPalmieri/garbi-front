@@ -89,7 +89,7 @@ export const LoginBox = ({
     if (!response.termsAndConditions) {
       setIsFlipped(true);
     } else {
-      navigate('/home');
+      navigate('/inicio');
     }
   };
 
