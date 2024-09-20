@@ -56,8 +56,8 @@ export const CommonTableList = ({
           <SearcherDateRangerPickerPaginated
             prevFetch={prevFetch}
             nextFetch={nextFetch}
-            disabledNextBtn={disabledNextBtn}
-            disabledPrevBtn={disabledPrevBtn}
+            disabledNextBtn={disabledNextBtn || isLoadingFetchData}
+            disabledPrevBtn={disabledPrevBtn || isLoadingFetchData}
             placeholderInput={placeHolderInput}
           />
           <Box
