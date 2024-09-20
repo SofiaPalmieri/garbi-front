@@ -38,9 +38,6 @@ import {
   RouteDetailPage
 } from './pages/Routes/Detail/RouteDetailPage.jsx';
 import PerfilPage from './pages/Perfil/PerfilPage.jsx';
-import {
-  ContainerPage2 
-} from './pages/Containers/ContainerPage2.jsx';
 
 const theme = createTheme({
   palette: {
@@ -77,10 +74,6 @@ const router = createBrowserRouter([
       {
         path: '/contenedores',
         element: <ContainerPage />,
-      },
-      {
-        path: '/contenedores/nuevo',
-        element: <ContainerPage2 />,
       },
       {
         path: '/inicio',

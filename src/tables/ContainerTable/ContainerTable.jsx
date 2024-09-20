@@ -10,6 +10,21 @@ import {
   TableHead,
   TableRow
 } from '@mui/material';
+import {
+  useState 
+} from 'react';
+import {
+  ModalCreateResource 
+} from '../../modales/ModalCreateResource';
+import {
+  CreateContainerForm 
+} from '../../forms/CreateContainer';
+import {
+  ModifyContainerForm 
+} from '../../forms/ModifyContainer/ModifyContainerForm';
+import {
+  DeleteContainerForm 
+} from '../../forms/DeleteContainer/DeleteContainerForm';
 
 const tableHeaders = [
   {
@@ -144,8 +159,36 @@ const containerRowRender = (container) => {
 }
 
 export const ContainerTable = ({
-  data: containers 
+  data: containers
 }) => {
+
+  const [openCreateContainerModal, setOpenCreateContainerModal] = useState(false);
+  const [openModifyContainerModal, setOpenModifyContainerModal] = useState(false);
+  const [containerToModify, setContainerToModify] = useState(false);
+  const [openDeleteContainerModal, setOpenDeleteContainerModal] = useState(false);
+  const [containerToDelete, setContainerToDelete] = useState(false);
+
+  const handleOpenCreateContainerModal = () => setOpenCreateContainerModal(true);
+  const handleCloseCreateContainerModal = () => setOpenCreateContainerModal(false);
+
+  const handleOpenModifyContainerModal = (containerToModify) => {
+    setContainerToModify(containerToModify)
+    setOpenModifyContainerModal(true)
+  };
+  const handleCloseModifyContainerModal = () => {
+    setOpenModifyContainerModal(false)
+    setContainerToModify(null);
+  };
+
+  const handleOpenDeleteContainerModal = (containerToDelete) => {
+    setContainerToDelete(containerToDelete)
+    setOpenDeleteContainerModal(true)
+  };
+  const handleCloseDeleteContainerModal = () => {
+    setOpenDeleteContainerModal(false)
+    setContainerToDelete(null);
+  };
+
   return (
     <Box
       sx={{
@@ -154,6 +197,33 @@ export const ContainerTable = ({
         width: '100%'
       }}
     >
+      <ModalCreateResource
+        title={'Nuevo Contenedor'}
+        description={'Complete los siguientes campos para agregar un nuevo contenedor'}
+        open={openCreateContainerModal}
+        handleClose={handleCloseCreateContainerModal}
+        form={<CreateContainerForm
+          handleClose={handleCloseCreateContainerModal}
+        />}
+      />
+      <ModalCreateResource
+        title={'Modificar datos del contenedor'}
+        open={openModifyContainerModal}
+        handleClose={handleCloseModifyContainerModal}
+        form={<ModifyContainerForm
+          containerToModify={containerToModify}
+          handleClose={handleCloseModifyContainerModal}
+        />}
+      />
+      <ModalCreateResource
+        title={'Eliminar contenedor'}
+        open={openDeleteContainerModal}
+        handleClose={handleCloseDeleteContainerModal}
+        form={<DeleteContainerForm
+          containerToDelete={containerToDelete}
+          handleClose={handleCloseDeleteContainerModal}
+        />}
+      />
       <TableContainer>
         <Table
           aria-label='simple table'
@@ -223,7 +293,7 @@ export const ContainerTable = ({
                       minWidth: 'unset',
                       borderRadius: '50%'
                     }}
-                    // onClick={() => handleOnClickEditButton(row)}
+                    onClick={() => handleOpenModifyContainerModal(row)}
                   >
                     <EditIcon
                       sx={{
@@ -238,7 +308,7 @@ export const ContainerTable = ({
                       minWidth: 'unset',
                       borderRadius: '50%'
                     }}
-                    // onClick={() => handleOnClickDeleteButton(row)}
+                    onClick={() => handleOpenDeleteContainerModal(row)}
                   >
                     <DeleteIcon
                       sx={{

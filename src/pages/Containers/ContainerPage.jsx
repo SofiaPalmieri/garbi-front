@@ -1,19 +1,45 @@
 import {
+  useContainers 
+} from '../../api/hooks/useContainers/useContainers';
+import {
+  CommonTableList 
+} from '../../components/CommonTableList/CommonTableList';
+import {
   FilterSideComponent
 } from '../../components/FilterSideComponent';
 import {
-  ContainerContent 
-} from './ContainerContent';
+  HEIGHT_FULL_SCREEN 
+} from '../../config';
+import {
+  ContainerTable 
+} from '../../tables/ContainerTable/ContainerTable';
 
+const mapper = (data) => data
 
 export const ContainerPage = () => {
 
+  const {
+    getContainers: {
+      getContainers,
+      isLoadingGetContainers
+    }
+  } = useContainers();
 
   return (
     <FilterSideComponent
       prefix={'Gestión'}
       title={'Contenedores'}
-      component={() => <ContainerContent />}
+      height={HEIGHT_FULL_SCREEN}
+      component={
+        () =>
+          <CommonTableList
+            table={ContainerTable}
+            fetchData={getContainers}
+            isLoadingFetchData={isLoadingGetContainers}
+            mapper={mapper}
+            placeHolderInput={'Buscar por ID, Título o Contenedor'}
+          />
+      }
     />
   );
 };
