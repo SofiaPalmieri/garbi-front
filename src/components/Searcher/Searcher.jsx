@@ -1,10 +1,11 @@
+
+import SearchIcon from '@mui/icons-material/Search';
 import {
   FormControl, IconButton, InputAdornment, OutlinedInput 
 } from '@mui/material';
-import SearchIcon from '@mui/icons-material/Search';
 
-export const SearchBox = ({
-  placeholderInput, inputWidth 
+export const Searcher = ({
+  inputWidth = '350px', placeholderInput
 }) => {
   return (
     <FormControl
@@ -35,5 +36,5 @@ export const SearchBox = ({
         }
       />
     </FormControl>
-  );
-};
+  )
+}
