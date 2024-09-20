@@ -3,41 +3,44 @@ import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
 import {
-  CssBaseline 
+  CssBaseline
 } from '@mui/material';
 import {
-  ThemeProvider, createTheme 
+  ThemeProvider, createTheme
 } from '@mui/material/styles';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import {
-  Navigate, RouterProvider, createBrowserRouter 
+  Navigate, RouterProvider, createBrowserRouter
 } from 'react-router-dom';
 import Base from './common/base.jsx';
 import BaseWithHeader from './common/baseWithHeader.jsx';
 import AreaPage from './pages/Area/AreaPage.jsx';
 import CompanyPage from './pages/Company/CompanyPage.jsx';
 import {
-  ContainerPage 
+  ContainerPage
 } from './pages/Containers/ContainerPage.jsx';
 import HomePage from './pages/Home/HomePage.jsx';
 import RecommendationsPage from './pages/Recomendaciones/RecommendationsPage.jsx';
 import RoutesPage from './pages/Routes/RoutesPage.jsx';
 import LoginPage from './pages/Login/LoginPage.jsx';
 import {
-  ReportPage 
+  ReportPage
 } from './pages/Report/ReportPage.jsx';
 import {
-  CreateReportPage 
+  CreateReportPage
 } from './pages/CreateReport/CreateReportPage.jsx';
 import EmployeePage from './pages/Empleados/EmployeePage.jsx';
 import {
-  ReportDetailsPage 
+  ReportDetailsPage
 } from './pages/ReportDetails/ReportDetailsPage.jsx';
 import {
-  RouteDetailPage 
+  RouteDetailPage
 } from './pages/Routes/Detail/RouteDetailPage.jsx';
 import PerfilPage from './pages/Perfil/PerfilPage.jsx';
+import {
+  ContainerPage2 
+} from './pages/Containers/ContainerPage2.jsx';
 
 const theme = createTheme({
   palette: {
@@ -74,6 +77,10 @@ const router = createBrowserRouter([
       {
         path: '/contenedores',
         element: <ContainerPage />,
+      },
+      {
+        path: '/contenedores/nuevo',
+        element: <ContainerPage2 />,
       },
       {
         path: '/inicio',

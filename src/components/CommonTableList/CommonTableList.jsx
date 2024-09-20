@@ -34,6 +34,7 @@ export const CommonTableList = ({
     <Box
       sx={{
         padding: '32px',
+        width: '100%',
         height: `calc(100% - ${HEIGHT_HEADER_FILTER_SIDE_COMPONENT})`,
       }}
     >
@@ -48,7 +49,8 @@ export const CommonTableList = ({
           sx={{
             paddingX: '1rem',
             height: '100%',
-            overflow: 'hidden'
+            overflow: 'hidden',
+            width: '100%'
           }}
         >
           <SearcherDateRangerPickerPaginated
@@ -61,7 +63,8 @@ export const CommonTableList = ({
           <Box
             sx={{
               height: 'calc(100% - 4.5rem)',
-              overflow: 'auto'
+              overflow: 'auto',
+              width: '100%'
             }}
           >
             {

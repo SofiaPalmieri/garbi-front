@@ -82,7 +82,8 @@ export const FilterSideComponent = ({
       <Box
         sx={{
           flexGrow: 1,
-          ml: '16rem'
+          ml: '16rem',
+          maxWidth: 'calc(100% - 16rem)',
         }}
       >
         <Box

@@ -4,7 +4,6 @@ import {
 import {
   ContainerContent 
 } from './ContainerContent';
-import ContainerFilters from './ContainerFilters';
 
 
 export const ContainerPage = () => {
@@ -14,9 +13,6 @@ export const ContainerPage = () => {
     <FilterSideComponent
       prefix={'Gestión'}
       title={'Contenedores'}
-      renderFilters={
-        <ContainerFilters />
-      }
       component={() => <ContainerContent />}
     />
   );
