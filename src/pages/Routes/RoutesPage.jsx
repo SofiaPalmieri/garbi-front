@@ -33,37 +33,38 @@ const mapper = (routes) => {
       const startedStatus = r.status.find(statusItem => statusItem.status === 'STARTED');
       const finishedStatus = r.status.find(statusItem => statusItem.status === 'FINISHED');
 
-      if (startedStatus) { //recorrido empezado. Si no estuviera empezado, queda Pendiente.
-        const startedTimestamp = startedStatus.timestamp;
+      const startedTimestamp = startedStatus?.timestamp;
+      if (startedTimestamp) { // recorrido empezado. Si no estuviera empezado, queda Pendiente.
         const {
           time: startedTime 
         } = TimestampUtil.convertToDateAndHour(startedTimestamp);
         startTime = startedTime;
-
-        if (finishedStatus) { //recorrido finalizado
-          const finishedTimestamp = finishedStatus.timestamp;
-          const {
-            time: finishedTime 
-          } = TimestampUtil.convertToDateAndHour(finishedTimestamp);
-          endTime = finishedTime;
-          
-          const totalMinutes = Math.round(r.directions.total_duration / 60);
-          const hours = Math.floor(totalMinutes / 60);
-          const minutes = totalMinutes % 60;
-
-          if (hours > 0 && minutes != 0) {
-            duration = `${hours} hr  ${minutes} min`;
-          } else if (minutes == 0) {
-            duration = `${hours} hr`;
-          } else {
-            duration = `${minutes} min`;
-          }
-        } else { //recorridos en curso: empezado pero no finalizado
-          duration = 'En curso';
-          startTime = `Comienzo: ${startTime}`;
-          endTime = null;
-        }
       }
+
+      if (finishedStatus) { // recorrido finalizado
+        const finishedTimestamp = finishedStatus.timestamp;
+        const {
+          time: finishedTime 
+        } = TimestampUtil.convertToDateAndHour(finishedTimestamp);
+        endTime = ` - ${finishedTime}`;
+
+        const totalMinutes = Math.round(r.directions.total_duration / 60);
+        const hours = Math.floor(totalMinutes / 60);
+        const minutes = totalMinutes % 60;
+
+        if (hours > 0 && minutes !== 0) {
+          duration = `${hours} hr  ${minutes} min`;
+        } else if (minutes === 0) {
+          duration = `${hours} hr`;
+        } else {
+          duration = `${minutes} min`;
+        }
+      } else if (startedTimestamp) { // recorridos en curso: empezado pero no finalizado
+        duration = 'En curso';
+        startTime = `Comenzó a las ${startTime}`;
+        endTime = null;
+      }
+
 
       return {
         id: r.id.slice(-6),

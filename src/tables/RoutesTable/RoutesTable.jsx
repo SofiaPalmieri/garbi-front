@@ -90,7 +90,7 @@ export const RoutesTable = ({
                     color: '#616161',
                   }}
                 >
-                  {row.startTime} - {row.endTime}
+                  {row.startTime}{row.endTime}
                 </Typography>
               )}
             </TableCell>
