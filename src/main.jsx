@@ -3,39 +3,41 @@ import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
 import {
-  CssBaseline 
+  CssBaseline
 } from '@mui/material';
 import {
-  ThemeProvider, createTheme 
+  ThemeProvider, createTheme
 } from '@mui/material/styles';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import {
-  Navigate, RouterProvider, createBrowserRouter 
+  Navigate, RouterProvider, createBrowserRouter
 } from 'react-router-dom';
 import Base from './common/base.jsx';
 import BaseWithHeader from './common/baseWithHeader.jsx';
 import AreaPage from './pages/Area/AreaPage.jsx';
 import CompanyPage from './pages/Company/CompanyPage.jsx';
 import {
-  ContainerPage 
+  ContainerPage
 } from './pages/Containers/ContainerPage.jsx';
 import HomePage from './pages/Home/HomePage.jsx';
 import RecommendationsPage from './pages/Recomendaciones/RecommendationsPage.jsx';
-import RoutesPage from './pages/Routes/RoutesPage.jsx';
+import {
+  RoutesPage 
+} from './pages/Routes/RoutesPage.jsx';
 import LoginPage from './pages/Login/LoginPage.jsx';
 import {
-  ReportPage 
+  ReportPage
 } from './pages/Report/ReportPage.jsx';
 import {
-  CreateReportPage 
+  CreateReportPage
 } from './pages/CreateReport/CreateReportPage.jsx';
 import EmployeePage from './pages/Empleados/EmployeePage.jsx';
 import {
-  ReportDetailsPage 
+  ReportDetailsPage
 } from './pages/ReportDetails/ReportDetailsPage.jsx';
 import {
-  RouteDetailPage 
+  RouteDetailPage
 } from './pages/Routes/Detail/RouteDetailPage.jsx';
 import PerfilPage from './pages/Perfil/PerfilPage.jsx';
 
@@ -56,14 +58,14 @@ const router = createBrowserRouter([
   {
     path: '/',
     element: <Navigate
-      to='/login'
+      to='/ingresar'
     />,
   },
   {
     element: <Base />,
     children: [
       {
-        path: '/login',
+        path: '/ingresar',
         element: <LoginPage />,
       },
     ],
@@ -72,11 +74,11 @@ const router = createBrowserRouter([
     element: <BaseWithHeader />,
     children: [
       {
-        path: '/containers',
+        path: '/contenedores',
         element: <ContainerPage />,
       },
       {
-        path: '/home',
+        path: '/inicio',
         element: <HomePage />,
       },
       {
@@ -92,15 +94,15 @@ const router = createBrowserRouter([
         element: <RecommendationsPage />,
       },
       {
-        path: '/routes',
+        path: '/recorridos',
         element: <RoutesPage />,
       },
       {
-        path: '/routes/detail',
+        path: '/recorridos/detalle',
         element: <RouteDetailPage />,
       },
       // {
-      //   path: '/areas/new',
+      //   path: '/areas/nueva',
       //   element: <CreateAreaPage />,
       // },
       {
@@ -108,7 +110,7 @@ const router = createBrowserRouter([
         element: <ReportPage />,
       },
       {
-        path: '/reportes/detalles',
+        path: '/reportes/detalle',
         element: <ReportDetailsPage />
       },
       {
@@ -127,7 +129,7 @@ const router = createBrowserRouter([
         element: <CompanyPage />,
       },
       {
-        path: 'reportes/new',
+        path: 'reportes/nuevo',
         element: <CreateReportPage />,
       },
     ],

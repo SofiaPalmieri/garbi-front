@@ -30,9 +30,8 @@ import {
 import {
   mixed, object, string
 } from 'yup';
-import {
-  useNavigate
-} from 'react-router-dom';
+
+
 import {
   useEffect, useState
 } from 'react';
@@ -96,19 +95,12 @@ const HtmlTooltip = styled(({
   },
 }));
 
-export const CreateReportForm = () => {
+export const CreateReportForm = ({
+  onSuccess 
+}) => {
   const apiKeyGoogleMaps = import.meta.env.VITE_REACT_APP_API_KEY_GOOGLE_MAPS;
-  //const addressRegex = /^[A-ZÁÉÍÓÚÑ][a-záéíóúñA-ZÁÉÍÓÚÑ\s]*\s\d{1,4}$/;
   const [selectedImage, setSelectedImage] = useState(null);
   const [selectedFile, setSelectedFile] = useState(null);
-
-  const {
-    createReport: {
-      createReport, isCreateReportLoading
-    }
-  } = useReports();
-
-  const navigate = useNavigate()
 
   const position = {
     lat: -34.5893,
@@ -120,16 +112,20 @@ export const CreateReportForm = () => {
   const [containerError, setContainerError] = useState(false);
 
   const {
+    createReport: {
+      createReport, isCreateReportLoading 
+    } 
+  } = useReports();
+  const {
     getContainers: {
-      getContainers: getContainers
-    },
+      getContainers 
+    } 
   } = useContainers();
 
   useEffect(() => {
     const retrieveContainers = async () => {
       const containersUnformated = await getContainers();
       const containersFormated = formatContainers(containersUnformated.result);
-
       setContainers(containersFormated);
     };
 
@@ -147,37 +143,57 @@ export const CreateReportForm = () => {
     setContainerSeleted(container);
   };
 
+  const convertBase64 = (file) => {
+    return new Promise((resolve, reject) => {
+      const fileReader = new FileReader();
+      fileReader.readAsDataURL(file);
+      fileReader.onload = () => {
+        resolve(fileReader.result);
+      };
+      fileReader.onerror = (error) => {
+        reject(error);
+      };
+    });
+  };
+
+  const handleFileRead = async (event) => {
+    const file = event.target.files[0];
+    const base64 = await convertBase64(file);
+    console.log(base64);
+    setSelectedImage(base64);
+  };
+
   const createReportSchema = object({
     title: string().required('El titulo es un campo obligatorio'),
     type: string().required('Debe seleccionar una opcion'),
     description: string().required('La descripcion es un campo obligatorio'),
-    /*address: string().required(),
-    neighborhood: string().required(),
-    containerId: string().length(6, 'El identificador del contenedor debe tener 6 caracteres')
-      .optional(),*/
     email: string().email('Debe ser un email valido')
       .required('El mail es un campo obligatorio'),
     image: mixed(),
-    phone: string()
+    phone: string(),
   }).required();
 
   const {
     control, handleSubmit, setValue, formState: {
-      errors
+      errors 
     }
   } = useForm({
     defaultValues: {
+      userId: '',
+      containerId: '',
       title: 'sasA',
       description: 'dssadsd',
-      type: 'BASURA_EN_LA_CALLE',
       address: '',
-      neighborhood: '',
-      containerId: '',
+      phone: '465456465',
       email: 'sdada@saddad.com',
-      phone: '465456465'
+      type: 'BASURA_EN_LA_CALLE',
+      image: '',
     },
     resolver: yupResolver(createReportSchema),
   });
+
+  const user = JSON.parse(localStorage.getItem('user'));
+  const userId = user.id;
 
   const onSubmit = async (data) => {
     if (!containerSelected) {
@@ -186,40 +202,24 @@ export const CreateReportForm = () => {
     }
     setContainerError(false);
 
-    const formData = new FormData();
-
-    data.address = [
-      {
-        street: data.address.split(' ')[0],
-        number: data.address.split(' ')[1],
-        neighborhood: data.neighborhood
-      }
-    ];
-
     const report = {
+      userId: userId,
       containerId: data.containerId,
       title: data.title,
       description: data.description,
-      address: data.address,
+      address: data.address + ', ' + data.neighborhood,
       phone: data.phone,
       email: data.email,
-      type: data.type
+      type: data.type,
+      image: selectedImage,
     };
 
-    formData.append('report', JSON.stringify(report));
-    formData.append('image', selectedFile);
-
     try {
-      const response = await createReport(formData);  // Envía el FormData al backend
-
-      if (response.success) {
-        navigate('/reportes');
-      }
+      await createReport(report);
     } catch (error) {
       console.error('Error creating report:', error);
     }
   };
-
 
   return (
     <form
@@ -328,7 +328,7 @@ export const CreateReportForm = () => {
             control={control}
             defaultValue=''
             render={({
-              field
+              field 
             }) => (
               <FormControl
                 fullWidth
@@ -338,16 +338,10 @@ export const CreateReportForm = () => {
                   type='file'
                   disableUnderline
                   onChange={(e) => {
+                    handleFileRead(e);
                     field.onChange(e);
                     const file = e.target.files[0];
-                    setSelectedFile(file)
-                    if (e.target.files && e.target.files[0]) {
-                      const reader = new FileReader();
-                      reader.onload = (event) => {
-                        setSelectedImage(event.target.result);
-                      };
-                      reader.readAsDataURL(e.target.files[0]);
-                    }
+                    setSelectedFile(file);
                   }}
                   sx={{
                     display: 'none'

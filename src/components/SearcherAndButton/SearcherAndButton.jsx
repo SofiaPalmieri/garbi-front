@@ -3,8 +3,8 @@ import {
 } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import {
-  SearchBox
-} from '../../components/SearchBox';
+  Searcher
+} from '../../components/Searcher';
 
 export const SearcherAndButton = ({
   placeholderInput, buttonText, inputWidth, onClick 
@@ -17,7 +17,7 @@ export const SearcherAndButton = ({
         padding: '16px',
       }}
     >
-      <SearchBox
+      <Searcher
         placeholderInput= {placeholderInput}
         inputWidth= {inputWidth}
       />
