@@ -5,8 +5,8 @@ import {
   TableContainer
 } from '@mui/material';
 import {
-  SearcherDateRangerPickerPaginated
-} from '../../components/SearcherDateRangePickerPaginated';
+  SearcherPaginated
+} from '../SearcherPaginated';
 import {
   HEIGHT_HEADER_FILTER_SIDE_COMPONENT
 } from '../../config';
@@ -16,7 +16,7 @@ import {
 
 
 export const CommonTableList = ({
-  table: Table, fetchData, isLoadingFetchData, mapper, placeHolderInput, inputWidth, datePicker=true
+  table: Table, fetchData, isLoadingFetchData, mapper, placeHolderInput, inputWidth, button=true, datePicker=true, buttonText, onClick
 }) => {
 
   const {
@@ -53,14 +53,17 @@ export const CommonTableList = ({
             width: '100%'
           }}
         >
-          <SearcherDateRangerPickerPaginated
+          <SearcherPaginated
             prevFetch={prevFetch}
             nextFetch={nextFetch}
             disabledNextBtn={disabledNextBtn || isLoadingFetchData}
             disabledPrevBtn={disabledPrevBtn || isLoadingFetchData}
             placeholderInput={placeHolderInput}
             inputWidth={inputWidth}
+            button={button}
             datePicker={datePicker}
+            buttonText={buttonText}
+            onClick={onClick}
           />
           <Box
             sx={{

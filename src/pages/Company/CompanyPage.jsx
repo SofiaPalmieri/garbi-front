@@ -8,8 +8,8 @@ import {
   useState
 } from 'react';
 import {
-  SearcherAndButton
-} from '../../components/SearcherAndButton';
+  SearcherAndButtonPaginated
+} from '../../components/SearcherAndButtonPaginated';
 import {
   ModalCreateResource
 } from '../../modales/ModalCreateResource';
@@ -249,7 +249,7 @@ const CompanyPage = () => {
           width: '100%',
         }}
       >
-        <SearcherAndButton
+        <SearcherAndButtonPaginated
           placeholderInput={'Buscar por Razón social o Nombre'}
           buttonText={'nueva empresa'}
           inputWidth={'20rem'}

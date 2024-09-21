@@ -1,18 +1,73 @@
 import {
+  useEmployees 
+} from '../../api/hooks/useEmployees/useEmployees';
+import {
+  CommonTableList 
+} from '../../components/CommonTableList/CommonTableList';
+import {
   FilterSideComponent 
 } from '../../components/FilterSideComponent';
 import {
-  EmployeeContent 
-} from './EmployeeContent';
+  HEIGHT_FULL_SCREEN 
+} from '../../config';
+import {
+  EmployeesTable 
+} from '../../tables/EmployeesTable/EmployeesTable';
+import {
+  useState 
+} from 'react';
+import {
+  ModalCreateResource
+} from '../../modales/ModalCreateResource';
+import {
+  CreateEmployeeForm
+} from '../../forms/CreateEmployee/CreateEmployeeForm';
 
-const EmployeePage = () => {
+const mapper = (data) => data
+
+export const EmployeePage = () => {
+
+  const [openCreateEmployeeModal, setOpenCreateEmployeeModal] = useState(false);
+  const handleOpenCreateEmployeeModal = () => setOpenCreateEmployeeModal(true);
+  const handleCloseCreateEmployeeModal = () => setOpenCreateEmployeeModal(false);
+
+  const {
+    fetchEmployees: {
+      fetchEmployees,
+      isLoadingFetchEmployees
+    }
+  } = useEmployees();
+
   return (
     <FilterSideComponent
       prefix={'Gestión'}
       title={'Empleados'}
-      component={() => <EmployeeContent />}
+      height={HEIGHT_FULL_SCREEN}
+      component={
+        () =>
+          <>
+            <ModalCreateResource
+              title={'Nuevo Empleado'}
+              description={'Complete los siguientes campos para agregar un nuevo empleado a la empresa'}
+              open={openCreateEmployeeModal}
+              handleClose={handleCloseCreateEmployeeModal}
+              form={<CreateEmployeeForm
+                handleClose = {handleCloseCreateEmployeeModal}
+                //onSuccess={refreshEmployeeList}
+              />}
+            />
+
+            <CommonTableList
+              table={EmployeesTable}
+              fetchData={fetchEmployees}
+              isLoadingFetchData={isLoadingFetchEmployees}
+              mapper={mapper}
+              placeHolderInput={'Buscar por Nombre o Apellido'}
+              buttonText={'Nuevo empleado'}
+              onClick={handleOpenCreateEmployeeModal}
+            />
+          </>
+      }
     />
   );
 };
-
-export default EmployeePage;

@@ -1,32 +1,20 @@
 import {
-  yupResolver 
-} from '@hookform/resolvers/yup';
-import {
-  object, string 
-} from 'yup';
-import {
-  Box, Typography 
+  Box, Typography
 } from '@mui/material';
 import {
-  useForm 
+  useForm
 } from 'react-hook-form';
-
-
 import {
-  InputForm 
+  InputForm
 } from '../../components/InputForm';
 import {
-  SelectForm 
+  SelectForm
 } from '../../components/SelectForm/SelectForm';
+
+
 import {
   CancelAndSubmitButton 
 } from '../../components/CancelAndSubmitButton/CancelAndSubmitButton';
-import {
-  useEmployees 
-} from '../../api/hooks/useEmployees/useEmployees';
-import {
-  CustomAlert 
-} from '../../components/CustomAlert/CustomAlert';
 
 const cargos = [
   {
@@ -54,44 +42,20 @@ const turnos = [
   },
 ];
 
-const newEmployeeSchema = object({
-  lastName: string()
-    .required('El apellido es obligatorio')
-    .matches(/^[a-zA-Z\s]+$/, 'El apellido no puede contener números o caracteres especiales')
-    .min(2, 'El apellido debe tener al menos 2 caracteres')
-    .max(50, 'El apellido no debe exceder 50 caracteres'),
-  firstName: string()
-    .required('El nombre es obligatorio')
-    .matches(/^[a-zA-Z\s]+$/, 'El nombre no puede contener números o caracteres especiales')
-    .min(2, 'El nombre debe tener al menos 2 caracteres')
-    .max(50, 'El nombre no debe exceder 50 caracteres'),
-  personalPhone: string()
-    .required('El teléfono personal es obligatorio')
-    .matches(/^\+?\d{10,12}$/, 'El teléfono personal no es válido'),
-  personalEmail: string()
-    .required('El email personal es obligatorio')
-    .email('El email personal no es un email válido'),
-  jobPosition: string().required('El cargo es obligatorio'),
-  timeShift: string().required('El turno es obligatorio'),
-  enterprisePhone: string()
-    .required('El teléfono de la empresa es obligatorio')
-    .matches(/^\+?\d{10,12}$/, 'El teléfono de la empresa no es válido'),
-  enterpriseEmail: string()
-    .required('El email de la empresa es obligatorio')
-    .email('El email de la empresa no es válido')
-}).required();
 
-export const CreateEmployeeForm = ({
-  handleClose, //onSuccess
+export const ModifyEmployeeForm = ({
+  employeeToModify,
+  handleClose
 }) => {
+
   const {
     control,
-    handleSubmit,
     formState: {
-      errors 
+      errors
     },
   } = useForm({
     defaultValues: {
+      id: employeeToModify?.id,
       companyId: '',
       lastName: '',
       firstName: '',
@@ -102,55 +66,11 @@ export const CreateEmployeeForm = ({
       enterprisePhone: '',
       enterpriseEmail: ''
     },
-    resolver: yupResolver(newEmployeeSchema),
   });
 
-  const {
-    createEmployee: {
-      createEmployee,
-      isCreateEmployeeLoading 
-    },
-  } = useEmployees();
-
-  const user = JSON.parse(localStorage.getItem('user'));
-  const companyId = user.companyId;
-
-  const onSubmit = async (data) => {
-    try {
-      const response = await createEmployee({
-        companyId: companyId,
-        name: data.firstName, 
-        surname: data.lastName, 
-        personalPhone: data.personalPhone, 
-        personalEmail: data.personalEmail, 
-        companyPhone: data.enterprisePhone,
-        companyEmail: data.enterpriseEmail,
-        workingShift: data.timeShift,
-        role: data.jobPosition //TODO: see what the BE needs here
-      });
-
-      //TODO later: validar que la respuesta sea la esperada, y sino tirar error.
-      handleClose();
-      //onSuccess();
-    } catch (error) {
-      console.error('Error submitting form', error);
-    }
-  };
-
-  const errorMessages = errors ? (
-    Object.values(errors).map((error, index) => (
-      <li 
-        key={index}
-      >
-        {error.message}
-      </li>
-    ))
-  ) : null;
 
   return (
-    <form
-      onSubmit={handleSubmit(onSubmit)}
-    >
+    <form>
       <Box
         sx={{
           width: '100%',
@@ -337,19 +257,12 @@ export const CreateEmployeeForm = ({
           </Box>
         </Box>
       </Box>
-
-      {Object.keys(errors).length > 0 && (
-        <CustomAlert
-          severity='error'
-          title='Error con los datos ingresados'
-          message={errorMessages}
-        />
-      )}
-
+      
       <CancelAndSubmitButton
         handleClose={handleClose}
-        onSubmit={handleSubmit(onSubmit)}
+        buttonSubmitMessage='MODIFICAR'
       />
     </form>
-  );
-};
+  )
+}
+

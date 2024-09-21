@@ -1,3 +1,0 @@
-export {
-  SearcherAndButton 
-} from './SearcherAndButton';

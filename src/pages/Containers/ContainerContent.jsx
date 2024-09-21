@@ -5,8 +5,8 @@ import {
   TableRow,
 } from '@mui/material';
 import {
-  SearcherAndButton
-} from '../../components/SearcherAndButton';
+  SearcherAndButtonPaginated
+} from '../../components/SearcherAndButtonPaginated';
 import {
   ModalCreateResource
 } from '../../modales/ModalCreateResource';
@@ -262,7 +262,7 @@ export const ContainerContent = () => {
           overflow: 'hidden'
         }}
       >
-        <SearcherAndButton
+        <SearcherAndButtonPaginated
           placeholderInput={'Buscar por ID o Dirección'}
           buttonText={'Nuevo contenedor'}
           inputWidth={'18.75rem'}

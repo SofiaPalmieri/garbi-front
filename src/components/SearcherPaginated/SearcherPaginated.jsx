@@ -1,4 +1,3 @@
-
 import {
   Box, Button 
 } from '@mui/material'
@@ -7,6 +6,7 @@ import {
 } from '../Searcher/Searcher'
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import AddIcon from '@mui/icons-material/Add';
 import {
   DatePickerCustom
 } from '../DatePickerCustom';
@@ -14,8 +14,8 @@ import {
   DateRangePicker 
 } from '../DateRangePicker';
 
-export const SearcherDateRangerPickerPaginated = ({
-  prevFetch, nextFetch, disabledPrevBtn, disabledNextBtn, placeholderInput = 'Buscar por ID, Título', inputWidth, datePicker
+export const SearcherPaginated = ({
+  prevFetch, nextFetch, disabledPrevBtn, disabledNextBtn, placeholderInput = 'Buscar por ID, Título', inputWidth, button, datePicker, buttonText, onClick
 }) => {
   return (
     <Box
@@ -58,7 +58,32 @@ export const SearcherDateRangerPickerPaginated = ({
             <ChevronRightIcon />
           </Button>
         </Box>
-        {datePicker ? <DatePickerCustom /> : <DateRangePicker />}
+
+        {button ? (
+          <Button
+            size='medium'
+            sx={{
+              backgroundColor: '#12422C',
+              color: 'white',
+              height: '36px',
+              width: '202px',
+              '&:hover': {
+                backgroundColor: '#12422C',
+              },
+            }}
+            onClick={onClick}
+          >
+            {buttonText}
+            <AddIcon
+              sx={{
+                marginLeft: '8px',
+                fontSize: '20px',
+              }}
+            />
+          </Button>
+        ) : (
+          datePicker ? <DatePickerCustom /> : <DateRangePicker />
+        )}
       </Box>
     </Box>
   )

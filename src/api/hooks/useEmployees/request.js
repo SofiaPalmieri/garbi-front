@@ -1,4 +1,7 @@
 import {
+  LIMIT_DEFAULT 
+} from '../../../config';
+import {
   useFetch 
 } from '../../../hooks/useFetch';
 import {
@@ -50,11 +53,12 @@ export const useFetchEmployees = () => {
     baseUri: baseEmployeesUri,
   });
 
-  const fetchEmployees = (lastKey = null) => {
+  const fetchEmployees = (lastKey = null, limit = LIMIT_DEFAULT) => {
     const queryBuilder = new QueryBuilder()
 
     const uri = queryBuilder
       .addParam('lastKey', lastKey)
+      .addParam('limit', limit)
       .build()
 
     return commonFetch({

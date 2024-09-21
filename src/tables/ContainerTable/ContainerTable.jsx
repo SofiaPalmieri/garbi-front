@@ -17,9 +17,6 @@ import {
   ModalCreateResource 
 } from '../../modales/ModalCreateResource';
 import {
-  CreateContainerForm 
-} from '../../forms/CreateContainer';
-import {
   ModifyContainerForm 
 } from '../../forms/ModifyContainer/ModifyContainerForm';
 import {
@@ -162,14 +159,10 @@ export const ContainerTable = ({
   data: containers
 }) => {
 
-  const [openCreateContainerModal, setOpenCreateContainerModal] = useState(false);
   const [openModifyContainerModal, setOpenModifyContainerModal] = useState(false);
   const [containerToModify, setContainerToModify] = useState(false);
   const [openDeleteContainerModal, setOpenDeleteContainerModal] = useState(false);
   const [containerToDelete, setContainerToDelete] = useState(false);
-
-  const handleOpenCreateContainerModal = () => setOpenCreateContainerModal(true);
-  const handleCloseCreateContainerModal = () => setOpenCreateContainerModal(false);
 
   const handleOpenModifyContainerModal = (containerToModify) => {
     setContainerToModify(containerToModify)
@@ -197,15 +190,6 @@ export const ContainerTable = ({
         width: '100%'
       }}
     >
-      <ModalCreateResource
-        title={'Nuevo Contenedor'}
-        description={'Complete los siguientes campos para agregar un nuevo contenedor'}
-        open={openCreateContainerModal}
-        handleClose={handleCloseCreateContainerModal}
-        form={<CreateContainerForm
-          handleClose={handleCloseCreateContainerModal}
-        />}
-      />
       <ModalCreateResource
         title={'Modificar datos del contenedor'}
         open={openModifyContainerModal}

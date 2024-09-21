@@ -32,7 +32,9 @@ import {
 import {
   CreateReportPage
 } from './pages/CreateReport/CreateReportPage.jsx';
-import EmployeePage from './pages/Empleados/EmployeePage.jsx';
+import {
+  EmployeePage
+} from './pages/Empleados/EmployeePage.jsx';
 import {
   ReportDetailsPage
 } from './pages/ReportDetails/ReportDetailsPage.jsx';
