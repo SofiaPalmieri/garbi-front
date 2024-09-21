@@ -38,6 +38,12 @@ export const EmployeePage = () => {
     }
   } = useEmployees();
 
+  const [reloadTable, setReloadTable] = useState(0);
+  const refreshEmployeeList = () => {
+    setReloadTable(prev => prev + 1);
+  };
+
+
   return (
     <FilterSideComponent
       prefix={'Gestión'}
@@ -53,11 +59,12 @@ export const EmployeePage = () => {
               handleClose={handleCloseCreateEmployeeModal}
               form={<CreateEmployeeForm
                 handleClose = {handleCloseCreateEmployeeModal}
-                //onSuccess={refreshEmployeeList}
+                onSuccess={refreshEmployeeList}
               />}
             />
 
             <CommonTableList
+              reloadTable={reloadTable}
               table={EmployeesTable}
               fetchData={fetchEmployees}
               isLoadingFetchData={isLoadingFetchEmployees}

@@ -14,8 +14,6 @@ import {
 import {
   useState 
 } from 'react';
-
-
 import {
   ModalCreateResource
 } from '../../modales/ModalCreateResource';
@@ -184,19 +182,6 @@ export const EmployeesTable = ({
     setOpenDeleteEmployeeModal(false)
     setEmployeeToDelete(null);
   };
-
-  /*const refreshEmployeeList = async () => { //TODO: ver q esto esté en algun lado o ver q ande bien la cosa sin esto en realidad.
-    try {
-      const employeesResponse = await fetchEmployees();
-      setEmployees(employeesResponse.result);
-    } catch (error) {
-      console.error('Error fetching employees:', error);
-    }
-  };
-
-  useEffect(() => {
-    refreshEmployeeList();
-  }, []);*/
 
   
   return (

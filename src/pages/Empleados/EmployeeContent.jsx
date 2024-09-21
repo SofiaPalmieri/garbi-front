@@ -8,8 +8,8 @@ import {
   useEffect, useState 
 } from 'react';
 import {
-  SearcherAndButtonPaginated
-} from '../../components/SearcherAndButtonPaginated';
+  SearcherPaginated
+} from '../../components/SearcherPaginated';
 import {
   CreateEmployeeForm
 } from '../../forms/CreateEmployee/CreateEmployeeForm';
@@ -216,7 +216,7 @@ export const EmployeeContent = () => {
           width: '100%',
         }}
       >
-        <SearcherAndButtonPaginated
+        <SearcherPaginated
           placeholderInput={'Buscar por Nombre o Apellido'}
           buttonText={'Nuevo Empleado'}
           inputWidth={'18.75rem'}

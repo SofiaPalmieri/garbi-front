@@ -13,10 +13,13 @@ import {
 import {
   usePagination
 } from '../../hooks/usePagination';
+import {
+  useEffect 
+} from 'react';
 
 
 export const CommonTableList = ({
-  table: Table, fetchData, isLoadingFetchData, mapper, placeHolderInput, inputWidth, button=true, datePicker=true, buttonText, onClick
+  reloadTable, table: Table, fetchData, isLoadingFetchData, mapper, placeHolderInput, inputWidth, button=true, datePicker=true, buttonText, onClick
 }) => {
 
   const {
@@ -24,11 +27,18 @@ export const CommonTableList = ({
     prevFetch,
     nextFetch,
     disabledPrevBtn,
-    disabledNextBtn
+    disabledNextBtn,
+    refetchData
   } = usePagination({
     fetch: fetchData,
     mapper
   })
+
+  useEffect(() => {
+    if (reloadTable) {
+      refetchData();
+    }
+  }, [reloadTable]);
 
   return (
     <Box

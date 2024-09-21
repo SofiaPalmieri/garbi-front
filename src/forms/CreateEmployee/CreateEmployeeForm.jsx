@@ -82,7 +82,7 @@ const newEmployeeSchema = object({
 }).required();
 
 export const CreateEmployeeForm = ({
-  handleClose, //onSuccess
+  handleClose, onSuccess
 }) => {
   const {
     control,
@@ -131,7 +131,7 @@ export const CreateEmployeeForm = ({
 
       //TODO later: validar que la respuesta sea la esperada, y sino tirar error.
       handleClose();
-      //onSuccess();
+      onSuccess();
     } catch (error) {
       console.error('Error submitting form', error);
     }

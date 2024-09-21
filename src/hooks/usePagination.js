@@ -57,11 +57,17 @@ export const usePagination = ({
   const disabledPrevBtn = searchStack.length == 0
   const disabledNextBtn = nextKey  == null
 
+
+  const refetchData = () => { //to refresh the table when we create a new row
+    asyncFetchData(actualKey);
+  };
+
   return {
     data,
     prevFetch,
     nextFetch,
     disabledPrevBtn,
-    disabledNextBtn
+    disabledNextBtn,
+    refetchData 
   }
 } 
