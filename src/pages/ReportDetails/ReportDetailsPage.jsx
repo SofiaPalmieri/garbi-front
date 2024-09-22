@@ -87,7 +87,7 @@ const usersReport = [
       avatar: 'logo',
       fullName: 'Roberto Sanchez'
     },
-    from: 'En revision',
+    from: 'En revisión',
     to: 'Resuelto',
     date: '28/05/2024',
     time: '17.30 hs',
@@ -99,7 +99,7 @@ const usersReport = [
       avatar: 'logo',
       fullName: 'Roberto Sanchez'
     },
-    from: 'En revision',
+    from: 'En revisión',
     date: '28/05/2024',
     time: '17.30 hs',
   },
@@ -109,7 +109,7 @@ const usersReport = [
       avatar: 'logo',
       fullName: 'Roberto Sanchez'
     },
-    from: 'En revision',
+    from: 'En revisión',
     to: 'Resuelto',
     date: '28/05/2024',
     time: '17.30 hs',
