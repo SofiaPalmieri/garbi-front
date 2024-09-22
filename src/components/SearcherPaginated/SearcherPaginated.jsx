@@ -7,6 +7,8 @@ import {
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import AddIcon from '@mui/icons-material/Add';
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
 import {
   DatePickerCustom
 } from '../DatePickerCustom';
@@ -68,15 +70,33 @@ export const SearcherPaginated = ({
               variant='outlined'
               disabled={!selectedElement}
               onClick={() => handleOpenDeleteElementModal(selectedElement)}
+              sx={{ 
+                marginRight: '8px',
+              }}
             >
               Eliminar
+              <DeleteIcon
+                sx={{
+                  marginLeft: '8px',
+                  fontSize: '18px',
+                }}
+              />
             </Button>
             <Button
               variant='outlined'
               disabled={!selectedElement}
               onClick={() => handleOpenModifyElementModal(selectedElement)}
+              sx={{
+                marginRight: '16px' 
+              }}
             >
               Editar
+              <EditIcon
+                sx={{
+                  marginLeft: '8px',
+                  fontSize: '18px',
+                }}
+              />
             </Button>
 
             <Button

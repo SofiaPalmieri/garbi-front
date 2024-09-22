@@ -13,12 +13,6 @@ import {
 } from 'react';
 
 
-
-
-
-
-
-
 const tableHeaders = [
   {
     value: 'Apellido',
