@@ -38,6 +38,9 @@ import {
   RouteDetailPage 
 } from './pages/Routes/Detail/RouteDetailPage.jsx';
 import PerfilPage from './pages/Perfil/PerfilPage.jsx';
+import {
+  ErrorPage 
+} from './pages/404/404.jsx';
 
 const theme = createTheme({
   palette: {
@@ -114,6 +117,10 @@ const router = createBrowserRouter([
       {
         path: '/perfil',
         element: <PerfilPage />,
+      },
+      {
+        path: '/error',
+        element: <ErrorPage />,
       },
     ],
   },
