@@ -133,7 +133,7 @@ export const ReportPage = () => {
       />
     }
     handleSubmit={handleSubmit(whenFiltersSubmit)}
-    isLoading = {isLoadingGetAreas || isLoadingFetchReports} 
+    isLoading = {isLoadingGetAreas} 
     component={
       () =>
         <CommonTableList
