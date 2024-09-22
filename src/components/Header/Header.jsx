@@ -87,15 +87,24 @@ export const Header = ({
   };
 
 
-  const handleClickTab = (path) => () => {
-    navigate(path);
-    setAnchorElNav(null);
+  const handleClickTab = (path) => (event) => {
+    if (event.type === 'auxclick' && event.button === 1) { //Middle-click
+      window.open(path, '_blank');
+    } else if (event.type === 'click' && event.button === 0) { //Left-click
+      navigate(path);
+      setAnchorElNav(null);
+    }
   };
-
-  const handleClickManagementItem = (path) => () => {
-    navigate(path);
-    setAnchorElManagement(null);
+  
+  const handleClickManagementItem = (path) => (event) => {
+    if (event.type === 'auxclick' && event.button === 1) { //Middle-click
+      window.open(path, '_blank');
+    } else if (event.type === 'click' && event.button === 0) { //Left-click
+      navigate(path);
+      setAnchorElManagement(null);
+    }
   };
+  
 
 
   const [notifications, setNotifications] = useState([
@@ -218,6 +227,11 @@ export const Header = ({
                   }}
                   component={'button'}
                   onClick={() => navigate('/inicio')}
+                  onAuxClick={(event) => {
+                    if (event.button === 1) { //Middle-click
+                      window.open('/inicio', '_blank');
+                    }
+                  }}
                 >
                   <img
                     src={garbiLogo}
@@ -271,6 +285,7 @@ export const Header = ({
                   {Object.keys(pages).map((page) => (
                     <MenuItem
                       key={page}
+                      onAuxClick={handleClickTab(pages[page])} //for middle click
                       onClick={handleClickTab(pages[page])}
                     >
                       <Typography
@@ -313,6 +328,7 @@ export const Header = ({
                   {Object.keys(pages).map((page) => (
                     <Button
                       key={page}
+                      onAuxClick={handleClickTab(pages[page])} //for middle click
                       onClick={handleClickTab(pages[page])}
                       sx={{
                         color: 'white',
@@ -361,6 +377,7 @@ export const Header = ({
                     {Object.keys(managementItems).map((managementItem) => (
                       <MenuItem
                         key={managementItem}
+                        onAuxClick={handleClickManagementItem(managementItems[managementItem])} //for middle click
                         onClick={handleClickManagementItem(managementItems[managementItem])}
                       >
                         <Typography
