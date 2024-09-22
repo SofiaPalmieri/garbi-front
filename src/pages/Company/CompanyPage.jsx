@@ -254,6 +254,7 @@ const CompanyPage = () => {
           buttonText={'nueva empresa'}
           inputWidth={'20rem'}
           onClick={handleOpenCreateCompanyModal}
+          button={true}
         />
         <TableWithEditAndDeleteButtons
           tableHeaders={tableHeaders}

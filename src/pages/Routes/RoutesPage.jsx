@@ -107,6 +107,7 @@ export const RoutesPage = () => {
             isLoadingFetchData={isLoadingFetchRoutes}
             mapper={mapper}
             placeHolderInput={'Buscar por Recolector o Supervisor'}
+            button={false}
           />
       }
     />

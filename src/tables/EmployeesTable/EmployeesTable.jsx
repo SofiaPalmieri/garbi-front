@@ -40,7 +40,7 @@ const tableHeaders = [
   }
 ];
 
-const employeeRowRender = (employee, handleRowClick, selectedEmployeeTest) => {
+const employeeRowRender = (employee, handleRowClick, selectedEmployee) => {
   return (
     <TableRow
       key={employee.id}
@@ -48,7 +48,7 @@ const employeeRowRender = (employee, handleRowClick, selectedEmployeeTest) => {
       sx={{
         height: '48px',
         cursor: 'pointer',
-        backgroundColor: selectedEmployeeTest?.id === employee.id ? 'rgba(18, 66, 44, 0.15)' : 'transparent',
+        backgroundColor: selectedEmployee?.id === employee.id ? 'rgba(18, 66, 44, 0.15)' : 'transparent',
         '&:hover': {
           backgroundColor: '#f0f0f0',
         },
@@ -156,33 +156,15 @@ export const EmployeesTable = ({
   setSelectedElement
 }) => {
 
-  const [openModifyEmployeeModal, setOpenModifyEmployeeModal] = useState(false);
-  const [employeeToModify, setEmployeeToModify] = useState(false);
-  const handleOpenModifyEmployeeModal = (employeeToModify) => {
-    setEmployeeToModify(employeeToModify)
-    setOpenModifyEmployeeModal(true)
-  };
-  const handleCloseModifyEmployeeModal = () => {
-    setOpenModifyEmployeeModal(false)
-    setEmployeeToModify(null);
-  };
-
-  const [openDeleteEmployeeModal, setOpenDeleteEmployeeModal] = useState(false);
-  const [employeeToDelete, setEmployeeToDelete] = useState(false);
-  const handleOpenDeleteEmployeeModal = (employeeToDelete) => {
-    setEmployeeToDelete(employeeToDelete)
-    setOpenDeleteEmployeeModal(true)
-  };
-  const handleCloseDeleteEmployeeModal = () => {
-    setOpenDeleteEmployeeModal(false)
-    setEmployeeToDelete(null);
-  };
-
-
-  const [selectedEmployeeTest, setSelectedEmployeeTest] = useState(null);
+  const [selectedEmployee, setSelectedEmployee] = useState(null);
   const handleRowClick = (employee) => {
-    setSelectedElement(employee);
-    setSelectedEmployeeTest(employee);
+    if (selectedEmployee?.id === employee.id) {
+      setSelectedElement(null);
+      setSelectedEmployee(null);
+    } else {
+      setSelectedElement(employee);
+      setSelectedEmployee(employee);
+    }
   };
 
   
@@ -193,25 +175,6 @@ export const EmployeesTable = ({
         width: '100%'
       }}
     >
-      {/*<ModalCreateResource
-        title={'Modificar datos del empleado'}
-        open={openModifyEmployeeModal}
-        handleClose={handleCloseModifyEmployeeModal}
-        form={<ModifyEmployeeForm
-          employeeToModify={employeeToModify}
-          handleClose={handleCloseModifyEmployeeModal}
-        />}
-      />*/}
-      {/*<ModalCreateResource
-        title={'Eliminar empleado'}
-        open={openDeleteEmployeeModal}
-        handleClose={handleCloseDeleteEmployeeModal}
-        form={<DeleteEmployeeForm
-          employeeToDelete={employeeToDelete}
-          handleClose={handleCloseDeleteEmployeeModal}
-        />}
-      />*/}
-
       <TableContainer>
         <Table
           aria-label='simple table'
@@ -234,7 +197,7 @@ export const EmployeesTable = ({
           </TableHead>
           <TableBody>
             {employees.map(employee => (
-              employeeRowRender(employee, handleRowClick, selectedEmployeeTest)
+              employeeRowRender(employee, handleRowClick, selectedEmployee)
             ))}
           </TableBody>
         </Table>

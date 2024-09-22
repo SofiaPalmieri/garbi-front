@@ -47,6 +47,7 @@ export const CommonTableList = ({
     }
   }, [reloadTable]);
 
+
   const [selectedElement, setSelectedElement] = useState(null);
   const handleRowClick = (element) => {
     setSelectedElement(element);
@@ -132,13 +133,6 @@ export const CommonTableList = ({
             handleOpenModifyElementModal={handleOpenModifyElementModal}
             handleOpenDeleteElementModal={handleOpenDeleteElementModal}
           />
-          {/*<Button
-            variant="outlined"
-            disabled={!selectedElement}
-            onClick={() => handleOpenModifyElementModal(selectedElement)}
-          >
-            Editar
-          </Button>*/}
           <Box
             sx={{
               height: 'calc(100% - 4.5rem)',

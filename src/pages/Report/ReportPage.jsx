@@ -65,6 +65,7 @@ export const ReportPage = () => {
           isLoadingFetchData={isLoadingFetchReports}
           mapper={mapper}
           placeHolderInput={'Buscar por ID, Título o Contenedor'}
+          button={false}
           datePicker={false}
         />
     }

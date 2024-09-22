@@ -45,7 +45,7 @@ export const EmployeePage = () => {
   } = useEmployees();
 
   const [reloadTable, setReloadTable] = useState(0);
-  const refreshEmployeeList = () => {
+  const refreshList = () => {
     setReloadTable(prev => prev + 1);
   };
 
@@ -65,7 +65,7 @@ export const EmployeePage = () => {
               handleClose={handleCloseCreateEmployeeModal}
               form={<CreateEmployeeForm
                 handleClose = {handleCloseCreateEmployeeModal}
-                onSuccess={refreshEmployeeList}
+                onSuccess={refreshList}
               />}
             />
 

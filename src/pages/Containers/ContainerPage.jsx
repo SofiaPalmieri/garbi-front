@@ -22,6 +22,12 @@ import {
 import {
   CreateContainerForm 
 } from '../../forms/CreateContainer';
+import {
+  ModifyContainerForm 
+} from '../../forms/ModifyContainer/ModifyContainerForm';
+import {
+  DeleteContainerForm 
+} from '../../forms/DeleteContainer/DeleteContainerForm';
 
 const mapper = (data) => data
 
@@ -38,6 +44,11 @@ export const ContainerPage = () => {
     }
   } = useContainers();
 
+  const [reloadTable, setReloadTable] = useState(0);
+  const refreshList = () => {
+    setReloadTable(prev => prev + 1);
+  };
+
   return (
     <FilterSideComponent
       prefix={'Gestión'}
@@ -53,6 +64,7 @@ export const ContainerPage = () => {
               handleClose={handleCloseCreateContainerModal}
               form={<CreateContainerForm
                 handleClose={handleCloseCreateContainerModal}
+                onSuccess={refreshList}
               />}
             />
 
@@ -61,9 +73,15 @@ export const ContainerPage = () => {
               fetchData={getContainers}
               isLoadingFetchData={isLoadingGetContainers}
               mapper={mapper}
-              placeHolderInput={'Buscar por ID, Título o Contenedor'}
+              reloadTable={reloadTable}
+              placeHolderInput={'Buscar por ID o Dirección'}
+              inputWidth={'288px'}
               buttonText={'Nuevo contenedor'}
               onClick={handleOpenCreateContainerModal}
+              modifyModalTitle={'Modificar datos del contenedor'}
+              ModifyForm={ModifyContainerForm}
+              deleteModalTitle={'Eliminar contenedor'}
+              DeleteForm={DeleteContainerForm}
             />
           </>
       }
