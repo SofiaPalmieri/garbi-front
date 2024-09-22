@@ -118,6 +118,7 @@ const usersReport = [
 ]
 
 export const ReportDetailsPage = ({
+  reportId = 'CR638420ff',
   content = defaultContent,
   state = 'NUEVO'
 }) => {
@@ -211,6 +212,7 @@ export const ReportDetailsPage = ({
               }}
             >
               <ReportDetails
+                reportId={reportId}
                 content={content}  // Pasa el array de objetos tal cual está
                 state={state}      // Pasa el estado si es necesario
               />

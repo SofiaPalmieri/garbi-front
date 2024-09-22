@@ -34,7 +34,7 @@ const SmallKeyboardArrowDownIcon = (color) =>
   }));
 
 export const ReportStatusSelect = ({
-  reportId, reportState, onAvatarUpdate
+  reportId, reportState, onAvatarUpdate=null
 }) => {
   const [selectedValue, setSelectedValue] = useState(reportState);
   const [newSelectedValue, setNewSelectedValue] = useState(reportState);
@@ -91,11 +91,13 @@ export const ReportStatusSelect = ({
         const response = await reviewReport(reportId, reviewReportBody);
 
         //TODO later: validar que la respuesta sea la esperada, y sino tirar error.
-        onAvatarUpdate(reportId, {
-          name: user.name,
-          surname:user.surname,
-          profilePicture: user.profilePicture 
-        });
+        if(onAvatarUpdate) {
+          onAvatarUpdate(reportId, {
+            name: user.name,
+            surname:user.surname,
+            profilePicture: user.profilePicture 
+          });
+        }
       } catch (error) {
         console.error('Error submitting form', error);
       }
@@ -136,6 +138,7 @@ export const ReportStatusSelect = ({
             fontSize: '13px',
             fontWeight: 500,
             lineHeight: '22px',
+            textAlign: 'center',
           }}
         >
           <MenuItem 
