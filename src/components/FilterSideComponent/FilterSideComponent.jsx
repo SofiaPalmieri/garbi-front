@@ -22,7 +22,7 @@ export const FilterSideComponent = ({
   renderFilters: Filters = DefaultEmpty,
   height = HEIGHT_FULL_SCREEN,
   handleSubmit = () => { },
-  isLoading = true
+  isLoading = false
 }) => {
   return (
     <Box

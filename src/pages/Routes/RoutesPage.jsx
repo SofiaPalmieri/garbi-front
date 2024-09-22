@@ -17,6 +17,9 @@ import {
   RoutesTable 
 } from '../../tables/RoutesTable/RoutesTable';
 import profilePicture from '../../assets/profile_picture.jpg';
+import {
+  useCallback 
+} from 'react';
 
 
 const mapper = (routes) => {
@@ -94,6 +97,8 @@ export const RoutesPage = () => {
     },
   } = useRoutes();
 
+  const fetchRoutesCallback = useCallback(fetchRoutes, [])
+
 
   return (
     <FilterSideComponent
@@ -103,7 +108,7 @@ export const RoutesPage = () => {
         () => 
           <CommonTableList
             table={RoutesTable}
-            fetchData={fetchRoutes}
+            fetchData={fetchRoutesCallback}
             isLoadingFetchData={isLoadingFetchRoutes}
             mapper={mapper}
             placeHolderInput={'Buscar por Recolector o Supervisor'}
