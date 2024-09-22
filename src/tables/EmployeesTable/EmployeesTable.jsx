@@ -1,8 +1,5 @@
-import DeleteIcon from '@mui/icons-material/Delete';
-import EditIcon from '@mui/icons-material/Edit';
 import {
   Box,
-  Button,
   Table,
   TableBody,
   TableCell,
@@ -14,15 +11,12 @@ import {
 import {
   useState 
 } from 'react';
-import {
-  ModalCreateResource
-} from '../../modales/ModalCreateResource';
-import {
-  ModifyEmployeeForm 
-} from '../../forms/ModifyEmployee/ModifyEmployeeForm';
-import {
-  DeleteEmployeeForm 
-} from '../../forms/DeleteEmployee/DeleteEmployeeForm';
+
+
+
+
+
+
 
 
 const tableHeaders = [
@@ -52,12 +46,18 @@ const tableHeaders = [
   }
 ];
 
-const employeeRowRender = (employee) => {
+const employeeRowRender = (employee, handleRowClick, selectedEmployeeTest) => {
   return (
     <TableRow
       key={employee.id}
+      onClick={() => handleRowClick(employee)}
       sx={{
         height: '48px',
+        cursor: 'pointer',
+        backgroundColor: selectedEmployeeTest?.id === employee.id ? 'rgba(18, 66, 44, 0.15)' : 'transparent',
+        '&:hover': {
+          backgroundColor: '#f0f0f0',
+        },
         '& .MuiTableCell-root:last-child': {
           borderRight: 0,
         },
@@ -158,7 +158,8 @@ const employeeRowRender = (employee) => {
 }
 
 export const EmployeesTable = ({
-  data: employees
+  data: employees,
+  setSelectedElement
 }) => {
 
   const [openModifyEmployeeModal, setOpenModifyEmployeeModal] = useState(false);
@@ -183,16 +184,22 @@ export const EmployeesTable = ({
     setEmployeeToDelete(null);
   };
 
+
+  const [selectedEmployeeTest, setSelectedEmployeeTest] = useState(null);
+  const handleRowClick = (employee) => {
+    setSelectedElement(employee);
+    setSelectedEmployeeTest(employee);
+  };
+
   
   return (
     <Box
       sx={{
         position: 'relative',
-        paddingRight: '7.0625rem',
         width: '100%'
       }}
     >
-      <ModalCreateResource
+      {/*<ModalCreateResource
         title={'Modificar datos del empleado'}
         open={openModifyEmployeeModal}
         handleClose={handleCloseModifyEmployeeModal}
@@ -200,8 +207,8 @@ export const EmployeesTable = ({
           employeeToModify={employeeToModify}
           handleClose={handleCloseModifyEmployeeModal}
         />}
-      />
-      <ModalCreateResource
+      />*/}
+      {/*<ModalCreateResource
         title={'Eliminar empleado'}
         open={openDeleteEmployeeModal}
         handleClose={handleCloseDeleteEmployeeModal}
@@ -209,7 +216,7 @@ export const EmployeesTable = ({
           employeeToDelete={employeeToDelete}
           handleClose={handleCloseDeleteEmployeeModal}
         />}
-      />
+      />*/}
 
       <TableContainer>
         <Table
@@ -233,83 +240,11 @@ export const EmployeesTable = ({
           </TableHead>
           <TableBody>
             {employees.map(employee => (
-              employeeRowRender(employee)
+              employeeRowRender(employee, handleRowClick, selectedEmployeeTest)
             ))}
           </TableBody>
         </Table>
       </TableContainer>
-      <Box
-        sx={{
-          position: 'absolute',
-          right: 0,
-          top: 0
-        }}
-      >
-        <TableContainer>
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableCell
-                  align='center'
-                  sx={{
-                    width: 113,
-                    borderLeft: '.0625rem solid #0000001F'
-                  }}
-                >Acciones
-                </TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {employees.map(row => <TableRow
-                key={row.id + '-action'}
-                sx={{
-                  height: '3rem'
-                }}
-              >
-                <TableCell
-                  align='center'
-                  sx={{
-                    height: '100%',
-                    padding: 0,
-                    borderLeft: '.0625rem solid #0000001F'
-                  }}
-                >
-                  <Button
-                    sx={{
-                      width: 'fit-content',
-                      minWidth: 'unset',
-                      borderRadius: '50%'
-                    }}
-                    onClick={() => handleOpenModifyEmployeeModal(row)}
-                  >
-                    <EditIcon
-                      sx={{
-                        color: '#0000008F',
-                      }}
-                    />
-
-                  </Button>
-                  <Button
-                    sx={{
-                      width: 'fit-content',
-                      minWidth: 'unset',
-                      borderRadius: '50%'
-                    }}
-                    onClick={() => handleOpenDeleteEmployeeModal(row)}
-                  >
-                    <DeleteIcon
-                      sx={{
-                        color: '#0000008F',
-                      }}
-                    />
-
-                  </Button>
-                </TableCell>
-              </TableRow>)}
-            </TableBody>
-          </Table>
-        </TableContainer>
-      </Box>
     </Box>
   );
 };

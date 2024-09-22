@@ -15,7 +15,10 @@ import {
 } from '../DateRangePicker';
 
 export const SearcherPaginated = ({
-  prevFetch, nextFetch, disabledPrevBtn, disabledNextBtn, placeholderInput = 'Buscar por ID, Título', inputWidth, button, datePicker, buttonText, onClick
+  prevFetch, nextFetch, disabledPrevBtn, disabledNextBtn, 
+  placeholderInput = 'Buscar por ID, Título', inputWidth, 
+  button, datePicker, buttonText, onClick,
+  selectedElement, handleOpenModifyElementModal, handleOpenDeleteElementModal
 }) => {
   return (
     <Box
@@ -60,27 +63,44 @@ export const SearcherPaginated = ({
         </Box>
 
         {button ? (
-          <Button
-            size='medium'
-            sx={{
-              backgroundColor: '#12422C',
-              color: 'white',
-              height: '36px',
-              width: '202px',
-              '&:hover': {
-                backgroundColor: '#12422C',
-              },
-            }}
-            onClick={onClick}
-          >
-            {buttonText}
-            <AddIcon
+          <Box>
+            <Button
+              variant='outlined'
+              disabled={!selectedElement}
+              onClick={() => handleOpenDeleteElementModal(selectedElement)}
+            >
+              Eliminar
+            </Button>
+            <Button
+              variant='outlined'
+              disabled={!selectedElement}
+              onClick={() => handleOpenModifyElementModal(selectedElement)}
+            >
+              Editar
+            </Button>
+
+            <Button
+              size='medium'
               sx={{
-                marginLeft: '8px',
-                fontSize: '20px',
+                backgroundColor: '#12422C',
+                color: 'white',
+                height: '36px',
+                width: '202px',
+                '&:hover': {
+                  backgroundColor: '#12422C',
+                },
               }}
-            />
-          </Button>
+              onClick={onClick}
+            >
+              {buttonText}
+              <AddIcon
+                sx={{
+                  marginLeft: '8px',
+                  fontSize: '20px',
+                }}
+              />
+            </Button>
+          </Box>
         ) : (
           datePicker ? <DatePickerCustom /> : <DateRangePicker />
         )}

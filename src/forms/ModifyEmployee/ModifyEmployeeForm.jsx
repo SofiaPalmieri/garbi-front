@@ -44,7 +44,7 @@ const turnos = [
 
 
 export const ModifyEmployeeForm = ({
-  employeeToModify,
+  elementToModify,
   handleClose
 }) => {
 
@@ -55,16 +55,16 @@ export const ModifyEmployeeForm = ({
     },
   } = useForm({
     defaultValues: {
-      id: employeeToModify?.id,
-      companyId: '',
-      lastName: '',
-      firstName: '',
-      personalPhone: '',
-      personalEmail: '',
-      jobPosition:  '',
-      timeShift: '',
-      enterprisePhone: '',
-      enterpriseEmail: ''
+      id: elementToModify?.id,
+      companyId: elementToModify?.companyId,
+      lastName: elementToModify?.surname,
+      firstName: elementToModify?.name,
+      personalPhone: elementToModify?.personalPhone,
+      personalEmail: elementToModify?.personalEmail,
+      jobPosition: elementToModify?.role,
+      timeShift: elementToModify?.workingShift,
+      enterprisePhone: elementToModify?.companyPhone,
+      enterpriseEmail: elementToModify?.companyEmail
     },
   });
 

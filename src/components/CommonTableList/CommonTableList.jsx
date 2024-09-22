@@ -14,12 +14,19 @@ import {
   usePagination
 } from '../../hooks/usePagination';
 import {
-  useEffect 
+  useEffect, useState
 } from 'react';
+import {
+  ModalCreateResource
+} from '../../modales/ModalCreateResource';
 
 
 export const CommonTableList = ({
-  reloadTable, table: Table, fetchData, isLoadingFetchData, mapper, placeHolderInput, inputWidth, button=true, datePicker=true, buttonText, onClick
+  table: Table, fetchData, isLoadingFetchData, mapper, reloadTable, 
+  placeHolderInput, inputWidth, 
+  button=true, datePicker=true, buttonText, onClick,
+  modifyModalTitle, ModifyForm,
+  deleteModalTitle, DeleteForm
 }) => {
 
   const {
@@ -40,6 +47,34 @@ export const CommonTableList = ({
     }
   }, [reloadTable]);
 
+  const [selectedElement, setSelectedElement] = useState(null);
+  const handleRowClick = (element) => {
+    setSelectedElement(element);
+  };
+
+  const [openModifyElementModal, setOpenModifyElementModal] = useState(false);
+  const [elementToModify, setElementToModify] = useState(false);
+  const handleOpenModifyElementModal = (elementToModify) => {
+    setElementToModify(elementToModify)
+    setOpenModifyElementModal(true)
+  };
+  const handleCloseModifyElementModal = () => {
+    setOpenModifyElementModal(false)
+    setElementToModify(null);
+  };
+
+  const [openDeleteElementModal, setOpenDeleteElementModal] = useState(false);
+  const [elementToDelete, setElementToDelete] = useState(false);
+  const handleOpenDeleteElementModal = (elementToDelete) => {
+    setElementToDelete(elementToDelete)
+    setOpenDeleteElementModal(true)
+  };
+  const handleCloseDeleteElementModal = () => {
+    setOpenDeleteElementModal(false)
+    setElementToDelete(null);
+  };
+
+
   return (
     <Box
       sx={{
@@ -48,6 +83,25 @@ export const CommonTableList = ({
         height: `calc(100% - ${HEIGHT_HEADER_FILTER_SIDE_COMPONENT})`,
       }}
     >
+      <ModalCreateResource
+        title={modifyModalTitle}
+        open={openModifyElementModal}
+        handleClose={handleCloseModifyElementModal}
+        form={<ModifyForm
+          elementToModify={elementToModify}
+          handleClose={handleCloseModifyElementModal}
+        />}
+      />
+      <ModalCreateResource
+        title={deleteModalTitle}
+        open={openDeleteElementModal}
+        handleClose={handleCloseDeleteElementModal}
+        form={<DeleteForm
+          elementToDelete={elementToDelete}
+          handleClose={handleCloseDeleteElementModal}
+        />}
+      />
+
       <Paper
         sx={{
           width: '100%',
@@ -74,7 +128,17 @@ export const CommonTableList = ({
             datePicker={datePicker}
             buttonText={buttonText}
             onClick={onClick}
+            selectedElement={selectedElement}
+            handleOpenModifyElementModal={handleOpenModifyElementModal}
+            handleOpenDeleteElementModal={handleOpenDeleteElementModal}
           />
+          {/*<Button
+            variant="outlined"
+            disabled={!selectedElement}
+            onClick={() => handleOpenModifyElementModal(selectedElement)}
+          >
+            Editar
+          </Button>*/}
           <Box
             sx={{
               height: 'calc(100% - 4.5rem)',
@@ -97,6 +161,7 @@ export const CommonTableList = ({
                 :
                 <Table
                   data={data}
+                  setSelectedElement={handleRowClick}
                 />
             }
           </Box>

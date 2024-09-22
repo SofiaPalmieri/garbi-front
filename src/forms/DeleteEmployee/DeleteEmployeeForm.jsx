@@ -10,13 +10,13 @@ import {
 
 
 export const DeleteEmployeeForm = ({
-  employeeToDelete,
+  elementToDelete,
   handleClose
 }) => {
 
   useForm({
     defaultValues: {
-      idEmployee: employeeToDelete?.id
+      idEmployee: elementToDelete?.id
     },
   });
 
@@ -42,7 +42,7 @@ export const DeleteEmployeeForm = ({
               fontWeight: '500' 
             }}
           >
-            {employeeToDelete?.name} {employeeToDelete?.surname}
+            {elementToDelete?.name} {elementToDelete?.surname}
           </Typography>
           ? No podrá deshacer esta acción.
         </Typography>

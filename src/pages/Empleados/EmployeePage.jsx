@@ -22,6 +22,12 @@ import {
 import {
   CreateEmployeeForm
 } from '../../forms/CreateEmployee/CreateEmployeeForm';
+import {
+  ModifyEmployeeForm 
+} from '../../forms/ModifyEmployee/ModifyEmployeeForm';
+import {
+  DeleteEmployeeForm 
+} from '../../forms/DeleteEmployee/DeleteEmployeeForm';
 
 const mapper = (data) => data
 
@@ -64,14 +70,19 @@ export const EmployeePage = () => {
             />
 
             <CommonTableList
-              reloadTable={reloadTable}
               table={EmployeesTable}
               fetchData={fetchEmployees}
               isLoadingFetchData={isLoadingFetchEmployees}
               mapper={mapper}
+              reloadTable={reloadTable}
               placeHolderInput={'Buscar por Nombre o Apellido'}
+              inputWidth={'288px'}
               buttonText={'Nuevo empleado'}
               onClick={handleOpenCreateEmployeeModal}
+              modifyModalTitle={'Modificar datos del empleado'}
+              ModifyForm={ModifyEmployeeForm}
+              deleteModalTitle={'Eliminar empleado'}
+              DeleteForm={DeleteEmployeeForm}
             />
           </>
       }
