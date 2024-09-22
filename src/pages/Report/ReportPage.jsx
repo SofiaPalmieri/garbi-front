@@ -33,7 +33,7 @@ const mapper = (reports) => {
         state: state.status,
         // recolector o ciudadano,
         description: r.description,
-        reportType: r.type.replace('_', ' '),
+        reportType: r.type.replace(/_/g, ' '),
         // falta lugar
         // falta area,
         // falta nombre del que report,
