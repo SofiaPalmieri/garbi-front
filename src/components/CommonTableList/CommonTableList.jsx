@@ -22,7 +22,8 @@ import {
 
 
 export const CommonTableList = ({
-  table: Table, fetchData, isLoadingFetchData, mapper, reloadTable, 
+  table: Table, 
+  fetchData, isLoadingFetchData, mapper, reloadTable, 
   placeHolderInput, inputWidth, 
   button=true, datePicker=true, buttonText, onClick,
   modifyModalTitle, ModifyForm,
@@ -41,10 +42,8 @@ export const CommonTableList = ({
     mapper
   })
 
-  useEffect(() => {
-    if (reloadTable) {
-      refetchData();
-    }
+  useEffect(() => { //to reload table when a new row is added.
+    refetchData();
   }, [reloadTable]);
 
 
@@ -155,7 +154,7 @@ export const CommonTableList = ({
                 :
                 <Table
                   data={data}
-                  setSelectedElement={handleRowClick}
+                  handleRowClick={handleRowClick}
                 />
             }
           </Box>

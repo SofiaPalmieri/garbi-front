@@ -10,8 +10,6 @@ import {
 import {
   SelectForm
 } from '../../components/SelectForm/SelectForm';
-
-
 import {
   CancelAndSubmitButton 
 } from '../../components/CancelAndSubmitButton/CancelAndSubmitButton';
@@ -48,6 +46,8 @@ export const ModifyEmployeeForm = ({
   handleClose
 }) => {
 
+  const employee = elementToModify
+
   const {
     control,
     formState: {
@@ -55,16 +55,16 @@ export const ModifyEmployeeForm = ({
     },
   } = useForm({
     defaultValues: {
-      id: elementToModify?.id,
-      companyId: elementToModify?.companyId,
-      lastName: elementToModify?.surname,
-      firstName: elementToModify?.name,
-      personalPhone: elementToModify?.personalPhone,
-      personalEmail: elementToModify?.personalEmail,
-      jobPosition: elementToModify?.role,
-      timeShift: elementToModify?.workingShift,
-      enterprisePhone: elementToModify?.companyPhone,
-      enterpriseEmail: elementToModify?.companyEmail
+      id: employee?.id,
+      companyId: employee?.companyId,
+      lastName: employee?.surname,
+      firstName: employee?.name,
+      personalPhone: employee?.personalPhone,
+      personalEmail: employee?.personalEmail,
+      jobPosition: employee?.role,
+      timeShift: employee?.workingShift,
+      enterprisePhone: employee?.companyPhone,
+      enterpriseEmail: employee?.companyEmail
     },
   });
 

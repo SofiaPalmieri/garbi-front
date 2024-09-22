@@ -58,7 +58,7 @@ const tableHeaders = [
 ];
 
 
-const containerRowRender = (container, handleRowClick, selectedContainer) => {
+const containerRowRender = (container, handleRowClick, isSelected) => {
   return (
     <TableRow
       key={container.id}
@@ -66,7 +66,7 @@ const containerRowRender = (container, handleRowClick, selectedContainer) => {
       sx={{
         height: '48px',
         cursor: 'pointer',
-        backgroundColor: selectedContainer?.id === container.id ? 'rgba(18, 66, 44, 0.15)' : 'transparent',
+        backgroundColor: isSelected ? 'rgba(18, 66, 44, 0.15)' : 'transparent',
         '&:hover': {
           backgroundColor: '#f0f0f0',
         },
@@ -151,7 +151,7 @@ const containerRowRender = (container, handleRowClick, selectedContainer) => {
 
 export const ContainerTable = ({
   data: containers,
-  setSelectedElement
+  handleRowClick: setSelectedElement
 }) => {
 
   const [selectedContainer, setSelectedContainer] = useState(null);
@@ -194,7 +194,7 @@ export const ContainerTable = ({
           </TableHead>
           <TableBody>
             {containers.map(container => (
-              containerRowRender(container, handleRowClick, selectedContainer)
+              containerRowRender(container, handleRowClick, selectedContainer?.id === container.id)
             ))}
           </TableBody>
         </Table>

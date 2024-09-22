@@ -40,7 +40,7 @@ const tableHeaders = [
   }
 ];
 
-const employeeRowRender = (employee, handleRowClick, selectedEmployee) => {
+const employeeRowRender = (employee, handleRowClick, isSelected) => {
   return (
     <TableRow
       key={employee.id}
@@ -48,7 +48,7 @@ const employeeRowRender = (employee, handleRowClick, selectedEmployee) => {
       sx={{
         height: '48px',
         cursor: 'pointer',
-        backgroundColor: selectedEmployee?.id === employee.id ? 'rgba(18, 66, 44, 0.15)' : 'transparent',
+        backgroundColor: isSelected ? 'rgba(18, 66, 44, 0.15)' : 'transparent',
         '&:hover': {
           backgroundColor: '#f0f0f0',
         },
@@ -153,7 +153,7 @@ const employeeRowRender = (employee, handleRowClick, selectedEmployee) => {
 
 export const EmployeesTable = ({
   data: employees,
-  setSelectedElement
+  handleRowClick: setSelectedElement
 }) => {
 
   const [selectedEmployee, setSelectedEmployee] = useState(null);
@@ -197,7 +197,7 @@ export const EmployeesTable = ({
           </TableHead>
           <TableBody>
             {employees.map(employee => (
-              employeeRowRender(employee, handleRowClick, selectedEmployee)
+              employeeRowRender(employee, handleRowClick, selectedEmployee?.id === employee.id )
             ))}
           </TableBody>
         </Table>
