@@ -13,11 +13,30 @@ import {
 import {
   ReportStatusSelect
 } from '../../components/ReportStatusSelect';
+import {
+  useState
+} from 'react';
 
 
 export const ReportTable = ({
-  data: reports
+  data: initialReports
 }) => {
+  const [reports, setReports] = useState(initialReports);
+
+  const handleUpdateAvatar = (reportId, user) => {
+    setReports(prevReports =>
+      prevReports.map(report =>
+        report.id === reportId
+          ? {
+            ...report,
+            assignedManagerName: `${user.name} ${user.surname}`,
+            assignedManagerPhoto: user.profilePicture 
+          }
+          : report
+      )
+    );
+  };
+  
   return (
     <Table
       sx={{
@@ -143,6 +162,7 @@ export const ReportTable = ({
               <ReportStatusSelect
                 reportId={row.id}
                 reportState={row.state}
+                onAvatarUpdate={handleUpdateAvatar}
               />
             </TableCell>
             <TableCell
@@ -153,8 +173,8 @@ export const ReportTable = ({
               }}
             >
               <AvatarWithTooltip
-                name={row.creatorName}
-                profilePicture={row.creatorPhoto}
+                name={row.assignedManagerName}
+                profilePicture={row.assignedManagerPhoto}
               />
             </TableCell>
           </TableRow>
