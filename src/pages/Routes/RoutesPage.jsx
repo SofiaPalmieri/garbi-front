@@ -1,4 +1,7 @@
 import {
+  DatePickerCustom 
+} from '../../components/DatePickerCustom/DatePickerCustom';
+import {
   FilterSideComponent 
 } from '../../components/FilterSideComponent';
 import {
@@ -84,6 +87,12 @@ const mapper = (routes) => {
     )
 }
 
+const ComponentToRender = () => {
+  return(
+    <DatePickerCustom />
+  )
+}
+
 
 export const RoutesPage = () => {
 
@@ -107,7 +116,7 @@ export const RoutesPage = () => {
             isLoadingFetchData={isLoadingFetchRoutes}
             mapper={mapper}
             placeHolderInput={'Buscar por Recolector o Supervisor'}
-            button={false}
+            ComponentToRender={ComponentToRender}
           />
       }
     />

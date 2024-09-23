@@ -22,6 +22,9 @@ import {
 import {
   TableWithEditAndDeleteButtons
 } from '../../components/TableWithEditAndDeleteButtons';
+import { 
+  TableButtons 
+} from '../../components/TableButtons/TableButtons';
 
 const companiesInitial = [
   {
@@ -214,6 +217,22 @@ const CompanyPage = () => {
     setCompanyToDelete(null);
   };
 
+  const [selectedElement, setSelectedElement] = useState(null);
+  const handleRowClick = (element) => {
+    setSelectedElement(element);
+  };
+
+  const ComponentToRender = () => {
+    return(
+      <TableButtons
+        selectedElement={selectedElement}
+        handleOpenDeleteElementModal={handleOpenDeleteCompanyModal}
+        handleOpenModifyElementModal={handleOpenModifyCompanyModal}
+        handleOpenCreateElementModal={handleOpenCreateCompanyModal}
+        mainButtonText={'Nueva empresa'}
+      />
+    )
+  }
 
   return (
     <Box
@@ -253,8 +272,8 @@ const CompanyPage = () => {
           placeholderInput={'Buscar por Razón social o Nombre'}
           buttonText={'nueva empresa'}
           inputWidth={'20rem'}
-          onClick={handleOpenCreateCompanyModal}
-          button={true}
+          handleRowClick={handleRowClick}
+          ComponentToRender={ComponentToRender}
         />
         <TableWithEditAndDeleteButtons
           tableHeaders={tableHeaders}
