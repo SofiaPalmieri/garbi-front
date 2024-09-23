@@ -4,7 +4,17 @@ import {
   Box, Button, Typography 
 } from '@mui/material';
 
+import {
+  useNavigate 
+} from 'react-router-dom';
+
 export const ErrorPage = () => {
+
+  const navigate = useNavigate(); 
+
+  const handleGoHome = () => {
+    navigate('/home');
+  };
   return (
 
 
@@ -67,6 +77,7 @@ export const ErrorPage = () => {
           Capaz está mal tipeado el enlace o la página puede haber cambiado de nombre
         </Typography>
         <Button
+          onClick={handleGoHome}
           sx={{
             fontFamily:'Roboto',
             fontSize:'15px',
