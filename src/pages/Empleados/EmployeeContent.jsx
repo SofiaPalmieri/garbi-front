@@ -5,7 +5,7 @@ import {
   Typography
 } from '@mui/material';
 import {
-  useEffect, useState 
+  useState 
 } from 'react';
 import {
   SearcherAndButton
@@ -19,9 +19,8 @@ import {
 import {
   TableWithEditAndDeleteButtons
 } from '../../components/TableWithEditAndDeleteButtons';
-import {
-  useEmployees
-} from '../../api/hooks/useEmployees/useEmployees';
+
+
 
 
 const tableHeaders = [
@@ -155,19 +154,13 @@ const EmployeeRowRender = (employee) => {
   )
 }
 
-export const EmployeeContent = () => {
-  const [employees, setEmployees] = useState([])
+export const EmployeeTable  = ({
+  data: employees
+}) => {
   const [openCreateEmployeeModal, setOpenCreateEmployeeModal] = useState(false);
   const handleOpenCreateEmployeeModal = () => setOpenCreateEmployeeModal(true);
-  const handleCloseCreateEmployeeModal = () => setOpenCreateEmployeeModal(false);
+  const handleCloseCreateEmployeeModal = () => setOpenCreateEmployeeModal(false); 
 
-  const [lastKey, setLastKey] = useState(null)
-  const {
-    fetchEmployees: {
-      fetchEmployees,
-      isLoadingFetchEmployees
-    }
-  } = useEmployees();
 
   const [openModifyEmployeeModal, setOpenModifyEmployeeModal] = useState(false);
   const [employeeToModify, setEmployeeToModify] = useState(false);
@@ -181,18 +174,7 @@ export const EmployeeContent = () => {
     setEmployeeToModify(null);
   };
 
-  const refreshEmployeeList = async () => {
-    try {
-      const employeesResponse = await fetchEmployees();
-      setEmployees(employeesResponse.result);
-    } catch (error) {
-      console.error('Error fetching employees:', error);
-    }
-  };
 
-  useEffect(() => {
-    refreshEmployeeList();
-  }, []);
 
   
   return (
@@ -208,7 +190,6 @@ export const EmployeeContent = () => {
         handleClose={handleCloseCreateEmployeeModal}
         form={<CreateEmployeeForm
           handleClose = {handleCloseCreateEmployeeModal}
-          onSuccess={refreshEmployeeList}
         />}
       />
       <Paper
@@ -230,5 +211,5 @@ export const EmployeeContent = () => {
         />
       </Paper>
     </Box>
-  );
-};
+  )
+}
