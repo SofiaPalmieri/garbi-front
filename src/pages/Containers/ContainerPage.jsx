@@ -32,6 +32,10 @@ import {
   TableButtons 
 } from '../../components/TableButtons/TableButtons';
 
+import {
+  useCallback 
+} from 'react';
+
 const mapper = (data) => data
 
 export const ContainerPage = () => {
@@ -79,6 +83,9 @@ export const ContainerPage = () => {
     setSelectedElement(element);
   };
 
+  const getContainersCallback = useCallback((lastKey) => {
+    return getContainers(lastKey)
+  }, [])
 
   return (
     <FilterSideComponent
@@ -119,7 +126,7 @@ export const ContainerPage = () => {
 
             <CommonTableList
               table={ContainerTable}
-              fetchData={getContainers}
+              fetchData={getContainersCallback}
               isLoadingFetchData={isLoadingGetContainers}
               mapper={mapper}
               reloadTable={reloadTable}

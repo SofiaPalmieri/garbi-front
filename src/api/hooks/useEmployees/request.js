@@ -1,7 +1,4 @@
 import {
-  LIMIT_DEFAULT 
-} from '../../../config';
-import {
   useFetch 
 } from '../../../hooks/useFetch';
 import {
@@ -11,6 +8,9 @@ import {
   HTTPMethods 
 } from '../../config/HTTPMethods';
 import QueryBuilder from '../../queryBuilder/QueryBuilder';
+import {
+  LIMIT_DEFAULT 
+} from '../../../config';
 
 const baseEmployeesUri = baseIntegrationUri + '/user'
 
@@ -53,13 +53,19 @@ export const useFetchEmployees = () => {
     baseUri: baseEmployeesUri,
   });
 
-  const fetchEmployees = (lastKey = null, limit = LIMIT_DEFAULT) => {
+  const fetchEmployees = (lastKey = null, queryParamsFilter, limit = LIMIT_DEFAULT) => {
     const queryBuilder = new QueryBuilder()
 
-    const uri = queryBuilder
+    queryBuilder
       .addParam('lastKey', lastKey)
       .addParam('limit', limit)
-      .build()
+
+    queryParamsFilter.forEach(element => {
+      queryBuilder.addParam(element.key, element.value)
+    });
+
+    const uri = queryBuilder.build();
+    
 
     return commonFetch({
       uri,
@@ -67,11 +73,12 @@ export const useFetchEmployees = () => {
     })
   }
 
+
   return {
     fetchEmployees,
     isLoading
   }
-}
+};
 
 export const useModifyEmployee = () => {
   const {

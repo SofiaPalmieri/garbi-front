@@ -13,9 +13,8 @@ import {
 import {
   usePagination
 } from '../../hooks/usePagination';
-import {
-  useEffect
-} from 'react';
+
+
 
 
 export const CommonTableList = ({
@@ -37,9 +36,9 @@ export const CommonTableList = ({
     mapper
   })
 
-  useEffect(() => { //to reload table when a new row is added.
-    refetchData();
-  }, [reloadTable]);
+  // useEffect(() => { //to reload table when a new row is added.
+  //   refetchData();
+  // }, [reloadTable]);
 
 
   return (

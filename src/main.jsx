@@ -23,7 +23,7 @@ import {
 import HomePage from './pages/Home/HomePage.jsx';
 import RecommendationsPage from './pages/Recomendaciones/RecommendationsPage.jsx';
 import {
-  RoutesPage 
+  RoutesPage
 } from './pages/Routes/RoutesPage.jsx';
 import LoginPage from './pages/Login/LoginPage.jsx';
 import {
@@ -42,6 +42,9 @@ import {
   RouteDetailPage
 } from './pages/Routes/Detail/RouteDetailPage.jsx';
 import PerfilPage from './pages/Perfil/PerfilPage.jsx';
+import {
+  StatsPage 
+} from './pages/Stats/StatsPage.jsx';
 
 const theme = createTheme({
   palette: {
@@ -103,10 +106,10 @@ const router = createBrowserRouter([
         path: '/recorridos/detalle',
         element: <RouteDetailPage />,
       },
-      // {
-      //   path: '/areas/nueva',
-      //   element: <CreateAreaPage />,
-      // },
+      {
+        path: '/estadisticas',
+        element: <StatsPage />,
+      },
       {
         path: '/reportes',
         element: <ReportPage />,
