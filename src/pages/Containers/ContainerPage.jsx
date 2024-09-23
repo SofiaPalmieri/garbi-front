@@ -14,6 +14,10 @@ import {
   ContainerTable 
 } from '../../tables/ContainerTable/ContainerTable';
 
+import {
+  useCallback 
+} from 'react';
+
 const mapper = (data) => data
 
 export const ContainerPage = () => {
@@ -25,6 +29,10 @@ export const ContainerPage = () => {
     }
   } = useContainers();
 
+  const getContainersCallback = useCallback((lastKey) => {
+    return getContainers(lastKey)
+  }, [])
+
   return (
     <FilterSideComponent
       prefix={'Gestión'}
@@ -34,7 +42,7 @@ export const ContainerPage = () => {
         () =>
           <CommonTableList
             table={ContainerTable}
-            fetchData={getContainers}
+            fetchData={getContainersCallback}
             isLoadingFetchData={isLoadingGetContainers}
             mapper={mapper}
             placeHolderInput={'Buscar por ID, Título o Contenedor'}
