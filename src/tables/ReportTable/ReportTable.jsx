@@ -24,18 +24,18 @@ export const ReportTable = ({
   const [reports, setReports] = useState(initialReports);
 
   const handleUpdateAvatar = (reportId, user) => {
-    setReports(prevReports =>
-      prevReports.map(report =>
-        report.id === reportId
-          ? {
-            ...report,
-            assignedManagerName: `${user.name} ${user.surname}`,
-            assignedManagerPhoto: user.profilePicture 
-          }
-          : report
-      )
-    );
+    const newReports = [...reports];
+    const reportIndex = newReports.findIndex(report => report.id === reportId);
+    
+    newReports[reportIndex] = {
+      ...newReports[reportIndex],
+      assignedManagerName: `${user.name} ${user.surname}`,
+      assignedManagerPhoto: user.profilePicture
+    };
+    
+    setReports(newReports);
   };
+  
   
   return (
     <Table
