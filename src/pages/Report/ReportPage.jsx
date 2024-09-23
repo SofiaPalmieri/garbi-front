@@ -1,4 +1,7 @@
 import {
+  DateRangePicker 
+} from '../../components/DateRangePicker/DateRangePicker';
+import {
   useReports 
 } from '../../api/hooks/useReports/useReports';
 import {
@@ -53,6 +56,12 @@ export const ReportPage = () => {
     }
   } = useReports();
 
+  const ComponentToRender = () => {
+    return(
+      <DateRangePicker />
+    )
+  }
+
 
   return <FilterSideComponent
     title={'Reportes'}
@@ -65,8 +74,7 @@ export const ReportPage = () => {
           isLoadingFetchData={isLoadingFetchReports}
           mapper={mapper}
           placeHolderInput={'Buscar por ID, Título o Contenedor'}
-          button={false}
-          datePicker={false}
+          ComponentToRender={ComponentToRender}
         />
     }
   />;

@@ -6,21 +6,11 @@ import {
 } from '../Searcher/Searcher'
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-import AddIcon from '@mui/icons-material/Add';
-import DeleteIcon from '@mui/icons-material/Delete';
-import EditIcon from '@mui/icons-material/Edit';
-import {
-  DatePickerCustom
-} from '../DatePickerCustom';
-import {
-  DateRangePicker 
-} from '../DateRangePicker';
 
 export const SearcherPaginated = ({
   prevFetch, nextFetch, disabledPrevBtn, disabledNextBtn, 
-  placeholderInput = 'Buscar por ID, Título', inputWidth, 
-  button, datePicker, buttonText, onClick,
-  selectedElement, handleOpenModifyElementModal, handleOpenDeleteElementModal
+  placeholderInput = 'Buscar por ID, Título', inputWidth,
+  ComponentToRender
 }) => {
   return (
     <Box
@@ -63,67 +53,8 @@ export const SearcherPaginated = ({
             <ChevronRightIcon />
           </Button>
         </Box>
-
-        {button ? (
-          <Box>
-            <Button
-              variant='outlined'
-              disabled={!selectedElement}
-              onClick={() => handleOpenDeleteElementModal(selectedElement)}
-              sx={{ 
-                marginRight: '8px',
-              }}
-            >
-              Eliminar
-              <DeleteIcon
-                sx={{
-                  marginLeft: '8px',
-                  fontSize: '18px',
-                }}
-              />
-            </Button>
-            <Button
-              variant='outlined'
-              disabled={!selectedElement}
-              onClick={() => handleOpenModifyElementModal(selectedElement)}
-              sx={{
-                marginRight: '16px' 
-              }}
-            >
-              Editar
-              <EditIcon
-                sx={{
-                  marginLeft: '8px',
-                  fontSize: '18px',
-                }}
-              />
-            </Button>
-
-            <Button
-              size='medium'
-              sx={{
-                backgroundColor: '#12422C',
-                color: 'white',
-                height: '36px',
-                width: '202px',
-                '&:hover': {
-                  backgroundColor: '#12422C',
-                },
-              }}
-              onClick={onClick}
-            >
-              {buttonText}
-              <AddIcon
-                sx={{
-                  marginLeft: '8px',
-                  fontSize: '20px',
-                }}
-              />
-            </Button>
-          </Box>
-        ) : (
-          datePicker ? <DatePickerCustom /> : <DateRangePicker />
-        )}
+        
+        <ComponentToRender/>
       </Box>
     </Box>
   )

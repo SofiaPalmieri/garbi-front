@@ -10,13 +10,13 @@ import {
 
 
 export const DeleteContainerForm = ({
-  elementToDelete,
+  containerToDelete,
   handleClose
 }) => {
 
   useForm({
     defaultValues: {
-      idContainer: elementToDelete?.id
+      idContainer: containerToDelete?.id
     },
   });
 
@@ -42,7 +42,7 @@ export const DeleteContainerForm = ({
               fontWeight: '500' 
             }}
           >
-            {elementToDelete?.id}
+            {containerToDelete?.id}
           </Typography>
           ? No podrá deshacer esta acción.
         </Typography>

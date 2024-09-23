@@ -28,6 +28,10 @@ import {
 import {
   DeleteEmployeeForm 
 } from '../../forms/DeleteEmployee/DeleteEmployeeForm';
+import { 
+  TableButtons 
+} from '../../components/TableButtons/TableButtons';
+
 
 const mapper = (data) => data
 
@@ -36,6 +40,28 @@ export const EmployeePage = () => {
   const [openCreateEmployeeModal, setOpenCreateEmployeeModal] = useState(false);
   const handleOpenCreateEmployeeModal = () => setOpenCreateEmployeeModal(true);
   const handleCloseCreateEmployeeModal = () => setOpenCreateEmployeeModal(false);
+
+  const [openModifyEmployeeModal, setOpenModifyEmployeeModal] = useState(false);
+  const [employeeToModify, setEmployeeToModify] = useState(false);
+  const handleOpenModifyEmployeeModal = (employeeToModify) => {
+    setEmployeeToModify(employeeToModify)
+    setOpenModifyEmployeeModal(true)
+  };
+  const handleCloseModifyEmployeeModal = () => {
+    setOpenModifyEmployeeModal(false)
+    setEmployeeToModify(null);
+  };
+
+  const [openDeleteEmployeeModal, setOpenDeleteEmployeeModal] = useState(false);
+  const [employeeToDelete, setEmployeeToDelete] = useState(false);
+  const handleOpenDeleteEmployeeModal = (employeeToDelete) => {
+    setEmployeeToDelete(employeeToDelete)
+    setOpenDeleteEmployeeModal(true)
+  };
+  const handleCloseDeleteEmployeeModal = () => {
+    setOpenDeleteEmployeeModal(false)
+    setEmployeeToDelete(null);
+  };
 
   const {
     fetchEmployees: {
@@ -48,6 +74,23 @@ export const EmployeePage = () => {
   const refreshList = () => {
     setReloadTable(prev => prev + 1);
   };
+
+  const [selectedElement, setSelectedElement] = useState(null);
+  const handleRowClick = (element) => {
+    setSelectedElement(element);
+  };
+
+  const ComponentToRender = () => {
+    return(
+      <TableButtons
+        selectedElement={selectedElement}
+        handleOpenDeleteElementModal={handleOpenDeleteEmployeeModal}
+        handleOpenModifyElementModal={handleOpenModifyEmployeeModal}
+        handleOpenCreateElementModal={handleOpenCreateEmployeeModal}
+        mainButtonText={'Nuevo empleado'}
+      />
+    )
+  }
 
 
   return (
@@ -68,6 +111,24 @@ export const EmployeePage = () => {
                 onSuccess={refreshList}
               />}
             />
+            <ModalCreateResource
+              title={'Modificar datos del empleado'}
+              open={openModifyEmployeeModal}
+              handleClose={handleCloseModifyEmployeeModal}
+              form={<ModifyEmployeeForm
+                employeeToModify={employeeToModify}
+                handleClose={handleCloseModifyEmployeeModal}
+              />}
+            />
+            <ModalCreateResource
+              title={'Eliminar empleado'}
+              open={openDeleteEmployeeModal}
+              handleClose={handleCloseDeleteEmployeeModal}
+              form={<DeleteEmployeeForm
+                employeeToDelete={employeeToDelete}
+                handleClose={handleCloseDeleteEmployeeModal}
+              />}
+            />
 
             <CommonTableList
               table={EmployeesTable}
@@ -77,12 +138,8 @@ export const EmployeePage = () => {
               reloadTable={reloadTable}
               placeHolderInput={'Buscar por Nombre o Apellido'}
               inputWidth={'288px'}
-              buttonText={'Nuevo empleado'}
-              onClick={handleOpenCreateEmployeeModal}
-              modifyModalTitle={'Modificar datos del empleado'}
-              ModifyForm={ModifyEmployeeForm}
-              deleteModalTitle={'Eliminar empleado'}
-              DeleteForm={DeleteEmployeeForm}
+              handleRowClick={handleRowClick}
+              ComponentToRender={ComponentToRender}
             />
           </>
       }

@@ -30,7 +30,7 @@ const cargos = [
 
 
 export const ModifyContainerForm = ({
-  elementToModify,
+  containerToModify,
   handleClose
 }) => {
 
@@ -42,7 +42,7 @@ export const ModifyContainerForm = ({
   } = useForm({
     defaultValues: {
       idContainer: '',
-      idSensor: elementToModify?.id,
+      idSensor: containerToModify?.id,
       address: '',
       heightAddress: '',
       typeOfLoad: '',

@@ -28,6 +28,9 @@ import {
 import {
   DeleteContainerForm 
 } from '../../forms/DeleteContainer/DeleteContainerForm';
+import { 
+  TableButtons 
+} from '../../components/TableButtons/TableButtons';
 
 const mapper = (data) => data
 
@@ -36,6 +39,28 @@ export const ContainerPage = () => {
   const [openCreateContainerModal, setOpenCreateContainerModal] = useState(false);
   const handleOpenCreateContainerModal = () => setOpenCreateContainerModal(true);
   const handleCloseCreateContainerModal = () => setOpenCreateContainerModal(false);
+
+  const [openModifyContainerModal, setOpenModifyContainerModal] = useState(false);
+  const [containerToModify, setContainerToModify] = useState(false);
+  const handleOpenModifyContainerModal = (containerToModify) => {
+    setContainerToModify(containerToModify)
+    setOpenModifyContainerModal(true)
+  };
+  const handleCloseModifyContainerModal = () => {
+    setOpenModifyContainerModal(false)
+    setContainerToModify(null);
+  };
+
+  const [openDeleteContainerModal, setOpenDeleteContainerModal] = useState(false);
+  const [containerToDelete, setContainerToDelete] = useState(false);
+  const handleOpenDeleteContainerModal = (containerToDelete) => {
+    setContainerToDelete(containerToDelete)
+    setOpenDeleteContainerModal(true)
+  };
+  const handleCloseDeleteContainerModal = () => {
+    setOpenDeleteContainerModal(false)
+    setContainerToDelete(null);
+  };
 
   const {
     getContainers: {
@@ -48,6 +73,24 @@ export const ContainerPage = () => {
   const refreshList = () => {
     setReloadTable(prev => prev + 1);
   };
+
+  const [selectedElement, setSelectedElement] = useState(null);
+  const handleRowClick = (element) => {
+    setSelectedElement(element);
+  };
+
+  const ComponentToRender = () => {
+    return(
+      <TableButtons
+        selectedElement={selectedElement}
+        handleOpenDeleteElementModal={handleOpenDeleteContainerModal}
+        handleOpenModifyElementModal={handleOpenModifyContainerModal}
+        handleOpenCreateElementModal={handleOpenCreateContainerModal}
+        mainButtonText={'Nuevo contenedor'}
+      />
+    )
+  }
+
 
   return (
     <FilterSideComponent
@@ -67,6 +110,24 @@ export const ContainerPage = () => {
                 onSuccess={refreshList}
               />}
             />
+            <ModalCreateResource
+              title={'Modificar datos del contenedor'}
+              open={openModifyContainerModal}
+              handleClose={handleCloseModifyContainerModal}
+              form={<ModifyContainerForm
+                containerToModify={containerToModify}
+                handleClose={handleCloseModifyContainerModal}
+              />}
+            />
+            <ModalCreateResource
+              title={'Eliminar contenedor'}
+              open={openDeleteContainerModal}
+              handleClose={handleCloseDeleteContainerModal}
+              form={<DeleteContainerForm
+                containerToDelete={containerToDelete}
+                handleClose={handleCloseDeleteContainerModal}
+              />}
+            />
 
             <CommonTableList
               table={ContainerTable}
@@ -76,12 +137,8 @@ export const ContainerPage = () => {
               reloadTable={reloadTable}
               placeHolderInput={'Buscar por ID o Dirección'}
               inputWidth={'288px'}
-              buttonText={'Nuevo contenedor'}
-              onClick={handleOpenCreateContainerModal}
-              modifyModalTitle={'Modificar datos del contenedor'}
-              ModifyForm={ModifyContainerForm}
-              deleteModalTitle={'Eliminar contenedor'}
-              DeleteForm={DeleteContainerForm}
+              handleRowClick={handleRowClick}
+              ComponentToRender={ComponentToRender}
             />
           </>
       }

@@ -42,11 +42,11 @@ const turnos = [
 
 
 export const ModifyEmployeeForm = ({
-  elementToModify,
+  employeeToModify,
   handleClose
 }) => {
 
-  const employee = elementToModify
+  const employee = employeeToModify
 
   const {
     control,
