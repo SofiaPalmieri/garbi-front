@@ -222,17 +222,6 @@ const CompanyPage = () => {
     setSelectedElement(element);
   };
 
-  const ComponentToRender = () => {
-    return(
-      <TableButtons
-        selectedElement={selectedElement}
-        handleOpenDeleteElementModal={handleOpenDeleteCompanyModal}
-        handleOpenModifyElementModal={handleOpenModifyCompanyModal}
-        handleOpenCreateElementModal={handleOpenCreateCompanyModal}
-        mainButtonText={'Nueva empresa'}
-      />
-    )
-  }
 
   return (
     <Box
@@ -273,7 +262,15 @@ const CompanyPage = () => {
           buttonText={'nueva empresa'}
           inputWidth={'20rem'}
           handleRowClick={handleRowClick}
-          ComponentToRender={ComponentToRender}
+          componentToRender={
+            <TableButtons
+              selectedElement={selectedElement}
+              handleOpenDeleteElementModal={handleOpenDeleteCompanyModal}
+              handleOpenModifyElementModal={handleOpenModifyCompanyModal}
+              handleOpenCreateElementModal={handleOpenCreateCompanyModal}
+              mainButtonText={'Nueva empresa'}
+            />
+          }
         />
         <TableWithEditAndDeleteButtons
           tableHeaders={tableHeaders}

@@ -22,7 +22,7 @@ export const CommonTableList = ({
   table: Table, 
   fetchData, isLoadingFetchData, mapper, reloadTable, 
   placeHolderInput, inputWidth, 
-  handleRowClick, ComponentToRender
+  handleRowClick, componentToRender
 }) => {
 
   const {
@@ -72,7 +72,7 @@ export const CommonTableList = ({
             disabledPrevBtn={disabledPrevBtn || isLoadingFetchData}
             placeholderInput={placeHolderInput}
             inputWidth={inputWidth}
-            ComponentToRender={ComponentToRender}
+            componentToRender={componentToRender}
           />
           <Box
             sx={{

@@ -80,18 +80,6 @@ export const EmployeePage = () => {
     setSelectedElement(element);
   };
 
-  const ComponentToRender = () => {
-    return(
-      <TableButtons
-        selectedElement={selectedElement}
-        handleOpenDeleteElementModal={handleOpenDeleteEmployeeModal}
-        handleOpenModifyElementModal={handleOpenModifyEmployeeModal}
-        handleOpenCreateElementModal={handleOpenCreateEmployeeModal}
-        mainButtonText={'Nuevo empleado'}
-      />
-    )
-  }
-
 
   return (
     <FilterSideComponent
@@ -139,7 +127,15 @@ export const EmployeePage = () => {
               placeHolderInput={'Buscar por Nombre o Apellido'}
               inputWidth={'288px'}
               handleRowClick={handleRowClick}
-              ComponentToRender={ComponentToRender}
+              componentToRender={
+                <TableButtons
+                  selectedElement={selectedElement}
+                  handleOpenDeleteElementModal={handleOpenDeleteEmployeeModal}
+                  handleOpenModifyElementModal={handleOpenModifyEmployeeModal}
+                  handleOpenCreateElementModal={handleOpenCreateEmployeeModal}
+                  mainButtonText={'Nuevo empleado'}
+                />
+              }
             />
           </>
       }

@@ -79,18 +79,6 @@ export const ContainerPage = () => {
     setSelectedElement(element);
   };
 
-  const ComponentToRender = () => {
-    return(
-      <TableButtons
-        selectedElement={selectedElement}
-        handleOpenDeleteElementModal={handleOpenDeleteContainerModal}
-        handleOpenModifyElementModal={handleOpenModifyContainerModal}
-        handleOpenCreateElementModal={handleOpenCreateContainerModal}
-        mainButtonText={'Nuevo contenedor'}
-      />
-    )
-  }
-
 
   return (
     <FilterSideComponent
@@ -138,7 +126,15 @@ export const ContainerPage = () => {
               placeHolderInput={'Buscar por ID o Dirección'}
               inputWidth={'288px'}
               handleRowClick={handleRowClick}
-              ComponentToRender={ComponentToRender}
+              componentToRender={
+                <TableButtons
+                  selectedElement={selectedElement}
+                  handleOpenDeleteElementModal={handleOpenDeleteContainerModal}
+                  handleOpenModifyElementModal={handleOpenModifyContainerModal}
+                  handleOpenCreateElementModal={handleOpenCreateContainerModal}
+                  mainButtonText={'Nuevo contenedor'}
+                />
+              }
             />
           </>
       }

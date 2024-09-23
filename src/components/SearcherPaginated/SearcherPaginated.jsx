@@ -10,7 +10,7 @@ import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 export const SearcherPaginated = ({
   prevFetch, nextFetch, disabledPrevBtn, disabledNextBtn, 
   placeholderInput = 'Buscar por ID, Título', inputWidth,
-  ComponentToRender
+  componentToRender
 }) => {
   return (
     <Box
@@ -54,7 +54,7 @@ export const SearcherPaginated = ({
           </Button>
         </Box>
         
-        <ComponentToRender/>
+        {componentToRender}
       </Box>
     </Box>
   )

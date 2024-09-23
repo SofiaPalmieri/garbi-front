@@ -87,12 +87,6 @@ const mapper = (routes) => {
     )
 }
 
-const ComponentToRender = () => {
-  return(
-    <DatePickerCustom />
-  )
-}
-
 
 export const RoutesPage = () => {
 
@@ -116,7 +110,7 @@ export const RoutesPage = () => {
             isLoadingFetchData={isLoadingFetchRoutes}
             mapper={mapper}
             placeHolderInput={'Buscar por Recolector o Supervisor'}
-            ComponentToRender={ComponentToRender}
+            componentToRender={ <DatePickerCustom /> }
           />
       }
     />

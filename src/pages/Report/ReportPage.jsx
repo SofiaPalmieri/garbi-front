@@ -56,12 +56,6 @@ export const ReportPage = () => {
     }
   } = useReports();
 
-  const ComponentToRender = () => {
-    return(
-      <DateRangePicker />
-    )
-  }
-
 
   return <FilterSideComponent
     title={'Reportes'}
@@ -74,7 +68,7 @@ export const ReportPage = () => {
           isLoadingFetchData={isLoadingFetchReports}
           mapper={mapper}
           placeHolderInput={'Buscar por ID, Título o Contenedor'}
-          ComponentToRender={ComponentToRender}
+          componentToRender={ <DateRangePicker /> }
         />
     }
   />;
