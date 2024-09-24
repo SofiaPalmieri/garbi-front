@@ -5,8 +5,8 @@ import {
   TableContainer
 } from '@mui/material';
 import {
-  SearcherDateRangerPickerPaginated
-} from '../../components/SearcherDateRangePickerPaginated';
+  SearcherPaginated
+} from '../SearcherPaginated';
 import {
   HEIGHT_HEADER_FILTER_SIDE_COMPONENT
 } from '../../config';
@@ -15,8 +15,13 @@ import {
 } from '../../hooks/usePagination';
 
 
+
+
 export const CommonTableList = ({
-  table: Table, fetchData, isLoadingFetchData, mapper, placeHolderInput, inputWidth, datePicker=true
+  table: Table, 
+  fetchData, isLoadingFetchData, mapper, reloadTable, 
+  placeHolderInput, inputWidth, 
+  handleRowClick, componentToRender
 }) => {
 
   const {
@@ -24,11 +29,17 @@ export const CommonTableList = ({
     prevFetch,
     nextFetch,
     disabledPrevBtn,
-    disabledNextBtn
+    disabledNextBtn,
+    refetchData
   } = usePagination({
     fetch: fetchData,
     mapper
   })
+
+  // useEffect(() => { //to reload table when a new row is added.
+  //   refetchData();
+  // }, [reloadTable]);
+
 
   return (
     <Box
@@ -53,14 +64,14 @@ export const CommonTableList = ({
             width: '100%'
           }}
         >
-          <SearcherDateRangerPickerPaginated
+          <SearcherPaginated
             prevFetch={prevFetch}
             nextFetch={nextFetch}
             disabledNextBtn={disabledNextBtn || isLoadingFetchData}
             disabledPrevBtn={disabledPrevBtn || isLoadingFetchData}
             placeholderInput={placeHolderInput}
             inputWidth={inputWidth}
-            datePicker={datePicker}
+            componentToRender={componentToRender}
           />
           <Box
             sx={{
@@ -84,6 +95,7 @@ export const CommonTableList = ({
                 :
                 <Table
                   data={data}
+                  handleRowClick={handleRowClick}
                 />
             }
           </Box>

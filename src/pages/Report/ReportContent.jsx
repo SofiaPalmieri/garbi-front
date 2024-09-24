@@ -85,7 +85,7 @@
 //             overflow: 'hidden'
 //           }}
 //         >
-//           <SearcherDateRangerPickerPaginated
+//           <SearcherPaginated
 //             prevFetch={prevFetch}
 //             nextFetch={nextFetch}
 //             disabledNextBtn={disabledNextBtn}

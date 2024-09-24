@@ -1,4 +1,7 @@
 import {
+  DateRangePicker 
+} from '../../components/DateRangePicker/DateRangePicker';
+import {
   useEffect, useState 
 } from 'react';
 import {
@@ -142,7 +145,7 @@ export const ReportPage = () => {
           isLoadingFetchData={isLoadingFetchReports}
           mapper={mapper}
           placeHolderInput={'Buscar por ID, Título o Contenedor'}
-          datePicker={false}
+          componentToRender={ <DateRangePicker /> }
         />
     }
   />;

@@ -1,26 +1,16 @@
 import {
-  Box, Paper,
+  Box,
+  Table,
+  TableBody,
   TableCell,
+  TableContainer,
+  TableHead,
   TableRow,
   Typography
 } from '@mui/material';
 import {
   useState 
 } from 'react';
-import {
-  SearcherPaginated
-} from '../../components/SearcherPaginated';
-import {
-  CreateEmployeeForm
-} from '../../forms/CreateEmployee/CreateEmployeeForm';
-import {
-  ModalCreateResource
-} from '../../modales/ModalCreateResource';
-import {
-  TableWithEditAndDeleteButtons
-} from '../../components/TableWithEditAndDeleteButtons';
-
-
 
 
 const tableHeaders = [
@@ -49,12 +39,19 @@ const tableHeaders = [
     minWidth: 188
   }
 ];
-const EmployeeRowRender = (employee) => {
+
+const employeeRowRender = (employee, handleRowClick, isSelected) => {
   return (
     <TableRow
       key={employee.id}
+      onClick={() => handleRowClick(employee)}
       sx={{
         height: '48px',
+        cursor: 'pointer',
+        backgroundColor: isSelected ? 'rgba(18, 66, 44, 0.15)' : 'transparent',
+        '&:hover': {
+          backgroundColor: '#f0f0f0',
+        },
         '& .MuiTableCell-root:last-child': {
           borderRight: 0,
         },
@@ -154,62 +151,57 @@ const EmployeeRowRender = (employee) => {
   )
 }
 
-export const EmployeeTable  = ({
-  data: employees
+export const EmployeesTable = ({
+  data: employees,
+  handleRowClick: setSelectedElement
 }) => {
-  const [openCreateEmployeeModal, setOpenCreateEmployeeModal] = useState(false);
-  const handleOpenCreateEmployeeModal = () => setOpenCreateEmployeeModal(true);
-  const handleCloseCreateEmployeeModal = () => setOpenCreateEmployeeModal(false); 
 
-
-  const [openModifyEmployeeModal, setOpenModifyEmployeeModal] = useState(false);
-  const [employeeToModify, setEmployeeToModify] = useState(false);
-
-  const handleOpenModifyContainerModal = (employeeToModify) => {
-    setEmployeeToModify(employeeToModify)
-    setOpenModifyEmployeeModal(true)
+  const [selectedEmployee, setSelectedEmployee] = useState(null);
+  const handleRowClick = (employee) => {
+    if (selectedEmployee?.id === employee.id) {
+      setSelectedElement(null);
+      setSelectedEmployee(null);
+    } else {
+      setSelectedElement(employee);
+      setSelectedEmployee(employee);
+    }
   };
-  const handleCloseModifyCompanyModal = () => {
-    setOpenModifyEmployeeModal(false)
-    setEmployeeToModify(null);
-  };
-
-
 
   
   return (
     <Box
       sx={{
-        padding: '32px',
+        position: 'relative',
+        width: '100%'
       }}
     >
-      <ModalCreateResource
-        title={'Nuevo Empleado'}
-        description={'Complete los siguientes campos para agregar un nuevo empleado a la empresa'}
-        open={openCreateEmployeeModal}
-        handleClose={handleCloseCreateEmployeeModal}
-        form={<CreateEmployeeForm
-          handleClose = {handleCloseCreateEmployeeModal}
-        />}
-      />
-      <Paper
-        sx={{
-          width: '100%',
-        }}
-      >
-        <SearcherPaginated
-          placeholderInput={'Buscar por Nombre o Apellido'}
-          buttonText={'Nuevo Empleado'}
-          inputWidth={'18.75rem'}
-          onClick={handleOpenCreateEmployeeModal}
-        />
-        <TableWithEditAndDeleteButtons
-          tableHeaders={tableHeaders}
-          rows={employees}
-          renderRow={EmployeeRowRender}
-          handleOnClickEditButton={handleOpenCreateEmployeeModal}
-        />
-      </Paper>
+      <TableContainer>
+        <Table
+          aria-label='simple table'
+        >
+          <TableHead>
+            <TableRow>
+              {tableHeaders.map((header, index) => (
+                <TableCell
+                  key={index}
+                  align={header.align || 'center'}
+                  sx={{
+                    minWidth: header.minWidth
+                  }}
+                >
+                  {header.value}
+                </TableCell>
+              ))}
+
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {employees.map(employee => (
+              employeeRowRender(employee, handleRowClick, selectedEmployee?.id === employee.id )
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
     </Box>
-  )
-}
+  );
+};
