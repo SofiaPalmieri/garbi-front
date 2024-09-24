@@ -11,6 +11,27 @@ import {
   useState 
 } from 'react';
 
+
+const capacityColor = (capacity) => {
+  if (capacity >= 75) {
+    return '#D32F2F';
+  } else if (capacity > 25) {
+    return '#EF6C00';
+  } else {
+    return '#2E7D32';
+  }
+};
+
+const batteryColor = (battery) => {
+  if (battery >= 50) {
+    return '#2E7D32';
+  } else if (battery > 20) {
+    return '#EF6C00';
+  } else {
+    return '#D32F2F';
+  }
+};
+
 const tableHeaders = [
   {
     value: 'ID',
@@ -33,7 +54,7 @@ const tableHeaders = [
     align: 'center'
   },
   {
-    value: 'Capacidad',
+    value: 'Nivel de llenado',
     minWidth: 112,
     align: 'center'
   },
@@ -102,7 +123,7 @@ const containerRowRender = (container, handleRowClick, isSelected) => {
         <Box
           sx={{
             borderRadius: '8px',
-            backgroundColor: '#D32F2F',
+            backgroundColor: capacityColor(container.capacity),
             minHeight: '28px',
             width: '72px',
             color: 'white',
@@ -121,7 +142,7 @@ const containerRowRender = (container, handleRowClick, isSelected) => {
         <Box
           sx={{
             borderRadius: '8px',
-            backgroundColor: '#D32F2F',
+            backgroundColor: batteryColor(container.battery),
             minHeight: '28px',
             width: '72px',
             color: 'white',

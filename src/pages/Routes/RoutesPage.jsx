@@ -17,12 +17,30 @@ import {
   useRoutes 
 } from '../../api/hooks/useRoutes/useRoutes';
 import {
+  useAreas 
+} from '../../api/hooks/useAreas/useAreas';
+import {
   RoutesTable 
 } from '../../tables/RoutesTable/RoutesTable';
 import profilePicture from '../../assets/profile_picture.jpg';
 import {
-  useCallback 
+  useForm 
+} from 'react-hook-form';
+import {
+  useEffect, useState 
 } from 'react';
+import {
+  CommonFilters 
+} from '../../filters/CommonFilters';
+import {
+  routesFiltersDeclaration 
+} from '../../filters/routesFilter';
+import {
+  useQueryParamFilters 
+} from '../../hooks/useQueryParamFilters';
+import {
+  addSelectFilterIfApplies, SelectBoxFilter 
+} from '../../utils/filtersUtil.';
 
 
 const mapper = (routes) => {
@@ -100,21 +118,76 @@ export const RoutesPage = () => {
     },
   } = useRoutes();
 
-  const fetchRoutesCallback = useCallback(fetchRoutes, [])
+  const [routesFilters, setRoutesFilters] = useState(routesFiltersDeclaration)
+
+  const {
+    getAreas: {
+      getAreas,
+      isLoadingGetAreas
+    }
+  } = useAreas()
+
+
+  // this useEffect is to retrieve areas from BE and complete filters
+  useEffect(() => {
+    const getAreasAndCompleteFilters = async () => {
+      const {
+        result: areas 
+      } = await getAreas()
+
+      const areasOptions = areas.map(area => ({
+        value: area.id,
+        label: area.name
+      }))
+
+      const completedRoutesFilters = [...routesFilters]
+
+      completedRoutesFilters.unshift({
+        key: 'area',
+        name: 'Área',
+        values: areasOptions,
+        render: SelectBoxFilter,
+        addFilter: addSelectFilterIfApplies
+      })
+
+      setRoutesFilters(completedRoutesFilters)
+    }
+
+    getAreasAndCompleteFilters()
+  }, [])
+
+  const {
+    control,
+    handleSubmit
+  } = useForm();
+
+  const {
+    fetchDataWithFilters: fetchRoutesWithFilters,
+    whenFiltersSubmit
+  } = useQueryParamFilters(routesFilters, fetchRoutes)
 
 
   return (
     <FilterSideComponent
       title={'Recorridos'}
       height={HEIGHT_FULL_SCREEN}
+      renderFilters={
+        () => <CommonFilters
+          control={control}
+          filters={routesFilters}
+        />
+      }
+      handleSubmit={handleSubmit(whenFiltersSubmit)}
+      isLoading = {isLoadingGetAreas} 
       component={
         () => 
           <CommonTableList
             table={RoutesTable}
-            fetchData={fetchRoutesCallback}
+            fetchData={fetchRoutesWithFilters}
             isLoadingFetchData={isLoadingFetchRoutes}
             mapper={mapper}
-            placeHolderInput={'Buscar por Recolector o Supervisor'}
+            placeHolderInput={'Buscar por Supervisor'}
+            inputWidth={'240px'}
             componentToRender={ <DatePickerCustom /> }
           />
       }
