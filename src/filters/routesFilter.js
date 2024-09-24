@@ -9,19 +9,19 @@ export const routesFiltersDeclaration = [
     values: [
       {
         key: 'Menor a 1 hora',
-        value: 'lessThanOneHour=true'
+        value: 'lessThanOneHour'
       },
       {
         key: 'Entre 1 y 2 horas',
-        value: 'oneToTwoHours=true'
+        value: 'oneToTwoHours'
       },
       {
         key: 'Entre 2 y 4 horas',
-        value: 'twoToFourHours=true'
+        value: 'twoToFourHours'
       },
       {
         key: 'Mayor a 4 horas',
-        value: 'moreThanFourHours=true'
+        value: 'moreThanFourHours'
       }
     ],
     render: CheckboxFilter,
