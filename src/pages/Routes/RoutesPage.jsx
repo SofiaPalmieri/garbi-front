@@ -186,7 +186,8 @@ export const RoutesPage = () => {
             fetchData={fetchRoutesWithFilters}
             isLoadingFetchData={isLoadingFetchRoutes}
             mapper={mapper}
-            placeHolderInput={'Buscar por Recolector o Supervisor'}
+            placeHolderInput={'Buscar por Supervisor'}
+            inputWidth={'240px'}
             componentToRender={ <DatePickerCustom /> }
           />
       }

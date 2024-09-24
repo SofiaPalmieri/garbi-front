@@ -130,8 +130,8 @@ export const ContainerPage = () => {
               isLoadingFetchData={isLoadingGetContainers}
               mapper={mapper}
               reloadTable={reloadTable}
-              placeHolderInput={'Buscar por ID o Dirección'}
-              inputWidth={'288px'}
+              placeHolderInput={'Buscar por ID'}
+              inputWidth={'192px'}
               handleRowClick={handleRowClick}
               componentToRender={
                 <TableButtons
