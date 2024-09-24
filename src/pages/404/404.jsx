@@ -8,6 +8,10 @@ import {
   useNavigate 
 } from 'react-router-dom';
 
+import {
+  HEIGHT_FULL_SCREEN 
+} from '../../config';
+
 export const ErrorPage = () => {
 
   const navigate = useNavigate(); 
@@ -23,7 +27,7 @@ export const ErrorPage = () => {
       justifyContent='center'
       alignItems='center'
       flexDirection='column'
-      height='80vh'
+      height={HEIGHT_FULL_SCREEN}
 
     >
       <Box
@@ -39,7 +43,7 @@ export const ErrorPage = () => {
           style={{
             maxWidth: '100%', 
             height: 'auto',
-            marginTop:'700px'
+            marginTop:'645px'
           }}
         />
         <Typography
@@ -74,7 +78,7 @@ export const ErrorPage = () => {
             marginTop: '20px'
           }}
         >
-          Capaz está mal tipeado el enlace o la página puede haber cambiado de nombre
+          El enlace es inválido, prueba con otro nombre
         </Typography>
         <Button
           onClick={handleGoHome}

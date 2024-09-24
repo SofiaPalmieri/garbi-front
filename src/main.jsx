@@ -118,10 +118,6 @@ const router = createBrowserRouter([
         path: '/perfil',
         element: <PerfilPage />,
       },
-      {
-        path: '/error',
-        element: <ErrorPage />,
-      },
     ],
   },
   {
@@ -138,6 +134,10 @@ const router = createBrowserRouter([
         element: <CreateReportPage />,
       },
     ],
+  },
+  {
+    path: '*',
+    element: <ErrorPage />,
   },
 ]);
 
