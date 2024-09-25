@@ -25,9 +25,7 @@ import {
 import {
   CommonFilters 
 } from '../../filters/CommonFilters';
-import {
-  reportsFiltersDeclaration 
-} from '../../filters/reportFilter';
+
 import {
   useQueryParamFilters 
 } from '../../hooks/useQueryParamFilters';
@@ -40,6 +38,12 @@ import {
 import {
   TimestampUtil
 } from '../../utils/timestampUtil';
+import {
+  useSearchQueryParam 
+} from '../../hooks/useSearchQueryParam';
+import {
+  reportsFiltersDeclaration 
+} from '../../filters/declarations/ReportFilters/reportFilter';
 
 const mapper = (reports) => {
 
@@ -124,16 +128,11 @@ export const ReportPage = () => {
   const {
     fetchDataWithFilters: fetchReportsWithFilters,
     whenFiltersSubmit,
-    addQueryParamFilter
+    addQueryParamFilter,
+    removeQueryParamFilter
   } = useQueryParamFilters(reportsFilters, fetchReports)
 
-  const onSearcherSubmit = (value) => {
-    
-    addQueryParamFilter({
-      key: 'search',
-      value
-    })
-  }
+  const onSearcherSubmit = useSearchQueryParam(addQueryParamFilter, removeQueryParamFilter)
 
   return <FilterSideComponent
     title={'Reportes'}

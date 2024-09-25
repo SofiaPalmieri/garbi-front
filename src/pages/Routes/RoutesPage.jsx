@@ -41,6 +41,9 @@ import {
 import {
   addSelectFilterIfApplies, SelectBoxFilter 
 } from '../../utils/filtersUtil.';
+import {
+  useSearchQueryParam 
+} from '../../hooks/useSearchQueryParam';
 
 
 const mapper = (routes) => {
@@ -164,16 +167,11 @@ export const RoutesPage = () => {
   const {
     fetchDataWithFilters: fetchRoutesWithFilters,
     whenFiltersSubmit,
-    addQueryParamFilter
+    addQueryParamFilter,
+    removeQueryParamFilter
   } = useQueryParamFilters(routesFilters, fetchRoutes)
 
-  const onSearcherSubmit = (value) => {
-    
-    addQueryParamFilter({
-      key: 'search',
-      value
-    })
-  }
+  const onSearcherSubmit = useSearchQueryParam(addQueryParamFilter, removeQueryParamFilter)
 
   return (
     <FilterSideComponent

@@ -42,7 +42,11 @@ import {
 } from '../../hooks/useQueryParamFilters';
 import {
   employeesFiltersDeclaration 
-} from '../../filters/EmployeesFilters/employeesFilters';
+} from '../../filters/declarations/EmployeesFilters/employeesFilters';
+import {
+  useSearchQueryParam 
+} from '../../hooks/useSearchQueryParam';
+
 
 
 const mapper = (data) => data
@@ -100,7 +104,8 @@ export const EmployeePage = () => {
   const {
     fetchDataWithFilters: fetchEmployeesWithFilters,
     whenFiltersSubmit,
-    addQueryParamFilter
+    addQueryParamFilter,
+    removeQueryParamFilter
   } = useQueryParamFilters(employeesFilters, fetchEmployees)
 
   const {
@@ -108,13 +113,7 @@ export const EmployeePage = () => {
     handleSubmit
   } = useForm();
 
-  const onSearcherSubmit = (value) => {
-    
-    addQueryParamFilter({
-      key: 'search',
-      value
-    })
-  }
+  const onSearcherSubmit = useSearchQueryParam(addQueryParamFilter, removeQueryParamFilter)
 
   return (
     <FilterSideComponent
