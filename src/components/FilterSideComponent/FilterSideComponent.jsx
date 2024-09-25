@@ -21,6 +21,7 @@ export const FilterSideComponent = ({
   titleLink,
   renderFilters: Filters = DefaultEmpty,
   height = HEIGHT_FULL_SCREEN,
+  handleClean,
   handleSubmit = () => { },
   isLoading = false
 }) => {
@@ -44,9 +45,9 @@ export const FilterSideComponent = ({
         component={'form'}
         onSubmit={handleSubmit}
       >
-        { isLoading ? 
+        {isLoading ?
           <Box
-            sx = {{
+            sx={{
               width: 1,
               height: 1,
               display: 'flex',
@@ -57,45 +58,67 @@ export const FilterSideComponent = ({
             <CircularProgress />
 
           </Box>
-          : <Box
-              sx={{
-              display: 'flex',
-              height: 1,
-              flexDirection: 'column',
-              justifyContent: 'space-between',
-            }}
-          >
+          : (
             <Box
               sx={{
-                flex: 1,
+                display: 'flex',
+                height: 1,
+                flexDirection: 'column',
+                justifyContent: 'space-between',
               }}
             >
-              <Typography
-                height='3rem'
-                fontFamily='Roboto'
-                fontSize='20px'
-                fontWeight='300'
+              <Box
                 sx={{
-                  color: 'var(--text-secondary, #00000099)',
+                  height: handleClean ? 'calc(100% - 94.750px)' : 'calc(100% - 50.25px)',
+                  overflowY: 'auto'
                 }}
               >
-                Filtros
-              </Typography>
-              {<Filters />}
+                <Box>
+                  <Typography
+                    height='3rem'
+                    fontFamily='Roboto'
+                    fontSize='20px'
+                    fontWeight='300'
+                    sx={{
+                      color: 'var(--text-secondary, #00000099)',
+                    }}
+                  >
+                    Filtros
+                  </Typography>
+                  {<Filters />}
+                </Box>
+              </Box>
+              <Box
+                sx={{
+                  pt: 1
+                }}
+              >
+                <Button
+                  variant='contained'
+                  color='primary'
+                  size='large'
+                  fullWidth
+                  type='submit'
+                  sx={{
+                    backgroundColor: '#12422C',
+                  }}
+                >
+                  Aplicar
+                </Button>
+                {handleClean && <Button
+                  variant='outlined'
+                  fullWidth
+                  onClick={handleClean}
+                  sx={{
+                    mt: 1
+                  }}
+                >
+                  Limpiar
+                </Button>}
+              </Box>
             </Box>
-            <Button
-              variant='contained'
-              color='primary'
-              size='large'
-              fullWidth
-              type='submit'
-              sx={{
-                backgroundColor: '#12422C',
-              }}
-            >
-              Aplicar
-            </Button>
-          </Box> }
+          )
+        }
       </Box>
       <Box
         sx={{
