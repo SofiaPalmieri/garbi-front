@@ -163,9 +163,17 @@ export const RoutesPage = () => {
 
   const {
     fetchDataWithFilters: fetchRoutesWithFilters,
-    whenFiltersSubmit
+    whenFiltersSubmit,
+    addQueryParamFilter
   } = useQueryParamFilters(routesFilters, fetchRoutes)
 
+  const onSearcherSubmit = (value) => {
+    
+    addQueryParamFilter({
+      key: 'search',
+      value
+    })
+  }
 
   return (
     <FilterSideComponent
@@ -183,6 +191,7 @@ export const RoutesPage = () => {
         () => 
           <CommonTableList
             table={RoutesTable}
+            onSearcherSubmit={onSearcherSubmit}
             fetchData={fetchRoutesWithFilters}
             isLoadingFetchData={isLoadingFetchRoutes}
             mapper={mapper}

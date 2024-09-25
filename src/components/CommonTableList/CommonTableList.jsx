@@ -19,9 +19,15 @@ import {
 
 export const CommonTableList = ({
   table: Table, 
-  fetchData, isLoadingFetchData, mapper, reloadTable, 
-  placeHolderInput, inputWidth, 
-  handleRowClick, componentToRender
+  fetchData, 
+  isLoadingFetchData, 
+  mapper, 
+  reloadTable, 
+  placeHolderInput, 
+  inputWidth, 
+  handleRowClick,
+  componentToRender,
+  onSearcherSubmit
 }) => {
 
   const {
@@ -35,6 +41,7 @@ export const CommonTableList = ({
     fetch: fetchData,
     mapper
   })
+
 
   // useEffect(() => { //to reload table when a new row is added.
   //   refetchData();
@@ -72,6 +79,7 @@ export const CommonTableList = ({
             placeholderInput={placeHolderInput}
             inputWidth={inputWidth}
             componentToRender={componentToRender}
+            onSearcherSubmit = {onSearcherSubmit}
           />
           <Box
             sx={{

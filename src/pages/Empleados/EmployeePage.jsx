@@ -99,13 +99,22 @@ export const EmployeePage = () => {
 
   const {
     fetchDataWithFilters: fetchEmployeesWithFilters,
-    whenFiltersSubmit
+    whenFiltersSubmit,
+    addQueryParamFilter
   } = useQueryParamFilters(employeesFilters, fetchEmployees)
 
   const {
     control,
     handleSubmit
   } = useForm();
+
+  const onSearcherSubmit = (value) => {
+    
+    addQueryParamFilter({
+      key: 'search',
+      value
+    })
+  }
 
   return (
     <FilterSideComponent
@@ -160,6 +169,7 @@ export const EmployeePage = () => {
               placeHolderInput={'Buscar por Nombre o Apellido'}
               inputWidth={'288px'}
               handleRowClick={handleRowClick}
+              onSearcherSubmit={onSearcherSubmit}
               componentToRender={
                 <TableButtons
                   selectedElement={selectedElement}

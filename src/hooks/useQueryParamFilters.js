@@ -1,5 +1,5 @@
 import {
-  useCallback, useState 
+  useCallback, useState
 } from 'react'
 
 export const useQueryParamFilters = (filters, fetchData) => {
@@ -10,7 +10,9 @@ export const useQueryParamFilters = (filters, fetchData) => {
   }, [queryParamsFilter])
 
   const whenFiltersSubmit = (data) => {
-    let newQueryParamsFilter = []
+    let newQueryParamsFilter = queryParamsFilter.filter(
+      query => !filters.some(f  => f.key == query.key)
+    )
 
     for (const [key, value] of Object.entries(data)) {
       const filter = filters.find(f => f.key == key)
@@ -21,8 +23,28 @@ export const useQueryParamFilters = (filters, fetchData) => {
     setQueryParamFilters(newQueryParamsFilter)
   }
 
+
+  const addQueryParamFilter = (newQueryParam) => {
+    const keyExists = queryParamsFilter.some(
+      (param) => param.key === newQueryParam.key
+    );
+
+    const updatedQueryParamsFilter = keyExists
+      ? queryParamsFilter.map((param) =>
+        param.key === newQueryParam.key ? {
+          ...param,
+          value: newQueryParam.value 
+        } : param
+      )
+      : [...queryParamsFilter, newQueryParam];
+
+    setQueryParamFilters(updatedQueryParamsFilter);
+  }
+
+
   return {
     fetchDataWithFilters,
-    whenFiltersSubmit
+    whenFiltersSubmit,
+    addQueryParamFilter
   }
 } 

@@ -123,8 +123,17 @@ export const ReportPage = () => {
 
   const {
     fetchDataWithFilters: fetchReportsWithFilters,
-    whenFiltersSubmit
+    whenFiltersSubmit,
+    addQueryParamFilter
   } = useQueryParamFilters(reportsFilters, fetchReports)
+
+  const onSearcherSubmit = (value) => {
+    
+    addQueryParamFilter({
+      key: 'search',
+      value
+    })
+  }
 
   return <FilterSideComponent
     title={'Reportes'}
@@ -146,6 +155,7 @@ export const ReportPage = () => {
           mapper={mapper}
           placeHolderInput={'Buscar por ID, Título o Contenedor'}
           componentToRender={ <DateRangePicker /> }
+          onSearcherSubmit = { onSearcherSubmit }
         />
     }
   />;
