@@ -40,6 +40,10 @@ import {
 import {
   TimestampUtil
 } from '../../utils/timestampUtil';
+import {
+  subDays 
+} from 'date-fns'
+
 
 const mapper = (reports) => {
 
@@ -68,10 +72,10 @@ const mapper = (reports) => {
 }
 
 
-
 export const ReportPage = () => {
 
   const [reportsFilters, setReportFilters] = useState(reportsFiltersDeclaration)
+  const [dateRange, setDateRange] = useState([subDays(new Date(), 6), new Date()]);
 
   const {
     fetchReports: {
@@ -128,12 +132,26 @@ export const ReportPage = () => {
   } = useQueryParamFilters(reportsFilters, fetchReports)
 
   const onSearcherSubmit = (value) => {
-    
     addQueryParamFilter({
       key: 'search',
       value
     })
   }
+
+  const handleDateRangeChange = (selectedDateRange) => {
+    const [from, to] = selectedDateRange;
+    
+    addQueryParamFilter([
+      {
+        key: 'from',
+        value: from 
+      },
+      {
+        key: 'to',
+        value: to 
+      }
+    ]);
+  };
 
   return <FilterSideComponent
     title={'Reportes'}
@@ -154,7 +172,11 @@ export const ReportPage = () => {
           isLoadingFetchData={isLoadingFetchReports}
           mapper={mapper}
           placeHolderInput={'Buscar por ID, Título o Contenedor'}
-          componentToRender={ <DateRangePicker /> }
+          componentToRender={ 
+            <DateRangePicker 
+              onDateChange={handleDateRangeChange} 
+            /> 
+          }
           onSearcherSubmit = { onSearcherSubmit }
         />
     }

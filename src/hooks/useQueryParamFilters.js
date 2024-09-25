@@ -24,22 +24,44 @@ export const useQueryParamFilters = (filters, fetchData) => {
   }
 
 
-  const addQueryParamFilter = (newQueryParam) => {
-    const keyExists = queryParamsFilter.some(
-      (param) => param.key === newQueryParam.key
-    );
-
-    const updatedQueryParamsFilter = keyExists
-      ? queryParamsFilter.map((param) =>
-        param.key === newQueryParam.key ? {
-          ...param,
-          value: newQueryParam.value 
-        } : param
+  const addQueryParamFilter = (newQueryParams) => {
+    let updatedQueryParamsFilter = [...queryParamsFilter]
+  
+    newQueryParams.forEach((newParam) => {
+      const keyExists = updatedQueryParamsFilter.some(
+        (param) => param.key === newParam.key
       )
-      : [...queryParamsFilter, newQueryParam];
-
+  
+      if (keyExists) {
+        updatedQueryParamsFilter = updatedQueryParamsFilter.map((param) =>
+          param.key === newParam.key ? { 
+            ...param, 
+            value: newParam.value 
+          } : param
+        )
+      } else {
+        updatedQueryParamsFilter.push(newParam);
+      }
+    })
+  
     setQueryParamFilters(updatedQueryParamsFilter);
   }
+  // const addQueryParamFilter = (newQueryParam) => {
+  //   const keyExists = queryParamsFilter.some(
+  //     (param) => param.key === newQueryParam.key
+  //   );
+
+  //   const updatedQueryParamsFilter = keyExists
+  //     ? queryParamsFilter.map((param) =>
+  //       param.key === newQueryParam.key ? {
+  //         ...param,
+  //         value: newQueryParam.value 
+  //       } : param
+  //     )
+  //     : [...queryParamsFilter, newQueryParam];
+
+  //   setQueryParamFilters(updatedQueryParamsFilter);
+  // }
 
 
   return {
