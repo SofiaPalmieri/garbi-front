@@ -12,7 +12,7 @@ import {
 export const HomeFilters = ({
   control, areas 
 }) => {
-  console.log('🚀 ~ HomeFilters ~ areas:', areas)
+
   return (
     <Box>
       <Box>

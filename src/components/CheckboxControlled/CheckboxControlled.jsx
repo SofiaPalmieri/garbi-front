@@ -33,6 +33,7 @@ export const CheckboxControlled = ({
             <Checkbox
               sx={{
                 padding: '2.5px',
+                ml: '3px',
                 mr: 0
               }}
               checked={value}
