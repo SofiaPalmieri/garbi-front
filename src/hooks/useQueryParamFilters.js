@@ -2,8 +2,8 @@ import {
   useCallback, useState
 } from 'react'
 
-export const useQueryParamFilters = (filters, fetchData) => {
-  const [queryParamsFilter, setQueryParamFilters] = useState([])
+export const useQueryParamFilters = (filters, fetchData, initialQueryParams) => {
+  const [queryParamsFilter, setQueryParamFilters] = useState(initialQueryParams)
 
   const fetchDataWithFilters = useCallback((lastKey) => {
     return fetchData(lastKey, queryParamsFilter)
@@ -46,22 +46,6 @@ export const useQueryParamFilters = (filters, fetchData) => {
   
     setQueryParamFilters(updatedQueryParamsFilter);
   }
-  // const addQueryParamFilter = (newQueryParam) => {
-  //   const keyExists = queryParamsFilter.some(
-  //     (param) => param.key === newQueryParam.key
-  //   );
-
-  //   const updatedQueryParamsFilter = keyExists
-  //     ? queryParamsFilter.map((param) =>
-  //       param.key === newQueryParam.key ? {
-  //         ...param,
-  //         value: newQueryParam.value 
-  //       } : param
-  //     )
-  //     : [...queryParamsFilter, newQueryParam];
-
-  //   setQueryParamFilters(updatedQueryParamsFilter);
-  // }
 
 
   return {

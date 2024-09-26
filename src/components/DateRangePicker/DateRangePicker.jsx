@@ -65,8 +65,18 @@ export const DateRangePicker = ({
       const [selectedStartDate, selectedEndDate] = update;
 
       //Formatea fechas a yyyy-MM-dd
-      const formattedStartDate = selectedStartDate.toISOString().split('T')[0];
-      const formattedEndDate = selectedEndDate.toISOString().split('T')[0];
+      const formattedStartDate = selectedStartDate.toLocaleString('en-CA', { 
+        timeZone: 'America/Argentina/Buenos_Aires', 
+        year: 'numeric', 
+        month: '2-digit', 
+        day: '2-digit' 
+      })
+      const formattedEndDate = selectedEndDate.toLocaleString('en-CA', { 
+        timeZone: 'America/Argentina/Buenos_Aires', 
+        year: 'numeric', 
+        month: '2-digit', 
+        day: '2-digit' 
+      })
 
       onDateChange([formattedStartDate, formattedEndDate]);
     }

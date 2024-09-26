@@ -75,7 +75,6 @@ const mapper = (reports) => {
 export const ReportPage = () => {
 
   const [reportsFilters, setReportFilters] = useState(reportsFiltersDeclaration)
-  const [dateRange, setDateRange] = useState([subDays(new Date(), 6), new Date()]);
 
   const {
     fetchReports: {
@@ -125,11 +124,33 @@ export const ReportPage = () => {
     handleSubmit
   } = useForm();
 
+  const initialQueryParams = [
+    {
+      key: 'from',
+      // value: subDays(new Date(), 6).toISOString().split('T')[0] 
+      value: subDays(new Date(), 6).toLocaleString('en-CA', { 
+        timeZone: 'America/Argentina/Buenos_Aires', 
+        year: 'numeric', 
+        month: '2-digit', 
+        day: '2-digit' 
+      })
+    },
+    {
+      key: 'to',
+      value: new Date().toLocaleString('en-CA', { 
+        timeZone: 'America/Argentina/Buenos_Aires', 
+        year: 'numeric', 
+        month: '2-digit', 
+        day: '2-digit' 
+      })
+    }
+  ]
+
   const {
     fetchDataWithFilters: fetchReportsWithFilters,
     whenFiltersSubmit,
     addQueryParamFilter
-  } = useQueryParamFilters(reportsFilters, fetchReports)
+  } = useQueryParamFilters(reportsFilters, fetchReports, initialQueryParams)
 
   const onSearcherSubmit = (value) => {
     addQueryParamFilter({
@@ -139,7 +160,7 @@ export const ReportPage = () => {
   }
 
   const handleDateRangeChange = (selectedDateRange) => {
-    const [from, to] = selectedDateRange;
+    const [from, to] = selectedDateRange
     
     addQueryParamFilter([
       {
@@ -150,8 +171,9 @@ export const ReportPage = () => {
         key: 'to',
         value: to 
       }
-    ]);
-  };
+    ])
+  }
+
 
   return <FilterSideComponent
     title={'Reportes'}
