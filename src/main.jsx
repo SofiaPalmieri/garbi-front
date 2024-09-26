@@ -8,7 +8,6 @@ import {
 import {
   ThemeProvider, createTheme 
 } from '@mui/material/styles';
-import React from 'react';
 import ReactDOM from 'react-dom/client';
 import {
   Navigate, RouterProvider, createBrowserRouter 
@@ -41,19 +40,32 @@ import PerfilPage from './pages/Perfil/PerfilPage.jsx';
 import {
   ErrorPage 
 } from './pages/404/404.jsx';
+import {
+  Box
+} from '@mui/material';
 
 const theme = createTheme({
   palette: {
     primary: {
-      main: '#12422C', // Verde oscuro
-      contrastText: '#FFFFFF', // Blanco
+      main: '#12422C',
+      contrastText: '#FFFFFF',
     },
     secondary: {
-      main: '#FFFFFF', // Blanco
-      contrastText: '#12422C', // Verde oscuro
+      main: '#FFFFFF',
+      contrastText: '#12422C',
     },
   },
 });
+
+const ErrorBoundary = () => (
+  <Box>
+    <ErrorPage/>
+    <BaseWithHeader
+      logoOnly={true}
+    />
+  </Box>
+
+);
 
 const router = createBrowserRouter([
   {
@@ -61,6 +73,7 @@ const router = createBrowserRouter([
     element: <Navigate
       to='/login'
     />,
+    errorElement: <ErrorBoundary />, 
   },
   {
     element: <Base />,
@@ -68,6 +81,7 @@ const router = createBrowserRouter([
       {
         path: '/login',
         element: <LoginPage />,
+        errorElement: <ErrorBoundary />,
       },
     ],
   },
@@ -77,46 +91,52 @@ const router = createBrowserRouter([
       {
         path: '/containers',
         element: <ContainerPage />,
+        errorElement: <ErrorBoundary />,
       },
       {
         path: '/home',
         element: <HomePage />,
+        errorElement: <ErrorBoundary />,
       },
       {
         path: '/empleados',
         element: <EmployeePage />,
+        errorElement: <ErrorBoundary />,
       },
       {
         path: '/areas',
         element: <AreaPage />,
+        errorElement: <ErrorBoundary />,
       },
       {
         path: '/recomendaciones',
         element: <RecommendationsPage />,
+        errorElement: <ErrorBoundary />,
       },
       {
         path: '/routes',
         element: <RoutesPage />,
+        errorElement: <ErrorBoundary />,
       },
       {
         path: '/routes/detail',
         element: <RouteDetailPage />,
+        errorElement: <ErrorBoundary />,
       },
-      // {
-      //   path: '/areas/new',
-      //   element: <CreateAreaPage />,
-      // },
       {
         path: '/reportes',
         element: <ReportPage />,
+        errorElement: <ErrorBoundary />,
       },
       {
         path: '/reportes/detalles',
-        element: <ReportDetailsPage />
+        element: <ReportDetailsPage />,
+        errorElement: <ErrorBoundary />,
       },
       {
         path: '/perfil',
         element: <PerfilPage />,
+        errorElement: <ErrorBoundary />,
       },
     ],
   },
@@ -128,28 +148,24 @@ const router = createBrowserRouter([
       {
         path: '/empresas',
         element: <CompanyPage />,
+        errorElement: <ErrorBoundary />,
       },
       {
         path: 'reportes/new',
         element: <CreateReportPage />,
+        errorElement: <ErrorBoundary />,
       },
     ],
-  },
-  {
-    path: '*',
-    element: <ErrorPage />,
   },
 ]);
 
 ReactDOM.createRoot(document.getElementById('root')).render(
-  <React.Fragment>
-    <ThemeProvider
-      theme={theme}
-    >
-      <CssBaseline />
-      <RouterProvider
-        router={router}
-      />
-    </ThemeProvider>
-  </React.Fragment>,
+  <ThemeProvider
+    theme={theme}
+  >
+    <CssBaseline />
+    <RouterProvider
+      router={router}
+    />
+  </ThemeProvider>
 );

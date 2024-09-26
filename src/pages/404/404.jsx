@@ -1,4 +1,3 @@
-import BaseWithHeader from '../../common/baseWithHeader';
 import errorImage from '../../assets/error.png'; 
 import {
   Box, Button, Typography 
@@ -23,11 +22,13 @@ export const ErrorPage = () => {
 
 
     <Box
-      display='flex'
-      justifyContent='center'
-      alignItems='center'
-      flexDirection='column'
-      height={HEIGHT_FULL_SCREEN}
+      sx={{
+        width:'1',
+        height:HEIGHT_FULL_SCREEN,
+        display:'flex',
+        justifyContent:'center',
+        alignItems:'center'
+      }}
 
     >
       <Box
@@ -35,15 +36,12 @@ export const ErrorPage = () => {
         flexDirection='column'
         justifyContent='center'
         alignItems='center'
-        width='480px'
       >
         <img 
           src={errorImage} 
           alt='Error' 
           style={{
-            maxWidth: '100%', 
             height: 'auto',
-            marginTop:'645px'
           }}
         />
         <Typography
@@ -56,8 +54,6 @@ export const ErrorPage = () => {
             textAlign:'center',
             width:'713px',
             height:'51px',
-            top:'645px',
-            left:'364px',
             marginTop: '20px'
           }}
         >
@@ -73,8 +69,6 @@ export const ErrorPage = () => {
             textAlign:'center',
             width:'843px',
             height:'32px',
-            top:'720px',
-            left:'299px',
             marginTop: '20px'
           }}
         >
@@ -101,12 +95,6 @@ export const ErrorPage = () => {
         >
           ir a la página de inicio
         </Button>
-      </Box>
-
-      <Box>
-        <BaseWithHeader
-          logoOnly={true}
-        />
       </Box>
     </Box>
 
