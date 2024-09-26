@@ -1,8 +1,8 @@
 import {
-  Controller 
+  Controller
 } from 'react-hook-form';
 import {
-  FormControl, Select, MenuItem, Typography, InputLabel 
+  FormControl, Select, MenuItem, Typography, InputLabel
 } from '@mui/material';
 
 export const SelectForm = ({
@@ -11,6 +11,7 @@ export const SelectForm = ({
   control,
   errors,
   options,
+  optionalDefaultValue,
   required = true,
   size = 'small',
   variant = 'outlined',
@@ -23,9 +24,9 @@ export const SelectForm = ({
       rules={{
         required
       }}
-      defaultValue={''} 
+      defaultValue={''}
       render={({
-        field 
+        field
       }) => (
         <FormControl
           size={size}
@@ -52,6 +53,11 @@ export const SelectForm = ({
             {...field}
             defaultValue=''
           >
+            {optionalDefaultValue && <MenuItem
+              value=''
+            >
+              <em>{optionalDefaultValue}</em>
+            </MenuItem>}
             {options.map((option) => (
               <MenuItem
                 key={option.value}

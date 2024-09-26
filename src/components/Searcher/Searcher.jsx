@@ -1,30 +1,45 @@
 
 import SearchIcon from '@mui/icons-material/Search';
 import {
-  FormControl, IconButton, InputAdornment, OutlinedInput 
+  FormControl, IconButton, InputAdornment, OutlinedInput
 } from '@mui/material';
 import {
-  useState 
+  useEffect,
+  useRef,
+  useState
 } from 'react';
+import useDebounce from '../../hooks/useDebounce';
 
 export const Searcher = ({
   inputWidth = '350px', placeholderInput, onSearcherSubmit
 }) => {
 
-  const [inputValue, setInputValue] = useState('');
+  const firstRender = useRef(true);
 
+  const [inputValue, setInputValue] = useState('');
+  const debouncedValue = useDebounce(inputValue, 500);
 
   const handleInputChange = (event) => {
-    setInputValue(event.target.value); 
+    setInputValue(event.target.value);
   };
 
   const handleSearch = () => {
-    onSearcherSubmit(inputValue); 
+    onSearcherSubmit(inputValue);
   };
+
+
+  useEffect(() => {
+    if (firstRender.current) {
+      firstRender.current = false; // Salta la ejecución en el primer renderizado
+      return;
+    }
+
+    onSearcherSubmit(debouncedValue)
+  }, [debouncedValue])
 
   const handleKeyDown = (event) => {
     if (event.key === 'Enter') {
-      event.preventDefault(); 
+      event.preventDefault();
       handleSearch();
     }
   };
@@ -40,7 +55,7 @@ export const Searcher = ({
         id='outlined-adornment-search'
         size='small'
         placeholder={placeholderInput}
-        onKeyDown={handleKeyDown}
+        // onKeyDown={handleKeyDown}
         value={inputValue}
         onChange={handleInputChange}
         endAdornment={
@@ -50,12 +65,12 @@ export const Searcher = ({
             <IconButton
               aria-label='icon search'
               edge='end'
-              onClick={handleSearch} 
+            // onClick={handleSearch} 
             >
-              <SearchIcon 
-                sx={{ 
+              <SearchIcon
+                sx={{
                   color: '#bdbdbd'
-                }} 
+                }}
               />
             </IconButton>
           </InputAdornment>

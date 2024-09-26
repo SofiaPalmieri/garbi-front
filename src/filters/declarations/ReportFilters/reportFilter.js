@@ -1,6 +1,7 @@
 import {
   addArrayFiltersIfApplies, CheckboxFilter 
-} from '../utils/filtersUtil.';
+} from '../../../utils/filtersUtil.';
+
 
 export const reportsFiltersDeclaration = [
   {

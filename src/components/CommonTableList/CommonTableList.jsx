@@ -13,22 +13,24 @@ import {
 import {
   usePagination
 } from '../../hooks/usePagination';
-
-
-
+import {
+  useEffect, useRef 
+} from 'react';
 
 export const CommonTableList = ({
-  table: Table, 
-  fetchData, 
-  isLoadingFetchData, 
-  mapper, 
-  reloadTable, 
-  placeHolderInput, 
-  inputWidth, 
+  table: Table,
+  fetchData,
+  isLoadingFetchData,
+  mapper,
+  reloadTable,
+  placeHolderInput,
+  inputWidth,
   handleRowClick,
   componentToRender,
   onSearcherSubmit
 }) => {
+
+  const firstRender = useRef(true);
 
   const {
     data,
@@ -43,9 +45,14 @@ export const CommonTableList = ({
   })
 
 
-  // useEffect(() => { //to reload table when a new row is added.
-  //   refetchData();
-  // }, [reloadTable]);
+  useEffect(() => {
+    if (firstRender.current) {
+      firstRender.current = false; // Salta la ejecución en el primer renderizado
+      return;
+    }
+
+    refetchData();
+  }, [reloadTable]);
 
 
   return (
@@ -79,7 +86,7 @@ export const CommonTableList = ({
             placeholderInput={placeHolderInput}
             inputWidth={inputWidth}
             componentToRender={componentToRender}
-            onSearcherSubmit = {onSearcherSubmit}
+            onSearcherSubmit={onSearcherSubmit}
           />
           <Box
             sx={{
