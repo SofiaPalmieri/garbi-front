@@ -52,8 +52,6 @@ export const ErrorPage = () => {
             lineHeight:'51.2px',
             letterSpacing:'0.15000000596046448px',
             textAlign:'center',
-            width:'713px',
-            height:'51px',
             marginTop: '20px'
           }}
         >
@@ -67,8 +65,6 @@ export const ErrorPage = () => {
             lineHeight:'32px',
             letterSpacing:'0.15000000596046448px',
             textAlign:'center',
-            width:'843px',
-            height:'32px',
             marginTop: '20px'
           }}
         >
