@@ -1,4 +1,7 @@
 import {
+  LIMIT_DEFAULT 
+} from '../../../config';
+import {
   useFetch 
 } from '../../../hooks/useFetch';
 import {
@@ -18,12 +21,20 @@ export const useFetchRoutes = () => {
     baseUri: baseIntegrationRoute,
   });
 
-  const fetchRoutes = (lastKey = null) => {
+  const fetchRoutes = (lastKey = null, queryParamsFilter, limit = LIMIT_DEFAULT) => {
     const queryBuilder = new QueryBuilder()
 
-    const uri = queryBuilder
+    queryBuilder
       .addParam('lastKey', lastKey)
-      .build()
+      .addParam('limit', limit)
+
+    queryParamsFilter.forEach(element => {
+      queryBuilder.addParam(element.key, element.value)
+    });
+
+    const uri = queryBuilder.build();
+
+    console.log('🚀 ~ fetchReports ~ uri:', uri)
 
     return commonFetch({
       uri,

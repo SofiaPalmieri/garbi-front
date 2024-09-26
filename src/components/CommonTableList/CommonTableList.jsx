@@ -5,35 +5,61 @@ import {
   TableContainer
 } from '@mui/material';
 import {
-  SearcherDateRangerPickerPaginated
-} from '../../components/SearcherDateRangePickerPaginated';
+  SearcherPaginated
+} from '../SearcherPaginated';
 import {
   HEIGHT_HEADER_FILTER_SIDE_COMPONENT
 } from '../../config';
 import {
   usePagination
 } from '../../hooks/usePagination';
-
+import {
+  useEffect, useRef 
+} from 'react';
 
 export const CommonTableList = ({
-  table: Table, fetchData, isLoadingFetchData, mapper, placeHolderInput 
+  table: Table,
+  fetchData,
+  isLoadingFetchData,
+  mapper,
+  reloadTable,
+  placeHolderInput,
+  inputWidth,
+  handleRowClick,
+  componentToRender,
+  onSearcherSubmit
 }) => {
+
+  const firstRender = useRef(true);
 
   const {
     data,
     prevFetch,
     nextFetch,
     disabledPrevBtn,
-    disabledNextBtn
+    disabledNextBtn,
+    refetchData
   } = usePagination({
     fetch: fetchData,
     mapper
   })
 
+
+  useEffect(() => {
+    if (firstRender.current) {
+      firstRender.current = false; // Salta la ejecución en el primer renderizado
+      return;
+    }
+
+    refetchData();
+  }, [reloadTable]);
+
+
   return (
     <Box
       sx={{
         padding: '32px',
+        width: '100%',
         height: `calc(100% - ${HEIGHT_HEADER_FILTER_SIDE_COMPONENT})`,
       }}
     >
@@ -48,20 +74,25 @@ export const CommonTableList = ({
           sx={{
             paddingX: '1rem',
             height: '100%',
-            overflow: 'hidden'
+            overflow: 'hidden',
+            width: '100%'
           }}
         >
-          <SearcherDateRangerPickerPaginated
+          <SearcherPaginated
             prevFetch={prevFetch}
             nextFetch={nextFetch}
-            disabledNextBtn={disabledNextBtn}
-            disabledPrevBtn={disabledPrevBtn}
+            disabledNextBtn={disabledNextBtn || isLoadingFetchData}
+            disabledPrevBtn={disabledPrevBtn || isLoadingFetchData}
             placeholderInput={placeHolderInput}
+            inputWidth={inputWidth}
+            componentToRender={componentToRender}
+            onSearcherSubmit={onSearcherSubmit}
           />
           <Box
             sx={{
               height: 'calc(100% - 4.5rem)',
-              overflow: 'auto'
+              overflow: 'auto',
+              width: '100%'
             }}
           >
             {
@@ -79,6 +110,7 @@ export const CommonTableList = ({
                 :
                 <Table
                   data={data}
+                  handleRowClick={handleRowClick}
                 />
             }
           </Box>

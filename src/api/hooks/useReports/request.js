@@ -1,37 +1,43 @@
 import {
-  LIMIT_DEFAULT 
+  LIMIT_DEFAULT
 } from '../../../config';
 import {
   useFetch
 } from '../../../hooks/useFetch';
 import {
-  baseIntegrationUri 
+  baseIntegrationUri
 } from '../../config/apiClient';
 import {
-  HTTPMethods 
+  HTTPMethods
 } from '../../config/HTTPMethods';
 import QueryBuilder from '../../queryBuilder/QueryBuilder';
 
-const baseReportUri = baseIntegrationUri + '/report'
+const baseReportsUri = baseIntegrationUri + '/report'
 
 export const useCreateReport = () => {
   const {
     commonFetch, isLoading
   } = useFetch({
-    url: baseReportUri,
+    baseUri: baseReportsUri,
   });
 
-  const createReport = (report) => {
+  const createReport = ({
+    userId, containerId, title, description, address, phone, email, type, image
+  }) => {
     return commonFetch({
-      uri: '/report',
-      method: 'POST',
-      body: report,
-      headers: {
-        'Content-Type': 'multipart/form-data'
-      }
-    },
-    
-    );
+      method: HTTPMethods.POST,
+      body: {
+        userId,
+        containerId,
+        title,
+        description,
+        address,
+        phone,
+        email,
+        type,
+        image
+      },
+    });
   };
 
   return {
@@ -44,22 +50,30 @@ export const useFetchReports = () => {
   const {
     commonFetch, isLoading
   } = useFetch({
-    baseUri: baseReportUri,
+    baseUri: baseReportsUri,
   });
 
-  const fetchReports = (lastKey = null, limit = LIMIT_DEFAULT) => {
+  const fetchReports = (lastKey = null, queryParamsFilter, limit = LIMIT_DEFAULT) => {
     const queryBuilder = new QueryBuilder()
 
-    const uri = queryBuilder
+    queryBuilder
       .addParam('lastKey', lastKey)
       .addParam('limit', limit)
-      .build()
+
+    queryParamsFilter.forEach(element => {
+      queryBuilder.addParam(element.key, element.value)
+    });
+
+    const uri = queryBuilder.build();
+    
+    console.log('🚀 ~ fetchReports ~ uri:', uri)
 
     return commonFetch({
       uri,
       method: HTTPMethods.GET
     })
   }
+
 
   return {
     fetchReports,
@@ -71,7 +85,7 @@ export const useReviewReport = () => {
   const {
     commonFetch, isLoading
   } = useFetch({
-    baseUri: baseReportUri,
+    baseUri: baseReportsUri,
   });
 
   const reviewReport = (reportId, reviewReportBody) => {
@@ -92,7 +106,7 @@ export const useCloseReport = () => {
   const {
     commonFetch, isLoading
   } = useFetch({
-    baseUri: baseReportUri,
+    baseUri: baseReportsUri,
   });
 
   const closeReport = (reportId, closeReportBody) => {

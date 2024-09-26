@@ -1,8 +1,20 @@
 import {
-  useReports 
+  DateRangePicker 
+} from '../../components/DateRangePicker/DateRangePicker';
+import {
+  useEffect, useState 
+} from 'react';
+import {
+  useForm 
+} from 'react-hook-form';
+import {
+  useAreas 
+} from '../../api/hooks/useAreas/useAreas';
+import {
+  useReports
 } from '../../api/hooks/useReports/useReports';
 import {
-  CommonTableList 
+  CommonTableList
 } from '../../components/CommonTableList/CommonTableList';
 import {
   FilterSideComponent
@@ -11,11 +23,27 @@ import {
   HEIGHT_FULL_SCREEN
 } from '../../config';
 import {
-  ReportTable 
+  CommonFilters 
+} from '../../filters/CommonFilters';
+
+import {
+  useQueryParamFilters 
+} from '../../hooks/useQueryParamFilters';
+import {
+  ReportTable
 } from '../../tables/ReportTable/ReportTable';
 import {
-  TimestampUtil 
+  addSelectFilterIfApplies, SelectBoxFilter 
+} from '../../utils/filtersUtil.';
+import {
+  TimestampUtil
 } from '../../utils/timestampUtil';
+import {
+  useSearchQueryParam 
+} from '../../hooks/useSearchQueryParam';
+import {
+  reportsFiltersDeclaration 
+} from '../../filters/declarations/ReportFilters/reportFilter';
 
 const mapper = (reports) => {
 
@@ -33,7 +61,7 @@ const mapper = (reports) => {
         state: state.status,
         // recolector o ciudadano,
         description: r.description,
-        reportType: r.type.replace('_', ' '),
+        reportType: r.type.replace(/_/g, ' '),
         // falta lugar
         // falta area,
         // falta nombre del que report,
@@ -44,7 +72,10 @@ const mapper = (reports) => {
 }
 
 
+
 export const ReportPage = () => {
+
+  const [reportsFilters, setReportFilters] = useState(reportsFiltersDeclaration)
 
   const {
     fetchReports: {
@@ -53,18 +84,77 @@ export const ReportPage = () => {
     }
   } = useReports();
 
+  const {
+    getAreas: {
+      getAreas,
+      isLoadingGetAreas
+    }
+  } = useAreas()
+
+
+  // this useEffect is to retrieve areas from BE and complete filters
+  useEffect(() => {
+    const getAreasAndCompleteFilters = async () => {
+      const {
+        result: areas 
+      } = await getAreas()
+
+      const areasOptions = areas.map(area => ({
+        value: area.id,
+        label: area.name
+      }))
+
+      const completedReportFilters = [...reportsFilters]
+
+      completedReportFilters.push({
+        key: 'area',
+        name: 'Área',
+        values: areasOptions,
+        render: SelectBoxFilter,
+        addFilter: addSelectFilterIfApplies
+      })
+
+      setReportFilters(completedReportFilters)
+    }
+
+    getAreasAndCompleteFilters()
+  }, [])
+
+  const {
+    control,
+    handleSubmit
+  } = useForm();
+
+  const {
+    fetchDataWithFilters: fetchReportsWithFilters,
+    whenFiltersSubmit,
+    addQueryParamFilter,
+    removeQueryParamFilter
+  } = useQueryParamFilters(reportsFilters, fetchReports)
+
+  const onSearcherSubmit = useSearchQueryParam(addQueryParamFilter, removeQueryParamFilter)
 
   return <FilterSideComponent
     title={'Reportes'}
     height={HEIGHT_FULL_SCREEN}
+    renderFilters={
+      () => <CommonFilters
+        control={control}
+        filters={reportsFilters}
+      />
+    }
+    handleSubmit={handleSubmit(whenFiltersSubmit)}
+    isLoading = {isLoadingGetAreas} 
     component={
       () =>
         <CommonTableList
           table={ReportTable}
-          fetchData={fetchReports}
+          fetchData={fetchReportsWithFilters}
           isLoadingFetchData={isLoadingFetchReports}
           mapper={mapper}
           placeHolderInput={'Buscar por ID, Título o Contenedor'}
+          componentToRender={ <DateRangePicker /> }
+          onSearcherSubmit = { onSearcherSubmit }
         />
     }
   />;

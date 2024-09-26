@@ -10,6 +10,7 @@ export const InputForm = ({
   label,
   control,
   errors,
+  styleInput,
   variant = 'outlined',
   size = 'small',
   helperText = null,
@@ -42,6 +43,7 @@ export const InputForm = ({
             multiline={multiline}
             rows={rows}
             sx={{
+              ...styleInput,
               '& .MuiInputBase-input:-webkit-autofill': { //added this to prevent weird look when the browser autofills the field
                 'webkitBoxShadow': '0 0 0 1000px white inset',
                 'webkitTextFillColor': 'black',

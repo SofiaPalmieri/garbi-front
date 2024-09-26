@@ -1,3 +1,3 @@
 export {
   Searcher 
-} from './Seacher'
+} from './Searcher'

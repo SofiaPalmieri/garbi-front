@@ -87,7 +87,7 @@ const usersReport = [
       avatar: 'logo',
       fullName: 'Roberto Sanchez'
     },
-    from: 'En revision',
+    from: 'En revisión',
     to: 'Resuelto',
     date: '28/05/2024',
     time: '17.30 hs',
@@ -99,7 +99,7 @@ const usersReport = [
       avatar: 'logo',
       fullName: 'Roberto Sanchez'
     },
-    from: 'En revision',
+    from: 'En revisión',
     date: '28/05/2024',
     time: '17.30 hs',
   },
@@ -109,7 +109,7 @@ const usersReport = [
       avatar: 'logo',
       fullName: 'Roberto Sanchez'
     },
-    from: 'En revision',
+    from: 'En revisión',
     to: 'Resuelto',
     date: '28/05/2024',
     time: '17.30 hs',
@@ -118,6 +118,7 @@ const usersReport = [
 ]
 
 export const ReportDetailsPage = ({
+  reportId = 'CR638420ff',
   content = defaultContent,
   state = 'NUEVO'
 }) => {
@@ -211,6 +212,7 @@ export const ReportDetailsPage = ({
               }}
             >
               <ReportDetails
+                reportId={reportId}
                 content={content}  // Pasa el array de objetos tal cual está
                 state={state}      // Pasa el estado si es necesario
               />

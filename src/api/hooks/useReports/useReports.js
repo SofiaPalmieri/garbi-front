@@ -6,7 +6,7 @@ import {
 } from './request';
 
 export const useReports = () => {
-   
+
   const {
     createReport, 
     isLoading: isCreateReportLoading 
@@ -46,4 +46,3 @@ export const useReports = () => {
     },
   };
 };
-  
