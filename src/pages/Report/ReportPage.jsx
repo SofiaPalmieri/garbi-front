@@ -127,22 +127,11 @@ export const ReportPage = () => {
   const initialQueryParams = [
     {
       key: 'from',
-      // value: subDays(new Date(), 6).toISOString().split('T')[0] 
-      value: subDays(new Date(), 6).toLocaleString('en-CA', { 
-        timeZone: 'America/Argentina/Buenos_Aires', 
-        year: 'numeric', 
-        month: '2-digit', 
-        day: '2-digit' 
-      })
+      value: TimestampUtil.convertToDateForFilter(subDays(new Date(), 6))
     },
     {
       key: 'to',
-      value: new Date().toLocaleString('en-CA', { 
-        timeZone: 'America/Argentina/Buenos_Aires', 
-        year: 'numeric', 
-        month: '2-digit', 
-        day: '2-digit' 
-      })
+      value: TimestampUtil.convertToDateForFilter(new Date())
     }
   ]
 
@@ -160,16 +149,16 @@ export const ReportPage = () => {
   }
 
   const handleDateRangeChange = (selectedDateRange) => {
-    const [from, to] = selectedDateRange
+    const [fromDate, toDate] = selectedDateRange
     
     addQueryParamFilter([
       {
         key: 'from',
-        value: from 
+        value: TimestampUtil.convertToDateForFilter(fromDate)
       },
       {
         key: 'to',
-        value: to 
+        value: TimestampUtil.convertToDateForFilter(toDate)
       }
     ])
   }
@@ -193,7 +182,7 @@ export const ReportPage = () => {
           fetchData={fetchReportsWithFilters}
           isLoadingFetchData={isLoadingFetchReports}
           mapper={mapper}
-          placeHolderInput={'Buscar por ID, Título o Contenedor'}
+          placeHolderInput={'Buscar por ID o Contenedor'}
           componentToRender={ 
             <DateRangePicker 
               onDateChange={handleDateRangeChange} 
