@@ -44,7 +44,7 @@ import {
   useSearchQueryParam 
 } from '../../hooks/useSearchQueryParam';
 import {
-  getInitialQueryParams, useDateRangePicker 
+  getInitialQueryParams, handleDateRangeChange 
 } from '../../hooks/useDateRangePicker';
 import {
   reportsFiltersDeclaration 
@@ -143,7 +143,7 @@ export const ReportPage = () => {
 
   const onSearcherSubmit = useSearchQueryParam(addQueryParamFilter, removeQueryParamFilter)
 
-  const onDateRangeChange = useDateRangePicker(addMultipleQueryParamFilter);
+  const onDateRangeChange = handleDateRangeChange(addMultipleQueryParamFilter);
 
 
   return <FilterSideComponent

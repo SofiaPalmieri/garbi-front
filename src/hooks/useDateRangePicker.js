@@ -15,7 +15,7 @@ export const getInitialQueryParams = (fromDate, toDate) => {
   ]
 }
 
-export const useDateRangePicker = (addMultipleQueryParamFilter) => {
+export const handleDateRangeChange = (addMultipleQueryParamFilter) => {
   const onDateRangeChange = (selectedDateRange) => {
     const [selectedFromDate, selectedToDate] = selectedDateRange
     
