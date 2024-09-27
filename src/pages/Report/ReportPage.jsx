@@ -25,7 +25,6 @@ import {
 import {
   CommonFilters 
 } from '../../filters/CommonFilters';
-
 import {
   useQueryParamFilters 
 } from '../../hooks/useQueryParamFilters';
@@ -44,6 +43,9 @@ import {
 import {
   useSearchQueryParam 
 } from '../../hooks/useSearchQueryParam';
+import {
+  getInitialQueryParams, useDateRangePicker 
+} from '../../hooks/useDateRangePicker';
 import {
   reportsFiltersDeclaration 
 } from '../../filters/declarations/ReportFilters/reportFilter';
@@ -126,41 +128,22 @@ export const ReportPage = () => {
     control,
     handleSubmit
   } = useForm();
-
-  const initialQueryParams = [
-    {
-      key: 'from',
-      value: TimestampUtil.convertToDateForFilter(subDays(new Date(), 6))
-    },
-    {
-      key: 'to',
-      value: TimestampUtil.convertToDateForFilter(new Date())
-    }
-  ]
+  
+  const fromDate = subDays(new Date(), 6)
+  const toDate = new Date()
+  const initialQueryParams = getInitialQueryParams(fromDate, toDate)
 
   const {
     fetchDataWithFilters: fetchReportsWithFilters,
     whenFiltersSubmit,
     addQueryParamFilter,
+    addMultipleQueryParamFilter,
     removeQueryParamFilter
   } = useQueryParamFilters(reportsFilters, fetchReports, initialQueryParams)
 
   const onSearcherSubmit = useSearchQueryParam(addQueryParamFilter, removeQueryParamFilter)
 
-  const handleDateRangeChange = (selectedDateRange) => {
-    const [fromDate, toDate] = selectedDateRange
-    
-    addQueryParamFilter([
-      {
-        key: 'from',
-        value: TimestampUtil.convertToDateForFilter(fromDate)
-      },
-      {
-        key: 'to',
-        value: TimestampUtil.convertToDateForFilter(toDate)
-      }
-    ])
-  }
+  const onDateRangeChange = useDateRangePicker(addMultipleQueryParamFilter);
 
 
   return <FilterSideComponent
@@ -184,7 +167,7 @@ export const ReportPage = () => {
           placeHolderInput={'Buscar por ID o Contenedor'}
           componentToRender={ 
             <DateRangePicker 
-              onDateChange={handleDateRangeChange} 
+              onDateChange={onDateRangeChange} 
             /> 
           }
           onSearcherSubmit = { onSearcherSubmit }

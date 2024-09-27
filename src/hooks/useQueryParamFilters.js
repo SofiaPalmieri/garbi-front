@@ -2,7 +2,7 @@ import {
   useCallback, useState
 } from 'react'
 
-export const useQueryParamFilters = (filters, fetchData, initialQueryParams) => {
+export const useQueryParamFilters = (filters, fetchData, initialQueryParams=[]) => {
   const [queryParamsFilter, setQueryParamsFilters] = useState(initialQueryParams)
 
   const fetchDataWithFilters = useCallback((lastKey) => {
@@ -23,8 +23,24 @@ export const useQueryParamFilters = (filters, fetchData, initialQueryParams) => 
     setQueryParamsFilters(newQueryParamsFilter)
   }
 
+  const addQueryParamFilter = (newQueryParam) => {
+    const keyExists = queryParamsFilter.some(
+      (param) => param.key === newQueryParam.key
+    );
 
-  const addQueryParamFilter = (newQueryParams) => {
+    const updatedQueryParamsFilter = keyExists
+      ? queryParamsFilter.map((param) =>
+        param.key === newQueryParam.key ? {
+          ...param,
+          value: newQueryParam.value
+        } : param
+      )
+      : [...queryParamsFilter, newQueryParam];
+
+    setQueryParamsFilters(updatedQueryParamsFilter);
+  }
+
+  const addMultipleQueryParamFilter = (newQueryParams) => {
     let updatedQueryParamsFilter = [...queryParamsFilter]
   
     newQueryParams.forEach((newParam) => {
@@ -58,6 +74,7 @@ export const useQueryParamFilters = (filters, fetchData, initialQueryParams) => 
     fetchDataWithFilters,
     whenFiltersSubmit,
     addQueryParamFilter,
+    addMultipleQueryParamFilter,
     removeQueryParamFilter
   }
 } 
