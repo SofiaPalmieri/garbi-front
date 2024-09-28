@@ -24,6 +24,9 @@ import {
 import {
   ReportDetailsTitle
 } from './ReportDetailsTitle';
+import {
+  useParams 
+} from 'react-router-dom';
 
 const defaultContent = [
   {
@@ -122,6 +125,10 @@ export const ReportDetailsPage = ({
   content = defaultContent,
   state = 'NUEVO'
 }) => {
+  const {
+    id 
+  } = useParams()
+  console.log('id: ' + id)
 
   return (
     <Box
