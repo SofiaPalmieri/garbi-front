@@ -25,7 +25,6 @@ import {
 import {
   CommonFilters 
 } from '../../filters/CommonFilters';
-
 import {
   useQueryParamFilters 
 } from '../../hooks/useQueryParamFilters';
@@ -39,8 +38,14 @@ import {
   TimestampUtil
 } from '../../utils/timestampUtil';
 import {
+  subDays 
+} from 'date-fns'
+import {
   useSearchQueryParam 
 } from '../../hooks/useSearchQueryParam';
+import {
+  getInitialQueryParams, handleDateRangeChange 
+} from '../../hooks/useDateRangePicker';
 import {
   reportsFiltersDeclaration 
 } from '../../filters/declarations/ReportFilters/reportFilter';
@@ -70,7 +75,6 @@ const mapper = (reports) => {
     }
   )
 }
-
 
 
 export const ReportPage = () => {
@@ -124,15 +128,23 @@ export const ReportPage = () => {
     control,
     handleSubmit
   } = useForm();
+  
+  const fromDate = subDays(new Date(), 6)
+  const toDate = new Date()
+  const initialQueryParams = getInitialQueryParams(fromDate, toDate)
 
   const {
     fetchDataWithFilters: fetchReportsWithFilters,
     whenFiltersSubmit,
     addQueryParamFilter,
+    addMultipleQueryParamFilter,
     removeQueryParamFilter
-  } = useQueryParamFilters(reportsFilters, fetchReports)
+  } = useQueryParamFilters(reportsFilters, fetchReports, initialQueryParams)
 
   const onSearcherSubmit = useSearchQueryParam(addQueryParamFilter, removeQueryParamFilter)
+
+  const onDateRangeChange = handleDateRangeChange(addMultipleQueryParamFilter);
+
 
   return <FilterSideComponent
     title={'Reportes'}
@@ -152,8 +164,12 @@ export const ReportPage = () => {
           fetchData={fetchReportsWithFilters}
           isLoadingFetchData={isLoadingFetchReports}
           mapper={mapper}
-          placeHolderInput={'Buscar por ID, Título o Contenedor'}
-          componentToRender={ <DateRangePicker /> }
+          placeHolderInput={'Buscar por ID o Contenedor'}
+          componentToRender={ 
+            <DateRangePicker 
+              onDateChange={onDateRangeChange} 
+            /> 
+          }
           onSearcherSubmit = { onSearcherSubmit }
         />
     }
