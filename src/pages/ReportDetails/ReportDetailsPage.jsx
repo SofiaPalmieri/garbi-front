@@ -27,6 +27,13 @@ import {
 import {
   useParams 
 } from 'react-router-dom';
+import {
+  useReports 
+} from '../../api/hooks/useReports/useReports';
+import {
+  useEffect 
+} from 'react';
+
 
 const defaultContent = [
   {
@@ -128,7 +135,26 @@ export const ReportDetailsPage = ({
   const {
     id 
   } = useParams()
-  console.log('id: ' + id)
+
+  const {
+    fetchReport: {
+      fetchReport: fetchReport, isLoadingFetchReport
+    },
+  } = useReports();
+
+  useEffect(() => {
+    const asyncFetchReport = async () => {
+      try {
+        const reportReponse = await fetchReport(id);
+        console.log('🚀 ~ asyncFetchReport ~ reportReponse:', reportReponse)
+        // const reportMapped = mapper(reportReponse.result)
+        // setRoutes(reportMapped)
+      } catch (error) {
+        console.error('Error fetching report:', error);
+      }
+    };
+    asyncFetchReport();
+  }, []);
 
   return (
     <Box
