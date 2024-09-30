@@ -174,7 +174,6 @@ export const RoutesPage = () => {
     fetchDataWithFilters: fetchRoutesWithFilters,
     whenFiltersSubmit,
     addQueryParamFilter,
-    addMultipleQueryParamFilter,
     removeQueryParamFilter
   } = useQueryParamFilters(routesFilters, fetchRoutes, initialQueryParam)
 
