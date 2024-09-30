@@ -39,7 +39,7 @@ import {
 } from '../../utils/timestampUtil';
 
 
-const statusHistory = [
+const statusHistory = [ //hook up to BE later when BE sends expected data.
   {
     id: 1,
     user: {
@@ -164,8 +164,10 @@ export const ReportDetailsPage = () => {
       try {
         const reportReponse = await fetchReport(id)
         console.log('🚀 ~ asyncFetchReport ~ reportReponse:', reportReponse)
+
         const sideDetailsContent = sideDetailsMapper(reportReponse)
         setReportSideDetailsContent(sideDetailsContent)
+
         setReportData(reportReponse)
       } catch (error) {
         console.error('Error fetching report:', error)
@@ -278,7 +280,7 @@ export const ReportDetailsPage = () => {
               >
                 <ReportDetails
                   reportId={id}
-                  content={reportSideDetailsContent}  // Pasa el array de objetos tal cual está
+                  content={reportSideDetailsContent}
                   state={reportData?.currentStatus}
                 />
               </Box>

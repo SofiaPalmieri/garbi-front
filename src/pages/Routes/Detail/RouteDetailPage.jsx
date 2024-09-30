@@ -53,7 +53,6 @@ const routeDetailsMapper = (route) => {
     const {
       time: startedTime 
     } = TimestampUtil.convertToDateAndHour(startedTimestamp);
-    // startTime = startedTime;
     startTime = `Inicio: ${startedTime}`;
   }
 
@@ -69,14 +68,14 @@ const routeDetailsMapper = (route) => {
     const minutes = totalMinutes % 60;
 
     if (hours > 0 && minutes !== 0) {
-      duration = `${hours} hr  ${minutes} min`;
+      duration = `Duración del reccorido: ${hours} hr  ${minutes} min`;
     } else if (minutes === 0) {
-      duration = `${hours} hr`;
+      duration = `Duración del reccorido: ${hours} hr`;
     } else {
-      duration = `${minutes} min`;
+      duration = `Duración del reccorido: ${minutes} min`;
     }
   } else if (startedTimestamp) { // recorridos en curso: empezado pero no finalizado
-    duration = 'En curso';
+    duration = 'Recorrido en curso';
     startTime = `Comenzó a las ${startTime}`;
     endTime = null;
   }
@@ -90,7 +89,7 @@ const routeDetailsMapper = (route) => {
     {
       type: 'duration',
       icon: AccessTimeOutlinedIcon,
-      title: `Duración del reccorido: ${duration}`,
+      title: duration,
       description: `${startTime} \n ${endTime}`
     },
     {

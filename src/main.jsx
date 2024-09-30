@@ -118,7 +118,7 @@ const router = createBrowserRouter([
         element: <RoutesPage />,
       },
       {
-        path: '/recorridos/:id', //TODO: hacer regex en vez de *. lo haria cuando Lucas cambie la DB a q los IDs de reportes empiecen con R
+        path: '/recorridos/:id',
         element: <RouteDetailPage />,
       },
       {
@@ -130,7 +130,7 @@ const router = createBrowserRouter([
         element: <ReportPage />,
       },
       {
-        path: '/reportes/:id', //TODO: hacer regex en vez de *. lo haria cuando Lucas cambie la DB a q los IDs de reportes empiecen con R
+        path: '/reportes/:id',
         element: <ReportDetailsPage />
       },
       {
