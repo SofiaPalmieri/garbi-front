@@ -1,15 +1,17 @@
 import {
+  Backdrop,
   CircularProgress,
-  Snackbar,
   Typography
 } from '@mui/material'
 import {
   Box
 } from '@mui/system'
 import {
+  FeedbackSnackbar
+} from '../../components/FeedbackSnackbar'
+import {
   RouteOptimalInfo
 } from '../RouteOptimalInfo/RouteOptimalInfo'
-
 import {
   useState 
 } from 'react'
@@ -17,10 +19,11 @@ import {
   useRoutes 
 } from '../../api/hooks/useRoutes/useRoutes'
 
+
 export const RightSidePanelOptimalRouteIinfo = ({
   routeSelected, optimalRoutes, setRouteSelected
 }) => {
-  const [openSnackBar, setOpenSnackBar] = useState(false)
+  const [openSnackbar, setOpenSnackbar] = useState(false)
 
   const {
     selectOptimalRoute: {
@@ -30,8 +33,15 @@ export const RightSidePanelOptimalRouteIinfo = ({
   } = useRoutes()
 
   const onSelectOptimalRoute = async (optimalRouteId) => {
-    await selectOptimalRoute(optimalRouteId)
+    try {
+      await selectOptimalRoute(optimalRouteId)
+      setOpenSnackbar(true)
+    } catch (error) {
+      console.error('Error sending the optimal route:', error)
+    }
   }
+
+  const handleCloseSnackbar = () => setOpenSnackbar(false)
 
 
   return (
@@ -42,15 +52,11 @@ export const RightSidePanelOptimalRouteIinfo = ({
         flexDirection: 'column'
       }}
     >
-      <Snackbar
-        anchorOrigin={{
-          vertical: 'top',
-          horizontal: 'right' 
-        }}
-        open={openSnackBar}
-        onClose={() => setOpenSnackBar(false)}
-        message='Ruta óptima enviada'
-        key={'optimal route sent'}
+      <FeedbackSnackbar
+        severity={'success'}
+        text={'Ruta enviada'}
+        openSnackbar={openSnackbar}
+        handleClose={handleCloseSnackbar}
       />
       <Typography
         sx={{
@@ -63,6 +69,19 @@ export const RightSidePanelOptimalRouteIinfo = ({
       >
         Rutas óptimas
       </Typography>
+
+      <Backdrop 
+        open={isLoadingSelectRoute} 
+        sx={{ 
+          color: '#fff', 
+          zIndex: (theme) => theme.zIndex.drawer + 1,
+          position: 'absolute',
+        }} 
+      >
+        <CircularProgress
+          color='inherit'
+        />
+      </Backdrop>
 
       {!routeSelected ? (
         <Box
