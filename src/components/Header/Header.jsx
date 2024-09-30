@@ -15,7 +15,7 @@ import {
   ExpandMore 
 } from '@mui/icons-material';
 import {
-  useState 
+  useState, useEffect 
 } from 'react';
 import garbiLogo from '/src/assets/garbi-navbar.png';
 import NotificationsOutlinedIcon from '@mui/icons-material/NotificationsOutlined';
@@ -53,8 +53,18 @@ export const Header = ({
   const [anchorElNotifications, setAnchorElNotifications] = useState(null);
   const [anchorElProfile, setAnchorElProfile] = useState(null);
   const [anchorElManagement, setAnchorElManagement] = useState(null);
-  
+  const [currentTab, setCurrentTab] = useState('');
 
+  useEffect(() => {
+    const activePage = Object.keys(pages).find(key => pages[key] === location.pathname);
+    if (activePage) {
+      setCurrentTab(activePage);
+    } else if (Object.values(managementItems).includes(location.pathname)) {
+      setCurrentTab('Gestión');
+    } else {
+      setCurrentTab('');
+    }
+  }, [location.pathname]);
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -82,60 +92,57 @@ export const Header = ({
 
   const handleOpenManagementMenu = (event) => {
     setAnchorElManagement(event.currentTarget);
+    setCurrentTab('Gestión');
   };
 
   const handleCloseManagementMenu = () => {
     setAnchorElManagement(null);
   };
 
-
   const handleClickTab = (path) => () => {
     navigate(path);
     setAnchorElNav(null);
+    setCurrentTab(Object.keys(pages).find(key => pages[key] === path));
   };
 
   const handleClickManagementItem = (path) => () => {
     navigate(path);
     setAnchorElManagement(null);
+    setCurrentTab('Gestión');
   };
-
-
 
   const [notifications, setNotifications] = useState([
     {
       id: 1,
       type: 'frequencyChange',
       title: 'Cambio de frecuencia',
-      description: 'Reduce la frecuencia en Área 2',
+      description: 'Reduce la frecuencia en Área 2' 
     },
     {
       id: 2,
       type: 'newReport',
       title: 'Nuevo reporte',
-      description: 'Contenedor desbordado',
+      description: 'Contenedor desbordado' 
     },
     {
       id: 3,
       type: 'lowBattery',
       title: 'Batería baja',
-      description: 'El contenedor #123456 tiene menos de 20% de batería',
+      description: 'El contenedor #123456 tiene menos de 20% de batería' 
     },
     {
       id: 4,
       type: 'fullContainers',
       title: 'Contenedores llenos',
       description: 'El 60% de los contenedores en zona 1 están llenos',
-      details: 'VER DETALLES'
-    }
+      details: 'VER DETALLES' 
+    },
   ]);
 
   const handleRemoveNotification = (id) => {
-    setNotifications((prevNotifications) =>
-      prevNotifications.filter(notification => notification.id !== id)
-    );
+    setNotifications(prevNotifications => prevNotifications.filter(notification => notification.id !== id));
   };
 
-  const currentTab = Object.keys(pages).find(key => pages[key] === location.pathname) || false;
 
   return (
     <AppBar
