@@ -1,5 +1,5 @@
 import {
-  Box, Divider
+  Box, CircularProgress, Divider
 } from '@mui/material'
 import {
   APIProvider, Map, useMap
@@ -25,47 +25,109 @@ import {
 import {
   HEIGHT_HEADER 
 } from '../../../config';
+import {
+  useParams 
+} from 'react-router-dom';
+import {
+  useRoutes 
+} from '../../../api/hooks/useRoutes/useRoutes';
+import {
+  TimestampUtil
+} from '../../../utils/timestampUtil';
 
-const routesDetailArray = [
-  {
-    type: 'calendar',
-    icon: CalendarMonthIcon,
-    title: '20/02/2024'
-  },
-  {
-    type: 'duration',
-    icon: AccessTimeOutlinedIcon,
-    title: 'Duración del reccorido: 55min',
-    description: 'Inicio: 20.30 hs \n Fin: 21.25 hs'
-  },
-  {
-    type: 'location',
-    icon: LocationOnOutlinedIcon,
-    title: 'Villa Del Parque',
-    description: 'Área 2'
+
+const routeDetailsMapper = (route) => {
+  const {
+    date, time
+  } = TimestampUtil.convertToDateAndHour(route.timestamp)
+
+  let startTime = null;
+  let endTime = null;
+  let duration = 'Pendiente';
+
+  const startedStatus = route.status.find(statusItem => statusItem.status === 'STARTED');
+  const finishedStatus = route.status.find(statusItem => statusItem.status === 'FINISHED');
+
+  const startedTimestamp = startedStatus?.timestamp;
+  if (startedTimestamp) { // recorrido empezado. Si no estuviera empezado, queda Pendiente.
+    const {
+      time: startedTime 
+    } = TimestampUtil.convertToDateAndHour(startedTimestamp);
+    // startTime = startedTime;
+    startTime = `Inicio: ${startedTime}`;
   }
-];
 
-const users = {
-  supervisores: [
-    {
-      id: 1,
-      avatar: null,
-      fullName: 'Oscar Parraguez'
+  if (finishedStatus) { // recorrido finalizado
+    const finishedTimestamp = finishedStatus.timestamp;
+    const {
+      time: finishedTime 
+    } = TimestampUtil.convertToDateAndHour(finishedTimestamp);
+    endTime = `Fin: ${finishedTime}`;
+
+    const totalMinutes = Math.round(route.directions.total_duration / 60);
+    const hours = Math.floor(totalMinutes / 60);
+    const minutes = totalMinutes % 60;
+
+    if (hours > 0 && minutes !== 0) {
+      duration = `${hours} hr  ${minutes} min`;
+    } else if (minutes === 0) {
+      duration = `${hours} hr`;
+    } else {
+      duration = `${minutes} min`;
     }
-  ],
-  recoletores: [
+  } else if (startedTimestamp) { // recorridos en curso: empezado pero no finalizado
+    duration = 'En curso';
+    startTime = `Comenzó a las ${startTime}`;
+    endTime = null;
+  }
+
+  const routesDetailArray = [
     {
-      id: 2,
-      avatar: null,
-      fullName: 'Octavio Pardo'
+      type: 'calendar',
+      icon: CalendarMonthIcon,
+      title: date
     },
     {
-      id: 3,
-      avatar: null,
-      fullName: 'Juan Edison'
+      type: 'duration',
+      icon: AccessTimeOutlinedIcon,
+      title: `Duración del reccorido: ${duration}`,
+      description: `${startTime} \n ${endTime}`
+    },
+    {
+      type: 'location',
+      icon: LocationOnOutlinedIcon,
+      title: 'Área 2' //TODO: change when BE sends area name
     }
   ]
+
+  return routesDetailArray
+}
+
+const workersDetailsMapper = (route) => {
+
+  const workersDetailsArray = { //update when BE sends what we expect
+    supervisores: [
+      {
+        id: 1,
+        avatar: null, // will be something like: route.managerIdPicture
+        fullName: 'Oscar Parraguez' // will be something like: `${route.managerIdName} ${route.managerIdSurname}`
+      }
+    ],
+    recoletores: [
+      {
+        id: 2,
+        avatar: null,
+        fullName: 'Octavio Pardo'
+      },
+      {
+        id: 3,
+        avatar: null,
+        fullName: 'Juan Edison'
+      }
+    ]
+  }
+
+  return workersDetailsArray
 }
 
 
@@ -76,6 +138,39 @@ export const RouteDetailPage = () => {
     lat: -34.5893,
     lng: -58.3994,
   };
+
+  const {
+    id 
+  } = useParams()
+
+  const [routeData, setRouteData] = useState(null);
+  const [routeDetails, setRouteDetails] = useState(null);
+  const [workersDetails, setWorkersDetails] = useState(null);
+
+  const {
+    fetchRoute: {
+      fetchRoute: fetchRoute, isLoadingFetchRoute
+    },
+  } = useRoutes();
+
+  useEffect(() => {
+    const asyncFetchRoute = async () => {
+      try {
+        const routeReponse = await fetchRoute(id)
+        console.log('🚀 ~ asyncFetchRoute ~ routeReponse:', routeReponse)
+
+        const routeDetailsMapped = routeDetailsMapper(routeReponse)
+        setRouteDetails(routeDetailsMapped)
+        const workersDetailsMapped = workersDetailsMapper(routeReponse)
+        setWorkersDetails(workersDetailsMapped)
+
+        setRouteData(routeReponse)
+      } catch (error) {
+        console.error('Error fetching route:', error)
+      }
+    };
+    asyncFetchRoute()
+  }, [])
 
   return (
     <Box
@@ -97,71 +192,83 @@ export const RouteDetailPage = () => {
       >
         <BreadcrumbsComponent
           prefix={'Recorridos'}
-          title={'Recorrido'}
-          detail={'#123456'}
+          title={`Recorrido #${id.slice(-6)}`}
         />
       </Box>
       <Divider />
-      <Box
-        sx={{
-          padding: '2rem',
-          width: 1,
-          flex: 1,
-          display: 'flex',
-          flexDirection: 'column'
-        }}
-      >
+      {!routeData ? (
         <Box
           sx={{
             width: 1,
-            p: '0px 1.5rem 2rem',
+            height: '70vh',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+        >
+          <CircularProgress />
+        </Box>
+      ) : (
+        <Box
+          sx={{
+            padding: '2rem',
+            width: 1,
+            flex: 1,
+            display: 'flex',
+            flexDirection: 'column'
           }}
         >
           <Box
             sx={{
               width: 1,
-              display: 'flex',
-              height: '7rem',
-              justifyContent: 'space-between',
+              p: '0px 1.5rem 2rem',
             }}
           >
-            <PaperDetailRoute
-              routesDetailArray={routesDetailArray}
-            />
-            <PaperDetailWorkersOnATrip
-              workers={users}
-            />
+            <Box
+              sx={{
+                width: 1,
+                display: 'flex',
+                height: '7rem',
+                justifyContent: 'space-between',
+              }}
+            >
+              <PaperDetailRoute
+                routesDetailArray={routeDetails}
+              />
+              <PaperDetailWorkersOnATrip
+                workers={workersDetails}
+              />
+            </Box>
           </Box>
-        </Box>
-        <Box
-          sx={{
-            flex: 1,
-            overflow: 'hidden'
-          }}
-        >
           <Box
             sx={{
-              height: '110%'
+              flex: 1,
+              overflow: 'hidden'
             }}
           >
-            <APIProvider
-              apiKey={apiKeyGoogleMaps}
+            <Box
+              sx={{
+                height: '110%'
+              }}
             >
-              <Map
-                defaultZoom={13}
-                defaultCenter={position}
-                mapId='658a52589c7a963'
-                id='garbi-create-area-map'
-                disableDefaultUI
-                disableDoubleClickZoom
+              <APIProvider
+                apiKey={apiKeyGoogleMaps}
               >
-                <Directions />
-              </Map>
-            </APIProvider>
+                <Map
+                  defaultZoom={13}
+                  defaultCenter={position}
+                  mapId='658a52589c7a963'
+                  id='garbi-create-area-map'
+                  disableDefaultUI
+                  disableDoubleClickZoom
+                >
+                  <Directions />
+                </Map>
+              </APIProvider>
+            </Box>
           </Box>
         </Box>
-      </Box>
-
+      )}
     </Box>
   )
 }

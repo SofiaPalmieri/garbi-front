@@ -14,7 +14,8 @@ export const PaperDetailWorkersOnATrip = ({
       sx={{
         height: 1,
         p: '1rem',
-        display: 'flex'
+        display: 'flex',
+        flexBasis: '48%'
       }}
     >
 
