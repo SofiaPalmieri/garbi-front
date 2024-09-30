@@ -68,11 +68,11 @@ const routeDetailsMapper = (route) => {
     const minutes = totalMinutes % 60;
 
     if (hours > 0 && minutes !== 0) {
-      duration = `Duración del reccorido: ${hours} hr  ${minutes} min`;
+      duration = `Duración del recorrido: ${hours} hr  ${minutes} min`;
     } else if (minutes === 0) {
-      duration = `Duración del reccorido: ${hours} hr`;
+      duration = `Duración del recorrido: ${hours} hr`;
     } else {
-      duration = `Duración del reccorido: ${minutes} min`;
+      duration = `Duración del recorrido: ${minutes} min`;
     }
   } else if (startedTimestamp) { // recorridos en curso: empezado pero no finalizado
     duration = 'Recorrido en curso';
