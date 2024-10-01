@@ -67,7 +67,7 @@ export function completeEditablePath(polyline) {
   }
 }
 
-function completePathByPolyline(polyline) {
+export function completePathByPolyline(polyline) {
   const path = polyline.getPath()?.getArray();
 
   const newPath = completePath(path)

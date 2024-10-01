@@ -94,7 +94,7 @@ export const PanelControlMap = ({
     dispatch({
       type: DrawingActionKind.INIT_OVERLAYS,
       payload: {
-        areas: areasDefault
+        areas
       }
     });
   }, []);

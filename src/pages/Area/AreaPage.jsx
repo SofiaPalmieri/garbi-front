@@ -1,6 +1,7 @@
 import SaveIcon from '@mui/icons-material/Save';
 import {
-  Box, Button, Divider, keyframes, Paper, Typography
+  Backdrop,
+  Box, Button, CircularProgress, Divider, keyframes, Paper, Typography
 } from '@mui/material';
 import {
   APIProvider
@@ -33,14 +34,17 @@ import {
   useAreaActionStatesProvider
 } from '../../hooks/useAreaActionProvider';
 import {
-  ModalCreateResource 
+  ModalCreateResource
 } from '../../modales/ModalCreateResource';
 import {
-  DeleteAreaForm 
+  DeleteAreaForm
 } from '../../forms/DeleteArea/DeleteAreaForm';
 import {
-  HEIGHT_HEADER 
+  HEIGHT_HEADER
 } from '../../config';
+import {
+  useAreas 
+} from '../../api/hooks/useAreas/useAreas';
 
 const slideIn = keyframes`
   from {
@@ -52,6 +56,20 @@ const slideIn = keyframes`
     opacity: 1;
   }
 `;
+
+const mapper = (areas) => {
+
+  return areas.map(
+    a => {
+      return {
+        ...a,
+        title: a.name,
+        path: a.coordinates
+      }
+    }
+  )
+
+}
 
 const AreaPage = () => {
   const [areas, setAreas] = useState([]);
@@ -81,6 +99,13 @@ const AreaPage = () => {
     polyline: null,
     polygon: null
   });
+  const [open, setOpen] = useState(false);
+  const handleClose = () => {
+    setOpen(false);
+  };
+  const handleOpen = () => {
+    setOpen(true);
+  };
 
   const {
     control,
@@ -100,6 +125,26 @@ const AreaPage = () => {
     lat: 43.64,
     lng: -79.41,
   };
+
+  const {
+    getAreas: {
+      getAreas,
+      isLoadingGetAreas
+    }
+  } = useAreas()
+
+  useEffect(() => {
+    const fetchAreas = async () => {
+      const areasRetrieved = await getAreas()
+      setAreas(mapper(areasRetrieved.result))
+    }
+
+    fetchAreas()
+  }, [])
+
+  useEffect(() => {
+    console.log(areas)
+  }, [areas])
 
   const apiKeyGoogleMaps = import.meta.env.VITE_REACT_APP_API_KEY_GOOGLE_MAPS;
 
@@ -164,6 +209,23 @@ const AreaPage = () => {
         id: areaSelected.id
       }
     })
+  }
+
+  if (isLoadingGetAreas) {
+    return <div>
+      <Backdrop
+        sx={(theme) => ({
+          color: '#fff',
+          zIndex: theme.zIndex.drawer + 1 
+        })}
+        open={isLoadingGetAreas}
+        onClick={handleClose}
+      >
+        <CircularProgress
+          color='inherit'
+        />
+      </Backdrop>
+    </div>
   }
 
   return (

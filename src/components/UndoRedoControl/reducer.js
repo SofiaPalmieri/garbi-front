@@ -1,5 +1,6 @@
 import {
-  completeEditablePath
+  completeEditablePath,
+  completePathByPolyline
 } from '../../reducers/drawReducer';
 import {
   polygonConfig, polylineConfig
@@ -57,15 +58,19 @@ export default function reducer(state, action) {
 
     // paint
     const overlaysFormated = areas.map(area => {
-      const polygon = new google.maps.Polygon({
-        paths: area.path,
-        ...polygonConfig,
-      });
+      
       const polyline = new google.maps.Polyline({
         strokeColor: area.color,
         editable: false,
         ...polylineConfig,
         path: area.path,
+      });
+
+      completePathByPolyline(polyline)
+
+      const polygon = new google.maps.Polygon({
+        paths: polyline.getPath(),
+        ...polygonConfig,
       });
 
       return {
