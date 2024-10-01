@@ -117,15 +117,16 @@ export const CreateReportForm = ({
     } 
   } = useReports();
   const {
-    getContainers: {
-      getContainers 
-    } 
+    getAllContainers: {
+      getAllContainers
+    }
   } = useContainers();
 
   useEffect(() => {
     const retrieveContainers = async () => {
-      const containersUnformated = await getContainers();
+      const containersUnformated = await getAllContainers();
       const containersFormated = formatContainers(containersUnformated.result);
+
       setContainers(containersFormated);
     };
 
@@ -594,7 +595,7 @@ function Marker({
         <div>
           <CircleIcon
             sx={{
-              color: 'red'
+              color: '#12422c'
             }}
           />
         </div>

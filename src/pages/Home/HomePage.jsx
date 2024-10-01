@@ -63,9 +63,9 @@ export default function HomePage() {
   } = useAreas()
 
   const {
-    getContainers: {
-      getContainers: getContainers
-    },
+    getAllContainers: {
+      getAllContainers
+    }
   } = useContainers();
 
 
@@ -79,9 +79,10 @@ export default function HomePage() {
     fetchAreas()
   }, [])
 
+  // se podria mejorar para no duplicar codigo ? 
   useEffect(() => {
     const retrieveContainers = async () => {
-      const containersUnformated = await getContainers();
+      const containersUnformated = await getAllContainers();
       const containersFormated = formatContainers(containersUnformated.result);
 
       setContainers(containersFormated);

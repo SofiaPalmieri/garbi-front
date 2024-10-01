@@ -31,8 +31,6 @@ export const useGetContainers = () => {
 
     const uri = queryBuilder.build();
 
-    console.log('🚀 ~ fetchReports ~ uri:', uri)
-
     return commonFetch({
       uri,
       method: 'GET',
@@ -42,5 +40,26 @@ export const useGetContainers = () => {
   return {
     getContainers,
     isLoadingGetContainers: isLoading,
+  };
+};
+
+export const useGetAllContainers = () => {
+  const {
+    isLoading, commonFetch
+  } = useFetch({
+    baseUri: baseContainerUri,
+  });
+
+  const getAllContainers = () => {
+
+    return commonFetch({
+      uri: '/all',
+      method: 'GET',
+    });
+  };
+
+  return {
+    getAllContainers,
+    isLoadingGetAllContainers: isLoading,
   };
 };
