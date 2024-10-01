@@ -47,6 +47,26 @@ export const useFetchRoutes = () => {
     fetchRoutes,
     isLoading
   }
+}
+
+export const useFetchRoute = () => {
+  const {
+    commonFetch, isLoading 
+  } = useFetch({
+    baseUri: baseIntegrationRoute,
+  });
+
+  const fetchRoute = (routeId) => {
+    return commonFetch({
+      uri: '/' + routeId,
+      method: HTTPMethods.GET,
+    })
+  }
+
+  return {
+    fetchRoute,
+    isLoading
+  }
 };
 
 export const useSelectOptimalRoutes = () => {

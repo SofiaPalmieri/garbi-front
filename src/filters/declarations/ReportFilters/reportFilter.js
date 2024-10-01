@@ -5,7 +5,7 @@ import {
 
 export const reportsFiltersDeclaration = [
   {
-    key: 'state',
+    key: 'currentStatus',
     name: 'Estado',
     values: [
       {
@@ -14,7 +14,7 @@ export const reportsFiltersDeclaration = [
       },
       {
         key: 'En revisión',
-        value: 'en_revision'
+        value: 'en revisión'
       },
       {
         key: 'Rechazado',
@@ -57,7 +57,7 @@ export const reportsFiltersDeclaration = [
     addFilter: addArrayFiltersIfApplies
   },
   {
-    key: 'creador',
+    key: 'creator',
     name: 'Creador',
     values: [
       {

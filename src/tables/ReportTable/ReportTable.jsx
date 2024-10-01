@@ -16,11 +16,14 @@ import {
 import {
   useState
 } from 'react';
-
+import { 
+  useNavigate 
+} from 'react-router-dom';
 
 export const ReportTable = ({
   data: initialReports
 }) => {
+  const navigate = useNavigate()
   const [reports, setReports] = useState(initialReports);
 
   const handleUpdateAvatar = (reportId, user) => {
@@ -36,6 +39,10 @@ export const ReportTable = ({
     setReports(newReports);
   };
   
+  const handleRowClick = (id) => {
+    navigate(`/reportes/${id}`)
+  }
+
   
   return (
     <Table
@@ -48,6 +55,10 @@ export const ReportTable = ({
         {reports.map((row) => (
           <TableRow
             key={row.id}
+            onClick={() => handleRowClick(row.id)}
+            sx={{
+              cursor: 'pointer' 
+            }}
           >
             <TableCell
               sx={{
@@ -154,6 +165,7 @@ export const ReportTable = ({
             </TableCell>
             <TableCell
               align='center'
+              onClick={(event) => event.stopPropagation()}
               sx={{
                 width: 192,
                 paddingX: '24px'

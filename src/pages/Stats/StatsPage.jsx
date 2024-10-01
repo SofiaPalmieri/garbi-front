@@ -50,7 +50,7 @@ export const StatsPage = () => {
             lineHeight: '2.6244rem'
           }}
         >
-          Estadisticas
+          Estadísticas
         </Typography>
 
       </Box>

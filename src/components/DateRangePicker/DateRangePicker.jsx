@@ -19,7 +19,8 @@ import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 
 export const DateRangePicker = ({
   defaultStartDate = subDays(new Date(), 6), 
-  lastAvailableDate = new Date()
+  lastAvailableDate = new Date(),
+  onDateChange
 }) => {
   const [dateRange, setDateRange] = useState([defaultStartDate, lastAvailableDate]);
   const [startDate, endDate] = dateRange;
@@ -57,14 +58,17 @@ export const DateRangePicker = ({
 
   CustomInput.displayName = 'CustomInput';
 
+  const handleDateChange = (update) => {
+    setDateRange(update);
+    onDateChange(update)
+  };
+
   return (
     <DatePicker
       selectsRange={true}
       startDate={startDate}
       endDate={endDate}
-      onChange={(update) => {
-        setDateRange(update);
-      }}
+      onChange={handleDateChange}
       locale={es}
       customInput={<CustomInput/>}
       dateFormat='dd/MM/yyyy'

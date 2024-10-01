@@ -13,7 +13,11 @@ export const PaperDetailRoute = ({
     <Paper
       elevation={1}
       sx={{
-        height: 1
+        height: 1,
+        flexBasis: '48%',
+        display: 'flex',
+        justifyContent: 'space-between',
+        paddingInline: '8px', 
       }}
     >
       {

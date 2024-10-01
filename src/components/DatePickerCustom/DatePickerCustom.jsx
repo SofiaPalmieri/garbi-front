@@ -14,9 +14,11 @@ import {
 } from 'date-fns/locale'; 
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 
-export const DatePickerCustom = () => {
-  const defaultEndDate = new Date();
-  const [startDate, setStartDate] = useState(defaultEndDate);
+export const DatePickerCustom = ({
+  onDateChange
+}) => {
+  const defaultDate = new Date();
+  const [selectedDate, setSelectedDate] = useState(defaultDate);
 
   const CustomInput = forwardRef(
     ({
@@ -55,16 +57,19 @@ export const DatePickerCustom = () => {
 
   CustomInput.displayName = 'CustomInput';
 
+  const handleDateChange = (date) => {
+    setSelectedDate(date);
+    onDateChange(date)
+  };
+
   return (
     <DatePicker
-      selected={startDate} 
-      onChange={
-        (date) => setStartDate(date)
-      }
+      selected={selectedDate}
+      onChange={handleDateChange}
       locale={es}
       customInput={<CustomInput/>}
       dateFormat='dd/MM/yyyy'
-      maxDate={defaultEndDate}
+      maxDate={defaultDate}
       calendarStartDay={7}
     />
   );
