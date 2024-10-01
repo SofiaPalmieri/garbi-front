@@ -25,6 +25,7 @@ export const InputForm = ({
       rules={{
         required: true,
       }}
+      defaultValue={''}
       render={({
         field 
       }) => (

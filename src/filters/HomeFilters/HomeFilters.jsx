@@ -1,16 +1,16 @@
 import {
-  Box, Typography 
-} from '@mui/material'
+  Box
+} from '@mui/material';
 import {
-  SelectForm 
-} from '../../components/SelectForm/SelectForm'
+  RangeForm 
+} from '../../components/RangeForm/RangeForm';
 import {
-  InputForm 
-} from '../../components/InputForm';
+  SelectForm
+} from '../../components/SelectForm/SelectForm';
 
 
 export const HomeFilters = ({
-  control, areas 
+  control, areas
 }) => {
 
   return (
@@ -32,73 +32,14 @@ export const HomeFilters = ({
         }}
       >
         <Box>
-          <Typography
-            sx={{
-              fontSize: '1rem',
-              fontWeight: 500,
-              lineHeight: '24px'
-            }}
-          >
-            Nivel de llenado
-          </Typography>
-          <Box
-            sx={{
-              display: 'flex',
-              gap: '10px',
-              alignItems: 'center',
-              mt: 0.5
-            }}
-          >
-            <Box>
-              <InputForm
-                control={control}
-                name={'minLlenado'}
-                label={'Mínimo %'}
-                styleInput={{
-                  '& .MuiFormLabel-root': {
-                    fontFamily: 'Roboto',
-                    fontSize: '14px',
-                    fontWeight: 300,
-                    lineHeight: '20px',
-                  },
-                  '& .MuiInputBase-input, & .MuiInputBase-root': {
-                    fontFamily: 'Roboto',
-                    fontSize: '14px',
-                    fontWeight: 300,
-                    lineHeight: '20px',
-                  },
-                }}
-              />
-            </Box>
-            <Box
-              sx={{
-                backgroundColor: '#2121213B',
-                height: '1px',
-                width: '.75rem'
-              }}
-            />
-            <Box>
-              <InputForm
-                control={control}
-                name={'maxLlenado'}
-                label={'Máximo %'}
-                styleInput={{
-                  '& .MuiFormLabel-root': {
-                    fontFamily: 'Roboto',
-                    fontSize: '14px',
-                    fontWeight: 300,
-                    lineHeight: '20px',
-                  },
-                  '& .MuiInputBase-input, & .MuiInputBase-root': {
-                    fontFamily: 'Roboto',
-                    fontSize: '14px',
-                    fontWeight: 300,
-                    lineHeight: '20px',
-                  },
-                }}
-              />
-            </Box>
-          </Box>
+          <RangeForm
+            control={control}
+            title={'Nivel de llenado'}
+            minLabel={'Mínimo %'}
+            minName={'minLlenado'}
+            maxLabel={'Máximo %'}
+            maxName={'maxLlenado'}
+          />
         </Box>
       </Box>
       <Box
@@ -107,73 +48,14 @@ export const HomeFilters = ({
         }}
       >
         <Box>
-          <Typography
-            sx={{
-              fontSize: '1rem',
-              fontWeight: 500,
-              lineHeight: '24px'
-            }}
-          >
-            Nivel de batería
-          </Typography>
-          <Box
-            sx={{
-              display: 'flex',
-              gap: '10px',
-              alignItems: 'center',
-              mt: 0.5
-            }}
-          >
-            <Box>
-              <InputForm
-                control={control}
-                name={'minBateria'}
-                label={'Mínimo %'}
-                styleInput={{
-                  '& .MuiFormLabel-root': {
-                    fontFamily: 'Roboto',
-                    fontSize: '14px',
-                    fontWeight: 300,
-                    lineHeight: '20px',
-                  },
-                  '& .MuiInputBase-input, & .MuiInputBase-root': {
-                    fontFamily: 'Roboto',
-                    fontSize: '14px',
-                    fontWeight: 300,
-                    lineHeight: '20px',
-                  },
-                }}
-              />
-            </Box>
-            <Box
-              sx={{
-                backgroundColor: '#2121213B',
-                height: '1px',
-                width: '.75rem'
-              }}
-            />
-            <Box>
-              <InputForm
-                control={control}
-                name={'maxBateria'}
-                label={'Máximo %'}
-                styleInput={{
-                  '& .MuiFormLabel-root': {
-                    fontFamily: 'Roboto',
-                    fontSize: '14px',
-                    fontWeight: 300,
-                    lineHeight: '20px',
-                  },
-                  '& .MuiInputBase-input, & .MuiInputBase-root': {
-                    fontFamily: 'Roboto',
-                    fontSize: '14px',
-                    fontWeight: 300,
-                    lineHeight: '20px',
-                  },
-                }}
-              />
-            </Box>
-          </Box>
+          <RangeForm
+            control={control}
+            title={'Nivel de batería'}
+            minLabel={'Mínimo %'}
+            minName={'minBateria'}
+            maxLabel={'Máximo %'}
+            maxName={'maxBateria'}
+          />
         </Box>
       </Box>
     </Box >

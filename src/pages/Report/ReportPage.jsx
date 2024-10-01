@@ -1,14 +1,14 @@
 import {
-  DateRangePicker 
+  DateRangePicker
 } from '../../components/DateRangePicker/DateRangePicker';
 import {
-  useEffect, useState 
+  useEffect, useState
 } from 'react';
 import {
-  useForm 
+  useForm
 } from 'react-hook-form';
 import {
-  useAreas 
+  useAreas
 } from '../../api/hooks/useAreas/useAreas';
 import {
   useReports
@@ -23,26 +23,26 @@ import {
   HEIGHT_FULL_SCREEN
 } from '../../config';
 import {
-  CommonFilters 
+  CommonFilters
 } from '../../filters/CommonFilters';
 
 import {
-  useQueryParamFilters 
+  useQueryParamFilters
 } from '../../hooks/useQueryParamFilters';
 import {
   ReportTable
 } from '../../tables/ReportTable/ReportTable';
 import {
-  addSelectFilterIfApplies, SelectBoxFilter 
+  addSelectFilterIfApplies, SelectBoxFilter
 } from '../../utils/filtersUtil.';
 import {
   TimestampUtil
 } from '../../utils/timestampUtil';
 import {
-  useSearchQueryParam 
+  useSearchQueryParam
 } from '../../hooks/useSearchQueryParam';
 import {
-  reportsFiltersDeclaration 
+  reportsFiltersDeclaration
 } from '../../filters/declarations/ReportFilters/reportFilter';
 
 const mapper = (reports) => {
@@ -96,7 +96,7 @@ export const ReportPage = () => {
   useEffect(() => {
     const getAreasAndCompleteFilters = async () => {
       const {
-        result: areas 
+        result: areas
       } = await getAreas()
 
       const areasOptions = areas.map(area => ({
@@ -144,7 +144,7 @@ export const ReportPage = () => {
       />
     }
     handleSubmit={handleSubmit(whenFiltersSubmit)}
-    isLoading = {isLoadingGetAreas} 
+    isLoading={isLoadingGetAreas}
     component={
       () =>
         <CommonTableList
@@ -153,8 +153,8 @@ export const ReportPage = () => {
           isLoadingFetchData={isLoadingFetchReports}
           mapper={mapper}
           placeHolderInput={'Buscar por ID, Título o Contenedor'}
-          componentToRender={ <DateRangePicker /> }
-          onSearcherSubmit = { onSearcherSubmit }
+          componentToRender={<DateRangePicker />}
+          onSearcherSubmit={onSearcherSubmit}
         />
     }
   />;

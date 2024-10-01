@@ -1,14 +1,17 @@
 
 import {
-  CheckboxList 
+  CheckboxList
 } from '../components/CheckboxList/CheckboxList'
 import {
-  SelectForm 
+  RangeForm 
+} from '../components/RangeForm/RangeForm'
+import {
+  SelectForm
 } from '../components/SelectForm/SelectForm'
 
 // todo: sacar a un componente ? 
 export const CheckboxFilter = ({
-  filter, control 
+  filter, control
 }) => (
   <CheckboxList
     key={filter.key}
@@ -21,7 +24,7 @@ export const CheckboxFilter = ({
 
 // todo: sacar a un componente ? 
 export const SelectBoxFilter = ({
-  filter, control 
+  filter, control
 }) => (
   <SelectForm
     key={filter.key}
@@ -33,6 +36,26 @@ export const SelectBoxFilter = ({
     optionalDefaultValue={'Limpiar Filtro'}
   />
 )
+
+export const RangeBoxFilter = ({
+  filter, control
+}) => (
+  <RangeForm
+    key={filter.key}
+    control={control}
+    title={filter.name}
+    maxLabel={filter.maxLabel}
+    maxName={filter.key + '.' + filter.maxName}
+    minLabel={filter.minLabel}
+    minName={filter.key + '.' + filter.minName}
+  />
+)
+
+// export const RangeBoxFilter = ({
+//   filter, control
+// }) => (
+
+// )
 
 
 export const addArrayFiltersIfApplies = (key, values, newQueryParamsFilter) => {
@@ -54,6 +77,23 @@ export const addSelectFilterIfApplies = (key, value, newQueryParamsFilter) => {
     })
   }
 }
+
+export const addRangeFiltersIfApplies = (minName, maxName) => (key, value, newQueryParamsFilter) => {
+  const minValue = value[minName] !== '' ? value[minName] : 0;
+  const maxValue = value[maxName] !== '' ? value[maxName] : 100;
+
+  newQueryParamsFilter.push(
+    {
+      key: minName,
+      value: minValue
+    },
+    {
+      key: maxName,
+      value: maxValue
+    }
+  );
+}
+
 
 
 const getFiltersToApply = (filters) => {

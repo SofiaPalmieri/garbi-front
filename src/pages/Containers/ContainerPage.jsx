@@ -1,48 +1,62 @@
 import {
-  useContainers 
+  useContainers
 } from '../../api/hooks/useContainers/useContainers';
 import {
-  CommonTableList 
+  CommonTableList
 } from '../../components/CommonTableList/CommonTableList';
 import {
   FilterSideComponent
 } from '../../components/FilterSideComponent';
 import {
-  HEIGHT_FULL_SCREEN 
+  HEIGHT_FULL_SCREEN
 } from '../../config';
 import {
-  ContainerTable 
+  ContainerTable
 } from '../../tables/ContainerTable/ContainerTable';
 import {
-  useState 
+  useState
 } from 'react';
 import {
-  ModalCreateResource 
+  ModalCreateResource
 } from '../../modales/ModalCreateResource';
 import {
-  CreateContainerForm 
+  CreateContainerForm
 } from '../../forms/CreateContainer';
 import {
-  ModifyContainerForm 
+  ModifyContainerForm
 } from '../../forms/ModifyContainer/ModifyContainerForm';
 import {
-  DeleteContainerForm 
+  DeleteContainerForm
 } from '../../forms/DeleteContainer/DeleteContainerForm';
-import { 
-  TableButtons 
+import {
+  TableButtons
 } from '../../components/TableButtons/TableButtons';
 
+
+
 import {
-  useCallback 
-} from 'react';
+  ContainersFiltersDeclaration 
+} from '../../filters/declarations/ContainersFilters/containersFilters';
+import {
+  useForm 
+} from 'react-hook-form';
+import {
+  useQueryParamFilters 
+} from '../../hooks/useQueryParamFilters';
+import {
+  useSearchQueryParam 
+} from '../../hooks/useSearchQueryParam';
+import {
+  CommonFilters 
+} from '../../filters/CommonFilters';
 
 const mapper = (data) => data
 
 export const ContainerPage = () => {
-
   const [openCreateContainerModal, setOpenCreateContainerModal] = useState(false);
   const handleOpenCreateContainerModal = () => setOpenCreateContainerModal(true);
   const handleCloseCreateContainerModal = () => setOpenCreateContainerModal(false);
+  const [containersFilters, setContainersFilters] = useState(ContainersFiltersDeclaration)
 
   const [openModifyContainerModal, setOpenModifyContainerModal] = useState(false);
   const [containerToModify, setContainerToModify] = useState(false);
@@ -78,20 +92,41 @@ export const ContainerPage = () => {
     setReloadTable(prev => prev + 1);
   };
 
+  const {
+    control,
+    handleSubmit
+  } = useForm();
+
+  const {
+    fetchDataWithFilters: fetchContainersWithFilters,
+    whenFiltersSubmit,
+    addQueryParamFilter,
+    removeQueryParamFilter
+  } = useQueryParamFilters(containersFilters, getContainers)
+
+  const onSearcherSubmit = useSearchQueryParam(addQueryParamFilter, removeQueryParamFilter)
+
   const [selectedElement, setSelectedElement] = useState(null);
   const handleRowClick = (element) => {
     setSelectedElement(element);
   };
 
-  const getContainersCallback = useCallback((lastKey) => {
-    return getContainers(lastKey)
-  }, [])
+  // const getContainersCallback = useCallback((lastKey) => {
+  //   return getContainers(lastKey)
+  // }, [])
 
   return (
     <FilterSideComponent
       prefix={'Gestión'}
       title={'Contenedores'}
       height={HEIGHT_FULL_SCREEN}
+      renderFilters={
+        () => <CommonFilters
+          control={control}
+          filters={containersFilters}
+        />
+      }
+      handleSubmit={handleSubmit(whenFiltersSubmit)}
       component={
         () =>
           <>
@@ -123,16 +158,16 @@ export const ContainerPage = () => {
                 handleClose={handleCloseDeleteContainerModal}
               />}
             />
-
             <CommonTableList
               table={ContainerTable}
-              fetchData={getContainersCallback}
+              fetchData={fetchContainersWithFilters}
               isLoadingFetchData={isLoadingGetContainers}
               mapper={mapper}
               reloadTable={reloadTable}
               placeHolderInput={'Buscar por ID'}
               inputWidth={'192px'}
               handleRowClick={handleRowClick}
+              onSearcherSubmit={onSearcherSubmit}
               componentToRender={
                 <TableButtons
                   selectedElement={selectedElement}
