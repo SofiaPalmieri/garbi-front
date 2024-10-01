@@ -1,6 +1,7 @@
 import {
   useCreateReport, 
   useFetchReports,
+  useFetchReport,
   useReviewReport,
   useCloseReport,
 } from './request';
@@ -16,6 +17,11 @@ export const useReports = () => {
     fetchReports,
     isLoading: isLoadingFetchReports
   } = useFetchReports();
+
+  const {
+    fetchReport,
+    isLoading: isLoadingFetchReport
+  } = useFetchReport();
 
   const {
     reviewReport, 
@@ -35,6 +41,10 @@ export const useReports = () => {
     fetchReports: {
       fetchReports,
       isLoadingFetchReports
+    },
+    fetchReport: {
+      fetchReport,
+      isLoadingFetchReport
     },
     reviewReport: {
       reviewReport,

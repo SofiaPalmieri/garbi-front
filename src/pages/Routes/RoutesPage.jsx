@@ -97,7 +97,7 @@ const mapper = (routes) => {
 
 
       return {
-        id: r.id.slice(-6),
+        id: r.id,
         date: date,
         area: 'Área 1', // falta recibir nombre de area del BE.
         duration: duration,

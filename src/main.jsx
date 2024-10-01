@@ -118,7 +118,7 @@ const router = createBrowserRouter([
         element: <RoutesPage />,
       },
       {
-        path: '/recorridos/detalle',
+        path: '/recorridos/:id',
         element: <RouteDetailPage />,
       },
       {
@@ -130,7 +130,7 @@ const router = createBrowserRouter([
         element: <ReportPage />,
       },
       {
-        path: '/reportes/detalle',
+        path: '/reportes/:id',
         element: <ReportDetailsPage />
       },
       {

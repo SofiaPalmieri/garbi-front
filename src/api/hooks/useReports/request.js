@@ -81,6 +81,27 @@ export const useFetchReports = () => {
   }
 };
 
+export const useFetchReport = () => {
+  const {
+    commonFetch, isLoading
+  } = useFetch({
+    baseUri: baseReportsUri,
+  });
+
+  const fetchReport = (reportId) => {
+    return commonFetch({
+      uri: '/' + reportId,
+      method: HTTPMethods.GET
+    })
+  }
+
+
+  return {
+    fetchReport,
+    isLoading
+  }
+};
+
 export const useReviewReport = () => {
   const {
     commonFetch, isLoading
