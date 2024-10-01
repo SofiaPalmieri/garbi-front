@@ -44,6 +44,9 @@ import {
 import {
   useSearchQueryParam 
 } from '../../hooks/useSearchQueryParam';
+import {
+  getInitialQueryParam, handleDateChange 
+} from '../../hooks/useDatePicker';
 
 
 const mapper = (routes) => {
@@ -164,14 +167,19 @@ export const RoutesPage = () => {
     handleSubmit
   } = useForm();
 
+  const initialDate = new Date()
+  const initialQueryParam = getInitialQueryParam(initialDate)
+
   const {
     fetchDataWithFilters: fetchRoutesWithFilters,
     whenFiltersSubmit,
     addQueryParamFilter,
     removeQueryParamFilter
-  } = useQueryParamFilters(routesFilters, fetchRoutes)
+  } = useQueryParamFilters(routesFilters, fetchRoutes, initialQueryParam)
 
   const onSearcherSubmit = useSearchQueryParam(addQueryParamFilter, removeQueryParamFilter)
+
+  const onDateChange = handleDateChange(addQueryParamFilter);
 
   return (
     <FilterSideComponent
@@ -195,7 +203,11 @@ export const RoutesPage = () => {
             mapper={mapper}
             placeHolderInput={'Buscar por Supervisor'}
             inputWidth={'240px'}
-            componentToRender={ <DatePickerCustom /> }
+            componentToRender={ 
+              <DatePickerCustom
+                onDateChange={onDateChange}
+              /> 
+            }
           />
       }
     />
