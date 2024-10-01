@@ -1,3 +1,0 @@
-export {
-  SearcherDateRangerPickerPaginated 
-} from './SearcherDateRangerPickerPaginated'

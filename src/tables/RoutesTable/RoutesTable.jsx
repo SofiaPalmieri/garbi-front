@@ -10,13 +10,21 @@ import {
   AvatarWithTooltip 
 } from '../../components/AvatarWithTooltip';
 import useMediaQuery from '@mui/material/useMediaQuery';
+import { 
+  useNavigate 
+} from 'react-router-dom';
 
 
 export const RoutesTable = ({
   data: routes
 }) => {
+  const navigate = useNavigate()
   const isLargeScreen = useMediaQuery('(min-width:1200px)');
   const isMediumScreen = useMediaQuery('(min-width:900px)');
+
+  const handleRowClick = (id) => {
+    navigate(`/recorridos/${id}`)
+  }
 
   return (
     <Table
@@ -26,6 +34,10 @@ export const RoutesTable = ({
         {routes.map((row) => (
           <TableRow
             key={row.id}
+            onClick={() => handleRowClick(row.id)}
+            sx={{
+              cursor: 'pointer' 
+            }}
           >
             <TableCell 
               align='left'
@@ -64,7 +76,7 @@ export const RoutesTable = ({
                     marginLeft: '16px'
                   }}
                 >
-                  #{row.id}
+                  #{row.id.slice(-6)}
                 </Typography>
               </Typography>
             </TableCell>

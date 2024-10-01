@@ -3,7 +3,7 @@ import {
 } from 'react';
 
 export const usePagination = ({
-  fetch, mapper 
+  fetch, mapper
 }) => {
   const [data, setData] = useState([])
 
@@ -13,7 +13,8 @@ export const usePagination = ({
 
   useEffect(() => {
     asyncFetchData(actualKey);
-  }, []);
+    setSearchStack([]);
+  }, [fetch]);
 
   const asyncFetchData = async (key = null) => {
     try {
@@ -57,11 +58,17 @@ export const usePagination = ({
   const disabledPrevBtn = searchStack.length == 0
   const disabledNextBtn = nextKey  == null
 
+
+  const refetchData = () => { //to refresh the table when we create a new row
+    asyncFetchData(actualKey);
+  };
+
   return {
     data,
     prevFetch,
     nextFetch,
     disabledPrevBtn,
-    disabledNextBtn
+    disabledNextBtn,
+    refetchData 
   }
 } 

@@ -1,4 +1,3 @@
-
 import {
   Box, Button 
 } from '@mui/material'
@@ -7,16 +6,14 @@ import {
 } from '../Searcher/Searcher'
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-import {
-  DatePickerCustom
-} from '../DatePickerCustom';
-import {
-  DateRangePicker 
-} from '../DateRangePicker';
 
-export const SearcherDateRangerPickerPaginated = ({
-  prevFetch, nextFetch, disabledPrevBtn, disabledNextBtn, placeholderInput = 'Buscar por ID, Título', inputWidth, datePicker
+export const SearcherPaginated = ({
+  prevFetch, nextFetch, disabledPrevBtn, disabledNextBtn, 
+  placeholderInput = 'Buscar por ID, Título', inputWidth,
+  componentToRender,
+  onSearcherSubmit
 }) => {
+
   return (
     <Box
       sx={{
@@ -31,6 +28,7 @@ export const SearcherDateRangerPickerPaginated = ({
       <Searcher
         placeholderInput={placeholderInput}
         inputWidth={inputWidth}
+        onSearcherSubmit = {onSearcherSubmit}
       />
       <Box
         sx={{
@@ -58,7 +56,8 @@ export const SearcherDateRangerPickerPaginated = ({
             <ChevronRightIcon />
           </Button>
         </Box>
-        {datePicker ? <DatePickerCustom /> : <DateRangePicker />}
+        
+        {componentToRender}
       </Box>
     </Box>
   )

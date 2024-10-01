@@ -13,11 +13,37 @@ import {
 import {
   ReportStatusSelect
 } from '../../components/ReportStatusSelect';
-
+import {
+  useState
+} from 'react';
+import { 
+  useNavigate 
+} from 'react-router-dom';
 
 export const ReportTable = ({
-  data: reports
+  data: initialReports
 }) => {
+  const navigate = useNavigate()
+  const [reports, setReports] = useState(initialReports);
+
+  const handleUpdateAvatar = (reportId, user) => {
+    const newReports = [...reports];
+    const reportIndex = newReports.findIndex(report => report.id === reportId);
+    
+    newReports[reportIndex] = {
+      ...newReports[reportIndex],
+      assignedManagerName: `${user.name} ${user.surname}`,
+      assignedManagerPhoto: user.profilePicture
+    };
+    
+    setReports(newReports);
+  };
+  
+  const handleRowClick = (id) => {
+    navigate(`/reportes/${id}`)
+  }
+
+  
   return (
     <Table
       sx={{
@@ -29,6 +55,10 @@ export const ReportTable = ({
         {reports.map((row) => (
           <TableRow
             key={row.id}
+            onClick={() => handleRowClick(row.id)}
+            sx={{
+              cursor: 'pointer' 
+            }}
           >
             <TableCell
               sx={{
@@ -135,6 +165,7 @@ export const ReportTable = ({
             </TableCell>
             <TableCell
               align='center'
+              onClick={(event) => event.stopPropagation()}
               sx={{
                 width: 192,
                 paddingX: '24px'
@@ -143,6 +174,7 @@ export const ReportTable = ({
               <ReportStatusSelect
                 reportId={row.id}
                 reportState={row.state}
+                onAvatarUpdate={handleUpdateAvatar}
               />
             </TableCell>
             <TableCell
@@ -153,8 +185,8 @@ export const ReportTable = ({
               }}
             >
               <AvatarWithTooltip
-                name={row.creatorName}
-                profilePicture={row.creatorPhoto}
+                name={row.assignedManagerName}
+                profilePicture={row.assignedManagerPhoto}
               />
             </TableCell>
           </TableRow>

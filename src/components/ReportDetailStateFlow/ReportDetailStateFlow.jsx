@@ -10,7 +10,7 @@ import {
 } from '../../enums/reportStates';
 
 export const ReportDetailStateFlow = ({
-  usersReports 
+  statusHistory
 }) => {
   return (
     <Paper
@@ -54,7 +54,7 @@ export const ReportDetailStateFlow = ({
             gap: '.5rem',
           }}
         >
-          {usersReports.map(u =>
+          {statusHistory.map(u =>
             <Box
               key={u.id}
               sx={{

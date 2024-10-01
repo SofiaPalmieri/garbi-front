@@ -21,4 +21,13 @@ export class TimestampUtil {
       time: formattedTime
     }
   }
+
+  static convertToDateForFilter(date) {
+    return date.toLocaleString('en-CA', { 
+      timeZone: 'America/Argentina/Buenos_Aires', 
+      year: 'numeric', 
+      month: '2-digit', 
+      day: '2-digit' 
+    })
+  }
 }

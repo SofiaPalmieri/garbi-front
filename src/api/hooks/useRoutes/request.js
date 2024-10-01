@@ -21,13 +21,20 @@ export const useFetchRoutes = () => {
     baseUri: baseIntegrationRoute,
   });
 
-  const fetchRoutes = (lastKey = null, limit = LIMIT_DEFAULT) => {
+  const fetchRoutes = (lastKey = null, queryParamsFilter, limit = LIMIT_DEFAULT) => {
     const queryBuilder = new QueryBuilder()
 
-    const uri = queryBuilder
+    queryBuilder
       .addParam('lastKey', lastKey)
       .addParam('limit', limit)
-      .build()
+
+    queryParamsFilter.forEach(element => {
+      queryBuilder.addParam(element.key, element.value)
+    });
+
+    const uri = queryBuilder.build();
+
+    console.log('🚀 ~ fetchReports ~ uri:', uri)
 
     return commonFetch({
       uri,
@@ -38,6 +45,26 @@ export const useFetchRoutes = () => {
 
   return {
     fetchRoutes,
+    isLoading
+  }
+}
+
+export const useFetchRoute = () => {
+  const {
+    commonFetch, isLoading 
+  } = useFetch({
+    baseUri: baseIntegrationRoute,
+  });
+
+  const fetchRoute = (routeId) => {
+    return commonFetch({
+      uri: '/' + routeId,
+      method: HTTPMethods.GET,
+    })
+  }
+
+  return {
+    fetchRoute,
     isLoading
   }
 };

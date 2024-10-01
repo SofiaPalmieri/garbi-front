@@ -5,30 +5,55 @@ import {
   TableContainer
 } from '@mui/material';
 import {
-  SearcherDateRangerPickerPaginated
-} from '../../components/SearcherDateRangePickerPaginated';
+  SearcherPaginated
+} from '../SearcherPaginated';
 import {
   HEIGHT_HEADER_FILTER_SIDE_COMPONENT
 } from '../../config';
 import {
   usePagination
 } from '../../hooks/usePagination';
-
+import {
+  useEffect, useRef 
+} from 'react';
 
 export const CommonTableList = ({
-  table: Table, fetchData, isLoadingFetchData, mapper, placeHolderInput, inputWidth, datePicker=true
+  table: Table,
+  fetchData,
+  isLoadingFetchData,
+  mapper,
+  reloadTable,
+  placeHolderInput,
+  inputWidth,
+  handleRowClick,
+  componentToRender,
+  onSearcherSubmit
 }) => {
+
+  const firstRender = useRef(true);
 
   const {
     data,
     prevFetch,
     nextFetch,
     disabledPrevBtn,
-    disabledNextBtn
+    disabledNextBtn,
+    refetchData
   } = usePagination({
     fetch: fetchData,
     mapper
   })
+
+
+  useEffect(() => {
+    if (firstRender.current) {
+      firstRender.current = false; // Salta la ejecución en el primer renderizado
+      return;
+    }
+
+    refetchData();
+  }, [reloadTable]);
+
 
   return (
     <Box
@@ -53,14 +78,15 @@ export const CommonTableList = ({
             width: '100%'
           }}
         >
-          <SearcherDateRangerPickerPaginated
+          <SearcherPaginated
             prevFetch={prevFetch}
             nextFetch={nextFetch}
             disabledNextBtn={disabledNextBtn || isLoadingFetchData}
             disabledPrevBtn={disabledPrevBtn || isLoadingFetchData}
             placeholderInput={placeHolderInput}
             inputWidth={inputWidth}
-            datePicker={datePicker}
+            componentToRender={componentToRender}
+            onSearcherSubmit={onSearcherSubmit}
           />
           <Box
             sx={{
@@ -84,6 +110,7 @@ export const CommonTableList = ({
                 :
                 <Table
                   data={data}
+                  handleRowClick={handleRowClick}
                 />
             }
           </Box>

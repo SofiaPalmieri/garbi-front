@@ -1,10 +1,12 @@
 import {
-  Box, Paper, Button 
+  Box, Paper 
 } from '@mui/material';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import {
   ReportDetailsSideComponent 
 } from '../../components/ReportDetailsSideComponent/ReportDetailsSideComponent';
+import {
+  ReportStatusSelect
+} from '../../components/ReportStatusSelect';
 
 const colors = {
   NEW: '#EF6C0080',
@@ -23,7 +25,7 @@ const getColor = (state) => {
 };
 
 export const ReportDetails = ({
-  content, state 
+  reportId, content, state 
 }) => {
   return (
     <Box
@@ -31,25 +33,10 @@ export const ReportDetails = ({
         width: '100%' 
       }}
     >
-      <Button
-        variant='outlined'
-        color='warning'
-        size='small'
-        sx={{
-          color: getColor(state),
-          width: '100%',
-          height: '30px',
-          padding: '4px 10px',
-          border: '1px solid',
-        }}
-      >
-        {state}
-        <ExpandMoreIcon
-          sx={{
-            color: getColor(state),
-          }}
-        />
-      </Button>
+      <ReportStatusSelect
+        reportId={reportId}
+        reportState={state}
+      />
 
       <Paper
         sx={{

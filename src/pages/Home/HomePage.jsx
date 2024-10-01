@@ -42,7 +42,8 @@ export default function HomePage() {
   const {
     control, handleSubmit, setValue, formState: {
       errors
-    }
+    }, 
+    reset
   } = useForm({
     defaultValues: {
       areaId: '',
@@ -53,7 +54,6 @@ export default function HomePage() {
     },
     resolver: yupResolver(createReportSchema),
   });
-
 
   const {
     getAreas: {
@@ -99,7 +99,6 @@ export default function HomePage() {
   const whenFiltersSubmit = ({
     areaId, minLlenado, maxLlenado, minBateria, maxBateria 
   }) => {
-    console.log('🚀 ~ whenFiltersSubmit ~ areaId:', areaId)
     const containersCondition = []
     const areasCondition = []
 
@@ -124,15 +123,27 @@ export default function HomePage() {
     const filteredAreas = areas.filter(area =>
       areasCondition.every(condition => condition(area))
     )
-    console.log('🚀 ~ whenFiltersSubmit ~ filteredAreas:', filteredAreas)
 
     setAreasToRender(filteredAreas)
     setContainersToRender(filteredContainers)
   }
 
+  const cleanFilters = () => {
+    reset({
+      areaId: '',
+      minLlenado: '',
+      maxLlenado: '',
+      minBateria: '',
+      maxBateria: ''
+    });
+    setAreasToRender(areas);
+    setContainersToRender(containers);
+  };
+
 
   return <FilterSideComponent
     title={'Mapa'}
+    handleClean={cleanFilters}
     component={
       () =>
         <HomeMainContent
@@ -146,7 +157,6 @@ export default function HomePage() {
       control={control}
       areas={areas}
     />}
-    handleSubmit={handleSubmit}
-    whenFiltersSubmit={whenFiltersSubmit}
+    handleSubmit={handleSubmit(whenFiltersSubmit)}
   />;
 }

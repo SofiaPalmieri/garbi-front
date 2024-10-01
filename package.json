@@ -18,6 +18,7 @@
     "@hookform/resolvers": "^3.4.0",
     "@mui/icons-material": "^5.15.18",
     "@mui/material": "^5.15.16",
+    "@mui/x-charts": "^7.18.0",
     "@vis.gl/react-google-maps": "^0.9.0",
     "axios": "^1.6.8",
     "eslint-plugin-unused-imports": "^3.2.0",

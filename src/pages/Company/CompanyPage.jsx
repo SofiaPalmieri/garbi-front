@@ -8,8 +8,8 @@ import {
   useState
 } from 'react';
 import {
-  SearcherAndButton
-} from '../../components/SearcherAndButton';
+  SearcherPaginated
+} from '../../components/SearcherPaginated';
 import {
   ModalCreateResource
 } from '../../modales/ModalCreateResource';
@@ -22,6 +22,9 @@ import {
 import {
   TableWithEditAndDeleteButtons
 } from '../../components/TableWithEditAndDeleteButtons';
+import { 
+  TableButtons 
+} from '../../components/TableButtons/TableButtons';
 
 const companiesInitial = [
   {
@@ -214,6 +217,11 @@ const CompanyPage = () => {
     setCompanyToDelete(null);
   };
 
+  const [selectedElement, setSelectedElement] = useState(null);
+  const handleRowClick = (element) => {
+    setSelectedElement(element);
+  };
+
 
   return (
     <Box
@@ -249,11 +257,20 @@ const CompanyPage = () => {
           width: '100%',
         }}
       >
-        <SearcherAndButton
+        <SearcherPaginated
           placeholderInput={'Buscar por Razón social o Nombre'}
           buttonText={'nueva empresa'}
           inputWidth={'20rem'}
-          onClick={handleOpenCreateCompanyModal}
+          handleRowClick={handleRowClick}
+          componentToRender={
+            <TableButtons
+              selectedElement={selectedElement}
+              handleOpenDeleteElementModal={handleOpenDeleteCompanyModal}
+              handleOpenModifyElementModal={handleOpenModifyCompanyModal}
+              handleOpenCreateElementModal={handleOpenCreateCompanyModal}
+              mainButtonText={'Nueva empresa'}
+            />
+          }
         />
         <TableWithEditAndDeleteButtons
           tableHeaders={tableHeaders}
