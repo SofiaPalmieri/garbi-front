@@ -31,7 +31,7 @@ import {
 
 const pages = {
   Mapa: '/inicio',
-  Estadísticas: '/inicio',  // esta hay que cambiarla cuando la creemos
+  Estadísticas: '/estadisticas',
   Recomendaciones: '/recomendaciones',  
   Reportes: '/reportes',
 };
