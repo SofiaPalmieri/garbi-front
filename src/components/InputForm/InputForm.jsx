@@ -16,14 +16,15 @@ export const InputForm = ({
   helperText = null,
   disabled = false,
   multiline = false,
-  rows = 1
+  rows = 1,
+  required = true
 }) => {
   return (
     <Controller
       name={name}
       control={control}
       rules={{
-        required: true,
+        required,
       }}
       defaultValue={''}
       render={({

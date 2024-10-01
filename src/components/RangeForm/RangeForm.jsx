@@ -32,6 +32,7 @@ export const RangeForm = ({
             control={control}
             name={minName}
             label={minLabel}
+            required={false}
             styleInput={{
               '& .MuiFormLabel-root': {
                 fontFamily: 'Roboto',
@@ -60,6 +61,7 @@ export const RangeForm = ({
             control={control}
             name={maxName}
             label={maxLabel}
+            required={false}
             styleInput={{
               '& .MuiFormLabel-root': {
                 fontFamily: 'Roboto',

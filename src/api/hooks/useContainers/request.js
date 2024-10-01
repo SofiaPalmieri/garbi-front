@@ -20,8 +20,6 @@ export const useGetContainers = () => {
 
   const getContainers = (lastKey = null, queryParamsFilter, limit = LIMIT_DEFAULT) => {
     const queryBuilder = new QueryBuilder()
-    console.log('🚀 ~ getContainers ~ queryParamsFilter:', queryParamsFilter)
-
 
     queryBuilder
       .addParam('lastKey', lastKey)

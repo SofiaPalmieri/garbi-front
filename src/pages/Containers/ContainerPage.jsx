@@ -14,6 +14,7 @@ import {
   ContainerTable
 } from '../../tables/ContainerTable/ContainerTable';
 import {
+  useEffect,
   useState
 } from 'react';
 import {
@@ -49,6 +50,12 @@ import {
 import {
   CommonFilters 
 } from '../../filters/CommonFilters';
+import {
+  useAreas 
+} from '../../api/hooks/useAreas/useAreas';
+import {
+  addSelectFilterIfApplies, SelectBoxFilter 
+} from '../../utils/filtersUtil.';
 
 const mapper = (data) => data
 
@@ -87,6 +94,14 @@ export const ContainerPage = () => {
     }
   } = useContainers();
 
+  const {
+    getAreas: {
+      getAreas,
+      isLoadingGetAreas
+    }
+  } = useAreas();
+
+
   const [reloadTable, setReloadTable] = useState(0);
   const refreshList = () => {
     setReloadTable(prev => prev + 1);
@@ -111,9 +126,33 @@ export const ContainerPage = () => {
     setSelectedElement(element);
   };
 
-  // const getContainersCallback = useCallback((lastKey) => {
-  //   return getContainers(lastKey)
-  // }, [])
+  // this useEffect is to retrieve areas from BE and complete filters
+  useEffect(() => {
+    const getContainersAndCompleteFilters = async () => {
+      const {
+        result: areas
+      } = await getAreas()
+
+      const areasOptions = areas.map(area => ({
+        value: area.id,
+        label: area.name
+      }))
+
+      const completedFilters = [...containersFilters]
+
+      completedFilters.unshift({
+        key: 'area',
+        name: 'Área',
+        values: areasOptions,
+        render: SelectBoxFilter,
+        addFilter: addSelectFilterIfApplies
+      })
+
+      setContainersFilters(completedFilters)
+    }
+
+    getContainersAndCompleteFilters()
+  }, [])
 
   return (
     <FilterSideComponent
