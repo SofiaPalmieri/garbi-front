@@ -1,5 +1,5 @@
 import {
-  LIMIT_DEFAULT 
+  LIMIT_DEFAULT
 } from '../../../config';
 import {
   useFetch
@@ -18,15 +18,20 @@ export const useGetContainers = () => {
     baseUri: baseContainerUri,
   });
 
-  const getContainers = (lastKey = null, limit = LIMIT_DEFAULT) => {
+  const getContainers = (lastKey = null, queryParamsFilter, limit = LIMIT_DEFAULT) => {
     const queryBuilder = new QueryBuilder()
 
-
-    const uri = queryBuilder
+    queryBuilder
       .addParam('lastKey', lastKey)
       .addParam('limit', limit)
-      .build()
 
+    queryParamsFilter.forEach(element => {
+      queryBuilder.addParam(element.key, element.value)
+    });
+
+    const uri = queryBuilder.build();
+
+    console.log('🚀 ~ fetchReports ~ uri:', uri)
 
     return commonFetch({
       uri,

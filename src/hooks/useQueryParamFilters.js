@@ -10,6 +10,7 @@ export const useQueryParamFilters = (filters, fetchData, initialQueryParams=[]) 
   }, [queryParamsFilter])
 
   const whenFiltersSubmit = (data) => {
+    // deja los que no pertenecen al panel
     let newQueryParamsFilter = queryParamsFilter.filter(
       query => !filters.some(f => f.key == query.key)
     )
