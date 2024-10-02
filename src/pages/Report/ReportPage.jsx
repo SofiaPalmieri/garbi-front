@@ -59,13 +59,15 @@ const mapper = (reports) => {
       } = TimestampUtil.convertToDateAndHour(r.timestamp)
       const state = r.status[r.status.length - 1]
 
+      const creator = r.userId ? 'Recolector' : 'Ciudadano'
+
       return {
         id: r.id,
         date: date,
         time: time,
         state: state.status,
-        // recolector o ciudadano,
-        description: r.description,
+        typeOfUser: creator,
+        description: r.title,
         reportType: r.type.replace(/_/g, ' '),
         // falta lugar
         // falta area,

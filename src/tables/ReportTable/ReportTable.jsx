@@ -106,7 +106,7 @@ export const ReportTable = ({
                   color: '#00000099',
                 }}
               >
-                {row.typeOfUser}
+                {row.typeOfUser} | #{row.id}
               </Typography>
               <Typography
                 sx={{

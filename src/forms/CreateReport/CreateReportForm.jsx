@@ -30,8 +30,6 @@ import {
 import {
   mixed, object, string
 } from 'yup';
-
-
 import {
   useEffect, useState
 } from 'react';
@@ -47,6 +45,10 @@ import {
 import {
   formatContainers
 } from '../../api/hooks/useReports/mappers';
+import {
+  FeedbackSnackbar
+} from '../../components/FeedbackSnackbar'
+
 
 const tipos = [
   {
@@ -101,6 +103,7 @@ export const CreateReportForm = ({
   const apiKeyGoogleMaps = import.meta.env.VITE_REACT_APP_API_KEY_GOOGLE_MAPS;
   const [selectedImage, setSelectedImage] = useState(null);
   const [selectedFile, setSelectedFile] = useState(null);
+  const [openSnackbar, setOpenSnackbar] = useState(false)
 
   const position = {
     lat: -34.5893,
@@ -182,19 +185,16 @@ export const CreateReportForm = ({
     defaultValues: {
       userId: '',
       containerId: '',
-      title: 'sasA',
-      description: 'dssadsd',
+      title: '',
+      description: '',
       address: '',
-      phone: '465456465',
-      email: 'sdada@saddad.com',
-      type: 'BASURA_EN_LA_CALLE',
+      phone: '',
+      email: '',
+      type: '',
       image: '',
     },
     resolver: yupResolver(createReportSchema),
   });
-
-  const user = JSON.parse(localStorage.getItem('user'));
-  const userId = user.id;
 
   const onSubmit = async (data) => {
     if (!containerSelected) {
@@ -204,7 +204,6 @@ export const CreateReportForm = ({
     setContainerError(false);
 
     const report = {
-      userId: userId,
       containerId: data.containerId,
       title: data.title,
       description: data.description,
@@ -217,15 +216,25 @@ export const CreateReportForm = ({
 
     try {
       await createReport(report);
+      setOpenSnackbar(true)
     } catch (error) {
       console.error('Error creating report:', error);
     }
   };
 
+  const handleCloseSnackbar = () => setOpenSnackbar(false)
+
+
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
     >
+      <FeedbackSnackbar
+        severity={'success'}
+        text={'Reporte creado. En breve recibirá novedades.'}
+        openSnackbar={openSnackbar}
+        handleClose={handleCloseSnackbar}
+      />
       <Typography
         sx={{
           fontSize: '16px',

@@ -2,7 +2,7 @@ import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined
 import RouteIcon from '@mui/icons-material/Route';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import {
-  Box, Divider, Paper, Typography 
+  Box, Divider, Paper, Tooltip, Typography 
 } from '@mui/material'
 import {
   SelectForm 
@@ -19,6 +19,9 @@ import {
 import {
   LineBarChart 
 } from '../../components/LineBarChart';
+import {
+  BreadcrumbsComponent
+} from '../../components/BreadcrumbsComponent';
 
 export const StatsPage = () => {
 
@@ -43,15 +46,9 @@ export const StatsPage = () => {
           padding: '1rem 4rem .8125rem'
         }}
       >
-        <Typography
-          sx={{
-            fontSize: '2.125rem',
-            fontWeight: 400,
-            lineHeight: '2.6244rem'
-          }}
-        >
-          Estadísticas
-        </Typography>
+        <BreadcrumbsComponent
+          title={'Estadísticas'}
+        />
 
       </Box>
       <Divider />
@@ -159,12 +156,18 @@ export const StatsPage = () => {
                     height: '2.5rem'
                   }}
                 >
-                  <InfoOutlinedIcon
-                    sx={{
-                      fontSize: '1.25rem',
-                      color: '#9E9E9E'
-                    }}
-                  />
+                  <Tooltip 
+                    title={'Tiempo que tardan los contenedores en llenarse hasta el 90% o más.'}
+                    arrow
+                    placement='top'
+                  >
+                    <InfoOutlinedIcon
+                      sx={{
+                        fontSize: '1.25rem',
+                        color: '#9E9E9E'
+                      }}
+                    />
+                  </Tooltip>
                 </Box>
               </Box>
               <Box
@@ -205,12 +208,18 @@ export const StatsPage = () => {
                     height: '2.5rem'
                   }}
                 >
-                  <InfoOutlinedIcon
-                    sx={{
-                      fontSize: '1.25rem',
-                      color: '#9E9E9E'
-                    }}
-                  />
+                  <Tooltip 
+                    title={'Cantidad de contenedores que se encuentran en el área seleccionada en la fecha de finalización seleccionada'}
+                    arrow
+                    placement='top'
+                  >
+                    <InfoOutlinedIcon
+                      sx={{
+                        fontSize: '1.25rem',
+                        color: '#9E9E9E'
+                      }}
+                    />
+                  </Tooltip>
                 </Box>
               </Box>
             </Box>
@@ -282,12 +291,18 @@ export const StatsPage = () => {
                     height: '2.5rem'
                   }}
                 >
-                  <InfoOutlinedIcon
-                    sx={{
-                      fontSize: '1.25rem',
-                      color: '#9E9E9E'
-                    }}
-                  />
+                  <Tooltip 
+                    title={'Tiempo promedio que llevó realizar las rutas de recolección dentro del área seleccionada en el rango de fechas seleccionado.'}
+                    arrow
+                    placement='top'
+                  >
+                    <InfoOutlinedIcon
+                      sx={{
+                        fontSize: '1.25rem',
+                        color: '#9E9E9E'
+                      }}
+                    />
+                  </Tooltip>
                 </Box>
               </Box>
               <Box
@@ -311,7 +326,7 @@ export const StatsPage = () => {
                       lineHeight: '1.5rem'
                     }}
                   >
-                    Cantidad total de contenedores
+                    Distancia recorrida promedio por ruta
                   </Typography>
                   <Typography
                     sx={{
@@ -328,12 +343,18 @@ export const StatsPage = () => {
                     height: '2.5rem'
                   }}
                 >
-                  <InfoOutlinedIcon
-                    sx={{
-                      fontSize: '1.25rem',
-                      color: '#9E9E9E'
-                    }}
-                  />
+                  <Tooltip 
+                    title={'Distancia promedio de las rutas de recolección dentro del área seleccionada en el rango de fechas seleccionado.'}
+                    arrow
+                    placement='top'
+                  >
+                    <InfoOutlinedIcon
+                      sx={{
+                        fontSize: '1.25rem',
+                        color: '#9E9E9E'
+                      }}
+                    />
+                  </Tooltip>
                 </Box>
               </Box>
             </Box>
@@ -362,12 +383,18 @@ export const StatsPage = () => {
               >
                 Contenedores que superaron el umbral
               </Typography>
-              <InfoOutlinedIcon
-                sx={{
-                  fontSize: '1.25rem',
-                  color: '#9E9E9E'
-                }}
-              />
+              <Tooltip 
+                title={'Porcentaje de contenedores que superaron el 90% de capacidad dentro del área seleccionada en el rango de fechas seleccionado.'}
+                arrow
+                placement='top'
+              >
+                <InfoOutlinedIcon
+                  sx={{
+                    fontSize: '1.25rem',
+                    color: '#9E9E9E'
+                  }}
+                />
+              </Tooltip>
             </Box>
             <Box
               sx={{
@@ -423,12 +450,18 @@ export const StatsPage = () => {
               >
                 Nivel de llenado promedio por hora
               </Typography>
-              <InfoOutlinedIcon
-                sx={{
-                  fontSize: '1.25rem',
-                  color: '#9E9E9E'
-                }}
-              />
+              <Tooltip 
+                title={'Promedio de capacidad ocupada de los contenedores por hora dentro del área seleccionada en el rango de fechas seleccionado.'}
+                arrow
+                placement='top'
+              >
+                <InfoOutlinedIcon
+                  sx={{
+                    fontSize: '1.25rem',
+                    color: '#9E9E9E'
+                  }}
+                />
+              </Tooltip>
             </Box>
           </Box>
           <Box>

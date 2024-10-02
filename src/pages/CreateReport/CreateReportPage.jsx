@@ -3,7 +3,6 @@ import {
   Divider,
   Typography,
 } from '@mui/material';
-
 import {
   CreateReportForm 
 } from '../../forms/CreateReport/CreateReportForm';
