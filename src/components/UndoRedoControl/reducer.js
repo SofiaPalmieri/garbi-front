@@ -65,7 +65,6 @@ export default function reducer(state, action) {
         ...polylineConfig,
         path: area.path,
       });
-
       completePathByPolyline(polyline)
 
       const polygon = new google.maps.Polygon({
@@ -151,6 +150,8 @@ export default function reducer(state, action) {
       color,
       polygon
     }
+
+    console.log(newArea)
 
     return [...state, newArea]
   }

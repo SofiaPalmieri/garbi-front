@@ -232,7 +232,7 @@ export default function HomeMainContent({
           >
             <MapWithContainers
               apiKey={apiKeyGoogleMaps}
-              zoom={12}
+              zoom={15}
               areas={areas}
               route = {optimalRouteSelected}
               centerPosition={position}
