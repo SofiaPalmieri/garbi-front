@@ -23,9 +23,6 @@ import {
   ReportDetailsDescriptionHeader 
 } from './ReportDetailsDescriptionHeader';
 import {
-  ReportDetailsTitle
-} from './ReportDetailsTitle';
-import {
   useParams 
 } from 'react-router-dom';
 import {
@@ -37,6 +34,9 @@ import {
 import {
   TimestampUtil
 } from '../../utils/timestampUtil';
+import {
+  BreadcrumbsComponent
+} from '../../components/BreadcrumbsComponent/BreadcrumbsComponent';
 
 
 const statusHistory = [ //hook up to BE later when BE sends expected data.
@@ -189,11 +189,16 @@ export const ReportDetailsPage = () => {
     >
       <Box
         sx={{
-          width: 1,
+          width: '100%',
+          height: '4.5rem',
+          pl: '4rem',
+          display: 'flex',
+          alignItems: 'center'
         }}
       >
-        <ReportDetailsTitle
-          title={id}
+        <BreadcrumbsComponent
+          prefix={'Reportes'}
+          title={`Reporte #${id}`}
         />
       </Box>
       <Divider />

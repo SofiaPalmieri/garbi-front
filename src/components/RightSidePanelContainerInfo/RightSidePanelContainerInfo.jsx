@@ -178,6 +178,7 @@ export const RightSidePanelContainerInfo = ({
       <Box>
         <Button
           fullWidth
+          variant='outlined'
           sx={{
             mb: '8px'
           }}
@@ -186,7 +187,7 @@ export const RightSidePanelContainerInfo = ({
         </Button>
         <Button
           fullWidth
-          variant='outlined'
+          variant='contained'
         >
           Reportes activos
         </Button>
