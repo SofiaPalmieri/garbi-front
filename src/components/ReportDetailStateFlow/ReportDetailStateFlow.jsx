@@ -1,6 +1,9 @@
 import {
-  Avatar, Paper, Typography 
+  Accordion, AccordionDetails, AccordionSummary, Avatar, Paper, Typography 
 } from '@mui/material';
+import {
+  ExpandMore
+} from '@mui/icons-material';
 import {
   Box
 } from '@mui/system';
@@ -20,158 +23,149 @@ export const ReportDetailStateFlow = ({
         width: 1,
       }}
     >
-      <Box
-        sx={{
-          height: '2.5rem',
-          width: 1,
-          padding: '0.5rem 1rem'
-        }}
-      >
-        <Typography
-          sx={{
-            fontSize: '1rem',
-            fontWeight: 400,
-            lineHeight: '1.5rem',
-            color: '#000000DE'
-          }}
+      <Accordion>
+        <AccordionSummary 
+          expandIcon={<ExpandMore />}
         >
-          Historial de estados del reporte
-        </Typography>
-      </Box>
-      <Box
-        sx={{
-          width: 1,
-          padding: '0.5rem 1rem',
-          height: 'calc(100% - 2.5rem - 1rem)'
-        }}
-      >
-        <Box
-          sx={{
-            height: 1,
-            overflowY: 'auto',
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '.5rem',
-          }}
-        >
-          {statusHistory.map(u =>
+          <Typography>
+            Historial de estados del reporte
+          </Typography>
+        </AccordionSummary>
+        <AccordionDetails>
+          <Box
+            sx={{
+              width: 1,
+              height: 'calc(100% - 2.5rem - 1rem)'
+            }}
+          >
             <Box
-              key={u.id}
               sx={{
-                width: 1,
-                p: '0.5rem .75rem'
+                height: 1,
+                overflowY: 'auto',
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '.5rem',
               }}
             >
-              <Box
-                sx={{
-                  display: 'flex',
-                }}
-              >
+              {statusHistory.map(u =>
                 <Box
+                  key={u.id}
                   sx={{
-                    pr: '0.5rem',
-                    display: 'flex',
-                    alignItems: 'center'
+                    width: 1,
+                    p: '0.5rem .75rem'
                   }}
                 >
-                  <Avatar>
-                    {u.user.fullName[0]}
-                  </Avatar>
-                </Box>
-                <Box>
                   <Box
                     sx={{
                       display: 'flex',
-                      mb: '0.5rem'
                     }}
                   >
-                    <Typography
+                    <Box
                       sx={{
-                        fontSize: '1rem',
-                        fontWeight: 600,
-                        lineHeight: '1.66rem'
+                        pr: '0.5rem',
+                        display: 'flex',
+                        alignItems: 'center'
                       }}
                     >
-                      {u.user.fullName}
-                    </Typography>
-                    <Typography
-                      sx={{
-                        fontSize: '1rem',
-                        fontWeight: 200,
-                        lineHeight: '1.66rem'
-                      }}
-                    >
-                      {'- ' + u.date + ' - ' + u.time}
-                    </Typography>
-                  </Box>
-                  <Box
-                    sx={{
-                      display: 'flex'
-                    }}
-                  >
-                    <StateRectangle
-                      state={u.from}
-                    />
-                    {u.to && (
-                      <>
-                        <Box
+                      <Avatar>
+                        {u.user.fullName[0]}
+                      </Avatar>
+                    </Box>
+                    <Box>
+                      <Box
+                        sx={{
+                          display: 'flex',
+                          mb: '0.5rem'
+                        }}
+                      >
+                        <Typography
                           sx={{
-                            mx: '1rem',
-                            display: 'flex',
-                            alignItems: 'center',
+                            fontSize: '1rem',
+                            fontWeight: 600,
+                            lineHeight: '1.66rem'
                           }}
                         >
-                          <img
-                            src={Arrow}
-                            alt='Arrow'
-                            style={{
-                              height: '24px',
-                              maxWidth: '1.8125rem' 
-                            }}
-                          />
-                        </Box>
+                          {u.user.fullName}
+                        </Typography>
+                        <Typography
+                          sx={{
+                            fontSize: '1rem',
+                            fontWeight: 200,
+                            lineHeight: '1.66rem'
+                          }}
+                        >
+                          {'- ' + u.date + ' - ' + u.time}
+                        </Typography>
+                      </Box>
+                      <Box
+                        sx={{
+                          display: 'flex'
+                        }}
+                      >
                         <StateRectangle
-                          state={u.to}
+                          state={u.from}
                         />
-                      </>
-                    )}
+                        {u.to && (
+                          <>
+                            <Box
+                              sx={{
+                                mx: '1rem',
+                                display: 'flex',
+                                alignItems: 'center',
+                              }}
+                            >
+                              <img
+                                src={Arrow}
+                                alt='Arrow'
+                                style={{
+                                  height: '24px',
+                                  maxWidth: '1.8125rem' 
+                                }}
+                              />
+                            </Box>
+                            <StateRectangle
+                              state={u.to}
+                            />
+                          </>
+                        )}
+                      </Box>
+                    </Box>
                   </Box>
-                </Box>
-              </Box>
-              {u.observation && (
-                <Box
-                  sx={{
-                    display: 'flex',
-                    mt: '0.5rem'
-                  }}
-                >
-                  <Typography
-                    sx={{
-                      fontSize: '1rem',
-                      fontWeight: 500,
-                      lineHeight: '1.66rem',
-                      letterSpacing: '.025rem'
-                    }}
-                  >
-                    Observación: &nbsp;
-                  </Typography>
-                  <Typography
-                    sx={{
-                      fontSize: '1rem',
-                      fontWeight: 400,
-                      lineHeight: '1.66rem',
-                      letterSpacing: '.025rem'
-                    }}
-                  >
-                    {u.observation}
-                  </Typography>
+                  {u.observation && (
+                    <Box
+                      sx={{
+                        display: 'flex',
+                        mt: '0.5rem'
+                      }}
+                    >
+                      <Typography
+                        sx={{
+                          fontSize: '1rem',
+                          fontWeight: 500,
+                          lineHeight: '1.66rem',
+                          letterSpacing: '.025rem'
+                        }}
+                      >
+                        Observación: &nbsp;
+                      </Typography>
+                      <Typography
+                        sx={{
+                          fontSize: '1rem',
+                          fontWeight: 400,
+                          lineHeight: '1.66rem',
+                          letterSpacing: '.025rem'
+                        }}
+                      >
+                        {u.observation}
+                      </Typography>
+                    </Box>
+                  )}
                 </Box>
               )}
-            </Box>)}
-
-        </Box>
-      </Box>
-
+            </Box>
+          </Box>
+        </AccordionDetails>
+      </Accordion>
     </Paper>
   )
 }

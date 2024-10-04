@@ -266,10 +266,8 @@ export const ReportDetailsPage = () => {
                 </Box>
                 <Box
                   sx={{
-                    height: '37.3vh',
                     width: 1
                   }}
-
                 >
                   <ReportDetailStateFlow
                     statusHistory={statusHistory}
