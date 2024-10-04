@@ -2,6 +2,19 @@ import {
   Box, Button, Typography 
 } from '@mui/material'
 
+
+const calculateTimeDifference = (updatedAt) => {
+  const updatedAtDate = new Date(updatedAt)
+  const now = new Date()
+  const diff = now.getTime() - updatedAtDate.getTime()
+  const diffInMinutes = Math.floor(diff / (1000 * 60))
+  if(diffInMinutes) {
+    return diffInMinutes 
+  } else {
+    return 10
+  }
+}
+
 export const RightSidePanelContainerInfo = ({
   containerSelected, getBatteryIcon 
 }) => {
@@ -28,7 +41,7 @@ export const RightSidePanelContainerInfo = ({
             mb: 2,
           }}
         >
-          ID #{containerSelected.sensorId}
+          ID #{containerSelected.id}
         </Typography>
         <Typography
           sx={{
@@ -56,7 +69,8 @@ export const RightSidePanelContainerInfo = ({
             mb: 2,
           }}
         >
-          Actualizado hace 10 min
+          Actualizado hace {calculateTimeDifference(containerSelected.updatedAt)} min
+          {/* 10 min */}
         </Typography>
         <Typography
           sx={{
@@ -70,7 +84,7 @@ export const RightSidePanelContainerInfo = ({
             letterSpacing: '0.1px',
           }}
         >
-          Villa Pueyrredón - Área 2
+          {containerSelected.address.neighborhood} - Área 2
         </Typography>
         <Typography
           sx={{
@@ -85,7 +99,7 @@ export const RightSidePanelContainerInfo = ({
             mb: 2,
           }}
         >
-          Av. Honorio Pueyrredón 123
+          {containerSelected.address.street} {containerSelected.address.number}
         </Typography>
         <Box
           display={'flex'}

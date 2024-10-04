@@ -48,10 +48,6 @@ import {
 import {
   useOptimalRoutes 
 } from '../../api/hooks/useOptimalRoutes/useOptimalRoutes';
-
-
-
-
 import {
   HEIGHT_HEADER_FILTER_SIDE_COMPONENT 
 } from '../../config';
