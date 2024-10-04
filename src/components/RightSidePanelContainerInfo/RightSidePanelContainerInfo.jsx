@@ -70,7 +70,6 @@ export const RightSidePanelContainerInfo = ({
           }}
         >
           Actualizado hace {calculateTimeDifference(containerSelected.updatedAt)} min
-          {/* 10 min */}
         </Typography>
         <Typography
           sx={{
