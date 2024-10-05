@@ -1,5 +1,5 @@
 import {
-  Accordion, AccordionDetails, AccordionSummary, Avatar, Paper, Typography 
+  Accordion, AccordionDetails, AccordionSummary, Avatar, Paper, Typography
 } from '@mui/material';
 import {
   ExpandMore
@@ -9,7 +9,7 @@ import {
 } from '@mui/system';
 import Arrow from '/src/assets/Arrow.svg';
 import {
-  reportStates 
+  reportStates
 } from '../../enums/reportStates';
 
 export const ReportDetailStateFlow = ({
@@ -19,12 +19,19 @@ export const ReportDetailStateFlow = ({
     <Paper
       elevation={1}
       sx={{
-        height: 1,
         width: 1,
+        maxHeight: '100%'
       }}
     >
-      <Accordion>
-        <AccordionSummary 
+      <Accordion
+        sx = {{
+          '& .MuiCollapse-root': {
+            maxHeight: '240px',
+            overflow: 'auto'
+          }
+        }}
+      >
+        <AccordionSummary
           expandIcon={<ExpandMore />}
         >
           <Typography>
@@ -35,13 +42,10 @@ export const ReportDetailStateFlow = ({
           <Box
             sx={{
               width: 1,
-              height: 'calc(100% - 2.5rem - 1rem)'
             }}
           >
             <Box
               sx={{
-                height: 1,
-                overflowY: 'auto',
                 display: 'flex',
                 flexDirection: 'column',
                 gap: '.5rem',
@@ -119,7 +123,7 @@ export const ReportDetailStateFlow = ({
                                 alt='Arrow'
                                 style={{
                                   height: '24px',
-                                  maxWidth: '1.8125rem' 
+                                  maxWidth: '1.8125rem'
                                 }}
                               />
                             </Box>
@@ -171,7 +175,7 @@ export const ReportDetailStateFlow = ({
 }
 
 const StateRectangle = ({
-  state 
+  state
 }) => {
   return <Box
     sx={{

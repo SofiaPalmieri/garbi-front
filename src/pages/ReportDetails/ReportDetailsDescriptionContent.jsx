@@ -11,14 +11,12 @@ export const ReportDetailsDescriptionContent = ({
       sx={{
         border: '1px solid var(--divider, #0000001F)',
         borderRadius: '4px',
-        padding: '12px 24px 16px',
+        padding: '.75rem 1.5rem 1rem',
+        height: 1,
       }}
     >
       <Box
         sx={{
-          display: 'flex',
-          alignItems: 'center',
-          height: '100%',
           width: '100%',
         }}
       >
@@ -48,12 +46,7 @@ export const ReportDetailsDescriptionContent = ({
           {description}
         </Typography>
       </Box>
-      <Box
-        sx={{
-          width: '368px',
-          height: '272px',
-        }}
-      >
+      <Box>
         <img
           src={contenedorRoto}
           alt='Descripción de la imagen'
