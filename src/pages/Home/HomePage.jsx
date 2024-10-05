@@ -141,6 +141,27 @@ export default function HomePage() {
     setContainersToRender(containers);
   };
 
+  const colors = {
+    LOW_CAPACITY: '#D32F2F',
+    MEDIUM_CAPACITY: '#EF6C00',
+    HIGH_CAPACITY: '#2E7D32',
+  };
+
+  const information = [
+    {
+      color: colors.LOW_CAPACITY,
+      valor: '+75%' 
+    },
+    {
+      color: colors.MEDIUM_CAPACITY,
+      valor: '25% - 75%' 
+    },
+    {
+      color: colors.HIGH_CAPACITY,
+      valor: '-25%' 
+    }
+  ];  
+
 
   return <FilterSideComponent
     title={'Mapa'}
@@ -152,6 +173,7 @@ export default function HomePage() {
           containers={containersToRender}
           setContainerSelected={setContainerSelected}
           containerSelected={containerSelected}
+          information={information}
         />
     }
     renderFilters={() => <HomeFilters

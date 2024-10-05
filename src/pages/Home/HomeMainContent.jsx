@@ -51,6 +51,10 @@ import {
 import {
   HEIGHT_HEADER_FILTER_SIDE_COMPONENT 
 } from '../../config';
+import SettingsIcon from '@mui/icons-material/Settings';
+import {
+  ModalAdjustContainersThreshold 
+} from '../../modales/ModalAdjustContainersThresholds/ModalAdjustContainersThresholds';
 
 const icons = [
   Battery0BarIcon,
@@ -115,7 +119,7 @@ const getColorPoint = (capacity) => {
 
 
 export default function HomeMainContent({
-  containers, areas, containerSelected, setContainerSelected
+  containers, areas, containerSelected, setContainerSelected, information
 }) {
 
   const [openGenerateOptimalRouteModal, setOpenGenerateOptimalRouteModal] = useState(false)
@@ -124,9 +128,12 @@ export default function HomeMainContent({
   const [optimalRouteSelected, setOptimalRouteSelected] = useState(null)
 
   const [optimalRoutes, setOptimalRoutes] = useState(null)
+  const [openAdjustThresholdsModal, setOpenAdjustThresholdModal] = useState(false)
 
 
   const handleOpenGenerateOptimalRouteModal = () => setOpenGenerateOptimalRouteModal(true)
+  const handleOpenAdjustThresholdsModal = () => setOpenAdjustThresholdModal(true)
+
   const handleCloseOpenGenerateOptimalRouteModal = () => setOpenGenerateOptimalRouteModal(false)
   const handleCloseRightSidePanelContainerInfo = () => setContainerSelected(null)
   const handleCloseRightSidePanelOptimalRouteInfo = () => setOpenGenerateOptimalRouteRightSideInfo(false)
@@ -134,6 +141,8 @@ export default function HomeMainContent({
     handleCloseOpenGenerateOptimalRouteModal()
     setOpenGenerateOptimalRouteRightSideInfo(true)
   }
+
+  const handleCloseAdjustThresholdsModal = () => setOpenAdjustThresholdModal(false);
 
   const position = {
     lat: -34.5893,
@@ -283,75 +292,48 @@ export default function HomeMainContent({
             zIndex: 1,
           }}
         >
-          <Box
-            sx={{
-              display: 'flex',
-            }}
-          >
-            <CircleIcon
+          {information.map((i, index) => (
+            <Box
+              key={index}
               sx={{
-                color: colors.HIGH_CAPACITY,
-                mr: '8px',
-              }}
-            />
-            <Typography
-              sx={{
-                fontSize: '16px',
-                fontWeight: 'bold',
-                lineHeight: '24px',
-                color: '#000000',
+                display: 'flex',
+                alignItems: 'center',
               }}
             >
-              {' '}
-              -25%
-            </Typography>
-          </Box>
-          <Box
+              <CircleIcon
+                sx={{
+                  color: i.color,
+                  mr: '16px',
+                }}
+              />
+              <Typography
+                sx={{
+                  fontSize: '16px',
+                  fontWeight: 'bold',
+                  lineHeight: '24px',
+                  color: '#000000',
+                }}
+              >
+                {i.valor}
+              </Typography>
+            </Box>
+          ))}
+          
+          <Button
             sx={{
-              display: 'flex',
+              borderRadius: '50%',
+              minWidth: '40px',
+              width: '40px',
+              height: '40px',
             }}
+            onClick={handleOpenAdjustThresholdsModal}
           >
-            <CircleIcon
-              sx={{
-                color: colors.MEDIUM_CAPACITY,
-                mr: '8px',
-              }}
-            />
-            <Typography
-              sx={{
-                fontSize: '16px',
-                fontWeight: 'bold',
-                lineHeight: '24px',
-                color: '#000000',
-              }}
-            >
-              {' '}
-              25% - 75%
-            </Typography>
-          </Box>
-          <Box
-            sx={{
-              display: 'flex',
-            }}
-          >
-            <CircleIcon
-              sx={{
-                color: colors.LOW_CAPACITY,
-                mr: '8px',
-              }}
-            />
-            <Typography
-              sx={{
-                fontSize: '16px',
-                fontWeight: 'bold',
-                lineHeight: '24px',
-                color: '#000000',
-              }}
-            >
-              {' '}
-              +75%
-            </Typography>
-          </Box>
+            <SettingsIcon />
+          </Button>
+          <ModalAdjustContainersThreshold
+            open={openAdjustThresholdsModal}
+            handleClose={handleCloseAdjustThresholdsModal}
+          />
         </Paper>
       </Box>
     </>
