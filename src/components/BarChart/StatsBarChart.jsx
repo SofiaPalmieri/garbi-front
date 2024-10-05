@@ -1,37 +1,14 @@
 import {
-  BarChart 
-} from '@mui/x-charts/BarChart';
-import {
-  axisClasses 
-} from '@mui/x-charts/ChartsAxis';
-import {
-  dataset, valueFormatter 
-} from './dataset';
-import {
-  Box 
+  Box
 } from '@mui/material';
-
-const chartSetting = {
-  yAxis: [
-    {
-      label: '% de contenedores',
-    },
-  ],
-  series: [{
-    dataKey: 'seoul',
-    label: '% de contenedores',
-    valueFormatter 
-  }],
-  height: 300,
-  sx: {
-    [`& .${axisClasses.directionY} .${axisClasses.label}`]: {
-      transform: 'translateX(-10px)',
-    },
-  },
-};
+import {
+  BarChart
+} from '@mui/x-charts/BarChart';
 
 
-export const StatsBarChart = () => {
+export const StatsBarChart = ({
+  data, chartSetting
+}) => {
   return (
     <Box
       sx={{
@@ -39,15 +16,7 @@ export const StatsBarChart = () => {
       }}
     >
       <BarChart
-        dataset={dataset}
-        xAxis={[
-          {
-            scaleType: 'band',
-            dataKey: 'day',
-            tickPlacement: 'middle',
-            tickLabelPlacement: 'middle',
-          },
-        ]}
+        dataset={data}
         colors={['#86B646CC']}
         {...chartSetting}
       />

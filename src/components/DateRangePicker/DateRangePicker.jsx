@@ -10,15 +10,15 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import './DateRangePicker.css';
 import {
-  es 
-} from 'date-fns/locale'; 
+  es
+} from 'date-fns/locale';
 import {
-  subDays 
+  subDays
 } from 'date-fns'
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 
 export const DateRangePicker = ({
-  defaultStartDate = subDays(new Date(), 6), 
+  defaultStartDate = subDays(new Date(), 6),
   lastAvailableDate = new Date(),
   onDateChange
 }) => {
@@ -27,7 +27,7 @@ export const DateRangePicker = ({
 
   const CustomInput = forwardRef(
     ({
-      value, onClick 
+      value, onClick
     }, ref) => (
       <TextField
         id='date-picker'
@@ -36,7 +36,7 @@ export const DateRangePicker = ({
         variant='outlined'
         ref={ref}
         sx={{
-          width: '248px' 
+          width: '248px'
         }}
         size='small'
         InputProps={{
@@ -44,10 +44,10 @@ export const DateRangePicker = ({
             <InputAdornment
               position='start'
             >
-              <CalendarTodayIcon 
-                sx={{ 
+              <CalendarTodayIcon
+                sx={{
                   color: '#bdbdbd'
-                }} 
+                }}
               />
             </InputAdornment>
           ),
@@ -60,7 +60,11 @@ export const DateRangePicker = ({
 
   const handleDateChange = (update) => {
     setDateRange(update);
-    onDateChange(update)
+    const [newStartDate, newEndDate] = update;
+
+    if (newStartDate && newEndDate) {
+      onDateChange(update);
+    }
   };
 
   return (
@@ -70,7 +74,7 @@ export const DateRangePicker = ({
       endDate={endDate}
       onChange={handleDateChange}
       locale={es}
-      customInput={<CustomInput/>}
+      customInput={<CustomInput />}
       dateFormat='dd/MM/yyyy'
       maxDate={lastAvailableDate}
       calendarStartDay={7}

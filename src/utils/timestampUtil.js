@@ -22,6 +22,18 @@ export class TimestampUtil {
     }
   }
 
+  static formatMinutes = (minutes) => {
+    console.log('🚀 ~ TimestampUtil ~ minutes:', minutes)
+    const hours = Math.floor(minutes / 60);
+    const remainingMinutes = minutes % 60;
+  
+    if (hours > 0) {
+      return `${hours.toFixed(0)}hr ${remainingMinutes.toFixed(0)}m`;
+    } else {
+      return `${remainingMinutes.toFixed(0)}m`;
+    }
+  }
+
   static convertToDateForFilter(date) {
     return date.toLocaleString('en-CA', { 
       timeZone: 'America/Argentina/Buenos_Aires', 
