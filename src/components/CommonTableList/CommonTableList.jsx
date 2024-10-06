@@ -14,7 +14,7 @@ import {
   usePagination
 } from '../../hooks/usePagination';
 import {
-  useEffect, useRef 
+  useEffect, useRef
 } from 'react';
 
 export const CommonTableList = ({
@@ -27,7 +27,8 @@ export const CommonTableList = ({
   inputWidth,
   handleRowClick,
   componentToRender,
-  onSearcherSubmit
+  onSearcherSubmit,
+  handleChangeOrder
 }) => {
 
   const firstRender = useRef(true);
@@ -87,6 +88,7 @@ export const CommonTableList = ({
             inputWidth={inputWidth}
             componentToRender={componentToRender}
             onSearcherSubmit={onSearcherSubmit}
+            handleChangeOrder={handleChangeOrder}
           />
           <Box
             sx={{

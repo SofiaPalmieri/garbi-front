@@ -11,7 +11,6 @@ import {
   TableBody,
   TableCell,
   TableContainer,
-  TablePagination,
   TableRow,
   Tooltip,
   Typography,
@@ -271,13 +270,6 @@ export default function RecommendationMainContent() {
               ))}
             </TableBody>
           </Table>
-          <TablePagination
-            rowsPerPageOptions={[5, 10, 25]}
-            component='div'
-            count={3}
-            rowsPerPage={3}
-            page={6}
-          />
         </TableContainer>
       </Paper>
     </Box>
