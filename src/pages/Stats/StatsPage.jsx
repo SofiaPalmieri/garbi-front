@@ -73,8 +73,6 @@ const BandChartSetting = {
 };
 
 const lineBarChartSetting = (xData, yData) => {
-  console.log('🚀 ~ lineBarChartSetting ~ yData:', yData)
-  console.log('🚀 ~ lineBarChartSetting ~ xData:', xData)
   return {
     xAxis: [
       {
