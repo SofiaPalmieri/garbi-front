@@ -1,17 +1,21 @@
 import {
-  Box, Button 
+  Box, Button
 } from '@mui/material'
 import {
-  Searcher 
+  Searcher
 } from '../Searcher/Searcher'
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import {
+  SelectOrder 
+} from '../SelectOrder/SelectOrder';
 
 export const SearcherPaginated = ({
-  prevFetch, nextFetch, disabledPrevBtn, disabledNextBtn, 
+  prevFetch, nextFetch, disabledPrevBtn, disabledNextBtn,
   placeholderInput = 'Buscar por ID, Título', inputWidth,
   componentToRender,
-  onSearcherSubmit
+  onSearcherSubmit,
+  handleChangeOrder
 }) => {
 
   return (
@@ -25,11 +29,16 @@ export const SearcherPaginated = ({
         alignItems: 'center'
       }}
     >
-      <Searcher
+      {onSearcherSubmit && (<Searcher
         placeholderInput={placeholderInput}
         inputWidth={inputWidth}
-        onSearcherSubmit = {onSearcherSubmit}
-      />
+        onSearcherSubmit={onSearcherSubmit}
+      />)}
+      {handleChangeOrder && (
+        <SelectOrder
+          handleChangeOrder={handleChangeOrder}
+        />
+      )}
       <Box
         sx={{
           display: 'flex'
@@ -56,7 +65,7 @@ export const SearcherPaginated = ({
             <ChevronRightIcon />
           </Button>
         </Box>
-        
+
         {componentToRender}
       </Box>
     </Box>
