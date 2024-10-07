@@ -78,6 +78,7 @@ export const DateRangePicker = ({
       dateFormat='dd/MM/yyyy'
       maxDate={lastAvailableDate}
       calendarStartDay={7}
+      disabledKeyboardNavigation
     />
   );
 };

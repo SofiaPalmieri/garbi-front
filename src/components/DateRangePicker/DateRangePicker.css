@@ -8,7 +8,7 @@
     .react-datepicker__day--range-start
   ) {
   border-radius: 50%;
-  background-image: linear-gradient( /*si no lo pongo así anda mal*/
+  background-image: linear-gradient(
     #13422c 20%,
     #13422c 80%
   );
