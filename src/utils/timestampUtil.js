@@ -29,7 +29,7 @@ export class TimestampUtil {
   
     if (hours > 0 && remainingMinutes !== 0) {
       return `${hours.toFixed(0)} hr ${remainingMinutes.toFixed(0)} min`;
-    } else if (remainingMinutes === 0) {
+    } else if (hours > 0 && remainingMinutes === 0) {
       return `${hours.toFixed(0)} hr`;
     } else {
       return `${remainingMinutes.toFixed(0)} min`;
