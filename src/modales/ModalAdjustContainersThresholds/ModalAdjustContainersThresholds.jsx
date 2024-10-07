@@ -59,7 +59,7 @@ export const ModalAdjustContainersThreshold = ({
   const companyId = user?.companyId;
 
   const {
-    control, handleSubmit, reset, formState: {
+    control, handleSubmit, formState: {
       errors 
     } 
   } = useForm({
@@ -97,6 +97,7 @@ export const ModalAdjustContainersThreshold = ({
 
     onSubmit(reviewCompanyBody);
     handleClose();
+    window.location.reload();
 
   };
 
@@ -153,7 +154,6 @@ export const ModalAdjustContainersThreshold = ({
               <InputForm
                 control={control}
                 name={'thresholdFull'}
-                label={'75%'}
                 styleInput={{
                   width: '55px',
                   marginLeft: '8px',
@@ -182,7 +182,6 @@ export const ModalAdjustContainersThreshold = ({
               <InputForm
                 control={control}
                 name={'thresholdWarning'}
-                label={'25%'}
                 styleInput={{
                   width: '55px',
                   marginLeft: '8px',

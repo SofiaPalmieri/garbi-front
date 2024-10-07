@@ -26,6 +26,9 @@ import {
 import {
   formatContainers 
 } from '../../api/hooks/useReports/mappers';
+import {
+  useFetchCompany 
+} from '../../api/hooks/useCompanies/request';
 
 const createReportSchema = object({
 }).required();
@@ -62,6 +65,22 @@ export default function HomePage() {
       isLoadingGetAreas
     }
   } = useAreas()
+  const {
+    getCompany, isLoading 
+  } = useFetchCompany();
+  const [company, setCompany] = useState(null);
+
+  const user = JSON.parse(localStorage.getItem('user'));
+  const companyId = user?.companyId;
+
+  useEffect(() => {
+    if (companyId && !company) { 
+      getCompany(companyId).then((response) => {
+        setCompany(response);
+      });
+    }
+  }, [companyId, company, getCompany]);
+  
 
   const {
     getAllContainers: {
@@ -147,21 +166,24 @@ export default function HomePage() {
     MEDIUM_CAPACITY: '#EF6C00',
     HIGH_CAPACITY: '#2E7D32',
   };
+  
 
-  const information = [
+  const information = company && company.threshold ? [
     {
-      color: colors.LOW_CAPACITY,
-      valor: '+75%' 
+      color: colors.HIGH_CAPACITY,
+      valor: '-' + company.threshold.warning + '%'
     },
     {
       color: colors.MEDIUM_CAPACITY,
-      valor: '25% - 75%' 
+      valor: company.threshold.warning +'% - ' + company.threshold.full +'%'
     },
     {
-      color: colors.HIGH_CAPACITY,
-      valor: '-25%' 
-    }
-  ];  
+      color: colors.LOW_CAPACITY,
+      valor: '+' + company.threshold.full + '%'
+    },
+    
+   
+  ] : [];
 
 
   return <FilterSideComponent
@@ -175,6 +197,7 @@ export default function HomePage() {
           setContainerSelected={setContainerSelected}
           containerSelected={containerSelected}
           information={information}
+          company={company}
         />
     }
     renderFilters={() => <HomeFilters

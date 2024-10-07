@@ -21,6 +21,8 @@ import {
 
 
 
+
+
 import './HomeMainContent.css';
 import Battery0BarIcon from '@mui/icons-material/Battery0Bar';
 import Battery1BarIcon from '@mui/icons-material/Battery1Bar';
@@ -84,9 +86,9 @@ const getBatteryIcon = (battery) => {
 };
 
 const colors = {
-  LOW_CAPACITY: '#D32F2F',
+  LOW_CAPACITY: '#2E7D32',
   MEDIUM_CAPACITY: '#EF6C00',
-  HIGH_CAPACITY: '#2E7D32',
+  HIGH_CAPACITY: '#D32F2F'
 };
 
 const HtmlTooltip = styled(({
@@ -110,19 +112,10 @@ const HtmlTooltip = styled(({
   },
 }));
 
-const getColorPoint = (capacity) => {
-  if (capacity > 75) {
-    return colors.LOW_CAPACITY;
-  } else if (capacity <= 25) {
-    return colors.HIGH_CAPACITY;
-  } else {
-    return colors.MEDIUM_CAPACITY;
-  }
-};
 
 
 export default function HomeMainContent({
-  containers, areas, containerSelected, setContainerSelected, information
+  containers, areas, containerSelected, setContainerSelected, information, company
 }) {
 
   const [openGenerateOptimalRouteModal, setOpenGenerateOptimalRouteModal] = useState(false)
@@ -271,6 +264,7 @@ export default function HomeMainContent({
                   key={p.id}
                   setContainerSeleted={setContainerSelected}
                   point={p}
+                  company={company}
                 />
               ))}
             />
@@ -367,14 +361,27 @@ export default function HomeMainContent({
   );
 }
 
+const getColorPoint = (capacity, company) => {
+  if (!company || !company.threshold) {
+    return '#000'; // Color predeterminado si company no está disponible
+  }
+
+  if (capacity > company.threshold.full) {
+    return colors.HIGH_CAPACITY;
+  } else if (capacity <= company.threshold.warning) {
+    return colors.LOW_CAPACITY;
+  } else {
+    return colors.MEDIUM_CAPACITY;
+  }
+};
+
 function Marker({
-  point, setContainerSeleted
+  point, setContainerSelected, company 
 }) {
   return (
     <AdvancedMarker
       position={point}
-      // ref={markerRef}
-      onClick={() => setContainerSeleted(point)}
+      onClick={() => setContainerSelected(point)}
     >
       <HtmlTooltip
         placement='top'
@@ -407,7 +414,7 @@ function Marker({
                 value={point.capacity}
                 sx={{
                   '& .MuiLinearProgress-bar': {
-                    backgroundColor: getColorPoint(point.capacity),
+                    backgroundColor: getColorPoint(point.capacity, company), // Asegúrate de pasar company aquí
                   },
                 }}
               />
@@ -458,7 +465,7 @@ function Marker({
         <div>
           <CircleIcon
             sx={{
-              color: getColorPoint(point.capacity),
+              color: getColorPoint(point.capacity, company), // Asegúrate de pasar company aquí también
             }}
           />
         </div>
@@ -466,7 +473,6 @@ function Marker({
     </AdvancedMarker>
   );
 }
-
 
 const getOptimalRoutesMocked = () => {
   return {
