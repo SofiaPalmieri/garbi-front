@@ -55,6 +55,9 @@ import SettingsIcon from '@mui/icons-material/Settings';
 import {
   ModalAdjustContainersThreshold 
 } from '../../modales/ModalAdjustContainersThresholds/ModalAdjustContainersThresholds';
+import {
+  useCompanies 
+} from '../../api/hooks/useCompanies/useCompanies';
 
 const icons = [
   Battery0BarIcon,
@@ -128,12 +131,20 @@ export default function HomeMainContent({
   const [optimalRouteSelected, setOptimalRouteSelected] = useState(null)
 
   const [optimalRoutes, setOptimalRoutes] = useState(null)
-  const [openAdjustThresholdsModal, setOpenAdjustThresholdModal] = useState(false)
+  const [openAdjustThresholdsModal, setOpenAdjustThresholdsModal] = useState(false);
+  const [companyToModify, setCompanyToModify] = useState(false);
+  const handleOpenAdjustThresholdsModal = (companyToModify) => {
+    setCompanyToModify(companyToModify)
+    setOpenAdjustThresholdsModal(true)
+  };
+  const handleCloseAdjustThresholdsModal = () => {
+    setOpenAdjustThresholdsModal(false)
+    setCompanyToModify(null);
+  };
+
 
 
   const handleOpenGenerateOptimalRouteModal = () => setOpenGenerateOptimalRouteModal(true)
-  const handleOpenAdjustThresholdsModal = () => setOpenAdjustThresholdModal(true)
-
   const handleCloseOpenGenerateOptimalRouteModal = () => setOpenGenerateOptimalRouteModal(false)
   const handleCloseRightSidePanelContainerInfo = () => setContainerSelected(null)
   const handleCloseRightSidePanelOptimalRouteInfo = () => setOpenGenerateOptimalRouteRightSideInfo(false)
@@ -142,12 +153,16 @@ export default function HomeMainContent({
     setOpenGenerateOptimalRouteRightSideInfo(true)
   }
 
-  const handleCloseAdjustThresholdsModal = () => setOpenAdjustThresholdModal(false);
-
   const position = {
     lat: -34.5893,
     lng: -58.3974,
   };
+  const {
+    reviewCompany: {
+      reviewCompany,
+      isReviewCompanyLoading 
+    },
+  } = useCompanies(); 
 
   const {
     getOptimalRoutes: {
@@ -176,6 +191,16 @@ export default function HomeMainContent({
     handleCloseOpenGenerateOptimalRouteModal()
     setOpenGenerateOptimalRouteRightSideInfo(true)
   }
+
+  const handleCompanyUpdate = async (reviewCompanyBody) => {
+    try {
+      const response = await reviewCompany(reviewCompanyBody.id, reviewCompanyBody);
+      console.log('Company updated successfully', response);
+    } catch (error) {
+      console.error('Error updating company:', error);
+    }
+  };
+
 
   return (
     <>
@@ -333,6 +358,8 @@ export default function HomeMainContent({
           <ModalAdjustContainersThreshold
             open={openAdjustThresholdsModal}
             handleClose={handleCloseAdjustThresholdsModal}
+            onSubmit={handleCompanyUpdate}
+            companyToModify={companyToModify}
           />
         </Paper>
       </Box>

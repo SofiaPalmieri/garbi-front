@@ -17,7 +17,8 @@ export const InputForm = ({
   disabled = false,
   multiline = false,
   rows = 1,
-  required = true
+  required = true,
+  fullWidth=true
 }) => {
   return (
     <Controller
@@ -32,7 +33,7 @@ export const InputForm = ({
       }) => (
         <FormControl
           size={size}
-          fullWidth
+          fullWidth={fullWidth}
         >
           <TextField
             variant={variant}
