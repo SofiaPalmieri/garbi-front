@@ -1,6 +1,6 @@
 import CloseIcon from '@mui/icons-material/Close';
 import {
-  Box, Button, Modal, Typography, DialogContent
+  Box, Button, Modal, Typography, DialogContent 
 } from '@mui/material';
 import Circle from '@mui/icons-material/Circle';
 import {
@@ -16,18 +16,23 @@ import {
   yupResolver 
 } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-
+import {
+  useEffect, useState 
+} from 'react'; 
+import {
+  useFetchCompany 
+} from '../../api/hooks/useCompanies/request';
 const schema = yup.object({
   thresholdFull: yup
     .number()
-    .typeError('El valor debe ser un número') 
+    .typeError('El valor debe ser un número')
     .max(100, 'El valor no debe superar el 100%')
     .required('El límite de llenado es obligatorio'),
-  
+
   thresholdWarning: yup
     .number()
-    .typeError('El valor debe ser un número') 
-    .min(0, 'El valor debe ser mayor o igual a 0') 
+    .typeError('El valor debe ser un número')
+    .min(0, 'El valor debe ser mayor o igual a 0')
     .max(100, 'El valor no debe superar el 100%')
     .required('El límite de advertencia es obligatorio')
 }).required();
@@ -43,42 +48,56 @@ const style = {
 };
 
 export const ModalAdjustContainersThreshold = ({
-  open, handleClose, companyToModify, onSubmit
+  open, handleClose, onSubmit 
 }) => {
-  const company = companyToModify;
+  const {
+    getCompany, isLoading 
+  } = useFetchCompany();
+  const [company, setCompany] = useState(null);
+
+  const user = JSON.parse(localStorage.getItem('user'));
+  const companyId = user?.companyId;
 
   const {
-    control,
-    handleSubmit,
-    formState: {
+    control, handleSubmit, reset, formState: {
       errors 
-    }
+    } 
   } = useForm({
     defaultValues: {
-      thresholdFull: company?.threshold?.full,
-      thresholdWarning: company?.threshold?.warning
+      thresholdFull: '',
+      thresholdWarning: ''
     },
     resolver: yupResolver(schema)
   });
 
+  useEffect(() => {
+    if (companyId && open) {
+      getCompany(companyId).then((response) => {
+        setCompany(response);
+      });
+    }
+  }, [companyId, open]);
+
+  const modifiedCompany = {
+    ...company 
+  };
+
+  delete modifiedCompany.truckTerminal;
+  delete modifiedCompany.timestamp
+  delete modifiedCompany.dump
+
   const handleFormSubmit = (data) => {
     const reviewCompanyBody = {
-      threshold: {
-        full:data.thresholdFull,
+      ...modifiedCompany, 
+      threshold: { 
+        full: data.thresholdFull,
         warning: data.thresholdWarning,
       },
-      cuit: company.cuit,
-      timestamp: new Date().toISOString(),
-      dump: company.dump,
-      address: company.address,
-      truckTerminal: company.truckTerminal,
-      email: company.email,
-      id: company.id,
-      name: company.name,
-      phone: company.phone,
     };
 
-    onSubmit(reviewCompanyBody); // Llamada a la función onSubmit
+    onSubmit(reviewCompanyBody);
+    handleClose();
+
   };
 
   return (
@@ -99,14 +118,14 @@ export const ModalAdjustContainersThreshold = ({
             padding: '16px 24px',
             display: 'flex',
             alignItems: 'center',
-            justifyContent: 'space-between',
+            justifyContent: 'space-between' 
           }}
         >
           <Typography
             sx={{
               fontSize: '20px',
               fontWeight: 500,
-              lineHeight: '32px',
+              lineHeight: '32px' 
             }}
           >Ajustar límites</Typography>
           <Button

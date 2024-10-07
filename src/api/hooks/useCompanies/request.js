@@ -30,5 +30,26 @@ export const useReviewCompany = () => {
     isLoading
   }
 };
+
+export const useFetchCompany = () => {
+  const {
+    commonFetch, isLoading 
+  } = useFetch({
+    baseUri: baseCompanyUri,
+  });
+
+  const getCompany = (companyId) => {
+    return commonFetch({
+      uri: '/' + companyId,
+      method: HTTPMethods.GET,
+    });
+  };
+
+  return {
+    getCompany,
+    isLoading,
+  };
+};
+
   
   
