@@ -100,6 +100,7 @@ export const ResolveReportForm = ({
         buttonSubmitMessage='CONFIRMAR'
         handleClose={handleClose}
         onSubmit={handleSubmit(onSubmit)}
+        isLoading={isCloseReportLoading}
       />
     </form>
   );

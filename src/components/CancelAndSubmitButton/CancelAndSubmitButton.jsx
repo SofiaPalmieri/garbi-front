@@ -1,9 +1,9 @@
 import {
-  Box, Button 
+  Box, Button, CircularProgress
 } from '@mui/material'
 
 export const CancelAndSubmitButton = ({
-  handleClose, onSubmit, buttonSubmitMessage = 'CREAR', typeButton = 'submit', secondaryButtonMessage = 'Cancelar'
+  handleClose, onSubmit, buttonSubmitMessage = 'CREAR', typeButton = 'submit', secondaryButtonMessage = 'Cancelar', isLoading = null
 }) => {
   return (
     <Box
@@ -47,7 +47,14 @@ export const CancelAndSubmitButton = ({
           onClick={onSubmit}
           type={typeButton}
         >
-          {buttonSubmitMessage}
+          {isLoading ? (
+            <CircularProgress
+              size={24}
+              color='inherit'
+            />
+          ) : (
+            buttonSubmitMessage
+          )}
         </Button>
       </Box>
     </Box>
