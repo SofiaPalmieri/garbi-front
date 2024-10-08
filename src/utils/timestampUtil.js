@@ -27,10 +27,12 @@ export class TimestampUtil {
     const hours = Math.floor(minutes / 60);
     const remainingMinutes = minutes % 60;
   
-    if (hours > 0) {
-      return `${hours.toFixed(0)}hr ${remainingMinutes.toFixed(0)}m`;
+    if (hours > 0 && remainingMinutes !== 0) {
+      return `${hours.toFixed(0)} hr ${remainingMinutes.toFixed(0)} min`;
+    } else if (hours > 0 && remainingMinutes === 0) {
+      return `${hours.toFixed(0)} hr`;
     } else {
-      return `${remainingMinutes.toFixed(0)}m`;
+      return `${remainingMinutes.toFixed(0)} min`;
     }
   }
 
