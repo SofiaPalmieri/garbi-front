@@ -4,6 +4,8 @@ export class TimestampUtil {
   static convertToDateAndHour(timestamp) {
     const date = new Date(timestamp);
 
+    date.setHours(date.getHours() + 3) //to transform to Argentina time
+
     const formattedDate = date.toLocaleDateString('es-ES', {
       day: '2-digit',
       month: '2-digit',

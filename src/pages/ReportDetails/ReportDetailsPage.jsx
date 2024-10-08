@@ -85,7 +85,7 @@ const sideDetailsMapper = (report) => {
 
   const reportCreator = report.userId ? 'Recolector' : 'Ciudadano'
 
-  const splitedArea = report.address.split(' - ')
+  const splitedArea = report.address.split(', ')
   const neighborhood = splitedArea[1]
   const address = splitedArea[0]
   const area = 'Área 2' //TODO: change when BE sends the area name.
