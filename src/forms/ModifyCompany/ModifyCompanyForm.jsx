@@ -1,28 +1,28 @@
 import {
+  Box, Typography
+} from '@mui/material';
+import {
+  useForm
+} from 'react-hook-form';
+import {
+  InputForm
+} from '../../components/InputForm';
+import {
+  SelectForm
+} from '../../components/SelectForm/SelectForm';
+import {
+  CancelAndSubmitButton 
+} from '../../components/CancelAndSubmitButton/CancelAndSubmitButton';
+import {
   yupResolver 
 } from '@hookform/resolvers/yup';
 import {
   object, string 
 } from 'yup';
 import {
-  Box,
-  Typography,
-} from '@mui/material';
-import {
-  useForm 
-} from 'react-hook-form';
-import {
-  InputForm 
-} from '../../components/InputForm';
-import {
-  SelectForm 
-} from '../../components/SelectForm/SelectForm';
-import {
-  CancelAndSubmitButton 
-} from '../../components/CancelAndSubmitButton/CancelAndSubmitButton';
-import {
   CustomAlert 
 } from '../../components/CustomAlert/CustomAlert';
+
 
 const provincias = [
   {
@@ -40,7 +40,7 @@ const provincias = [
   // Agrega más provincias según sea necesario
 ];
 
-const newCompanySchema = object({
+const companySchema = object({
   razonSocial: string()
     .required('La razón social es obligatoria')
     .min(2, 'La razón social debe tener al menos 2 caracteres')
@@ -60,7 +60,8 @@ const newCompanySchema = object({
 }).required();
 
 
-export const CreateCompanyForm = ({
+export const ModifyCompanyForm = ({ //TODO: UPDATE
+  companyToModify,
   handleClose
 }) => {
   const {
@@ -78,7 +79,7 @@ export const CreateCompanyForm = ({
       mailDelAdmin:  '',
       telefono: '',
     },
-    resolver: yupResolver(newCompanySchema),
+    resolver: yupResolver(companySchema),
   });
 
   const onSubmit = async (data) => {

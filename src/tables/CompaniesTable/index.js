@@ -1,0 +1,3 @@
+export {
+  CompaniesTable 
+} from './CompaniesTable'
