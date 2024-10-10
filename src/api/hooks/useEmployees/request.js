@@ -87,24 +87,11 @@ export const useModifyEmployee = () => {
     baseUri: baseEmployeesUri,
   });
 
-  const modifyEmployee = ({
-    userId, companyId, name, surname, personalPhone, personalEmail, companyPhone, companyEmail, workingShift, role, termsAndConditions
-  }) => {
+  const modifyEmployee = (userId, employeeBody) => {
     return commonFetch({
       uri: '/' + userId,
       method: HTTPMethods.PUT,
-      body: {
-        companyId,
-        name, 
-        surname, 
-        personalPhone, 
-        personalEmail, 
-        companyPhone,
-        companyEmail,
-        workingShift,
-        role,
-        termsAndConditions
-      },
+      body: employeeBody,
     });
   };
 

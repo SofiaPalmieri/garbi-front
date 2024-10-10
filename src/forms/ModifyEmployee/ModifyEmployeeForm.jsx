@@ -13,43 +13,84 @@ import {
 import {
   CancelAndSubmitButton 
 } from '../../components/CancelAndSubmitButton/CancelAndSubmitButton';
+import {
+  useEmployees 
+} from '../../api/hooks/useEmployees/useEmployees';
+import {
+  CustomAlert 
+} from '../../components/CustomAlert/CustomAlert';
+import {
+  yupResolver 
+} from '@hookform/resolvers/yup';
+import {
+  object, string 
+} from 'yup';
+
 
 const cargos = [
   {
-    value: 'Recolector',
+    value: 'RECOLECTOR',
     label: 'Recolector',
   },
   {
-    value: 'Supervisor',
+    value: 'SUPERVISOR',
     label: 'Supervisor',
   },
 ];
 
 const turnos = [
   {
-    value: 'Noche',
+    value: 'NOCHE',
     label: 'Noche',
   },
   {
-    value: 'Tarde',
+    value: 'TARDE',
     label: 'Tarde',
   },
   {
-    value: 'Mañana',
+    value: 'MAÑANA',
     label: 'Mañana',
   },
 ];
 
+const employeeSchema = object({
+  lastName: string()
+    .required('El apellido es obligatorio')
+    .matches(/^[a-zA-ZÀ-ÿ\s]+$/, 'El apellido no puede contener números o caracteres especiales')
+    .min(2, 'El apellido debe tener al menos 2 caracteres')
+    .max(50, 'El apellido no debe exceder 50 caracteres'),
+  firstName: string()
+    .required('El nombre es obligatorio')
+    .matches(/^[a-zA-ZÀ-ÿ\s]+$/, 'El nombre no puede contener números o caracteres especiales')
+    .min(2, 'El nombre debe tener al menos 2 caracteres')
+    .max(50, 'El nombre no debe exceder 50 caracteres'),
+  personalPhone: string()
+    .required('El teléfono personal es obligatorio')
+    .matches(/^\+?\d{10,12}$/, 'El teléfono personal no es válido'),
+  personalEmail: string()
+    .required('El email personal es obligatorio')
+    .email('El email personal no es un email válido'),
+  jobPosition: string().required('El cargo es obligatorio'),
+  timeShift: string().required('El turno es obligatorio'),
+  enterprisePhone: string()
+    .required('El teléfono de la empresa es obligatorio')
+    .matches(/^\+?\d{10,12}$/, 'El teléfono de la empresa no es válido'),
+  enterpriseEmail: string()
+    .required('El email de la empresa es obligatorio')
+    .email('El email de la empresa no es válido')
+}).required();
 
 export const ModifyEmployeeForm = ({
   employeeToModify,
-  handleClose
+  handleClose,
+  onSuccess
 }) => {
 
   const employee = employeeToModify
 
   const {
     control,
+    handleSubmit,
     formState: {
       errors
     },
@@ -66,11 +107,56 @@ export const ModifyEmployeeForm = ({
       enterprisePhone: employee?.companyPhone,
       enterpriseEmail: employee?.companyEmail
     },
+    resolver: yupResolver(employeeSchema),
   });
+
+  const {
+    modifyEmployee: {
+      modifyEmployee,
+      isModifyEmployeeLoading 
+    },
+  } = useEmployees()
+
+  const onSubmit = async (data) => {
+    try {
+      const response = await modifyEmployee(
+        data.id,
+        {
+          companyId: data.companyId,
+          name: data.firstName, 
+          surname: data.lastName, 
+          personalPhone: data.personalPhone, 
+          personalEmail: data.personalEmail, 
+          companyPhone: data.enterprisePhone,
+          companyEmail: data.enterpriseEmail,
+          workingShift: data.timeShift,
+          role: data.jobPosition
+        }
+      )
+
+      //TODO later: validar que la respuesta sea la esperada, y sino tirar error.
+      handleClose()
+      onSuccess()
+    } catch (error) {
+      console.error('Error submitting form', error)
+    }
+  }
+
+  const errorMessages = errors ? (
+    Object.values(errors).map((error, index) => (
+      <li 
+        key={index}
+      >
+        {error.message}
+      </li>
+    ))
+  ) : null;
 
 
   return (
-    <form>
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+    >
       <Box
         sx={{
           width: '100%',
@@ -257,10 +343,19 @@ export const ModifyEmployeeForm = ({
           </Box>
         </Box>
       </Box>
+
+      {Object.keys(errors).length > 0 && (
+        <CustomAlert
+          severity='error'
+          title='Error con los datos ingresados'
+          message={errorMessages}
+        />
+      )}
       
       <CancelAndSubmitButton
         handleClose={handleClose}
         buttonSubmitMessage='MODIFICAR'
+        onSubmit={handleSubmit(onSubmit)}
       />
     </form>
   )
