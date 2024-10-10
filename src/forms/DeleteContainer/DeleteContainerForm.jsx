@@ -7,21 +7,48 @@ import {
 import {
   CancelAndSubmitButton 
 } from '../../components/CancelAndSubmitButton/CancelAndSubmitButton';
+import {
+  useContainers 
+} from '../../api/hooks/useContainers/useContainers';
 
 
 export const DeleteContainerForm = ({
   containerToDelete,
-  handleClose
+  handleClose,
+  onSuccess
 }) => {
 
-  useForm({
+  const {
+    handleSubmit,
+  } = useForm({
     defaultValues: {
       idContainer: containerToDelete?.id
     },
   });
 
+  const {
+    deleteContainer: {
+      deleteContainer,
+      isDeleteContainerLoading 
+    },
+  } = useContainers();
+
+  const onSubmit = async (data) => {
+    try {
+      const response = await deleteContainer(data.idContainer);
+
+      //TODO later: validar que la respuesta sea la esperada, y sino tirar error.
+      handleClose();
+      onSuccess();
+    } catch (error) {
+      console.error('Error submitting form', error);
+    }
+  };
+
   return (
-    <form>
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+    >
       <Box
         sx={{
           width: '100%',
@@ -50,6 +77,8 @@ export const DeleteContainerForm = ({
       <CancelAndSubmitButton
         buttonSubmitMessage='ELIMINAR'
         handleClose={handleClose}
+        onSubmit={handleSubmit(onSubmit)}
+        isLoading={isDeleteContainerLoading}
       />
     </form>
   )

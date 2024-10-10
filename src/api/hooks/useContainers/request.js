@@ -7,6 +7,9 @@ import {
 import {
   baseIntegrationUri
 } from '../../config/apiClient';
+import {
+  HTTPMethods 
+} from '../../config/HTTPMethods';
 import QueryBuilder from '../../queryBuilder/QueryBuilder';
 
 const baseContainerUri = baseIntegrationUri + '/container'
@@ -61,5 +64,66 @@ export const useGetAllContainers = () => {
   return {
     getAllContainers,
     isLoadingGetAllContainers: isLoading,
+  };
+};
+
+export const useCreateContainer = () => {
+  const {
+    commonFetch, isLoading
+  } = useFetch({
+    baseUri: baseContainerUri,
+  });
+
+  const createContainer = (containerBody) => {
+    return commonFetch({
+      method: HTTPMethods.POST,
+      body: containerBody,
+    });
+  };
+
+  return {
+    createContainer,
+    isLoading,
+  };
+};
+
+export const useModifyContainer = () => {
+  const {
+    commonFetch, isLoading
+  } = useFetch({
+    baseUri: baseContainerUri,
+  });
+
+  const modifyContainer = (userId, containerBody) => {
+    return commonFetch({
+      uri: '/' + userId,
+      method: HTTPMethods.PUT,
+      body: containerBody,
+    });
+  };
+
+  return {
+    modifyContainer,
+    isLoading,
+  };
+};
+
+export const useDeleteContainer = () => {
+  const {
+    commonFetch, isLoading
+  } = useFetch({
+    baseUri: baseContainerUri,
+  });
+
+  const deleteContainer = (userId) => {
+    return commonFetch({
+      uri: '/' + userId,
+      method: HTTPMethods.DELETE,
+    });
+  };
+
+  return {
+    deleteContainer,
+    isLoading,
   };
 };

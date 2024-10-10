@@ -34,7 +34,6 @@ export const DeleteEmployeeForm = ({
   } = useEmployees();
 
   const onSubmit = async (data) => {
-    console.log('data: ' + data.id)
     try {
       const response = await deleteEmployee(data.id);
 
