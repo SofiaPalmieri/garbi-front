@@ -94,9 +94,9 @@ export const useModifyContainer = () => {
     baseUri: baseContainerUri,
   });
 
-  const modifyContainer = (userId, containerBody) => {
+  const modifyContainer = (containerId, containerBody) => {
     return commonFetch({
-      uri: '/' + userId,
+      uri: '/' + containerId,
       method: HTTPMethods.PUT,
       body: containerBody,
     });
@@ -115,9 +115,9 @@ export const useDeleteContainer = () => {
     baseUri: baseContainerUri,
   });
 
-  const deleteContainer = (userId) => {
+  const deleteContainer = (containerId) => {
     return commonFetch({
-      uri: '/' + userId,
+      uri: '/' + containerId,
       method: HTTPMethods.DELETE,
     });
   };
