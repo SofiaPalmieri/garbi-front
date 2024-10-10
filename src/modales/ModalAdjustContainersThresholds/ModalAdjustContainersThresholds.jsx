@@ -1,6 +1,6 @@
 import CloseIcon from '@mui/icons-material/Close';
 import {
-  Box, Button, Modal, Typography, DialogContent 
+  Box, Button, Modal, Typography 
 } from '@mui/material';
 import Circle from '@mui/icons-material/Circle';
 import {
@@ -22,6 +22,7 @@ import {
 import {
   useFetchCompany 
 } from '../../api/hooks/useCompanies/request';
+
 const schema = yup.object({
   thresholdFull: yup
     .number()
@@ -55,6 +56,7 @@ export const ModalAdjustContainersThreshold = ({
   } = useFetchCompany();
   const [company, setCompany] = useState(null);
 
+
   const user = JSON.parse(localStorage.getItem('user'));
   const companyId = user?.companyId;
 
@@ -82,11 +84,12 @@ export const ModalAdjustContainersThreshold = ({
     ...company 
   };
 
-  delete modifiedCompany.truckTerminal;
-  delete modifiedCompany.timestamp
-  delete modifiedCompany.dump
+
 
   const handleFormSubmit = (data) => {
+    delete modifiedCompany.truckTerminal;
+    delete modifiedCompany.timestamp
+    delete modifiedCompany.dump    
     const reviewCompanyBody = {
       ...modifiedCompany, 
       threshold: { 
@@ -97,7 +100,6 @@ export const ModalAdjustContainersThreshold = ({
 
     onSubmit(reviewCompanyBody);
     handleClose();
-    window.location.reload();
 
   };
 
@@ -114,7 +116,6 @@ export const ModalAdjustContainersThreshold = ({
       >
         <Box
           sx={{
-            height: '4rem',
             width: '100%',
             padding: '16px 24px',
             display: 'flex',
@@ -133,8 +134,11 @@ export const ModalAdjustContainersThreshold = ({
             onClick={handleClose}
           ><CloseIcon /></Button>
         </Box>
-
-        <DialogContent>
+        <Box
+          sx={{
+            marginLeft:'20px'
+          }}
+        >
           <form
             onSubmit={handleSubmit(handleFormSubmit)}
           >
@@ -155,12 +159,13 @@ export const ModalAdjustContainersThreshold = ({
                 control={control}
                 name={'thresholdFull'}
                 styleInput={{
-                  width: '55px',
+                  width: '60px',
                   marginLeft: '8px',
                   marginRight: '8px' 
                 }}
                 errors={errors}
                 fullWidth={false}
+                placeholder={company?.threshold?.full ? `${company.threshold.full}%` : '75%'}
               />
               <Typography>o más de la capacidad del contenedor</Typography>
             </Box>
@@ -183,12 +188,13 @@ export const ModalAdjustContainersThreshold = ({
                 control={control}
                 name={'thresholdWarning'}
                 styleInput={{
-                  width: '55px',
+                  width: '60px',
                   marginLeft: '8px',
                   marginRight: '8px' 
                 }}
                 errors={errors}
                 fullWidth={false}
+                placeholder={company?.threshold?.warning ? `${company.threshold.warning}%` : '25%'}
               />
               <Typography>o menos de la capacidad del contenedor</Typography>
             </Box>
@@ -198,7 +204,8 @@ export const ModalAdjustContainersThreshold = ({
               buttonSubmitMessage='MODIFICAR'
             />
           </form>
-        </DialogContent>
+        </Box>
+          
       </Box>
     </Modal>
   );

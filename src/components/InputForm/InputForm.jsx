@@ -11,6 +11,7 @@ export const InputForm = ({
   control,
   errors,
   styleInput,
+  placeholder,
   variant = 'outlined',
   size = 'small',
   helperText = null,
@@ -45,6 +46,7 @@ export const InputForm = ({
             disabled={disabled}
             multiline={multiline}
             rows={rows}
+            placeholder={placeholder}
             sx={{
               ...styleInput,
               '& .MuiInputBase-input:-webkit-autofill': { //added this to prevent weird look when the browser autofills the field
