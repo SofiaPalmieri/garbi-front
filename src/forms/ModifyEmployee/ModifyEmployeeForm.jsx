@@ -356,6 +356,7 @@ export const ModifyEmployeeForm = ({
         handleClose={handleClose}
         buttonSubmitMessage='MODIFICAR'
         onSubmit={handleSubmit(onSubmit)}
+        isLoading={isModifyEmployeeLoading}
       />
     </form>
   )

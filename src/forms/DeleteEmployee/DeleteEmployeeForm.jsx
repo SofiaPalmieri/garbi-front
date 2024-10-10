@@ -80,6 +80,7 @@ export const DeleteEmployeeForm = ({
         buttonSubmitMessage='ELIMINAR'
         handleClose={handleClose}
         onSubmit={handleSubmit(onSubmit)}
+        isLoading={isDeleteEmployeeLoading}
       />
     </form>
   )

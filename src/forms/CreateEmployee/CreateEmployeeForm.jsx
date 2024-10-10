@@ -347,6 +347,7 @@ export const CreateEmployeeForm = ({
       <CancelAndSubmitButton
         handleClose={handleClose}
         onSubmit={handleSubmit(onSubmit)}
+        isLoading={isCreateEmployeeLoading}
       />
     </form>
   );
