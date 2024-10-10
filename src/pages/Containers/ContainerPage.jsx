@@ -186,6 +186,7 @@ export const ContainerPage = () => {
               form={<ModifyContainerForm
                 containerToModify={containerToModify}
                 handleClose={handleCloseModifyContainerModal}
+                onSuccess={refreshList}
               />}
             />
             <ModalCreateResource
@@ -195,6 +196,7 @@ export const ContainerPage = () => {
               form={<DeleteContainerForm
                 containerToDelete={containerToDelete}
                 handleClose={handleCloseDeleteContainerModal}
+                onSuccess={refreshList}
               />}
             />
             <CommonTableList

@@ -7,21 +7,49 @@ import {
 import {
   CancelAndSubmitButton 
 } from '../../components/CancelAndSubmitButton/CancelAndSubmitButton';
+import {
+  useEmployees 
+} from '../../api/hooks/useEmployees/useEmployees';
 
 
 export const DeleteEmployeeForm = ({
   employeeToDelete,
-  handleClose
+  handleClose,
+  onSuccess
 }) => {
 
-  useForm({
+  const {
+    handleSubmit,
+  } = useForm({
     defaultValues: {
-      idEmployee: employeeToDelete?.id
+      id: employeeToDelete?.id
     },
   });
 
+  const {
+    deleteEmployee: {
+      deleteEmployee,
+      isDeleteEmployeeLoading 
+    },
+  } = useEmployees();
+
+  const onSubmit = async (data) => {
+    try {
+      const response = await deleteEmployee(data.id);
+
+      //TODO later: validar que la respuesta sea la esperada, y sino tirar error.
+      handleClose();
+      onSuccess();
+    } catch (error) {
+      console.error('Error submitting form', error);
+    }
+  };
+
+
   return (
-    <form>
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+    >
       <Box
         sx={{
           width: '100%',
@@ -50,6 +78,8 @@ export const DeleteEmployeeForm = ({
       <CancelAndSubmitButton
         buttonSubmitMessage='ELIMINAR'
         handleClose={handleClose}
+        onSubmit={handleSubmit(onSubmit)}
+        isLoading={isDeleteEmployeeLoading}
       />
     </form>
   )
