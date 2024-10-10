@@ -100,3 +100,23 @@ export const useModifyEmployee = () => {
     isLoading,
   };
 };
+
+export const useDeleteEmployee = () => {
+  const {
+    commonFetch, isLoading
+  } = useFetch({
+    baseUri: baseEmployeesUri,
+  });
+
+  const deleteEmployee = (userId) => {
+    return commonFetch({
+      uri: '/' + userId,
+      method: HTTPMethods.DELETE,
+    });
+  };
+
+  return {
+    deleteEmployee,
+    isLoading,
+  };
+};

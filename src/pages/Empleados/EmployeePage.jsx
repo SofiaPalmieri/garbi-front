@@ -157,6 +157,7 @@ export const EmployeePage = () => {
               form={<DeleteEmployeeForm
                 employeeToDelete={employeeToDelete}
                 handleClose={handleCloseDeleteEmployeeModal}
+                onSuccess={refreshList}
               />}
             />
 
