@@ -43,8 +43,11 @@ import {
   HEIGHT_HEADER
 } from '../../config';
 import {
-  useAreas 
+  useAreas
 } from '../../api/hooks/useAreas/useAreas';
+import {
+  FeedbackSnackbar 
+} from '../../components/FeedbackSnackbar';
 
 const slideIn = keyframes`
   from {
@@ -57,6 +60,20 @@ const slideIn = keyframes`
   }
 `;
 
+export function polylineToCoordinates(polyline) {
+  const path = polyline.getPath(); // Obtiene el array de puntos de la polilínea
+  const coordinates = [];
+
+  path.forEach((latLng) => {
+    coordinates.push({
+      lat: latLng.lat(),
+      lng: latLng.lng(),
+    });
+  });
+
+  return coordinates;
+}
+
 const mapper = (areas) => {
 
   return areas.map(
@@ -68,11 +85,43 @@ const mapper = (areas) => {
       }
     }
   )
-
 }
+
+const areCoordinatesEqual = (arr1, arr2) => {
+  if (arr1.length !== arr2.length) {
+    return false;
+  }
+
+  const sortCoordinates = (arr) => {
+    return arr.map(({
+      lat, lng 
+    }) => ({
+      lat,
+      lng 
+    }))
+      .sort((a, b) => a.lat - b.lat || a.lng - b.lng);
+  };
+
+  const sortedArr1 = sortCoordinates(arr1);
+  const sortedArr2 = sortCoordinates(arr2);
+
+  // Comparar si cada objeto en el array ordenado es igual
+  for (let i = 0; i < sortedArr1.length; i++) {
+    if (
+      sortedArr1[i].lat !== sortedArr2[i].lat ||
+      sortedArr1[i].lng !== sortedArr2[i].lng
+    ) {
+      return false;
+    }
+  }
+
+  return true;
+};
 
 const AreaPage = () => {
   const [areas, setAreas] = useState([]);
+  const [textFeedback, setTextFeedback] = useState(null);
+  const [openSnackbar, setOpenSnackbar] = useState(false)
   const {
     areaActionStates
   } = useAreaActionStatesProvider();
@@ -80,10 +129,6 @@ const AreaPage = () => {
     enableAddArea,
     enableEditArea,
     isAddingArea,
-    enabledAddArea,
-    enabledEditArea,
-    enabledDeleteArea,
-    isEditingArea,
     resetStates,
     disableEditArea
   } = areaActionStates
@@ -93,24 +138,23 @@ const AreaPage = () => {
   const [count, setCount] = useState(0);
   const [selectedColor, setSelectedColor] = useState(null);
   const [openDeleteAreaForm, setOpenDeleteAreaForm] = useState(false);
+  const [hasAreaSelectedAnyChange, setHasAreaSelectedAnyChange] = useState(false);
+  const [candAddNewArea, setCanAddNewArea] = useState(false);
   // TODO RENOMBRAR ESTOS ESTADOS
   const [state, dispatch] = useReducer(reducer, []);
   const [stateDraw, dispatchDraw] = useReducer(drawReducer, {
     polyline: null,
     polygon: null
   });
-  const [open, setOpen] = useState(false);
-  const handleClose = () => {
-    setOpen(false);
-  };
-  const handleOpen = () => {
-    setOpen(true);
-  };
+
+  const apiKeyGoogleMaps = import.meta.env.VITE_REACT_APP_API_KEY_GOOGLE_MAPS;
 
   const {
     control,
     handleSubmit,
     setValue,
+    reset,
+    watch,
     formState: {
       errors
     }
@@ -121,17 +165,53 @@ const AreaPage = () => {
     },
   });
 
-  const position = {
-    lat: 43.64,
-    lng: -79.41,
-  };
-
   const {
     getAreas: {
       getAreas,
       isLoadingGetAreas
+    },
+    postAreas: {
+      postAreas,
+      isLoadingPostAreas
+    },
+    putAreas: {
+      putAreas,
+      isLoadingPutAreas
+    },
+    deleteArea: {
+      deleteArea,
+      isLoadingDeleteArea
     }
   } = useAreas()
+
+  const name = watch('name');
+  const description = watch('description');
+
+  const searchArea = (id) => state.find(area => area.id === id);
+
+  useEffect(() => {
+    if (!areaSelected) return;
+
+    const area = searchArea(areaSelected.id)
+
+    const coordinates = polylineToCoordinates(area.polyline)
+
+    setHasAreaSelectedAnyChange(name !== areaSelected.title ||
+      description !== areaSelected.description ||
+      !areCoordinatesEqual(areaSelected.coordinates, coordinates)
+    )
+
+  }, [name, description, areaSelected, state]);
+
+  useEffect(() => {
+
+    setCanAddNewArea(name !== '' &&
+      description !== '' &&
+      stateDraw.polyline != null
+    )
+
+  }, [name, description, stateDraw]);
+
 
   useEffect(() => {
     const fetchAreas = async () => {
@@ -145,8 +225,6 @@ const AreaPage = () => {
   useEffect(() => {
     console.log(areas)
   }, [areas])
-
-  const apiKeyGoogleMaps = import.meta.env.VITE_REACT_APP_API_KEY_GOOGLE_MAPS;
 
   useEffect(() => {
     if (areaSelected) {
@@ -163,11 +241,44 @@ const AreaPage = () => {
     }
   }, [areaSelected, setValue]);
 
-  const saveArea = (data) => {
+  const getColor = () => {
+    if (selectedColor) {
+
+      return selectedColor
+    } else if (areaSelected?.color) {
+
+      return areaSelected.color;
+    } else {
+
+      return 'fff'
+    }
+  }
+
+  const saveArea = async (data) => {
+    const user = JSON.parse(localStorage.getItem('user'));
+    const companyId = user.companyId;
+
+    const color = getColor();
+
     if (isAddingArea) {
       // TODO: VALIDAR QUE NO SE PUEDA GUARDAR SIN HABER DIBUJADO
       const newPolyline = stateDraw.polyline
       const newPolygon = stateDraw.polygon
+
+      const body = {
+        name: data.name,
+        description: data.description,
+        companyId,
+        color,
+        coordinates: polylineToCoordinates(newPolyline)
+      }
+
+      const response = await postAreas(body);
+
+      setTextFeedback('Área creada con éxito.')
+      setOpenSnackbar(true);
+
+      reset();
 
       dispatchDraw({
         type: DrawingActionType.CLEAR_DRAW
@@ -176,7 +287,7 @@ const AreaPage = () => {
       dispatch({
         type: DrawingActionKind.ADD_OVERLAY,
         payload: {
-          id: 'AREA-' + count,
+          id: response.area.id,
           title: data.name,
           description: data.description,
           polyline: newPolyline,
@@ -185,7 +296,23 @@ const AreaPage = () => {
         }
       })
       setCount(prev => prev + 1)
+
     } else {
+      const areaEdited = searchArea(areaSelected.id)
+
+      const body = {
+        name: data.name,
+        description: data.description,
+        companyId,
+        color,
+        coordinates: polylineToCoordinates(areaEdited.polyline)
+      }
+
+      await putAreas(areaSelected.id, body);
+
+      setTextFeedback('Área actualizada con éxito.')
+      setOpenSnackbar(true);
+
       dispatch({
         type: DrawingActionKind.UPDATE_OVERLAY,
         payload: {
@@ -199,10 +326,16 @@ const AreaPage = () => {
     resetStates()
   }
 
-  const handleDeleteArea = (e) => {
+  const handleDeleteArea = async (e) => {
     e.preventDefault();
     setAreaSelected(null)
     setOpenDeleteAreaForm(false)
+
+    await deleteArea(areaSelected.id)
+
+    setTextFeedback('Área borrada con éxito.')
+    setOpenSnackbar(true);
+
     dispatch({
       type: DrawingActionKind.DELETE_OVERLAY,
       payload: {
@@ -216,10 +349,9 @@ const AreaPage = () => {
       <Backdrop
         sx={(theme) => ({
           color: '#fff',
-          zIndex: theme.zIndex.drawer + 1 
+          zIndex: theme.zIndex.drawer + 1
         })}
         open={isLoadingGetAreas}
-        onClick={handleClose}
       >
         <CircularProgress
           color='inherit'
@@ -237,6 +369,12 @@ const AreaPage = () => {
         flexDirection: 'column',
       }}
     >
+      <FeedbackSnackbar
+        severity={'success'}
+        text={textFeedback}
+        openSnackbar={openSnackbar}
+        handleClose={() => setOpenSnackbar(false)}
+      />
       <ModalCreateResource
         title={'Eliminar área'}
         open={openDeleteAreaForm}
@@ -318,6 +456,7 @@ const AreaPage = () => {
               <Button
                 size='medium'
                 type='submit'
+                disabled={!(hasAreaSelectedAnyChange || candAddNewArea)}
                 sx={{
                   backgroundColor: '#12422C',
                   color: 'white',
@@ -326,6 +465,10 @@ const AreaPage = () => {
                   borderRadius: '4px',
                   '&:hover': {
                     backgroundColor: '#12422C',
+                  },
+                  '&.Mui-disabled': {
+                    backgroundColor: '#e0e0e0', // Fondo gris
+                    color: '#000000',           // Texto negro
                   },
                 }}
               >
@@ -343,8 +486,24 @@ const AreaPage = () => {
         <Box
           sx={{
             flexGrow: 1,
+            position: 'relative'
           }}
         >
+          <Box
+            sx={{
+              height: 1,
+              width: 1,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              position: 'absolute',
+              backgroundColor: 'gray',
+              zIndex: (isLoadingDeleteArea || isLoadingPostAreas || isLoadingPutAreas || isLoadingGetAreas) ? '1000' : '0',
+              opacity: (isLoadingDeleteArea || isLoadingPostAreas || isLoadingPutAreas || isLoadingGetAreas) ? '0.75' : '0'
+            }}
+          >
+            <CircularProgress />
+          </Box>
           <APIProvider
             apiKey={apiKeyGoogleMaps}
           >

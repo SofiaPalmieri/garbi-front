@@ -24,14 +24,18 @@ apiClient.interceptors.request.use(
 );
 
 apiClient.interceptors.response.use(
-  (response) => response,
-  (error) => {
-    // Manejo de errores global
-    if (error.response && error.response.status === 401) {
-      // Lógica para manejar errores 401 (no autorizado)
+  response => response,
+  error => {
+    const status = error.response ? error.response.status : null;
+    
+    if (status === 401) {
+      throw Error('Unauthenticated')
+    } else if (status === 403) {
+      throw Error('Not Authorized')
+    } else {
+      throw Error('error from API, status code: ' + status)
     }
-    return Promise.reject(error);
-  },
+  }
 );
 
 export default apiClient;
