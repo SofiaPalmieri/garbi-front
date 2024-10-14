@@ -50,6 +50,7 @@ export const RightSidePanel = ({
             display: 'flex',
             flexDirection: 'column',
             justifyContent: 'space-between',
+            overflow: 'auto'
           }}
         >
           {componentToRender}
