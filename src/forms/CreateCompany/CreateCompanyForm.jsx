@@ -207,7 +207,6 @@ export const CreateCompanyForm = ({
       <Box
         sx={{
           width: '100%',
-          // height: '104px',
           padding: '16px 24px',
         }}
       >
@@ -298,68 +297,10 @@ export const CreateCompanyForm = ({
             </Box>
           </Box>
         </Box>
-
-        {/* <Box
-          sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            width: '100%',
-            gap: '16px',
-          }}
-        >
-          <Box
-            sx={{
-              display: 'flex',
-              width: '100%',
-              height: '40px',
-              gap: '24px',
-            }}
-          >
-            <Box
-              sx={{
-                flex: 1,
-                height: '40px',
-              }}
-            >
-              <SelectForm
-                name={'province'}
-                label={'Provincia'}
-                control={control}
-                options={provincias}
-              />
-            </Box>
-            <Box
-              sx={{
-                flex: 1,
-                height: '40px',
-              }}
-            >
-              <SelectForm
-                name={'province'}
-                label={'Provincia'}
-                control={control}
-                options={provincias}
-              />
-            </Box>
-            <Box
-              sx={{
-                flex: 1,
-                height: '40px',
-              }}
-            >
-              <InputForm
-                control={control}
-                name={'address'}
-                label={'Dirección'}
-              />
-            </Box>
-          </Box>
-        </Box> */}
       </Box>
       <Box
         sx={{
           width: '100%',
-          height: '104px',
           padding: '16px 24px',
         }}
       >

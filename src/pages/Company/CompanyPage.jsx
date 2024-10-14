@@ -92,7 +92,6 @@ export const CompanyPage = () => {
       sx={{
         width: '100%',
         height: '100%',
-        // padding: '4rem',
       }}
     >
       <Box >
@@ -145,8 +144,6 @@ export const CompanyPage = () => {
             isLoadingFetchData={isLoadingFetchCompanies}
             mapper={mapper}
             reloadTable={reloadTable}
-            placeHolderInput={'Buscar por Nombre'}
-            inputWidth={'288px'}
             handleRowClick={handleRowClick}
             componentToRender={
               <TableButtons

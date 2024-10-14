@@ -90,6 +90,8 @@ export const ModifyCompanyForm = ({
       number: companyToModify.address.number,
       adminEmail:  companyToModify.email,
       phone: companyToModify.phone,
+      thresholdFull: companyToModify.threshold.full,
+      thresholdWarning: companyToModify.threshold.warning
     },
     resolver: yupResolver(companySchema),
   });
@@ -118,8 +120,8 @@ export const ModifyCompanyForm = ({
           phone: data.phone,
           email: data.adminEmail,
           threshold: {
-            full: 80,
-            warning: 40
+            full: data.thresholdFull,
+            warning: data.thresholdWarning
           }
         }
       )
@@ -208,7 +210,6 @@ export const ModifyCompanyForm = ({
       <Box
         sx={{
           width: '100%',
-          // height: '104px',
           padding: '16px 24px',
         }}
       >
@@ -299,68 +300,10 @@ export const ModifyCompanyForm = ({
             </Box>
           </Box>
         </Box>
-
-        {/* <Box
-          sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            width: '100%',
-            gap: '16px',
-          }}
-        >
-          <Box
-            sx={{
-              display: 'flex',
-              width: '100%',
-              height: '40px',
-              gap: '24px',
-            }}
-          >
-            <Box
-              sx={{
-                flex: 1,
-                height: '40px',
-              }}
-            >
-              <SelectForm
-                name={'province'}
-                label={'Provincia'}
-                control={control}
-                options={provincias}
-              />
-            </Box>
-            <Box
-              sx={{
-                flex: 1,
-                height: '40px',
-              }}
-            >
-              <SelectForm
-                name={'province'}
-                label={'Provincia'}
-                control={control}
-                options={provincias}
-              />
-            </Box>
-            <Box
-              sx={{
-                flex: 1,
-                height: '40px',
-              }}
-            >
-              <InputForm
-                control={control}
-                name={'address'}
-                label={'Dirección'}
-              />
-            </Box>
-          </Box>
-        </Box> */}
       </Box>
       <Box
         sx={{
           width: '100%',
-          height: '104px',
           padding: '16px 24px',
         }}
       >
