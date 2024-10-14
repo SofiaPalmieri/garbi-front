@@ -18,6 +18,7 @@ import {
   Typography,
 } from '@mui/material';
 import {
+  useEffect,
   useState
 } from 'react';
 import {
@@ -49,6 +50,8 @@ export const LoginBox = ({
   setIsFlipped
 }) => {
   const [showPassword, setShowPassword] = useState(false);
+  const [isLoginScreenLoading, setIsLoginScreenLoading] = useState(true);
+
   const {
     login: {
       login: login,
@@ -92,6 +95,34 @@ export const LoginBox = ({
       navigate('/inicio');
     }
   };
+
+  useEffect(() => {
+    if (localStorage.getItem('token') != null) {
+      const decodedToken = jwtDecode(localStorage.getItem('token'));
+      const currentTime = Date.now() / 1000;
+
+      if (decodedToken.exp > currentTime) {
+        navigate('/inicio');
+      }
+    }
+    
+    setIsLoginScreenLoading(false);
+  }, [])
+
+  if (isLoginScreenLoading) {
+    return (
+      <Box
+        sx={{
+          display: 'flex',
+          height: 1,
+          justifyContent: 'center',
+          alignItems: 'center'
+        }}
+      >
+        <CircularProgress />
+      </Box>
+    )
+  }
 
   return (
     <Paper
