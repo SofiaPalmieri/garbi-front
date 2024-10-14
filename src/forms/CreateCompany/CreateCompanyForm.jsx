@@ -53,7 +53,11 @@ const newCompanySchema = object({
     .min(11, 'El CUIT debe tener 11 caracteres')
     .max(11, 'El CUIT debe tener 11 caracteres'),
   province: string().required('La provincia es obligatoria'),
-  address: string().required('La dirección es obligatoria'),
+  zone: string().required('La zona es obligatoria'),
+  street: string().required('La calle es obligatoria'),
+  number: string()
+    .required('La altura es obligatoria')
+    .matches(/^\d+$/, 'La altura no es válida'),
   adminEmail: string()
     .required('El email del admin es obligatorio')
     .email('El email ingresado no es válido'),
@@ -97,13 +101,11 @@ export const CreateCompanyForm = ({
         name: data.name, 
         cuit: data.cuit,
         address: {
-          street: data.address,
-          number: '456',
+          street: data.street,
+          number: data.number,
           postalCode: '1234',
           province: data.province,
-          neighborhood: 'Barrio Ejemplo',
-          department: 'A',
-          floor: '2'
+          neighborhood: data.zone,
         },
         phone: data.phone,
         email: data.adminEmail,
@@ -205,7 +207,7 @@ export const CreateCompanyForm = ({
       <Box
         sx={{
           width: '100%',
-          height: '104px',
+          // height: '104px',
           padding: '16px 24px',
         }}
       >
@@ -257,12 +259,102 @@ export const CreateCompanyForm = ({
             >
               <InputForm
                 control={control}
+                name={'zone'}
+                label={'Zona'}
+              />
+            </Box>
+          </Box>
+          <Box
+            sx={{
+              display: 'flex',
+              width: '100%',
+              height: '40px',
+              gap: '24px',
+            }}
+          >
+            <Box
+              sx={{
+                flex: 1,
+                height: '40px',
+              }}
+            >
+              <InputForm
+                control={control}
+                name={'street'}
+                label={'Calle'}
+              />
+            </Box>
+            <Box
+              sx={{
+                flex: 1,
+                height: '40px',
+              }}
+            >
+              <InputForm
+                control={control}
+                name={'number'}
+                label={'Altura'}
+              />
+            </Box>
+          </Box>
+        </Box>
+
+        {/* <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            width: '100%',
+            gap: '16px',
+          }}
+        >
+          <Box
+            sx={{
+              display: 'flex',
+              width: '100%',
+              height: '40px',
+              gap: '24px',
+            }}
+          >
+            <Box
+              sx={{
+                flex: 1,
+                height: '40px',
+              }}
+            >
+              <SelectForm
+                name={'province'}
+                label={'Provincia'}
+                control={control}
+                options={provincias}
+              />
+            </Box>
+            <Box
+              sx={{
+                flex: 1,
+                height: '40px',
+              }}
+            >
+              <SelectForm
+                name={'province'}
+                label={'Provincia'}
+                control={control}
+                options={provincias}
+              />
+            </Box>
+            <Box
+              sx={{
+                flex: 1,
+                height: '40px',
+              }}
+            >
+              <InputForm
+                control={control}
                 name={'address'}
                 label={'Dirección'}
               />
             </Box>
           </Box>
-        </Box>
+        </Box> */}
       </Box>
       <Box
         sx={{

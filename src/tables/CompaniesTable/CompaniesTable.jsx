@@ -26,7 +26,7 @@ const tableHeaders = [
     minWidth: 144
   },
   {
-    value: 'Provincia',
+    value: 'Ubicación',
     minWidth: 200
   },
   {
@@ -104,7 +104,7 @@ const companyRowRender = (company, handleRowClick, isSelected) => {
             color: '#000000DE'
           }}
       >
-          {company.address.province}
+          {company.address.province} - {company.address.neighborhood}
         </Typography>
       </TableCell>
       <TableCell
