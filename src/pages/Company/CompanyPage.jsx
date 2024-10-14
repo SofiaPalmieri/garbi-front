@@ -9,7 +9,7 @@ import {
   BreadcrumbsComponent
 } from '../../components/BreadcrumbsComponent';
 import {
-  useState
+  useCallback, useState
 } from 'react';
 import {
   ModalCreateResource
@@ -78,6 +78,10 @@ export const CompanyPage = () => {
     }
   } = useCompanies();
 
+  const fetchData = useCallback((lastKey) => {
+    return fetchCompanies(lastKey)
+  }, [])
+
   const handleRowClick = (element) => {
     setSelectedElement(element);
   };
@@ -135,7 +139,7 @@ export const CompanyPage = () => {
 
           <CommonTableList
             table={CompaniesTable}
-            fetchData={fetchCompanies}
+            fetchData={fetchData}
             isLoadingFetchData={isLoadingFetchCompanies}
             mapper={mapper}
             reloadTable={reloadTable}

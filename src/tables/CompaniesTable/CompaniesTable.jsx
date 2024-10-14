@@ -11,6 +11,9 @@ import {
 import {
   useState
 } from 'react';
+import {
+  TimestampUtil
+} from '../../utils/timestampUtil';
 
 
 const tableHeaders = [
@@ -74,7 +77,7 @@ const companyRowRender = (company, handleRowClick, isSelected) => {
             color: '#000000DE'
           }}
         >
-          {company.companyName}
+          {company.name}
         </Typography>
       </TableCell>
       <TableCell
@@ -88,7 +91,7 @@ const companyRowRender = (company, handleRowClick, isSelected) => {
             color: '#000000DE'
           }}
         >
-          {company.CUIT}
+          {company.cuit}
         </Typography>
       </TableCell>
       <TableCell
@@ -101,7 +104,7 @@ const companyRowRender = (company, handleRowClick, isSelected) => {
             color: '#000000DE'
           }}
       >
-          {company.province}
+          {company.address.province}
         </Typography>
       </TableCell>
       <TableCell
@@ -115,7 +118,7 @@ const companyRowRender = (company, handleRowClick, isSelected) => {
             color: '#000000DE'
           }}
         >
-          {company.address}
+          {company.address.street} {company.address.number}
         </Typography>
       </TableCell>
       <TableCell
@@ -129,7 +132,7 @@ const companyRowRender = (company, handleRowClick, isSelected) => {
             color: '#000000DE'
           }}
         >
-          {company.startDate}
+          {TimestampUtil.convertToDateAndHour(company.timestamp).date}
         </Typography>
       </TableCell>
       <TableCell
@@ -143,7 +146,7 @@ const companyRowRender = (company, handleRowClick, isSelected) => {
             color: '#000000DE'
           }}
         >
-          {company.adminEmail}
+          {company.email}
         </Typography>
       </TableCell>
     </TableRow>
