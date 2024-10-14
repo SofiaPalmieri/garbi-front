@@ -42,13 +42,13 @@ import {
 } from './pages/Routes/Detail/RouteDetailPage.jsx';
 import PerfilPage from './pages/Perfil/PerfilPage.jsx';
 import {
-  ErrorPage 
+  ErrorPage
 } from './pages/404/404.jsx';
 import {
   Box
 } from '@mui/material';
 import {
-  StatsPage 
+  StatsPage
 } from './pages/Stats/StatsPage.jsx';
 
 const theme = createTheme({
@@ -66,7 +66,7 @@ const theme = createTheme({
 
 const ErrorBoundaryWithHeader = () => (
   <Box>
-    <ErrorPage/>
+    <ErrorPage />
     <BaseWithHeader
       logoOnly={true}
     />
@@ -79,7 +79,10 @@ const router = createBrowserRouter([
     element: <Navigate
       to='/ingresar'
     />,
-    errorElement: <ErrorBoundaryWithHeader />, 
+  },
+  {
+    path: '*',
+    element: <ErrorBoundaryWithHeader />
   },
   {
     element: <Base />,
