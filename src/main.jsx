@@ -50,6 +50,7 @@ import {
 import {
   StatsPage
 } from './pages/Stats/StatsPage.jsx';
+import AuthenticatedRoute from './components/AuthenticatedRoute/AuthenticatedRoute.jsx';
 
 const theme = createTheme({
   palette: {
@@ -94,7 +95,11 @@ const router = createBrowserRouter([
     ],
   },
   {
-    element: <BaseWithHeader />,
+    element: (
+      <AuthenticatedRoute>
+        <BaseWithHeader />
+      </AuthenticatedRoute>
+    ),
     children: [
       {
         path: '/contenedores',
