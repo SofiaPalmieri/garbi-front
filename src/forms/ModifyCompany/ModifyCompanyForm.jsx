@@ -1,31 +1,31 @@
 import {
+  Box, Typography
+} from '@mui/material';
+import {
+  useForm
+} from 'react-hook-form';
+import {
+  InputForm
+} from '../../components/InputForm';
+import {
+  SelectForm
+} from '../../components/SelectForm/SelectForm';
+import {
+  CancelAndSubmitButton 
+} from '../../components/CancelAndSubmitButton/CancelAndSubmitButton';
+import {
   yupResolver 
 } from '@hookform/resolvers/yup';
 import {
   object, string 
 } from 'yup';
 import {
-  Box,
-  Typography,
-} from '@mui/material';
-import {
-  useForm 
-} from 'react-hook-form';
-import {
-  InputForm 
-} from '../../components/InputForm';
-import {
-  SelectForm 
-} from '../../components/SelectForm/SelectForm';
-import {
-  CancelAndSubmitButton 
-} from '../../components/CancelAndSubmitButton/CancelAndSubmitButton';
-import {
   CustomAlert 
 } from '../../components/CustomAlert/CustomAlert';
 import {
   useCompanies 
 } from '../../api/hooks/useCompanies/useCompanies';
+
 
 const provincias = [
   {
@@ -43,7 +43,8 @@ const provincias = [
   // Agrega más provincias según sea necesario
 ];
 
-const newCompanySchema = object({
+
+const companySchema = object({
   name: string()
     .required('La razón social es obligatoria')
     .min(2, 'La razón social debe tener al menos 2 caracteres')
@@ -67,8 +68,10 @@ const newCompanySchema = object({
 }).required();
 
 
-export const CreateCompanyForm = ({
-  handleClose, onSuccess
+export const ModifyCompanyForm = ({
+  companyToModify,
+  handleClose,
+  onSuccess
 }) => {
   const {
     control,
@@ -78,50 +81,50 @@ export const CreateCompanyForm = ({
     }
   } = useForm({
     defaultValues: {
-      name: '',
-      cuit: '',
-      province: '',
-      address: '',
-      adminEmail:  '',
-      phone: '',
+      id: companyToModify.id,
+      name: companyToModify.name,
+      cuit: companyToModify.cuit,
+      province: companyToModify.address.province,
+      zone: companyToModify.address.neighborhood,
+      street: companyToModify.address.street,
+      number: companyToModify.address.number,
+      adminEmail:  companyToModify.email,
+      phone: companyToModify.phone,
+      thresholdFull: companyToModify.threshold.full,
+      thresholdWarning: companyToModify.threshold.warning
     },
-    resolver: yupResolver(newCompanySchema),
+    resolver: yupResolver(companySchema),
   });
 
   const {
-    createCompany: {
-      createCompany,
-      isCreateCompanyLoading 
+    modifyCompany: {
+      modifyCompany,
+      isModifyCompanyLoading 
     },
   } = useCompanies();
 
   const onSubmit = async (data) => {
     try {
-      const response = await createCompany({
-        name: data.name, 
-        cuit: data.cuit,
-        address: {
-          street: data.street,
-          number: data.number,
-          postalCode: '1234',
-          province: data.province,
-          neighborhood: data.zone,
-        },
-        phone: data.phone,
-        email: data.adminEmail,
-        threshold: {
-          full: 80,
-          warning: 40
-        },
-        truckTerminal: {
-          lat: -34.56796791657094,
-          lng: -58.40815129015922
-        },
-        dump: {
-          lat: -34.57644431357097,
-          lng: -58.44205029209349
+      const response = await modifyCompany(
+        data.id,
+        {
+          name: data.name, 
+          cuit: data.cuit,
+          address: {
+            street: data.street,
+            number: data.number,
+            postalCode: '1234',
+            province: data.province,
+            neighborhood: data.zone,
+          },
+          phone: data.phone,
+          email: data.adminEmail,
+          threshold: {
+            full: data.thresholdFull,
+            warning: data.thresholdWarning
+          }
         }
-      })
+      )
 
       //TODO later: validar que la respuesta sea la esperada, y sino tirar error.
       handleClose();
@@ -368,8 +371,9 @@ export const CreateCompanyForm = ({
 
       <CancelAndSubmitButton
         handleClose={handleClose}
+        buttonSubmitMessage='MODIFICAR'
         onSubmit={handleSubmit(onSubmit)}
-        isLoading={isCreateCompanyLoading}
+        isLoading={isModifyCompanyLoading}
       />
     </form>
   );
