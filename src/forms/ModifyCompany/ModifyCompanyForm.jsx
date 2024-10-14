@@ -22,26 +22,30 @@ import {
 import {
   CustomAlert 
 } from '../../components/CustomAlert/CustomAlert';
+import {
+  useCompanies 
+} from '../../api/hooks/useCompanies/useCompanies';
 
 
 const provincias = [
   {
-    value: 'buenosAires',
+    value: 'Buenos Aires',
     label: 'Buenos Aires',
   },
   {
-    value: 'cordoba',
+    value: 'Córdoba',
     label: 'Córdoba',
   },
   {
-    value: 'santaFe',
+    value: 'Santa Fe',
     label: 'Santa Fe',
   },
   // Agrega más provincias según sea necesario
 ];
 
+
 const companySchema = object({
-  razonSocial: string()
+  name: string()
     .required('La razón social es obligatoria')
     .min(2, 'La razón social debe tener al menos 2 caracteres')
     .max(50, 'La razón social no debe exceder 50 caracteres'),
@@ -49,20 +53,21 @@ const companySchema = object({
     .required('El CUIT es obligatorio')
     .min(11, 'El CUIT debe tener 11 caracteres')
     .max(11, 'El CUIT debe tener 11 caracteres'),
-  provincia: string().required('La provincia es obligatoria'),
-  direccion: string().required('La dirección es obligatoria'),
-  mailDelAdmin: string()
+  province: string().required('La provincia es obligatoria'),
+  address: string().required('La dirección es obligatoria'),
+  adminEmail: string()
     .required('El email del admin es obligatorio')
     .email('El email ingresado no es válido'),
-  telefono: string()
+  phone: string()
     .required('El teléfono de contacto es obligatorio')
     .matches(/^\+?\d{10,12}$/, 'El teléfono de contacto no es válido'),
 }).required();
 
 
-export const ModifyCompanyForm = ({ //TODO: UPDATE
+export const ModifyCompanyForm = ({
   companyToModify,
-  handleClose
+  handleClose,
+  onSuccess
 }) => {
   const {
     control,
@@ -72,18 +77,53 @@ export const ModifyCompanyForm = ({ //TODO: UPDATE
     }
   } = useForm({
     defaultValues: {
-      razonSocial: '',
-      cuit: '',
-      provincia: '',
-      direccion: '',
-      mailDelAdmin:  '',
-      telefono: '',
+      id: companyToModify.id,
+      name: companyToModify.name,
+      cuit: companyToModify.cuit,
+      province: companyToModify.address.province,
+      address: `${companyToModify.address.street} ${companyToModify.address.number}`,
+      adminEmail:  companyToModify.email,
+      phone: companyToModify.phone,
     },
     resolver: yupResolver(companySchema),
   });
 
+  const {
+    modifyCompany: {
+      modifyCompany,
+      isModifyCompanyLoading 
+    },
+  } = useCompanies();
+
   const onSubmit = async (data) => {
-    /*TODO*/
+    try {
+      const response = await modifyCompany(
+        data.id,
+        {
+          name: data.name, 
+          cuit: data.cuit,
+          address: {
+            street: data.address,
+            number: '456',
+            postalCode: '1234',
+            province: data.province,
+            neighborhood: 'Barrio Ejemplo',
+          },
+          phone: data.phone,
+          email: data.adminEmail,
+          threshold: {
+            full: 80,
+            warning: 40
+          }
+        }
+      )
+
+      //TODO later: validar que la respuesta sea la esperada, y sino tirar error.
+      handleClose();
+      onSuccess();
+    } catch (error) {
+      console.error('Error submitting form', error);
+    }
   };
 
   const errorMessages = errors ? (
@@ -140,7 +180,7 @@ export const ModifyCompanyForm = ({ //TODO: UPDATE
             >
               <InputForm
                 control={control}
-                name={'razonSocial'}
+                name={'name'}
                 label={'Razón Social'}
               />
             </Box>
@@ -200,7 +240,7 @@ export const ModifyCompanyForm = ({ //TODO: UPDATE
               }}
             >
               <SelectForm
-                name={'provincia'}
+                name={'province'}
                 label={'Provincia'}
                 control={control}
                 options={provincias}
@@ -214,7 +254,7 @@ export const ModifyCompanyForm = ({ //TODO: UPDATE
             >
               <InputForm
                 control={control}
-                name={'direccion'}
+                name={'address'}
                 label={'Dirección'}
               />
             </Box>
@@ -262,7 +302,7 @@ export const ModifyCompanyForm = ({ //TODO: UPDATE
             >
               <InputForm
                 control={control}
-                name={'mailDelAdmin'}
+                name={'adminEmail'}
                 label={'Email del Admin'}
               />
             </Box>
@@ -274,7 +314,7 @@ export const ModifyCompanyForm = ({ //TODO: UPDATE
             >
               <InputForm
                 control={control}
-                name={'telefono'}
+                name={'phone'}
                 label={'Teléfono de contacto'}
               />
             </Box>
@@ -292,7 +332,9 @@ export const ModifyCompanyForm = ({ //TODO: UPDATE
 
       <CancelAndSubmitButton
         handleClose={handleClose}
-        onSubmit={onSubmit}
+        buttonSubmitMessage='MODIFICAR'
+        onSubmit={handleSubmit(onSubmit)}
+        isLoading={isModifyCompanyLoading}
       />
     </form>
   );

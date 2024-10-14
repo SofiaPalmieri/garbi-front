@@ -84,3 +84,23 @@ export const useModifyCompany = () => {
     isLoading,
   };
 };
+
+export const useDeleteCompany = () => {
+  const {
+    commonFetch, isLoading
+  } = useFetch({
+    baseUri: baseCompaniesUri,
+  });
+
+  const deleteCompany = (companyId) => {
+    return commonFetch({
+      uri: '/' + companyId,
+      method: HTTPMethods.DELETE,
+    });
+  };
+
+  return {
+    deleteCompany,
+    isLoading,
+  };
+};

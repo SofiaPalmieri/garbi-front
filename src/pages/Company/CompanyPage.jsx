@@ -125,6 +125,7 @@ export const CompanyPage = () => {
             form={<ModifyCompanyForm
               companyToModify={companyToModify}
               handleClose={handleCloseModifyCompanyModal}
+              onSuccess={refreshList}
             />}
           />
           <ModalCreateResource
@@ -134,6 +135,7 @@ export const CompanyPage = () => {
             form={<DeleteCompanyForm
               companyToDelete={companyToDelete}
               handleClose={handleCloseDeleteCompanyModal}
+              onSuccess={refreshList}
             />}
           />
 

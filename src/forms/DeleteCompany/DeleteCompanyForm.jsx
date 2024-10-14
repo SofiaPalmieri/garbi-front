@@ -7,18 +7,43 @@ import {
 import {
   CancelAndSubmitButton 
 } from '../../components/CancelAndSubmitButton/CancelAndSubmitButton';
+import {
+  useCompanies 
+} from '../../api/hooks/useCompanies/useCompanies';
 
 
 export const DeleteCompanyForm = ({
   companyToDelete,
-  handleClose
+  handleClose,
+  onSuccess
 }) => {
 
-  useForm({
+  const {
+    handleSubmit,
+  } = useForm({
     defaultValues: {
       idCompany: companyToDelete?.id
     },
   });
+
+  const {
+    deleteCompany: {
+      deleteCompany,
+      isDeleteCompanyLoading 
+    },
+  } = useCompanies();
+
+  const onSubmit = async (data) => {
+    try {
+      const response = await deleteCompany(data.idCompany);
+
+      //TODO later: validar que la respuesta sea la esperada, y sino tirar error.
+      handleClose();
+      onSuccess();
+    } catch (error) {
+      console.error('Error submitting form', error);
+    }
+  };
 
   return (
     <form>
@@ -42,7 +67,7 @@ export const DeleteCompanyForm = ({
               fontWeight: '500' 
             }}
           >
-            {companyToDelete?.id}
+            {companyToDelete?.name}
           </Typography>
           ? No podrá deshacer esta acción.
         </Typography>
@@ -50,6 +75,8 @@ export const DeleteCompanyForm = ({
       <CancelAndSubmitButton
         buttonSubmitMessage='ELIMINAR'
         handleClose={handleClose}
+        onSubmit={handleSubmit(onSubmit)}
+        isLoading={isDeleteCompanyLoading}
       />
     </form>
   )
