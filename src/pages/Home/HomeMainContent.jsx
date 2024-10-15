@@ -184,10 +184,10 @@ export default function HomeMainContent({
       getCompany,
       isGetCompanyLoading
     },
-    reviewCompany: {
-      reviewCompany,
-      isReviewCompanyLoading
-    },
+    modifyCompany: {
+      modifyCompany,
+      isModifyCompanyLoading
+    }
   } = useCompanies();
 
 
@@ -198,7 +198,6 @@ export default function HomeMainContent({
       getCompany(companyId)
         .then((response) => {
           setCompany(response)
-          setThresholdInformation(getCompanyThresholdInformation(response.threshold))
         });
     }
   }, []);
@@ -239,7 +238,7 @@ export default function HomeMainContent({
 
   const handleCompanyUpdate = async (reviewCompanyBody) => {
     try {
-      await reviewCompany(reviewCompanyBody.id, reviewCompanyBody);
+      await modifyCompany(reviewCompanyBody.id, reviewCompanyBody);
       setCompany(reviewCompanyBody)
     } catch (error) {
       console.error('Error updating company:', error);

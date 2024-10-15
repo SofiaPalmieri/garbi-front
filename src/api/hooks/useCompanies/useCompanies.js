@@ -2,7 +2,8 @@ import {
   useCreateCompany,
   useFetchCompanies,
   useModifyCompany,
-  useDeleteCompany
+  useDeleteCompany,
+  useFetchCompany
 } from './request';
 
 export const useCompanies = () => {
@@ -21,6 +22,11 @@ export const useCompanies = () => {
     modifyCompany, 
     isLoading: isModifyCompanyLoading 
   } = useModifyCompany();
+
+  const {
+    getCompany, 
+    isLoading: isGetCompanyLoading 
+  } = useFetchCompany();
 
   const {
     deleteCompany, 
@@ -44,5 +50,9 @@ export const useCompanies = () => {
       deleteCompany,
       isDeleteCompanyLoading,
     },
+    getCompany: {
+      getCompany,
+      isGetCompanyLoading
+    }
   };
 };
