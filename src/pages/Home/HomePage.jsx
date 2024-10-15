@@ -27,6 +27,8 @@ import {
   formatContainers 
 } from '../../api/hooks/useReports/mappers';
 
+
+
 const createReportSchema = object({
 }).required();
 
@@ -38,6 +40,8 @@ export default function HomePage() {
   const [containersToRender, setContainersToRender] = useState([])
   const [containerSelected, setContainerSelected] = useState(null);
 
+
+  
 
   const {
     control, handleSubmit, setValue, formState: {
@@ -95,6 +99,9 @@ export default function HomePage() {
       console.log(e);
     }
   }, []);
+
+
+
 
 
   const whenFiltersSubmit = ({
@@ -161,3 +168,4 @@ export default function HomePage() {
     handleSubmit={handleSubmit(whenFiltersSubmit)}
   />;
 }
+
