@@ -64,6 +64,26 @@ export const useFetchCompanies = () => {
   }
 };
 
+export const useFetchCompany = () => {
+  const {
+    commonFetch, isLoading 
+  } = useFetch({
+    baseUri: baseCompaniesUri,
+  });
+
+  const getCompany = (companyId) => {
+    return commonFetch({
+      uri: '/' + companyId,
+      method: HTTPMethods.GET,
+    });
+  };
+
+  return {
+    getCompany,
+    isLoading,
+  };
+};
+
 export const useModifyCompany = () => {
   const {
     commonFetch, isLoading
