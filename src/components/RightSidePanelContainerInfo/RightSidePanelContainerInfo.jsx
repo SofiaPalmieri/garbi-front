@@ -18,6 +18,9 @@ const calculateTimeDifference = (updatedAt) => {
 export const RightSidePanelContainerInfo = ({
   containerSelected, getBatteryIcon, company 
 }) => {
+  console.log('🚀 ~ company:', company)
+  console.log('🚀 ~ containerSelected:', containerSelected)
+  console.log('🚀 ~ getBatteryIcon:', getBatteryIcon)
   return (
     <Box
       sx={{
@@ -155,7 +158,7 @@ export const RightSidePanelContainerInfo = ({
             alignItems: 'center',
           }}
         >
-          {getBatteryIcon(containerSelected.battery, company)}
+          {getBatteryIcon(containerSelected.battery)}
           <Typography
             sx={{
               color: 'rgba(0, 0, 0, 0.87)',

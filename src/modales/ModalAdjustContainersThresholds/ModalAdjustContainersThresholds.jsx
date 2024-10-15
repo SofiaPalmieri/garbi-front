@@ -16,12 +16,9 @@ import {
   yupResolver 
 } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import {
-  useEffect, useState 
-} from 'react'; 
-import {
-  useFetchCompany 
-} from '../../api/hooks/useCompanies/request';
+
+
+
 
 const schema = yup.object({
   thresholdFull: yup
@@ -49,16 +46,8 @@ const style = {
 };
 
 export const ModalAdjustContainersThreshold = ({
-  open, handleClose, onSubmit 
+  open, handleClose, onSubmit, company, thresholdInformation
 }) => {
-  const {
-    getCompany, isLoading 
-  } = useFetchCompany();
-  const [company, setCompany] = useState(null);
-
-
-  const user = JSON.parse(localStorage.getItem('user'));
-  const companyId = user?.companyId;
 
   const {
     control, handleSubmit, formState: {
@@ -72,21 +61,11 @@ export const ModalAdjustContainersThreshold = ({
     resolver: yupResolver(schema)
   });
 
-  useEffect(() => {
-    if (companyId && open) {
-      getCompany(companyId).then((response) => {
-        setCompany(response);
-      });
-    }
-  }, [companyId, open]);
-
-  const modifiedCompany = {
-    ...company 
-  };
-
-
-
   const handleFormSubmit = (data) => {
+    const modifiedCompany = {
+      ...company
+    }
+
     delete modifiedCompany.truckTerminal;
     delete modifiedCompany.timestamp
     delete modifiedCompany.dump    
