@@ -10,8 +10,6 @@ import {
 import {
   useForm 
 } from 'react-hook-form';
-
-
 import {
   InputForm 
 } from '../../components/InputForm';
@@ -57,12 +55,12 @@ const turnos = [
 const newEmployeeSchema = object({
   lastName: string()
     .required('El apellido es obligatorio')
-    .matches(/^[a-zA-Z\s]+$/, 'El apellido no puede contener números o caracteres especiales')
+    .matches(/^[a-zA-ZÀ-ÿ\s]+$/, 'El apellido no puede contener números o caracteres especiales')
     .min(2, 'El apellido debe tener al menos 2 caracteres')
     .max(50, 'El apellido no debe exceder 50 caracteres'),
   firstName: string()
     .required('El nombre es obligatorio')
-    .matches(/^[a-zA-Z\s]+$/, 'El nombre no puede contener números o caracteres especiales')
+    .matches(/^[a-zA-ZÀ-ÿ\s]+$/, 'El nombre no puede contener números o caracteres especiales')
     .min(2, 'El nombre debe tener al menos 2 caracteres')
     .max(50, 'El nombre no debe exceder 50 caracteres'),
   personalPhone: string()
@@ -126,7 +124,7 @@ export const CreateEmployeeForm = ({
         companyPhone: data.enterprisePhone,
         companyEmail: data.enterpriseEmail,
         workingShift: data.timeShift,
-        role: data.jobPosition //TODO: see what the BE needs here
+        role: data.jobPosition
       });
 
       //TODO later: validar que la respuesta sea la esperada, y sino tirar error.
@@ -349,6 +347,7 @@ export const CreateEmployeeForm = ({
       <CancelAndSubmitButton
         handleClose={handleClose}
         onSubmit={handleSubmit(onSubmit)}
+        isLoading={isCreateEmployeeLoading}
       />
     </form>
   );

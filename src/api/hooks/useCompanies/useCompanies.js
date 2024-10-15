@@ -1,28 +1,48 @@
 import {
-  useReviewCompany,
-  useFetchCompany
+  useCreateCompany,
+  useFetchCompanies,
+  useModifyCompany,
+  useDeleteCompany
 } from './request';
-  
+
 export const useCompanies = () => {
-  
+
   const {
-    reviewCompany, 
-    isLoading: isReviewCompanyLoading 
-  } = useReviewCompany();
+    createCompany, 
+    isLoading: isCreateCompanyLoading 
+  } = useCreateCompany();
+
   const {
-    getCompany, 
-    isLoading: isGetCompanyLoading 
-  } = useFetchCompany();
-  
+    fetchCompanies,
+    isLoading: isLoadingFetchCompanies
+  } = useFetchCompanies();
+
+  const {
+    modifyCompany, 
+    isLoading: isModifyCompanyLoading 
+  } = useModifyCompany();
+
+  const {
+    deleteCompany, 
+    isLoading: isDeleteCompanyLoading 
+  } = useDeleteCompany();
+
   return {
-    reviewCompany: {
-      reviewCompany,
-      isReviewCompanyLoading,
+    createCompany: {
+      createCompany,
+      isCreateCompanyLoading,
     },
-    getCompany: {
-      getCompany,
-      isGetCompanyLoading,
+    fetchCompanies: {
+      fetchCompanies,
+      isLoadingFetchCompanies
+    },
+    modifyCompany: {
+      modifyCompany,
+      isModifyCompanyLoading,
+    },
+    deleteCompany: {
+      deleteCompany,
+      isDeleteCompanyLoading,
     },
   };
 };
-  

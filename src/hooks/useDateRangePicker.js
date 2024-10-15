@@ -1,8 +1,12 @@
 import {
   TimestampUtil
 } from '../utils/timestampUtil';
+import {
+  subDays
+} from 'date-fns'
 
-export const getInitialQueryParams = (fromDate, toDate) => {
+// todo: renombrar esta funcion a getInitialQueryParamsForDateRangePicker
+export const getInitialQueryParams = (fromDate = subDays(new Date(), 6), toDate = new Date()) => {
   return [
     {
       key: 'from',
@@ -18,7 +22,7 @@ export const getInitialQueryParams = (fromDate, toDate) => {
 export const handleDateRangeChange = (addMultipleQueryParamFilter) => {
   const onDateRangeChange = (selectedDateRange) => {
     const [selectedFromDate, selectedToDate] = selectedDateRange
-    
+
     addMultipleQueryParamFilter([
       {
         key: 'from',
@@ -30,6 +34,6 @@ export const handleDateRangeChange = (addMultipleQueryParamFilter) => {
       }
     ])
   }
-  
+
   return onDateRangeChange
 } 

@@ -4,6 +4,8 @@ export class TimestampUtil {
   static convertToDateAndHour(timestamp) {
     const date = new Date(timestamp);
 
+    date.setHours(date.getHours() + 3) //to transform to Argentina time
+
     const formattedDate = date.toLocaleDateString('es-ES', {
       day: '2-digit',
       month: '2-digit',
@@ -19,6 +21,20 @@ export class TimestampUtil {
     return {
       date: formattedDate,
       time: formattedTime
+    }
+  }
+
+  static formatMinutes = (minutes) => {
+    console.log('🚀 ~ TimestampUtil ~ minutes:', minutes)
+    const hours = Math.floor(minutes / 60);
+    const remainingMinutes = minutes % 60;
+  
+    if (hours > 0 && remainingMinutes !== 0) {
+      return `${hours.toFixed(0)} hr ${remainingMinutes.toFixed(0)} min`;
+    } else if (hours > 0 && remainingMinutes === 0) {
+      return `${hours.toFixed(0)} hr`;
+    } else {
+      return `${remainingMinutes.toFixed(0)} min`;
     }
   }
 

@@ -63,17 +63,7 @@ const routeDetailsMapper = (route) => {
     } = TimestampUtil.convertToDateAndHour(finishedTimestamp);
     endTime = `Fin: ${finishedTime}`;
 
-    const totalMinutes = Math.round(route.directions.total_duration / 60);
-    const hours = Math.floor(totalMinutes / 60);
-    const minutes = totalMinutes % 60;
-
-    if (hours > 0 && minutes !== 0) {
-      duration = `Duración del recorrido: ${hours} hr  ${minutes} min`;
-    } else if (minutes === 0) {
-      duration = `Duración del recorrido: ${hours} hr`;
-    } else {
-      duration = `Duración del recorrido: ${minutes} min`;
-    }
+    duration = `Duración: ${TimestampUtil.formatMinutes(route.directions.total_duration / 60)}`
   } else if (startedTimestamp) { // recorridos en curso: empezado pero no finalizado
     duration = 'Recorrido en curso';
     startTime = `Comenzó a las ${startTime}`;

@@ -11,20 +11,22 @@ export const SelectForm = ({
   control,
   errors,
   options,
+  defaultValue = '',
   optionalDefaultValue,
   required = true,
   size = 'small',
   variant = 'outlined',
   shrink = true,
 }) => {
+
   return (
     <Controller
       name={name}
+      defaultValue={defaultValue}
       control={control}
       rules={{
         required
       }}
-      defaultValue={''}
       render={({
         field
       }) => (
@@ -58,7 +60,7 @@ export const SelectForm = ({
             >
               <em>{optionalDefaultValue}</em>
             </MenuItem>}
-            {options.map((option) => (
+            {options.map((option, index) => (
               <MenuItem
                 key={option.value}
                 value={option.value}

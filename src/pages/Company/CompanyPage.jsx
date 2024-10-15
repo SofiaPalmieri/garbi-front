@@ -1,15 +1,16 @@
 import {
-  Box, Paper,
-  TableCell,
-  TableRow,
-  Typography
+  useCompanies
+} from '../../api/hooks/useCompanies/useCompanies';
+import {
+  Box, 
+  Divider,
 } from '@mui/material';
 import {
-  useState
-} from 'react';
+  BreadcrumbsComponent
+} from '../../components/BreadcrumbsComponent';
 import {
-  SearcherPaginated
-} from '../../components/SearcherPaginated';
+  useCallback, useState
+} from 'react';
 import {
   ModalCreateResource
 } from '../../modales/ModalCreateResource';
@@ -17,191 +18,44 @@ import {
   CreateCompanyForm
 } from '../../forms/CreateCompany/CreateCompanyForm';
 import {
+  ModifyCompanyForm
+} from '../../forms/ModifyCompany/ModifyCompanyForm';
+import {
   DeleteCompanyForm
 } from '../../forms/DeleteCompany/DeleteCompanyForm';
-import {
-  TableWithEditAndDeleteButtons
-} from '../../components/TableWithEditAndDeleteButtons';
 import { 
   TableButtons 
 } from '../../components/TableButtons/TableButtons';
-
-const companiesInitial = [
-  {
-    id: 1234,
-    companyName: 'Tech Solutions LLC',
-    CUIT: '30-12345678-9',
-    province: 'Buenos Aires',
-    address: 'Av. Libertador General 1234',
-    startDate: '2020-01-15',
-    adminEmail: 'admin@techsolutions.com',
-  },
-  {
-    id: 12345,
-    companyName: 'Innovatech Corp',
-    CUIT: '30-87654321-0',
-    province: 'Cordoba',
-    address: 'Calle Falsa 123',
-    startDate: '2018-06-20',
-    adminEmail: 'contact@innovatech.com',
-  },
-  {
-    id: 123456,
-    companyName: 'Green Energy SA',
-    CUIT: '30-11223344-5',
-    province: 'Santa Fe',
-    address: 'Av. Siempreviva 742',
-    startDate: '2015-09-10',
-    adminEmail: 'info@greenenergy.com',
-  },
-];
-
-const CompanyRowRender = (company) => {
-  return (
-    <TableRow
-      key={company.id}
-      sx={{
-        height: '48px',
-        '& .MuiTableCell-root:last-child': {
-          borderRight: 0,
-        },
-        '& .MuiTableCell-root': {
-          height: '100%',
-          paddingTop: 0,
-          paddingBottom: 0
-        }
-      }}
-    >
-      <TableCell
-        component='th'
-        scope='row'
-      >
-        <Typography
-          sx={{
-            fontSize: '.875rem',
-            fontWeight: 400,
-            lineHeight: ' 1.2512rem',
-            color: '#000000DE'
-          }}
-        >
-          {company.companyName}
-        </Typography>
-      </TableCell>
-      <TableCell
-        align='center'
-      >
-        <Typography
-          sx={{
-            fontSize: '.875rem',
-            fontWeight: 400,
-            lineHeight: ' 1.2512rem',
-            color: '#000000DE'
-          }}
-        >
-          {company.CUIT}
-        </Typography>
-      </TableCell>
-      <TableCell
-        align='center'
-      ><Typography
-        sx={{
-            fontSize: '.875rem',
-            fontWeight: 400,
-            lineHeight: ' 1.2512rem',
-            color: '#000000DE'
-          }}
-      >
-          {company.province}
-        </Typography>
-      </TableCell>
-      <TableCell
-        align='center'
-      >
-        <Typography
-          sx={{
-            fontSize: '.875rem',
-            fontWeight: 400,
-            lineHeight: ' 1.2512rem',
-            color: '#000000DE'
-          }}
-        >
-          {company.address}
-        </Typography>
-      </TableCell>
-      <TableCell
-        align='center'
-      >
-        <Typography
-          sx={{
-            fontSize: '.875rem',
-            fontWeight: 400,
-            lineHeight: ' 1.2512rem',
-            color: '#000000DE'
-          }}
-        >
-          {company.startDate}
-        </Typography>
-      </TableCell>
-      <TableCell
-        align='center'
-      >
-        <Typography
-          sx={{
-            fontSize: '.875rem',
-            fontWeight: 400,
-            lineHeight: ' 1.2512rem',
-            color: '#000000DE'
-          }}
-        >
-          {company.adminEmail}
-        </Typography>
-      </TableCell>
-    </TableRow>
-  )
-}
+import {
+  CommonTableList
+} from '../../components/CommonTableList/CommonTableList';
+import {
+  CompaniesTable
+} from '../../tables/CompaniesTable/CompaniesTable';
 
 
-const tableHeaders = [
-  {
-    value: 'Razón social',
-    minWidth: 160
-  },
-  {
-    value: 'CUIT',
-    minWidth: 144
-  },
-  {
-    value: 'Provincia',
-    minWidth: 200
-  },
-  {
-    value: 'Dirección',
-    minWidth: 176
-  },
-  {
-    value: 'Fecha de inicio',
-    minWidth: 136
-  },
-  {
-    value: 'Mail admin',
-    minWidth: 144
-  }
-];
+const mapper = (data) => data
 
-const CompanyPage = () => {
-  const [companies, setcompanies] = useState(companiesInitial)
+export const CompanyPage = () => {
+
   const [openCreateCompanyModal, setOpenCreateCompanyModal] = useState(false);
-  const handleOpenCreateCompanyModal = () => setOpenCreateCompanyModal(true);
-  const handleCloseCreateCompanyModal = () => setOpenCreateCompanyModal(false);
   const [openDeleteCompanyModal, setOpenDeleteCompanyModal] = useState(false);
   const [companyToDelete, setCompanyToDelete] = useState(false);
-
   const [openModifyCompanyModal, setOpenModifyCompanyModal] = useState(false);
   const [companyToModify, setCompanyToModify] = useState(false);
+  const [reloadTable, setReloadTable] = useState(0);
+  const [selectedElement, setSelectedElement] = useState(null);
+
+  const refreshList = () => {
+    setReloadTable(prev => prev + 1);
+  };
+
+  const handleOpenCreateCompanyModal = () => setOpenCreateCompanyModal(true);
+  const handleCloseCreateCompanyModal = () => setOpenCreateCompanyModal(false);
 
   const handleOpenModifyCompanyModal = (companyToModify) => {
     setCompanyToModify(companyToModify)
-    setCompanyToModify(true)
+    setOpenModifyCompanyModal(true)
   };
   const handleCloseModifyCompanyModal = () => {
     setOpenModifyCompanyModal(false)
@@ -217,7 +71,17 @@ const CompanyPage = () => {
     setCompanyToDelete(null);
   };
 
-  const [selectedElement, setSelectedElement] = useState(null);
+  const {
+    fetchCompanies: {
+      fetchCompanies,
+      isLoadingFetchCompanies
+    }
+  } = useCompanies();
+
+  const fetchData = useCallback((lastKey) => {
+    return fetchCompanies(lastKey)
+  }, [])
+
   const handleRowClick = (element) => {
     setSelectedElement(element);
   };
@@ -228,60 +92,71 @@ const CompanyPage = () => {
       sx={{
         width: '100%',
         height: '100%',
-        padding: '4rem',
       }}
     >
-      <ModalCreateResource
-        title={'Nueva Empresa'}
-        description={
-          'Complete los siguientes campos para agregar una nueva empresa de recolección al sistema'
-        }
-        open={openCreateCompanyModal}
-        handleClose={handleCloseCreateCompanyModal}
-        form={<CreateCompanyForm
-          handleClose={handleCloseCreateCompanyModal}
-        />}
-      />
-      <ModalCreateResource
-        title={'Eliminar empresa'}
-        open={openDeleteCompanyModal}
-        handleClose={handleCloseDeleteCompanyModal}
-        form={<DeleteCompanyForm
-          companyToDelete={companyToDelete}
-          handleClose = {handleCloseDeleteCompanyModal}
-        />}
-      />
+      <Box >
+        <Box
+          sx={{
+            width: '100%',
+            padding: '16px 32px',
+          }}
+        >
+          <BreadcrumbsComponent
+            title={'Empresas'}
+          />
+        </Box>
+        <Divider />
+        <>
+          <ModalCreateResource
+            title={'Nueva Empresa'}
+            description={'Complete los siguientes campos para agregar una nueva empresa de recolección al sistema'}
+            open={openCreateCompanyModal}
+            handleClose={handleCloseCreateCompanyModal}
+            form={<CreateCompanyForm
+              handleClose={handleCloseCreateCompanyModal}
+              onSuccess={refreshList}
+            />}
+          />
+          <ModalCreateResource
+            title={'Modificar datos de la empresa'}
+            open={openModifyCompanyModal}
+            handleClose={handleCloseModifyCompanyModal}
+            form={<ModifyCompanyForm
+              companyToModify={companyToModify}
+              handleClose={handleCloseModifyCompanyModal}
+              onSuccess={refreshList}
+            />}
+          />
+          <ModalCreateResource
+            title={'Eliminar empresa'}
+            open={openDeleteCompanyModal}
+            handleClose={handleCloseDeleteCompanyModal}
+            form={<DeleteCompanyForm
+              companyToDelete={companyToDelete}
+              handleClose={handleCloseDeleteCompanyModal}
+              onSuccess={refreshList}
+            />}
+          />
 
-      <Paper
-        sx={{
-          width: '100%',
-        }}
-      >
-        <SearcherPaginated
-          placeholderInput={'Buscar por Razón social o Nombre'}
-          buttonText={'nueva empresa'}
-          inputWidth={'20rem'}
-          handleRowClick={handleRowClick}
-          componentToRender={
-            <TableButtons
-              selectedElement={selectedElement}
-              handleOpenDeleteElementModal={handleOpenDeleteCompanyModal}
-              handleOpenModifyElementModal={handleOpenModifyCompanyModal}
-              handleOpenCreateElementModal={handleOpenCreateCompanyModal}
-              mainButtonText={'Nueva empresa'}
-            />
-          }
-        />
-        <TableWithEditAndDeleteButtons
-          tableHeaders={tableHeaders}
-          rows={companies}
-          renderRow={CompanyRowRender}
-          handleOnClickEditButton={handleCloseModifyCompanyModal}
-          handleOnClickDeleteButton={handleOpenDeleteCompanyModal}
-        />
-      </Paper>
+          <CommonTableList
+            table={CompaniesTable}
+            fetchData={fetchData}
+            isLoadingFetchData={isLoadingFetchCompanies}
+            mapper={mapper}
+            reloadTable={reloadTable}
+            handleRowClick={handleRowClick}
+            componentToRender={
+              <TableButtons
+                selectedElement={selectedElement}
+                handleOpenDeleteElementModal={handleOpenDeleteCompanyModal}
+                handleOpenModifyElementModal={handleOpenModifyCompanyModal}
+                handleOpenCreateElementModal={handleOpenCreateCompanyModal}
+                mainButtonText={'Nueva empresa'}
+              />
+            }
+          />
+        </>
+      </Box>
     </Box>
   );
-};
-
-export default CompanyPage;
+}

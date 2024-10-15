@@ -147,6 +147,7 @@ export const EmployeePage = () => {
               form={<ModifyEmployeeForm
                 employeeToModify={employeeToModify}
                 handleClose={handleCloseModifyEmployeeModal}
+                onSuccess={refreshList}
               />}
             />
             <ModalCreateResource
@@ -156,6 +157,7 @@ export const EmployeePage = () => {
               form={<DeleteEmployeeForm
                 employeeToDelete={employeeToDelete}
                 handleClose={handleCloseDeleteEmployeeModal}
+                onSuccess={refreshList}
               />}
             />
 

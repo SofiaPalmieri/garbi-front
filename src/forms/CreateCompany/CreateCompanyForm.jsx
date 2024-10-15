@@ -8,8 +8,6 @@ import {
   Box,
   Typography,
 } from '@mui/material';
-
-
 import {
   useForm 
 } from 'react-hook-form';
@@ -25,25 +23,28 @@ import {
 import {
   CustomAlert 
 } from '../../components/CustomAlert/CustomAlert';
+import {
+  useCompanies 
+} from '../../api/hooks/useCompanies/useCompanies';
 
 const provincias = [
   {
-    value: 'buenosAires',
+    value: 'Buenos Aires',
     label: 'Buenos Aires',
   },
   {
-    value: 'cordoba',
+    value: 'Córdoba',
     label: 'Córdoba',
   },
   {
-    value: 'santaFe',
+    value: 'Santa Fe',
     label: 'Santa Fe',
   },
   // Agrega más provincias según sea necesario
 ];
 
 const newCompanySchema = object({
-  razonSocial: string()
+  name: string()
     .required('La razón social es obligatoria')
     .min(2, 'La razón social debe tener al menos 2 caracteres')
     .max(50, 'La razón social no debe exceder 50 caracteres'),
@@ -51,19 +52,23 @@ const newCompanySchema = object({
     .required('El CUIT es obligatorio')
     .min(11, 'El CUIT debe tener 11 caracteres')
     .max(11, 'El CUIT debe tener 11 caracteres'),
-  provincia: string().required('La provincia es obligatoria'),
-  direccion: string().required('La dirección es obligatoria'),
-  mailDelAdmin: string()
+  province: string().required('La provincia es obligatoria'),
+  zone: string().required('La zona es obligatoria'),
+  street: string().required('La calle es obligatoria'),
+  number: string()
+    .required('La altura es obligatoria')
+    .matches(/^\d+$/, 'La altura no es válida'),
+  adminEmail: string()
     .required('El email del admin es obligatorio')
     .email('El email ingresado no es válido'),
-  telefono: string()
+  phone: string()
     .required('El teléfono de contacto es obligatorio')
     .matches(/^\+?\d{10,12}$/, 'El teléfono de contacto no es válido'),
 }).required();
 
 
 export const CreateCompanyForm = ({
-  handleClose
+  handleClose, onSuccess
 }) => {
   const {
     control,
@@ -73,18 +78,57 @@ export const CreateCompanyForm = ({
     }
   } = useForm({
     defaultValues: {
-      razonSocial: '',
+      name: '',
       cuit: '',
-      provincia: '',
-      direccion: '',
-      mailDelAdmin:  '',
-      telefono: '',
+      province: '',
+      address: '',
+      adminEmail:  '',
+      phone: '',
     },
     resolver: yupResolver(newCompanySchema),
   });
 
+  const {
+    createCompany: {
+      createCompany,
+      isCreateCompanyLoading 
+    },
+  } = useCompanies();
+
   const onSubmit = async (data) => {
-    /*TODO*/
+    try {
+      const response = await createCompany({
+        name: data.name, 
+        cuit: data.cuit,
+        address: {
+          street: data.street,
+          number: data.number,
+          postalCode: '1234',
+          province: data.province,
+          neighborhood: data.zone,
+        },
+        phone: data.phone,
+        email: data.adminEmail,
+        threshold: {
+          full: 80,
+          warning: 40
+        },
+        truckTerminal: {
+          lat: -34.56796791657094,
+          lng: -58.40815129015922
+        },
+        dump: {
+          lat: -34.57644431357097,
+          lng: -58.44205029209349
+        }
+      })
+
+      //TODO later: validar que la respuesta sea la esperada, y sino tirar error.
+      handleClose();
+      onSuccess();
+    } catch (error) {
+      console.error('Error submitting form', error);
+    }
   };
 
   const errorMessages = errors ? (
@@ -141,7 +185,7 @@ export const CreateCompanyForm = ({
             >
               <InputForm
                 control={control}
-                name={'razonSocial'}
+                name={'name'}
                 label={'Razón Social'}
               />
             </Box>
@@ -163,7 +207,6 @@ export const CreateCompanyForm = ({
       <Box
         sx={{
           width: '100%',
-          height: '104px',
           padding: '16px 24px',
         }}
       >
@@ -201,7 +244,7 @@ export const CreateCompanyForm = ({
               }}
             >
               <SelectForm
-                name={'provincia'}
+                name={'province'}
                 label={'Provincia'}
                 control={control}
                 options={provincias}
@@ -215,8 +258,41 @@ export const CreateCompanyForm = ({
             >
               <InputForm
                 control={control}
-                name={'direccion'}
-                label={'Dirección'}
+                name={'zone'}
+                label={'Zona'}
+              />
+            </Box>
+          </Box>
+          <Box
+            sx={{
+              display: 'flex',
+              width: '100%',
+              height: '40px',
+              gap: '24px',
+            }}
+          >
+            <Box
+              sx={{
+                flex: 1,
+                height: '40px',
+              }}
+            >
+              <InputForm
+                control={control}
+                name={'street'}
+                label={'Calle'}
+              />
+            </Box>
+            <Box
+              sx={{
+                flex: 1,
+                height: '40px',
+              }}
+            >
+              <InputForm
+                control={control}
+                name={'number'}
+                label={'Altura'}
               />
             </Box>
           </Box>
@@ -225,7 +301,6 @@ export const CreateCompanyForm = ({
       <Box
         sx={{
           width: '100%',
-          height: '104px',
           padding: '16px 24px',
         }}
       >
@@ -263,7 +338,7 @@ export const CreateCompanyForm = ({
             >
               <InputForm
                 control={control}
-                name={'mailDelAdmin'}
+                name={'adminEmail'}
                 label={'Email del Admin'}
               />
             </Box>
@@ -275,7 +350,7 @@ export const CreateCompanyForm = ({
             >
               <InputForm
                 control={control}
-                name={'telefono'}
+                name={'phone'}
                 label={'Teléfono de contacto'}
               />
             </Box>
@@ -293,7 +368,8 @@ export const CreateCompanyForm = ({
 
       <CancelAndSubmitButton
         handleClose={handleClose}
-        onSubmit={onSubmit}
+        onSubmit={handleSubmit(onSubmit)}
+        isLoading={isCreateCompanyLoading}
       />
     </form>
   );

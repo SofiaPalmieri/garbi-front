@@ -1,4 +1,7 @@
 import {
+  polylineToCoordinates 
+} from '../../pages/Area/AreaPage';
+import {
   completeEditablePath,
   completePathByPolyline
 } from '../../reducers/drawReducer';
@@ -113,6 +116,7 @@ export default function reducer(state, action) {
 
     area.title = title
     area.description = description
+    area.coordinates = polylineToCoordinates(area.polyline)
 
     return [...state];
   }
@@ -146,12 +150,11 @@ export default function reducer(state, action) {
       description,
       title,
       path: getPathsAsLatLng(polyline),
+      coordinates: polylineToCoordinates(polyline),
       polyline,
       color,
       polygon
     }
-
-    console.log(newArea)
 
     return [...state, newArea]
   }

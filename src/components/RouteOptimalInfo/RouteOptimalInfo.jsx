@@ -3,6 +3,9 @@ import {
 } from '@mui/material'
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import RouteIcon from '@mui/icons-material/Route';
+import {
+  TimestampUtil 
+} from '../../utils/timestampUtil';
 
 export const RouteOptimalInfo = ({
   name,
@@ -71,7 +74,7 @@ export const RouteOptimalInfo = ({
               lineHeight: '1.5rem'
             }}
           >
-            {timeInMinutes + ' min'}
+            {TimestampUtil.formatMinutes(timeInMinutes)}
           </Typography>
         </Box>
         <Box

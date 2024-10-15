@@ -5,28 +5,28 @@ import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined
 import RoomOutlinedIcon from '@mui/icons-material/RoomOutlined';
 import {
   CircularProgress,
-  Divider 
+  Divider
 } from '@mui/material';
 import {
   Box
 } from '@mui/system';
 import {
-  ReportDetailStateFlow 
+  ReportDetailStateFlow
 } from '../../components/ReportDetailStateFlow/ReportDetailStateFlow';
 import {
   ReportDetails
 } from '../ReportDetails/ReportDetails';
 import {
-  ReportDetailsDescriptionContent 
+  ReportDetailsDescriptionContent
 } from './ReportDetailsDescriptionContent';
 import {
-  ReportDetailsDescriptionHeader 
+  ReportDetailsDescriptionHeader
 } from './ReportDetailsDescriptionHeader';
 import {
-  useParams 
+  useParams
 } from 'react-router-dom';
 import {
-  useReports 
+  useReports
 } from '../../api/hooks/useReports/useReports';
 import {
   useEffect, useState
@@ -37,6 +37,9 @@ import {
 import {
   BreadcrumbsComponent
 } from '../../components/BreadcrumbsComponent/BreadcrumbsComponent';
+import {
+  HEIGHT_FULL_SCREEN 
+} from '../../config';
 
 
 const statusHistory = [ //hook up to BE later when BE sends expected data.
@@ -82,7 +85,7 @@ const sideDetailsMapper = (report) => {
 
   const reportCreator = report.userId ? 'Recolector' : 'Ciudadano'
 
-  const splitedArea = report.address.split(' - ')
+  const splitedArea = report.address.split(', ')
   const neighborhood = splitedArea[1]
   const address = splitedArea[0]
   const area = 'Área 2' //TODO: change when BE sends the area name.
@@ -147,7 +150,7 @@ const sideDetailsMapper = (report) => {
 
 export const ReportDetailsPage = () => {
   const {
-    id 
+    id
   } = useParams()
 
   const [reportData, setReportData] = useState(null);
@@ -180,11 +183,10 @@ export const ReportDetailsPage = () => {
   return (
     <Box
       sx={{
-        height: '100%',
+        minHeight: HEIGHT_FULL_SCREEN,
         width: '100%',
         display: 'flex',
         flexDirection: 'column',
-        overflow: 'hidden'
       }}
     >
       <Box
@@ -206,7 +208,7 @@ export const ReportDetailsPage = () => {
         <Box
           sx={{
             width: 1,
-            height: '70vh',
+            flex: 1,
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',
@@ -217,79 +219,76 @@ export const ReportDetailsPage = () => {
       ) : (
         <Box
           sx={{
+            padding: {
+              xs: '1rem 2rem 1.5rem', // Para pantallas pequeñas (teléfonos)
+              sm: '1.5rem 3rem 1.75rem', // Para pantallas medianas (tablets)
+              md: '2rem 4rem 2.25rem', // Para pantallas grandes (laptops y monitores grandes)
+            },
             flex: 1,
-            padding: '2rem 4rem 0'
+            display: 'flex',
           }}
         >
           <Box
             sx={{
               width: 1,
-              height: '100%'
+              display: 'flex',
             }}
           >
+
             <Box
               sx={{
                 height: 1,
-                width: 1,
-                display: 'flex'
+                flex: 1,
+                display: 'flex',
+                flexDirection: 'column',
+                p: '0 24px',
+                pb: '1.5rem'
               }}
             >
               <Box
                 sx={{
-                  height: 1,
-                  flex: 1,
-                  display: 'flex',
-                  flexDirection: 'column',
-                  p: '0 24px',
-                  pb: '1.5rem'
+                  height: '4rem',
                 }}
               >
-                <Box
-                  sx={{
-                    height: '6.25vh',
-                  }}
-                >
-                  <ReportDetailsDescriptionHeader
-                    title={reportData?.title}
-                    state={reportData?.type.replace(/_/g, ' ')}
-                  />
-                </Box>
-                <Box
-                  sx={{
-                    height: '34.18vh',
-                    mb: '1.5rem',
-                  }}
-                >
-                  <ReportDetailsDescriptionContent
-                    description={reportData?.description}
-                  />
-                </Box>
-                <Box
-                  sx={{
-                    width: 1
-                  }}
-                >
-                  <ReportDetailStateFlow
-                    statusHistory={statusHistory}
-                  />
-                </Box>
-
+                <ReportDetailsDescriptionHeader
+                  title={reportData?.title}
+                  state={reportData?.type.replace(/_/g, ' ')}
+                />
               </Box>
               <Box
                 sx={{
-                  width: '16rem',
-                  height: '18.625rem',
+                  flex: 1,
+                  mb: '1.5rem',
                 }}
               >
-                <ReportDetails
-                  reportId={id}
-                  content={reportSideDetailsContent}
-                  state={reportData?.currentStatus}
+                <ReportDetailsDescriptionContent
+                  description={reportData?.description}
+                />
+              </Box>
+              <Box
+                sx={{
+                  width: 1,
+                  height: '300px',
+                }}
+              >
+                <ReportDetailStateFlow
+                  statusHistory={statusHistory}
                 />
               </Box>
             </Box>
+            <Box
+              sx={{
+                minWidth: '18rem',
+              }}
+            >
+              <ReportDetails
+                reportId={id}
+                content={reportSideDetailsContent}
+                state={reportData?.currentStatus}
+              />
+            </Box>
           </Box>
-        </Box >
+        </Box>
       )}
     </Box >
   )

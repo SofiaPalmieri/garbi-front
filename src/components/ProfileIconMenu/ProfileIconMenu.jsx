@@ -11,6 +11,7 @@ export const ProfileIconMenu = ({
   handleClose, anchorEl
 }) => {
   const navigate = useNavigate();
+  
   const handleClickProfileItem = () => () => {
     navigate('/perfil');
     handleClose();
@@ -20,6 +21,12 @@ export const ProfileIconMenu = ({
   const userName = userData.name
   const userSurname = userData.surname
   const userEmail = userData.email
+
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    navigate('/ingresar'); 
+  };
 
   return (
     <Menu
@@ -76,7 +83,9 @@ export const ProfileIconMenu = ({
         </ListItemIcon>
         <ListItemText>Perfil</ListItemText>
       </MenuItem>
-      <MenuItem >
+      <MenuItem 
+        onClick={handleLogout}
+      >
         <ListItemIcon>
           <LogoutIcon
             fontSize='small'

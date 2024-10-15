@@ -1,55 +1,106 @@
 import {
-  useFetch
+  useFetch 
 } from '../../../hooks/useFetch';
 import {
-  baseIntegrationUri
+  baseIntegrationUri 
 } from '../../config/apiClient';
 import {
-  HTTPMethods
+  HTTPMethods 
 } from '../../config/HTTPMethods';
-  
-const baseCompanyUri = baseIntegrationUri + '/company'
-  
-export const useReviewCompany = () => {
+import QueryBuilder from '../../queryBuilder/QueryBuilder';
+import {
+  LIMIT_DEFAULT 
+} from '../../../config';
+
+const baseCompaniesUri = baseIntegrationUri + '/company'
+
+export const useCreateCompany = () => {
   const {
     commonFetch, isLoading
   } = useFetch({
-    baseUri: baseCompanyUri,
-  });
-  
-  const reviewCompany = (companyId, reviewCompanyBody) => {
-    return commonFetch({
-      uri: '/' + companyId,
-      method: HTTPMethods.PUT,
-      body: reviewCompanyBody
-    })
-  }
-  
-  return {
-    reviewCompany,
-    isLoading
-  }
-};
-
-export const useFetchCompany = () => {
-  const {
-    commonFetch, isLoading 
-  } = useFetch({
-    baseUri: baseCompanyUri,
+    baseUri: baseCompaniesUri,
   });
 
-  const getCompany = (companyId) => {
+  const createCompany = (companyBody) => {
     return commonFetch({
-      uri: '/' + companyId,
-      method: HTTPMethods.GET,
+      method: HTTPMethods.POST,
+      body: companyBody,
     });
   };
 
   return {
-    getCompany,
+    createCompany,
     isLoading,
   };
 };
 
-  
-  
+export const useFetchCompanies = () => {
+  const {
+    commonFetch, isLoading 
+  } = useFetch({
+    baseUri: baseCompaniesUri,
+  });
+
+  const fetchCompanies = (lastKey = null, limit = LIMIT_DEFAULT) => {
+    const queryBuilder = new QueryBuilder()
+
+    queryBuilder
+      .addParam('lastKey', lastKey)
+      .addParam('limit', limit)
+
+    const uri = queryBuilder.build();
+    
+
+    return commonFetch({
+      uri,
+      method: HTTPMethods.GET
+    })
+  }
+
+
+  return {
+    fetchCompanies,
+    isLoading
+  }
+};
+
+export const useModifyCompany = () => {
+  const {
+    commonFetch, isLoading
+  } = useFetch({
+    baseUri: baseCompaniesUri,
+  });
+
+  const modifyCompany = (companyId, companyBody) => {
+    return commonFetch({
+      uri: '/' + companyId,
+      method: HTTPMethods.PUT,
+      body: companyBody,
+    });
+  };
+
+  return {
+    modifyCompany,
+    isLoading,
+  };
+};
+
+export const useDeleteCompany = () => {
+  const {
+    commonFetch, isLoading
+  } = useFetch({
+    baseUri: baseCompaniesUri,
+  });
+
+  const deleteCompany = (companyId) => {
+    return commonFetch({
+      uri: '/' + companyId,
+      method: HTTPMethods.DELETE,
+    });
+  };
+
+  return {
+    deleteCompany,
+    isLoading,
+  };
+};

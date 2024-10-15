@@ -10,49 +10,118 @@ import {
 import {
   SelectForm
 } from '../../components/SelectForm/SelectForm';
-import {
-  OutlinedInputForm 
-} from '../../components/OutlinedInputForm';
+
+
 import {
   CancelAndSubmitButton 
 } from '../../components/CancelAndSubmitButton/CancelAndSubmitButton';
+import {
+  useContainers 
+} from '../../api/hooks/useContainers/useContainers';
+import {
+  CustomAlert 
+} from '../../components/CustomAlert/CustomAlert';
+import {
+  yupResolver 
+} from '@hookform/resolvers/yup';
+import {
+  object, string 
+} from 'yup';
 
-const cargos = [
+const typesOfLoad = [
   {
-    value: 'Recolector',
-    label: 'Recolector',
+    value: 'BILATERAL',
+    label: 'Bilateral',
   },
   {
-    value: 'Supervisor',
-    label: 'Supervisor',
+    value: 'LATERAL',
+    label: 'Lateral',
   },
 ];
+
+const containerSchema = object({
+  sensorId: string().required('El ID del sensor es obligatorio'),
+  street: string()
+    .required('La calle es obligatoria')
+    .matches(/^[a-zA-ZÀ-ÿ\s.]+$/, 'La calle no puede contener números o caracteres especiales'),
+  heightAddress: string()
+    .required('La altura es obligatoria')
+    .matches(/^\d+$/, 'La altura no es válida'),
+  typeOfLoad: string().required('El tipo de carga es obligatorio'),
+  containerHeight: string()
+    .required('La altura del contenedor es obligatoria')
+    .matches(/^\d+$/, 'La altura del contenedor no es válida')
+}).required();
 
 
 export const ModifyContainerForm = ({
   containerToModify,
-  handleClose
+  handleClose,
+  onSuccess
 }) => {
 
   const {
     control,
+    handleSubmit,
     formState: {
       errors
     },
   } = useForm({
     defaultValues: {
-      idContainer: '',
-      idSensor: containerToModify?.id,
-      address: '',
-      heightAddress: '',
-      typeOfLoad: '',
-      containerHeight: ''
+      idContainer: containerToModify?.id,
+      sensorId: containerToModify?.sensorId,
+      street: containerToModify?.street, //TODO
+      heightAddress: containerToModify?.heightAddress, //TODO
+      typeOfLoad: containerToModify?.type,
+      containerHeight: containerToModify?.height,
     },
+    resolver: yupResolver(containerSchema),
   });
+
+  const {
+    modifyContainer: {
+      modifyContainer,
+      isModifyContainerLoading 
+    },
+  } = useContainers()
+
+  const onSubmit = async (data) => {
+    try {
+      const response = await modifyContainer(
+        data.idContainer,
+        {
+          companyId: data.companyId,
+          sensorId: data.sensorId,
+          street: data.street, //TODO: update after PF-291. not working
+          heightAddress: data.heightAddress, //TODO: update after PF-291. not working
+          type: data.typeOfLoad,
+          height: Number(data.containerHeight)
+        }
+      )
+
+      //TODO later: validar que la respuesta sea la esperada, y sino tirar error.
+      handleClose()
+      onSuccess()
+    } catch (error) {
+      console.error('Error submitting form', error)
+    }
+  }
+
+  const errorMessages = errors ? (
+    Object.values(errors).map((error, index) => (
+      <li 
+        key={index}
+      >
+        {error.message}
+      </li>
+    ))
+  ) : null;
 
 
   return (
-    <form>
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+    >
       <Box
         sx={{
           width: '100%',
@@ -95,7 +164,6 @@ export const ModifyContainerForm = ({
                 control={control}
                 name={'idContainer'}
                 label={'ID del contenedor'}
-                errors={errors}
               />
             </Box>
             <Box
@@ -106,9 +174,8 @@ export const ModifyContainerForm = ({
             >
               <InputForm
                 control={control}
-                name={'idSensor'}
+                name={'sensorId'}
                 label={'ID del sensor'}
-                errors={errors}
               />
             </Box>
           </Box>
@@ -154,9 +221,8 @@ export const ModifyContainerForm = ({
             >
               <InputForm
                 control={control}
-                name={'address'}
-                label={'Dirección'}
-                errors={errors}
+                name={'street'}
+                label={'Calle'}
               />
             </Box>
             <Box
@@ -169,7 +235,6 @@ export const ModifyContainerForm = ({
                 control={control}
                 name={'heightAddress'}
                 label={'Altura'}
-                errors={errors}
               />
             </Box>
           </Box>
@@ -217,8 +282,7 @@ export const ModifyContainerForm = ({
                 name={'typeOfLoad'}
                 label={'Tipo de carga'}
                 control={control}
-                errors={errors}
-                options={cargos}
+                options={typesOfLoad}
               />
             </Box>
             <Box
@@ -227,20 +291,30 @@ export const ModifyContainerForm = ({
                 height: '40px',
               }}
             >
-              <OutlinedInputForm
+              <InputForm
                 control={control}
                 name={'containerHeight'}
                 label={'Altura del contenedor'}
-                errors={errors}
                 endMessage={'cm'}
               />
             </Box>
           </Box>
         </Box>
       </Box>
+
+      {Object.keys(errors).length > 0 && (
+        <CustomAlert
+          severity='error'
+          title='Error con los datos ingresados'
+          message={errorMessages}
+        />
+      )}
+
       <CancelAndSubmitButton
         handleClose={handleClose}
         buttonSubmitMessage='MODIFICAR'
+        onSubmit={handleSubmit(onSubmit)}
+        isLoading={isModifyContainerLoading}
       />
     </form>
   )

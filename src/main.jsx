@@ -15,7 +15,9 @@ import {
 import Base from './common/base.jsx';
 import BaseWithHeader from './common/baseWithHeader.jsx';
 import AreaPage from './pages/Area/AreaPage.jsx';
-import CompanyPage from './pages/Company/CompanyPage.jsx';
+import {
+  CompanyPage
+} from './pages/Company/CompanyPage.jsx';
 import {
   ContainerPage
 } from './pages/Containers/ContainerPage.jsx';
@@ -42,14 +44,15 @@ import {
 } from './pages/Routes/Detail/RouteDetailPage.jsx';
 import PerfilPage from './pages/Perfil/PerfilPage.jsx';
 import {
-  ErrorPage 
+  ErrorPage
 } from './pages/404/404.jsx';
 import {
   Box
 } from '@mui/material';
 import {
-  StatsPage 
+  StatsPage
 } from './pages/Stats/StatsPage.jsx';
+import AuthenticatedRoute from './components/AuthenticatedRoute/AuthenticatedRoute.jsx';
 
 const theme = createTheme({
   palette: {
@@ -66,7 +69,7 @@ const theme = createTheme({
 
 const ErrorBoundaryWithHeader = () => (
   <Box>
-    <ErrorPage/>
+    <ErrorPage />
     <BaseWithHeader
       logoOnly={true}
     />
@@ -79,7 +82,10 @@ const router = createBrowserRouter([
     element: <Navigate
       to='/ingresar'
     />,
-    errorElement: <ErrorBoundaryWithHeader />, 
+  },
+  {
+    path: '*',
+    element: <ErrorBoundaryWithHeader />
   },
   {
     element: <Base />,
@@ -91,7 +97,11 @@ const router = createBrowserRouter([
     ],
   },
   {
-    element: <BaseWithHeader />,
+    element: (
+      <AuthenticatedRoute>
+        <BaseWithHeader />
+      </AuthenticatedRoute>
+    ),
     children: [
       {
         path: '/contenedores',

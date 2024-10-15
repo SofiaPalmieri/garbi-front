@@ -57,7 +57,6 @@ const mapper = (reports) => {
       const {
         date, time
       } = TimestampUtil.convertToDateAndHour(r.timestamp)
-      const state = r.status[r.status.length - 1]
 
       const creator = r.userId ? 'Recolector' : 'Ciudadano'
 
@@ -65,14 +64,14 @@ const mapper = (reports) => {
         id: r.id,
         date: date,
         time: time,
-        state: state.status,
+        state: r.currentStatus,
         typeOfUser: creator,
         description: r.title,
         reportType: r.type.replace(/_/g, ' '),
         // falta lugar
         // falta area,
-        // falta nombre del que report,
-        // falta foto
+        assignedManagerName: r.managerName
+        // falta assignedManagerPhoto
       }
     }
   )

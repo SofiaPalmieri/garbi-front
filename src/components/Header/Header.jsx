@@ -45,7 +45,7 @@ const managementItems = {
 
 export const Header = ({
   logoOnly = false 
-}) => {
+}) => {  
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -108,6 +108,12 @@ export const Header = ({
       setCurrentTab(Object.keys(pages).find(key => pages[key] === path));
     }
   };
+
+  const handleHeaderMouseDown = (e) => {
+    if (e.button === 1) { //Middle-click
+      e.preventDefault() //previene el autoscroll para que funcione el abrir páginas en nuevas tabs.
+    }
+  }
   
   const handleClickManagementItem = (path) => (event) => {
     if (event.type === 'auxclick' && event.button === 1) { //Middle-click
@@ -155,6 +161,7 @@ export const Header = ({
 
   return (
     <AppBar
+      onMouseDown={handleHeaderMouseDown}
       sx={{
         background: '#12422c',
         zIndex: 1100 

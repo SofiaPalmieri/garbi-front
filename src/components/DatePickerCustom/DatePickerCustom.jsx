@@ -71,6 +71,7 @@ export const DatePickerCustom = ({
       dateFormat='dd/MM/yyyy'
       maxDate={defaultDate}
       calendarStartDay={7}
+      disabledKeyboardNavigation
     />
   );
 };
