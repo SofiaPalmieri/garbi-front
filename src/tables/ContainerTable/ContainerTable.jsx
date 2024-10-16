@@ -80,6 +80,7 @@ const tableHeaders = [
 
 
 const containerRowRender = (container, handleRowClick, isSelected) => {
+
   return (
     <TableRow
       key={container.id}
@@ -113,7 +114,7 @@ const containerRowRender = (container, handleRowClick, isSelected) => {
       >{container.address.neighborhood}</TableCell>
       <TableCell
         align='center'
-      >{container?.area} falta</TableCell>
+      >{container?.area.name}</TableCell>
       <TableCell
         align='center'
       >{container.address.street + ' ' + container.address.number}</TableCell>
@@ -201,7 +202,7 @@ export const ContainerTable = ({
             <TableRow>
               {tableHeaders.map((header, index) => (
                 <TableCell
-                  key={index}
+                  key={'container' + index}
                   align={header.align || 'center'}
                   sx={{
                     minWidth: header.minWidth
