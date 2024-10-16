@@ -98,7 +98,7 @@ const HtmlTooltip = styled(({
 }));
 
 export const CreateReportForm = ({
-  onSuccess 
+  onSuccess
 }) => {
   const apiKeyGoogleMaps = import.meta.env.VITE_REACT_APP_API_KEY_GOOGLE_MAPS;
   const [selectedImage, setSelectedImage] = useState(null);
@@ -116,8 +116,8 @@ export const CreateReportForm = ({
 
   const {
     createReport: {
-      createReport, isCreateReportLoading 
-    } 
+      createReport, isCreateReportLoading
+    }
   } = useReports();
   const {
     getAllContainers: {
@@ -179,7 +179,7 @@ export const CreateReportForm = ({
 
   const {
     control, handleSubmit, setValue, formState: {
-      errors 
+      errors
     }
   } = useForm({
     defaultValues: {
@@ -255,7 +255,8 @@ export const CreateReportForm = ({
       >
         <Grid
           item
-          xs={6}
+          md={6}
+          xs={12}
         >
           <InputForm
             name='title'
@@ -268,7 +269,8 @@ export const CreateReportForm = ({
         </Grid>
         <Grid
           item
-          xs={6}
+          md={6}
+          xs={12}
         >
           <Controller
             name='type'
@@ -331,14 +333,15 @@ export const CreateReportForm = ({
         </Grid>
         <Grid
           item
-          xs={12}
+          margin={'auto'}
+          xs={8}
         >
           <Controller
             name='image'
             control={control}
             defaultValue=''
             render={({
-              field 
+              field
             }) => (
               <FormControl
                 fullWidth
@@ -419,8 +422,13 @@ export const CreateReportForm = ({
             Seleccione el contenedor afectado en el mapa
           </Typography>
           <Box
-            width='100%'
-            height='400px'
+            sx = {{
+              width: 1,
+              height: {
+                xs: '300px',
+                md: '400px' 
+              },
+            }}
           >
             <MapWithContainers
               apiKey={apiKeyGoogleMaps}
@@ -493,7 +501,8 @@ export const CreateReportForm = ({
         </Grid>
         <Grid
           item
-          xs={6}
+          md={6}
+          xs={12}
         >
           <InputForm
             name='email'
@@ -507,7 +516,8 @@ export const CreateReportForm = ({
         </Grid>
         <Grid
           item
-          xs={6}
+          md={6}
+          xs={12}
         >
           <InputForm
             name='phone'
