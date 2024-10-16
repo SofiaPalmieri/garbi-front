@@ -6,7 +6,7 @@ import CircleIcon from '@mui/icons-material/Circle';
 const colors = ['#FF0000', '#00FF00', '#0000FF', '#FFFF00', '#FF00FF', '#00FFFF'];
 
 const ColorPicker = ({
-  selectedColor, setSelectedColor 
+  onClickColor 
 }) => {
   return (
     <Paper
@@ -20,7 +20,7 @@ const ColorPicker = ({
       {colors.map(color => (
         <IconButton
           key={color}
-          onClick={() => setSelectedColor(color)}
+          onClick={() => onClickColor(color)}
           sx={{
             color,
             padding: 0 

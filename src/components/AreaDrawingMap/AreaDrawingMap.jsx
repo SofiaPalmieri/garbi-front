@@ -58,6 +58,17 @@ export const AreaDrawingMap = ({
     }
   }, [areaSelected]);
 
+  const onClickColor = (color) => {
+    console.log(color)
+    setSelectedColor(color)
+    dispatchDraw({
+      type: DrawingActionType.UPDATE_COLOR,
+      payload: {
+        color
+      }
+    })
+  }
+
 
   return (
     <>
@@ -73,8 +84,7 @@ export const AreaDrawingMap = ({
           position={ControlPosition.LEFT_TOP}
         >
           <ColorPicker
-            selectedColor={selectedColor}
-            setSelectedColor={setSelectedColor}
+            onClickColor = {onClickColor}
           />
         </MapControl>)}
         <MapControl

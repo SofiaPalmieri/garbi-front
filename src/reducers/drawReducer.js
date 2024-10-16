@@ -5,7 +5,8 @@ import {
 export const DrawingActionType = {
   SET_DRAW: 'SET_DRAW',
   UPDATE_DRAW: 'UPDATE_DRAW',
-  CLEAR_DRAW: 'CLEAR_DRAW'
+  CLEAR_DRAW: 'CLEAR_DRAW',
+  UPDATE_COLOR: 'UPDATE_COLOR'
 }
 
 export function drawReducer(state, action) {
@@ -29,6 +30,24 @@ export function drawReducer(state, action) {
       polyline,
       polygon
     }
+  }
+
+  case DrawingActionType.UPDATE_COLOR: {
+    if (state.polyline == null) return state;
+
+    const {
+      color
+    } = action.payload
+
+    state.polyline.setOptions({
+      strokeColor: color, // Nuevo color que quieras aplicar
+    });
+
+    state.polygon.setOptions({
+      fillColor: color
+    });
+
+    return state
   }
 
   case DrawingActionType.UPDATE_DRAW: {
