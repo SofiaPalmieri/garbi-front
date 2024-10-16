@@ -1,5 +1,6 @@
 import {
   AvatarGroup,
+  Box,
   Table,
   TableBody,
   TableCell,
@@ -24,6 +25,22 @@ export const RoutesTable = ({
 
   const handleRowClick = (id) => {
     navigate(`/recorridos/${id}`)
+  }
+
+  if(routes.length == 0) {
+    return(
+      <Box
+        sx = {{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center'
+        }}
+      >
+        <Typography>
+          No hay rutas disponibles para la fecha seleccionada.
+        </Typography>
+      </Box>
+    )
   }
 
   return (

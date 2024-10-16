@@ -24,6 +24,8 @@ export const RightSidePanelOptimalRouteIinfo = ({
   routeSelected, optimalRoutes, setRouteSelected
 }) => {
   const [openSnackbar, setOpenSnackbar] = useState(false)
+  const [snackBarText, setSnackbarText] = useState('Ruta enviada.')
+  const [snackbarSeverity, setSnackBarSeverity] = useState('success')
 
   const {
     selectOptimalRoute: {
@@ -37,7 +39,9 @@ export const RightSidePanelOptimalRouteIinfo = ({
       await selectOptimalRoute(optimalRouteId)
       setOpenSnackbar(true)
     } catch (error) {
-      console.error('Error sending the optimal route:', error)
+      setSnackbarText('Ocurrió un problema al enviar la ruta. Intentelo más tarde.')
+      setSnackBarSeverity('error')
+      setOpenSnackbar(true)
     }
   }
 
@@ -53,8 +57,8 @@ export const RightSidePanelOptimalRouteIinfo = ({
       }}
     >
       <FeedbackSnackbar
-        severity={'success'}
-        text={'Ruta enviada'}
+        severity={snackbarSeverity}
+        text={snackBarText}
         openSnackbar={openSnackbar}
         handleClose={handleCloseSnackbar}
       />

@@ -149,8 +149,14 @@ export default function HomeMainContent({
   };
   const handleOpenGenerateOptimalRouteModal = () => setOpenGenerateOptimalRouteModal(true)
   const handleCloseOpenGenerateOptimalRouteModal = () => setOpenGenerateOptimalRouteModal(false)
-  const handleCloseRightSidePanelContainerInfo = () => setContainerSelected(null)
-  const handleCloseRightSidePanelOptimalRouteInfo = () => setOpenGenerateOptimalRouteRightSideInfo(false)
+  const handleCloseRightSidePanelContainerInfo = () =>{ 
+    setContainerSelected(null)
+  }
+  const handleCloseRightSidePanelOptimalRouteInfo = () =>{ 
+    setOpenGenerateOptimalRouteRightSideInfo(false)
+    setOptimalRouteSelected(null)
+    setOptimalRoutes(null)
+  }
   const handleOpenRightSidePanelOptimalRouteInfo = () => {
     handleCloseOpenGenerateOptimalRouteModal()
     setOpenGenerateOptimalRouteRightSideInfo(true)
