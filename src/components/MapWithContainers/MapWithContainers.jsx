@@ -105,7 +105,7 @@ const DrawOptionals = ({
       const polygon = new google.maps.Polygon({
         paths: path,
         editable: false,
-        fillColor: 'a0e58c',
+        fillColor: area.color ? area.color : 'a0e58c',
         ...polygonConfig,
         map
       });
@@ -113,7 +113,7 @@ const DrawOptionals = ({
 
       const polyline = new google.maps.Polyline({
         path: path,
-        strokeColor: 'a0e58c',
+        strokeColor: area.color ? area.color : 'a0e58c',
         editable: false,
         ...polylineConfig,
         map
