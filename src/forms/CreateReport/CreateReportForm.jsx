@@ -335,6 +335,7 @@ export const CreateReportForm = ({
           item
           margin={'auto'}
           xs={8}
+          md = {12}
         >
           <Controller
             name='image'
