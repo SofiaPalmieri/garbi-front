@@ -67,11 +67,9 @@ export default function PerfilMainContent() {
 
   const uploadImageToBackend = async (base64Image) => {
     try {
-      const {
-        image, ...restOfUser 
-      } = user;
+
       const payload = {
-        ...restOfUser,
+        
         image: base64Image 
       };
       const response = await modifyEmployee(id, payload);
