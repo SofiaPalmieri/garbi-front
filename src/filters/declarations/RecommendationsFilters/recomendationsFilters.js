@@ -30,7 +30,7 @@ export const recommendationsFiltersDeclaration = [
   },
   {
     key: 'messages',
-    name: 'Mensajes',
+    name: 'Estado',
     values: [
       {
         key: 'Leídos',
