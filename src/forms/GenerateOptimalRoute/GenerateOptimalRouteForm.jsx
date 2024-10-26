@@ -158,6 +158,7 @@ export const GenerateOptimalRouteForm = ({
       <CancelAndSubmitButton
         handleClose={handleClose}
         typeButton='submit'
+        buttonSubmitMessage={'GENERAR'}
         loadingBehaviour={isLoading ? (
           <CircularProgress
             size={24}
