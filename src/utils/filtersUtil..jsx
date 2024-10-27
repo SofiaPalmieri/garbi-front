@@ -31,7 +31,7 @@ export const SelectBoxFilter = ({
     control={control}
     name={filter.key}
     required={false}
-    label={'Áreas'}
+    label={'Área'}
     options={filter.values}
     optionalDefaultValue={'Limpiar Filtro'}
   />
