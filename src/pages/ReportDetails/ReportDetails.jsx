@@ -14,7 +14,7 @@ export const ReportDetails = ({
   return (
     <Box
       sx={{
-        width: '100%'
+        width: '288px'
       }}
     >
       <Box

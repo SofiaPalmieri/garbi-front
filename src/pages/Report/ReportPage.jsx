@@ -68,10 +68,10 @@ const mapper = (reports) => {
         typeOfUser: creator,
         description: r.title,
         reportType: r.type.replace(/_/g, ' '),
-        // falta lugar
-        // falta area,
-        assignedManagerName: r.managerName
-        // falta assignedManagerPhoto
+        //TODO: falta place. cuando carguemos bien los contenedores, ver el formato de la address y sale de ahi.
+        area: r.area.name,
+        assignedManagerName: r.managerName,
+        assignedManagerPhoto: r.managerImage
       }
     }
   )

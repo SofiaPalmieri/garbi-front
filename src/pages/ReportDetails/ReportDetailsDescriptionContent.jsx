@@ -1,10 +1,9 @@
 import {
   Typography, Box
 } from '@mui/material';
-import contenedorRoto from '/src/assets/contenedor-roto.png';
 
 export const ReportDetailsDescriptionContent = ({
-  description
+  description, image
 }) => {
   return (
     <Box
@@ -47,16 +46,20 @@ export const ReportDetailsDescriptionContent = ({
         </Typography>
       </Box>
       <Box>
-        <img
-          src={contenedorRoto}
-          alt='Descripción de la imagen'
-          style={{
-            maxWidth: '320px',
-            maxHeight: '240px',
-            width: '100%',
-            height: 'auto',
-          }}
-        />
+        {image ? (
+          <img
+            src={image}
+            alt='Descripción de la imagen'
+            style={{
+              maxWidth: '320px',
+              maxHeight: '240px',
+              width: '100%',
+              height: 'auto',
+            }}
+          />
+        ) : (
+          <p>El creador del reporte no adjuntó ninguna imagen</p>
+        )}
       </Box>
     </Box>
   );
