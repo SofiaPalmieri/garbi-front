@@ -22,7 +22,6 @@ import {
 import {
   RoutesTable 
 } from '../../tables/RoutesTable/RoutesTable';
-import profilePicture from '../../assets/profile_picture.jpg';
 import {
   useForm 
 } from 'react-hook-form';
@@ -89,19 +88,18 @@ const mapper = (routes) => {
       return {
         id: r.id,
         date: date,
-        area: 'Área 1', // falta recibir nombre de area del BE.
+        area: r.area.name,
         duration: duration,
         startTime: startTime,
         endTime: endTime,
-        manager: 'Hernan Ramirez', //falta recibir bien del BE supervisor y recolectores. ahora es cualquier cosa.
-        manager_picture: profilePicture,
-        collector1: 'Pepe Pepin',
+        manager: r.managerName,
+        manager_picture: r.managerImage,
+        collector1: r.collectors[0].name + ' ' + r.collectors[0].surname,
         collector1_picture: null,
-        collector2: 'Roberto Roberti',
+        collector2: r.collectors[1].name + ' ' + r.collectors[1].surname,
         collector2_picture: null
       }
-    }
-    )
+    })
 }
 
 
