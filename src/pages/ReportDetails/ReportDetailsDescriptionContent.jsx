@@ -22,7 +22,7 @@ export const ReportDetailsDescriptionContent = ({
         <Typography
           sx={{
             fontFamily: 'Roboto',
-            fontSize: '14px',
+            fontSize: '16px',
             fontWeight: '600',
             lineHeight: '26.56px',
             letterSpacing: '0.4px',
@@ -35,7 +35,7 @@ export const ReportDetailsDescriptionContent = ({
         <Typography
           sx={{
             fontFamily: 'Roboto',
-            fontSize: '14px',
+            fontSize: '16px',
             fontWeight: '400',
             lineHeight: '26.56px',
             letterSpacing: '0.4px',
@@ -58,7 +58,19 @@ export const ReportDetailsDescriptionContent = ({
             }}
           />
         ) : (
-          <p>El creador del reporte no adjuntó ninguna imagen</p>
+          <Typography
+            sx={{
+              fontFamily: 'Roboto',
+              fontSize: '15px',
+              fontWeight: '400',
+              lineHeight: '26.56px',
+              letterSpacing: '0.4px',
+              textAlign: 'left',
+              mt: '32px',
+            }}
+          >
+            El creador del reporte no adjuntó ninguna imagen
+          </Typography>
         )}
       </Box>
     </Box>
