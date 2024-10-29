@@ -89,7 +89,7 @@ export const ModalAdjustContainersThreshold = ({
     >
       <Box
         sx={{
-          width: '32.5rem',
+          width: '32rem',
           ...style 
         }}
       >
@@ -108,10 +108,19 @@ export const ModalAdjustContainersThreshold = ({
               fontWeight: 500,
               lineHeight: '32px' 
             }}
-          >Ajustar límites</Typography>
+          >
+            Ajustar límites
+          </Typography>
           <Button
+            sx={{
+              padding: 0,
+              minWidth: 0,
+              borderRadius: '50%',
+            }}
             onClick={handleClose}
-          ><CloseIcon /></Button>
+          >
+            <CloseIcon />
+          </Button>
         </Box>
         <Box
           sx={{
