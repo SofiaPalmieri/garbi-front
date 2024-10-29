@@ -1,5 +1,5 @@
 import {
-  Box, Button, Typography 
+  Box, Typography 
 } from '@mui/material'
 
 
@@ -190,23 +190,6 @@ export const RightSidePanelContainerInfo = ({
             {containerSelected.battery}%
           </Typography>
         </Box>
-      </Box>
-      <Box>
-        <Button
-          fullWidth
-          variant='outlined'
-          sx={{
-            mb: '8px'
-          }}
-        >
-          Reportes históricos
-        </Button>
-        <Button
-          fullWidth
-          variant='contained'
-        >
-          Reportes activos
-        </Button>
       </Box>
     </Box>
   )
