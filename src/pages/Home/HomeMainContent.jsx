@@ -99,9 +99,9 @@ const getBatteryIcon = (battery) => {
 
 const getColorForBattery = (battery) => {
   if (battery > 75) {
-    return colors.LOW_CAPACITY;
-  } else if (battery <= 25) {
     return colors.HIGH_CAPACITY;
+  } else if (battery <= 25) {
+    return colors.LOW_CAPACITY;
   } else {
     return colors.MEDIUM_CAPACITY;
   }
