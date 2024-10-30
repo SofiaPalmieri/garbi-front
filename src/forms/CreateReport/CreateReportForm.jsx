@@ -211,8 +211,11 @@ export const CreateReportForm = ({
       phone: data.phone,
       email: data.email,
       type: data.type,
-      image: selectedImage,
     };
+
+    if(selectedImage) {
+      report.image = selectedImage
+    }
 
     try {
       await createReport(report);
@@ -543,6 +546,7 @@ export const CreateReportForm = ({
             }}
           >
             <Button
+              disabled={isCreateReportLoading}
               sx={{
                 backgroundColor: '#12422C',
                 color: 'white',

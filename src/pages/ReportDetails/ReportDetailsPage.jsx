@@ -1,6 +1,5 @@
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
-import OpenInNewOutlinedIcon from '@mui/icons-material/OpenInNewOutlined';
 import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined';
 import RoomOutlinedIcon from '@mui/icons-material/RoomOutlined';
 import {
@@ -115,13 +114,6 @@ const sideDetailsMapper = (report) => {
           color: '#2121213B'
         }}
       />,
-      titleIcon: <OpenInNewOutlinedIcon
-        sx={{
-          width: '20px',
-          height: '20px',
-          marginLeft: '5px'
-        }}
-      />,
       title: 'Ubicación',
       description: `${neighborhood} - ${area}`,
       description2: address
@@ -134,14 +126,6 @@ const sideDetailsMapper = (report) => {
       />,
       title: 'Contenedor',
       description: report.containerId,
-      button: 'HISTORIAL',
-      buttonIcon: <OpenInNewOutlinedIcon
-        sx={{
-          width: '20px',
-          height: '20px',
-          marginLeft: '5px'
-        }}
-      />
     }
   ]
 
