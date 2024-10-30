@@ -25,6 +25,12 @@ import {
 import {
   CustomAlert 
 } from '../../components/CustomAlert/CustomAlert';
+import {
+  useEffect, useState 
+} from 'react';
+import {
+  useAreas 
+} from '../../api/hooks/useAreas/useAreas';
 
 
 const typesOfLoad = [
@@ -40,6 +46,10 @@ const typesOfLoad = [
 
 const newContainerSchema = object({
   sensorId: string().required('El ID del sensor es obligatorio'),
+  containerId: string()
+    .required('El ID del contenedor es obligatorio')
+    .matches(/^[a-zA-Z0-9]{6}$/, 'El ID del contenedor debe tener 6 caracteres alfanuméricos'),
+  areaId: string().required('El área es obligatorio'),
   street: string()
     .required('La calle es obligatoria')
     .matches(/^[a-zA-ZÀ-ÿ\s.]+$/, 'La calle no puede contener números o caracteres especiales'),
@@ -52,9 +62,40 @@ const newContainerSchema = object({
     .matches(/^\d+$/, 'La altura del contenedor no es válida')
 }).required();
 
+function getRandomInteger(min, max) {
+  min = Math.ceil(min)
+  max = Math.floor(max)
+
+  return Math.floor(Math.random() * (max - min + 1)) + min
+}
+
+
 export const CreateContainerForm = ({
   handleClose, onSuccess
 }) => {
+  const [areas, setAreas] = useState([])
+  const {
+    getAreas: {
+      getAreas,
+      isLoadingGetAreas
+    }
+  } = useAreas()
+
+  useEffect(() => {
+    const fetchAreas = async () => {
+      const areasRetrieved = await getAreas()
+      const areasToRender = areasRetrieved.result.map((area) => (
+        {
+          value: area.id,
+          label: area.name,
+        }
+      ))
+      setAreas(areasToRender)
+    }
+
+    fetchAreas()
+  }, [])
+
   const {
     control,
     handleSubmit,
@@ -65,6 +106,8 @@ export const CreateContainerForm = ({
     defaultValues: {
       companyId: '',
       sensorId: '',
+      containerId: '',
+      areaId: '',
       street: '',
       heightAddress: '',
       typeOfLoad: '',
@@ -88,11 +131,19 @@ export const CreateContainerForm = ({
       const response = await createContainer({
         companyId: companyId,
         sensorId: data.sensorId,
-        street: data.street,
-        heightAddress: data.heightAddress,
+        id: data.containerId,
+        areaId: data.areaId,
+        address: {
+          street: data.street,
+          number: data.heightAddress,
+          province: 'Ciudad Autónoma de Buenos Aire',
+          neighborhood: 'Recoleta', //TODO a dropdown?
+        },
         type: data.typeOfLoad,
-        height: Number(data.containerHeight)
-      });
+        height: Number(data.containerHeight),
+        battery: getRandomInteger(80, 100),
+        capacity: getRandomInteger(0, 100)
+      })
 
       //TODO later: validar que la respuesta sea la esperada, y sino tirar error.
       handleClose();
@@ -151,14 +202,26 @@ export const CreateContainerForm = ({
           >
             <Box
               sx={{
+                flex: 1,
                 height: '40px',
-                width: 'calc(50% - 12px)'
               }}
             >
               <InputForm
                 control={control}
                 name={'sensorId'}
                 label={'ID del sensor'}
+              />
+            </Box>
+            <Box
+              sx={{
+                flex: 1,
+                height: '40px',
+              }}
+            >
+              <InputForm
+                control={control}
+                name={'containerId'}
+                label={'ID del contenedor'}
               />
             </Box>
           </Box>
@@ -188,6 +251,28 @@ export const CreateContainerForm = ({
             gap: '16px',
           }}
         >
+          <Box
+            sx={{
+              display: 'flex',
+              width: '100%',
+              height: '40px',
+              gap: '24px',
+            }}
+          >
+            <Box
+              sx={{
+                flex: 1,
+                height: '40px',
+              }}
+            >
+              <SelectForm
+                control={control}
+                name={'areaId'}
+                label={'Área'}
+                options={areas}
+              />
+            </Box>
+          </Box>
           <Box
             sx={{
               display: 'flex',

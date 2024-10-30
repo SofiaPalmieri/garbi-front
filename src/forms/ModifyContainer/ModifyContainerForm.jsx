@@ -10,8 +10,6 @@ import {
 import {
   SelectForm
 } from '../../components/SelectForm/SelectForm';
-
-
 import {
   CancelAndSubmitButton 
 } from '../../components/CancelAndSubmitButton/CancelAndSubmitButton';
@@ -70,8 +68,8 @@ export const ModifyContainerForm = ({
     defaultValues: {
       idContainer: containerToModify?.id,
       sensorId: containerToModify?.sensorId,
-      street: containerToModify?.street, //TODO
-      heightAddress: containerToModify?.heightAddress, //TODO
+      street: containerToModify?.address.street,
+      heightAddress: containerToModify?.address.number,
       typeOfLoad: containerToModify?.type,
       containerHeight: containerToModify?.height,
     },
@@ -92,8 +90,14 @@ export const ModifyContainerForm = ({
         {
           companyId: data.companyId,
           sensorId: data.sensorId,
-          street: data.street, //TODO: update after PF-291. not working
-          heightAddress: data.heightAddress, //TODO: update after PF-291. not working
+          address: {
+            street: data.street,
+            number: data.heightAddress,
+            province: containerToModify?.address.province,
+            neighborhood: containerToModify?.address.neighborhood,
+          },
+          street: data.street,
+          heightAddress: data.heightAddress,
           type: data.typeOfLoad,
           height: Number(data.containerHeight)
         }
