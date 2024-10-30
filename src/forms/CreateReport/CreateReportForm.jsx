@@ -211,8 +211,11 @@ export const CreateReportForm = ({
       phone: data.phone,
       email: data.email,
       type: data.type,
-      image: selectedImage,
-    };
+    }
+
+    if (selectedImage) {
+      report.image = selectedImage
+    }
 
     try {
       await createReport(report);
@@ -288,12 +291,12 @@ export const CreateReportForm = ({
               >
                 <InputLabel
                   id={'type' + '-label'}
-                >Tipo de Problema</InputLabel>
+                >Tipo de problema *</InputLabel>
                 <Select
                   size={'medium'}
                   fullWidth
                   variant={'filled'}
-                  label={'Tipo de Problema'}
+                  label={'Tipo de problema *'}
                   {...field}
                 >
                   {tipos.map((option) => (
@@ -398,7 +401,7 @@ export const CreateReportForm = ({
                         lineHeight: '24px',
                       }}
                     >
-                      Añade una foto del problema
+                      Añada una foto del problema
                     </Typography>
                   </Box>
                 </label>
@@ -459,13 +462,14 @@ export const CreateReportForm = ({
 
         <Grid
           item
+          md={6}
           xs={12}
         >
           <InputForm
             name='address'
             control={control}
             errors={errors}
-            label={'Dirección aproximada del contenedor *'}
+            label={'Dirección aproximada del contenedor'}
             variant='filled'
             size='medium'
             disabled='true'
@@ -473,13 +477,14 @@ export const CreateReportForm = ({
         </Grid>
         <Grid
           item
+          md={6}
           xs={12}
         >
           <InputForm
             name='neighborhood'
             control={control}
             errors={errors}
-            label={'Barrio *'}
+            label={'Barrio'}
             variant='filled'
             size='medium'
             disabled='true'
@@ -502,31 +507,16 @@ export const CreateReportForm = ({
         </Grid>
         <Grid
           item
-          md={6}
+          md={12}
           xs={12}
         >
           <InputForm
             name='email'
             control={control}
             errors={errors}
-            label={'Email'}
+            label={'Email *'}
             variant='filled'
             helperText={'Ingrese su correo electrónico para recibir novedades del reporte'}
-            size='medium'
-          />
-        </Grid>
-        <Grid
-          item
-          md={6}
-          xs={12}
-        >
-          <InputForm
-            name='phone'
-            control={control}
-            errors={errors}
-            label={'Número de teléfono'}
-            variant='filled'
-            helperText={'Ingrese su número de teléfono para recibir novedades del reporte'}
             size='medium'
           />
         </Grid>
