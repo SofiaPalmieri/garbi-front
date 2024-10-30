@@ -4,6 +4,7 @@ import {
 import {
   BreadcrumbsComponent
 } from '../../components/BreadcrumbsComponent';
+import PerfilMainContent from './PerfilMainContent';
 
 const PerfilPage = () => {
   return (
@@ -26,6 +27,8 @@ const PerfilPage = () => {
         />
       </Box>
       <Divider />
+      <PerfilMainContent/>
+
     </Box>
   );
 };
