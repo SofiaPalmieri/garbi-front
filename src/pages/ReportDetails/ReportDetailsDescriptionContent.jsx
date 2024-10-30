@@ -1,10 +1,9 @@
 import {
   Typography, Box
 } from '@mui/material';
-import contenedorRoto from '/src/assets/contenedor-roto.png';
 
 export const ReportDetailsDescriptionContent = ({
-  description
+  description, image
 }) => {
   return (
     <Box
@@ -23,7 +22,7 @@ export const ReportDetailsDescriptionContent = ({
         <Typography
           sx={{
             fontFamily: 'Roboto',
-            fontSize: '14px',
+            fontSize: '16px',
             fontWeight: '600',
             lineHeight: '26.56px',
             letterSpacing: '0.4px',
@@ -36,7 +35,7 @@ export const ReportDetailsDescriptionContent = ({
         <Typography
           sx={{
             fontFamily: 'Roboto',
-            fontSize: '14px',
+            fontSize: '16px',
             fontWeight: '400',
             lineHeight: '26.56px',
             letterSpacing: '0.4px',
@@ -47,16 +46,32 @@ export const ReportDetailsDescriptionContent = ({
         </Typography>
       </Box>
       <Box>
-        <img
-          src={contenedorRoto}
-          alt='Descripción de la imagen'
-          style={{
-            maxWidth: '320px',
-            maxHeight: '240px',
-            width: '100%',
-            height: 'auto',
-          }}
-        />
+        {image ? (
+          <img
+            src={image}
+            alt='Descripción de la imagen'
+            style={{
+              maxWidth: '320px',
+              maxHeight: '240px',
+              width: '100%',
+              height: 'auto',
+            }}
+          />
+        ) : (
+          <Typography
+            sx={{
+              fontFamily: 'Roboto',
+              fontSize: '15px',
+              fontWeight: '400',
+              lineHeight: '26.56px',
+              letterSpacing: '0.4px',
+              textAlign: 'left',
+              mt: '32px',
+            }}
+          >
+            El creador del reporte no adjuntó ninguna imagen
+          </Typography>
+        )}
       </Box>
     </Box>
   );

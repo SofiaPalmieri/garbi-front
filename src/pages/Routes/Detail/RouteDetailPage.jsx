@@ -70,6 +70,11 @@ const routeDetailsMapper = (route) => {
     endTime = null;
   }
 
+  //agrego esto por si son null estos valores
+  let durationDescription = '';
+  if (startTime) durationDescription += startTime;
+  if (endTime) durationDescription += `\n ${endTime}`;
+
   const routesDetailArray = [
     {
       type: 'calendar',
@@ -80,12 +85,12 @@ const routeDetailsMapper = (route) => {
       type: 'duration',
       icon: AccessTimeOutlinedIcon,
       title: duration,
-      description: `${startTime} \n ${endTime}`
+      description: durationDescription.trim()
     },
     {
       type: 'location',
       icon: LocationOnOutlinedIcon,
-      title: 'Área 2' //TODO: change when BE sends area name
+      title: route.area.name
     }
   ]
 
@@ -94,24 +99,24 @@ const routeDetailsMapper = (route) => {
 
 const workersDetailsMapper = (route) => {
 
-  const workersDetailsArray = { //update when BE sends what we expect
+  const workersDetailsArray = {
     supervisores: [
       {
         id: 1,
-        avatar: null, // will be something like: route.managerIdPicture
-        fullName: 'Oscar Parraguez' // will be something like: `${route.managerIdName} ${route.managerIdSurname}`
+        avatar: route.managerImage,
+        fullName: route.managerName
       }
     ],
     recoletores: [
       {
         id: 2,
         avatar: null,
-        fullName: 'Octavio Pardo'
+        fullName: route.collectors[0].name + ' ' + route.collectors[0].surname,
       },
       {
         id: 3,
         avatar: null,
-        fullName: 'Juan Edison'
+        fullName: route.collectors[1].name + ' ' + route.collectors[1].surname,
       }
     ]
   }
