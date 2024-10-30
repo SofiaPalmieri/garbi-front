@@ -59,7 +59,6 @@ export const AreaDrawingMap = ({
   }, [areaSelected]);
 
   const onClickColor = (color) => {
-    console.log(color)
     setSelectedColor(color)
     dispatchDraw({
       type: DrawingActionType.UPDATE_COLOR,

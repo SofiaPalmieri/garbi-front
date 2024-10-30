@@ -213,7 +213,7 @@ export const CreateReportForm = ({
       type: data.type,
     }
 
-    if (selectedImage) {
+    if(selectedImage) {
       report.image = selectedImage
     }
 
@@ -533,6 +533,7 @@ export const CreateReportForm = ({
             }}
           >
             <Button
+              disabled={isCreateReportLoading}
               sx={{
                 backgroundColor: '#12422C',
                 color: 'white',
