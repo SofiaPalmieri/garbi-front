@@ -10,7 +10,7 @@ import {
 
 
 export const HomeFilters = ({
-  control, areas
+  control, areas, errors
 }) => {
 
   return (
@@ -39,6 +39,7 @@ export const HomeFilters = ({
             minName={'minLlenado'}
             maxLabel={'Máximo %'}
             maxName={'maxLlenado'}
+            errors={errors}
           />
         </Box>
       </Box>
@@ -55,6 +56,7 @@ export const HomeFilters = ({
             minName={'minBateria'}
             maxLabel={'Máximo %'}
             maxName={'maxBateria'}
+            errors={errors}
           />
         </Box>
       </Box>

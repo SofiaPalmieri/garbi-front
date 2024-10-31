@@ -1,12 +1,12 @@
 import {
-  Box, Typography 
+  Box, Typography
 } from '@mui/material'
 import {
-  InputForm 
+  InputForm
 } from '../InputForm'
 
 export const RangeForm = ({
-  title, minName, minLabel, maxName, maxLabel, control 
+  title, minName, minLabel, maxName, maxLabel, control, errors, rootParent
 }) => {
   return (
     <Box>
@@ -24,15 +24,22 @@ export const RangeForm = ({
           display: 'flex',
           gap: '10px',
           alignItems: 'center',
-          mt: 0.5
+          mt: 0.5,
         }}
       >
-        <Box>
+        <Box
+          sx={{
+            minHeight: '60px'
+          }}
+        >
           <InputForm
             control={control}
             name={minName}
             label={minLabel}
             required={false}
+            rootParent={rootParent}
+            type={'number'}
+            errors={errors}
             styleInput={{
               '& .MuiFormLabel-root': {
                 fontFamily: 'Roboto',
@@ -53,15 +60,23 @@ export const RangeForm = ({
           sx={{
             backgroundColor: '#2121213B',
             height: '1px',
-            width: '.75rem'
+            width: '.75rem',
+            mb: '25px'
           }}
         />
-        <Box>
+        <Box
+          sx={{
+            minHeight: '60px'
+          }}
+        >
           <InputForm
             control={control}
             name={maxName}
             label={maxLabel}
+            rootParent={rootParent}
+            type={'number'}
             required={false}
+            errors={errors}
             styleInput={{
               '& .MuiFormLabel-root': {
                 fontFamily: 'Roboto',
