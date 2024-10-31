@@ -38,16 +38,18 @@ export const SelectBoxFilter = ({
 )
 
 export const RangeBoxFilter = ({
-  filter, control
+  filter, control, errors
 }) => (
   <RangeForm
     key={filter.key}
     control={control}
     title={filter.name}
+    rootParent = {filter.key}
     maxLabel={filter.maxLabel}
     maxName={filter.key + '.' + filter.maxName}
     minLabel={filter.minLabel}
     minName={filter.key + '.' + filter.minName}
+    errors = {errors}
   />
 )
 

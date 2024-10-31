@@ -4,22 +4,22 @@ import {
 
 
 export const CommonFilters = ({
-  filters, control 
+  filters, control, errors
 }) => {
-
   return (
     <Box
       sx = {{
         display: 'flex',
         flexDirection: 'column',
-        gap: '2rem'
+        gap: '1rem'
       }}
     >
       {
         filters.map(filter => (
           filter.render({
             filter,
-            control
+            control,
+            errors
           })
         ))
       }

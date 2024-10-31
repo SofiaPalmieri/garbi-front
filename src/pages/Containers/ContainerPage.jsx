@@ -32,30 +32,31 @@ import {
 import {
   TableButtons
 } from '../../components/TableButtons/TableButtons';
-
-
-
 import {
-  ContainersFiltersDeclaration 
+  ContainersFiltersDeclaration,
+  containersFilterValidations
 } from '../../filters/declarations/ContainersFilters/containersFilters';
 import {
-  useForm 
+  useForm
 } from 'react-hook-form';
 import {
-  useQueryParamFilters 
+  useQueryParamFilters
 } from '../../hooks/useQueryParamFilters';
 import {
-  useSearchQueryParam 
+  useSearchQueryParam
 } from '../../hooks/useSearchQueryParam';
 import {
-  CommonFilters 
+  CommonFilters
 } from '../../filters/CommonFilters';
 import {
-  useAreas 
+  useAreas
 } from '../../api/hooks/useAreas/useAreas';
 import {
-  addSelectFilterIfApplies, SelectBoxFilter 
+  addSelectFilterIfApplies, SelectBoxFilter
 } from '../../utils/filtersUtil.';
+import {
+  yupResolver 
+} from '@hookform/resolvers/yup';
 
 const mapper = (data) => data
 
@@ -109,8 +110,13 @@ export const ContainerPage = () => {
 
   const {
     control,
-    handleSubmit
-  } = useForm();
+    handleSubmit,
+    formState: {
+      errors
+    }
+  } = useForm({
+    resolver: yupResolver(containersFilterValidations)
+  });
 
   const {
     fetchDataWithFilters: fetchContainersWithFilters,
@@ -163,6 +169,7 @@ export const ContainerPage = () => {
         () => <CommonFilters
           control={control}
           filters={containersFilters}
+          errors={errors}
         />
       }
       handleSubmit={handleSubmit(whenFiltersSubmit)}

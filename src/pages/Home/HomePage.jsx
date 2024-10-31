@@ -12,6 +12,7 @@ import {
   yupResolver 
 } from '@hookform/resolvers/yup';
 import {
+  number,
   object 
 } from 'yup';
 import {
@@ -27,21 +28,50 @@ import {
   formatContainers 
 } from '../../api/hooks/useReports/mappers';
 
+export const homeFilterValidations = object({
+  minLlenado: number()
+    .nullable()
+    .transform((value, originalValue) => originalValue.trim() === '' ? null : value)
+    .min(0, 'Mín 0%')
+    .max(100, 'Máx 100%')
+    .test('is-less-than-maxLlenado', 'El llenado mínimo no puede ser mayor que el llenado máximo', function (value) {
+      const {
+        maxLlenado 
+      } = this.parent; // Accede a maxLlenado en el contexto del esquema
+      return value === null || maxLlenado === null || value <= maxLlenado; // Verifica la condición
+    }),
+    
+  maxLlenado: number()
+    .nullable()
+    .transform((value, originalValue) => originalValue.trim() === '' ? null : value)
+    .min(0, 'Mín 0%')
+    .max(100, 'Máx 100%'),
 
+  minBateria: number()
+    .nullable()
+    .transform((value, originalValue) => originalValue.trim() === '' ? null : value)
+    .min(0, 'Mín 0%')
+    .max(100, 'Máx 100%')
+    .test('is-less-than-maxBateria', 'La batería mínima no puede ser mayor que la batería máxima', function (value) {
+      const {
+        maxBateria 
+      } = this.parent; // Accede a maxBateria en el contexto del esquema
+      return value === null || maxBateria === null || value <= maxBateria; // Verifica la condición
+    }),
 
-const createReportSchema = object({
-}).required();
-
+  maxBateria: number()
+    .nullable()
+    .transform((value, originalValue) => originalValue.trim() === '' ? null : value)
+    .min(0, 'Mín 0%')
+    .max(100, 'Máx 100%'),
+});
 
 export default function HomePage() {
   const [areas, setAreas] = useState([])
   const [areasToRender, setAreasToRender] = useState([])
   const [containers, setContainers] = useState([]);
   const [containersToRender, setContainersToRender] = useState([])
-  const [containerSelected, setContainerSelected] = useState(null);
-
-
-  
+  const [containerSelected, setContainerSelected] = useState(null);  
 
   const {
     control, handleSubmit, setValue, formState: {
@@ -56,7 +86,7 @@ export default function HomePage() {
       minBateria: '',
       maxBateria: ''
     },
-    resolver: yupResolver(createReportSchema),
+    resolver: yupResolver(homeFilterValidations),
   });
 
   const {
@@ -100,10 +130,6 @@ export default function HomePage() {
     }
   }, []);
 
-
-
-
-
   const whenFiltersSubmit = ({
     areaId, minLlenado, maxLlenado, minBateria, maxBateria 
   }) => {
@@ -111,10 +137,10 @@ export default function HomePage() {
     const areasCondition = []
 
     const areaIdSelected = areaId !== '' ? areaId : null;
-    const minLlenadoValue = minLlenado !== '' ? Number(minLlenado) : 0;
-    const maxLlenadoValue = maxLlenado !== '' ? Number(maxLlenado) : 100;
-    const minBateriaValue = minBateria !== '' ? Number(minBateria) : 0;
-    const maxBateriaValue = maxBateria !== '' ? Number(maxBateria) : 100;
+    const minLlenadoValue = minLlenado !== null ? Number(minLlenado) : 0;
+    const maxLlenadoValue = maxLlenado !== null ? Number(maxLlenado) : 100;
+    const minBateriaValue = minBateria !== null ? Number(minBateria) : 0;
+    const maxBateriaValue = maxBateria !== null ? Number(maxBateria) : 100;
 
     if (areaId) {
       containersCondition.push(container => container.areaId == areaId)
@@ -164,6 +190,7 @@ export default function HomePage() {
     renderFilters={() => <HomeFilters
       control={control}
       areas={areas}
+      errors={errors}
     />}
     handleSubmit={handleSubmit(whenFiltersSubmit)}
   />;
