@@ -41,41 +41,47 @@ import {
 } from '../../config';
 
 
-const statusHistory = [ //hook up to BE later when BE sends expected data.
-  {
-    id: 1,
-    user: {
-      avatar: 'logo',
-      fullName: 'Roberto Sanchez'
-    },
-    from: 'En revisión',
-    to: 'Resuelto',
-    date: '30/05/2024',
-    time: '19.32 hs',
-    observation: 'Problema resuelto. La tapa fue arreglada.'
-  },
-  {
-    id: 2,
-    user: {
-      avatar: 'logo',
-      fullName: 'Roberto Sanchez'
-    },
-    from: 'Nuevo',
-    to: 'En revisión',
-    date: '29/05/2024',
-    time: '18.31 hs',
-  },
-  {
-    id: 3,
-    user: {
-      avatar: 'logo',
-      fullName: 'Ciudadano'
-    },
-    from: 'Nuevo',
-    date: '28/05/2024',
-    time: '17.30 hs',
-  }
-]
+const statusHistoryMapper = (report) => {
+  const {
+    status, managerImage, managerName, userName, userImage, observation 
+  } = report
+
+  const reversedStatus = [...status].reverse();
+
+  const statusHistory = reversedStatus.map((statusEntry, index) => {
+    const {
+      date, time 
+    } = TimestampUtil.convertToDateAndHour(statusEntry.timestamp)
+
+    if (index == reversedStatus.length - 1) { //first status (NUEVO)
+      return {
+        id: index,
+        user: {
+          avatar: userImage || userName,
+          fullName: userName || 'Ciudadano',
+        },
+        from: statusEntry.status,
+        date: date,
+        time: time,
+      }
+    } else {
+      return {
+        id: index,
+        user: {
+          avatar: managerImage || managerName,
+          fullName: managerName
+        },
+        from: reversedStatus[index + 1].status,
+        to: statusEntry.status,
+        date: date,
+        time: time,
+        observation: index == 0 ? observation || '' : undefined,
+      }
+    }
+  })
+
+  return statusHistory
+}
 
 const sideDetailsMapper = (report) => {
   const {
@@ -139,6 +145,7 @@ export const ReportDetailsPage = () => {
 
   const [reportData, setReportData] = useState(null);
   const [reportSideDetailsContent, setReportSideDetailsContent] = useState(null);
+  const [reportStatusHistoryContent, setReportStatusHistoryContent] = useState(null)
 
   const {
     fetchReport: {
@@ -154,6 +161,9 @@ export const ReportDetailsPage = () => {
 
         const sideDetailsContent = sideDetailsMapper(reportReponse)
         setReportSideDetailsContent(sideDetailsContent)
+
+        const statusHistoryContent = statusHistoryMapper(reportReponse)
+        setReportStatusHistoryContent(statusHistoryContent)
 
         setReportData(reportReponse)
       } catch (error) {
@@ -257,7 +267,7 @@ export const ReportDetailsPage = () => {
                 }}
               >
                 <ReportDetailStateFlow
-                  statusHistory={statusHistory}
+                  statusHistory={reportStatusHistoryContent}
                 />
               </Box>
             </Box>
