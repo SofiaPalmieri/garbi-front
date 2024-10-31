@@ -43,6 +43,7 @@ export const RoutesTable = ({
     )
   }
 
+  
   return (
     <Table
       aria-label='simple table'
