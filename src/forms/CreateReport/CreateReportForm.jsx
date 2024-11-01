@@ -104,6 +104,8 @@ export const CreateReportForm = ({
   const [selectedImage, setSelectedImage] = useState(null);
   const [selectedFile, setSelectedFile] = useState(null);
   const [openSnackbar, setOpenSnackbar] = useState(false)
+  const [snackbarSeverity, setSnackbarSeverity] = useState(null)
+  const [snackbarText, setSnackbarText] = useState(null)
 
   const position = {
     lat: -34.5893,
@@ -168,13 +170,11 @@ export const CreateReportForm = ({
   };
 
   const createReportSchema = object({
-    title: string().required('El titulo es un campo obligatorio'),
-    type: string().required('Debe seleccionar una opcion'),
-    description: string().required('La descripcion es un campo obligatorio'),
-    email: string().email('Debe ser un email valido')
-      .required('El mail es un campo obligatorio'),
+    title: string().required('El título es un campo obligatorio'),
+    type: string().required('Debe seleccionar una opción'),
+    email: string().email('Debe ser un email válido')
+      .required('El email es un campo obligatorio'),
     image: mixed(),
-    phone: string(),
   }).required();
 
   const {
@@ -183,12 +183,10 @@ export const CreateReportForm = ({
     }
   } = useForm({
     defaultValues: {
-      userId: '',
       containerId: '',
       title: '',
       description: '',
       address: '',
-      phone: '',
       email: '',
       type: '',
       image: '',
@@ -206,11 +204,14 @@ export const CreateReportForm = ({
     const report = {
       containerId: data.containerId,
       title: data.title,
-      description: data.description,
       address: data.address + ', ' + data.neighborhood,
-      phone: data.phone,
       email: data.email,
       type: data.type,
+      phone: '',
+    }
+  
+    if (data.description) {
+      report.description = data.description
     }
 
     if(selectedImage) {
@@ -218,9 +219,14 @@ export const CreateReportForm = ({
     }
 
     try {
-      await createReport(report);
+      const response = await createReport(report);
+      setSnackbarSeverity('success')
+      setSnackbarText('Reporte creado. En breve recibirá novedades.')
       setOpenSnackbar(true)
     } catch (error) {
+      setSnackbarSeverity('error')
+      setSnackbarText('Ocurrió un problema al crear el reporte. Intentelo más tarde.')
+      setOpenSnackbar(true)
       console.error('Error creating report:', error);
     }
   };
@@ -233,8 +239,8 @@ export const CreateReportForm = ({
       onSubmit={handleSubmit(onSubmit)}
     >
       <FeedbackSnackbar
-        severity={'success'}
-        text={'Reporte creado. En breve recibirá novedades.'}
+        severity={snackbarSeverity}
+        text={snackbarText}
         openSnackbar={openSnackbar}
         handleClose={handleCloseSnackbar}
       />
