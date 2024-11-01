@@ -49,10 +49,10 @@ const routeDetailsMapper = (route) => {
   const finishedStatus = route.status.find(statusItem => statusItem.status === 'FINISHED');
 
   const startedTimestamp = startedStatus?.timestamp;
+  const {
+    time: startedTime 
+  } = TimestampUtil.convertToDateAndHour(startedTimestamp);
   if (startedTimestamp) { // recorrido empezado. Si no estuviera empezado, queda Pendiente.
-    const {
-      time: startedTime 
-    } = TimestampUtil.convertToDateAndHour(startedTimestamp);
     startTime = `Inicio: ${startedTime}`;
   }
 
@@ -66,7 +66,7 @@ const routeDetailsMapper = (route) => {
     duration = `Duración: ${TimestampUtil.formatMinutes(route.directions.total_duration / 60)}`
   } else if (startedTimestamp) { // recorridos en curso: empezado pero no finalizado
     duration = 'Recorrido en curso';
-    startTime = `Comenzó a las ${startTime}`;
+    startTime = `Comenzó a las ${startedTime}`;
     endTime = null;
   }
 
