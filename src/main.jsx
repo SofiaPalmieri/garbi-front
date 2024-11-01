@@ -159,7 +159,7 @@ const router = createBrowserRouter([
         element: <CompanyPage />,
       },
       {
-        path: 'reportes/nuevo',
+        path: 'nuevo-reporte',
         element: <CreateReportPage />,
       },
     ],
