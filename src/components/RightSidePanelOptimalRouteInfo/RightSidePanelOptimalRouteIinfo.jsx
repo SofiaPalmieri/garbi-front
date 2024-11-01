@@ -37,6 +37,8 @@ export const RightSidePanelOptimalRouteIinfo = ({
   const onSelectOptimalRoute = async (optimalRouteId) => {
     try {
       await selectOptimalRoute(optimalRouteId)
+      setSnackbarText('Ruta enviada.')
+      setSnackBarSeverity('success')
       setOpenSnackbar(true)
     } catch (error) {
       setSnackbarText('Ocurrió un problema al enviar la ruta. Intentelo más tarde.')

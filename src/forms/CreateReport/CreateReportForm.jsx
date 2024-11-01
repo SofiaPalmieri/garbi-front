@@ -219,7 +219,7 @@ export const CreateReportForm = ({
     }
 
     try {
-      const response = await createReport(report);
+      await createReport(report)
       setSnackbarSeverity('success')
       setSnackbarText('Reporte creado. En breve recibirá novedades.')
       setOpenSnackbar(true)
@@ -227,7 +227,7 @@ export const CreateReportForm = ({
       setSnackbarSeverity('error')
       setSnackbarText('Ocurrió un problema al crear el reporte. Intentelo más tarde.')
       setOpenSnackbar(true)
-      console.error('Error creating report:', error);
+      console.error('Error creating report:', error)
     }
   };
 
