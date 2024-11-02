@@ -32,18 +32,33 @@ export const ReportDetailsDescriptionContent = ({
         >
           Descripción:
         </Typography>
-        <Typography
-          sx={{
-            fontFamily: 'Roboto',
-            fontSize: '16px',
-            fontWeight: '400',
-            lineHeight: '26.56px',
-            letterSpacing: '0.4px',
-            textAlign: 'left'
-          }}
-        >
-          {description}
-        </Typography>
+        {description ? (
+          <Typography
+            sx={{
+              fontFamily: 'Roboto',
+              fontSize: '16px',
+              fontWeight: '400',
+              lineHeight: '26.56px',
+              letterSpacing: '0.4px',
+              textAlign: 'left'
+            }}
+          >
+            {description}
+          </Typography>
+        ) : (
+          <Typography
+            sx={{
+              fontFamily: 'Roboto',
+              fontSize: '15px',
+              fontWeight: '400',
+              lineHeight: '26.56px',
+              letterSpacing: '0.4px',
+              textAlign: 'left',
+            }}
+          >
+            El creador del reporte no incluyó detalles.
+          </Typography>
+        )}
       </Box>
       <Box>
         {image ? (
