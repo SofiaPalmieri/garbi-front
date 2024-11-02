@@ -554,7 +554,9 @@ export const CreateReportForm = ({
               {isCreateReportLoading ? (
                 <CircularProgress
                   size={24}
-                  color='inherit'
+                  sx={{ 
+                    color: 'white' 
+                  }}
                 />
               ) : (
                 'ENVIAR'
