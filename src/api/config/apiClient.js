@@ -1,10 +1,10 @@
 import axios from 'axios';
 
-export const baseIntegrationUri = '/integration'
+export const baseIntegrationUri = '/public-api'
 
 // Configura la instancia de axios
 const apiClient = axios.create({
-  baseURL: 'https://1r9y6bh0g9.execute-api.us-east-1.amazonaws.com',
+  baseURL: 'http://localhost:3005',
   headers: {
     'Content-Type': 'application/json',
   },
@@ -25,17 +25,6 @@ apiClient.interceptors.request.use(
 
 apiClient.interceptors.response.use(
   response => response,
-  error => {
-    const status = error.response ? error.response.status : null;
-    
-    if (status === 401) {
-      throw Error('Unauthenticated')
-    } else if (status === 403) {
-      throw Error('Not Authorized')
-    } else {
-      throw Error('error from API, status code: ' + status)
-    }
-  }
 );
 
 export default apiClient;

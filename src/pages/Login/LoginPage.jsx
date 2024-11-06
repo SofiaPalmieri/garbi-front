@@ -8,9 +8,6 @@ import {
   LoginBox
 } from '../../components/LoginBox';
 import {
-  ChangePasswordBox
-} from '../../components/ChangePasswordBox';
-import {
   useEffect,
   useState
 } from 'react';
@@ -19,7 +16,6 @@ import {
 } from 'react-router-dom';
 
 const LoginPage = () => {
-  const [isFlipped, setIsFlipped] = useState(false);
   const [showSnackbar, setShowSnackbar] = useState(false);
   const location = useLocation();
 
@@ -41,11 +37,7 @@ const LoginPage = () => {
       }}
     >
       <GiratoryCard
-        isFlipped={isFlipped}
-        frontComponent={<LoginBox
-          setIsFlipped={setIsFlipped}
-        />}
-        backComponent={<ChangePasswordBox />}
+        frontComponent={<LoginBox />}
       />
       <Snackbar
         open={showSnackbar}

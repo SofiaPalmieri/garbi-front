@@ -5,7 +5,7 @@ import {
   baseIntegrationUri 
 } from '../../config/apiClient';
 
-const baseAuthUri = baseIntegrationUri + '/user'
+const baseAuthUri = baseIntegrationUri + '/login'
 
 export const useLogin = () => {
   const {
@@ -15,13 +15,12 @@ export const useLogin = () => {
   });
 
   const login = ({
-    personalEmail, password 
+    email, password 
   }) => {
     return commonFetch({
-      uri: '/authenticate',
       method: 'POST',
       body: {
-        personalEmail,
+        email,
         password,
       },
     });

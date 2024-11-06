@@ -1,6 +1,5 @@
-import {
-  yupResolver
-} from '@hookform/resolvers/yup';
+
+
 import {
   Visibility, VisibilityOff
 } from '@mui/icons-material';
@@ -24,9 +23,7 @@ import {
 import {
   Controller, useForm
 } from 'react-hook-form';
-import {
-  object, string
-} from 'yup';
+
 
 import logo from '/src/assets/garbi-login.png';
 import {
@@ -39,16 +36,8 @@ import {
   useAuth
 } from '../../api/hooks/useAuth/useAuth';
 
-const userLoginSchema = object({
-  personalEmail: string().email()
-    .required(),
-  password: string().max(16)
-    .required(),
-}).required();
 
-export const LoginBox = ({
-  setIsFlipped
-}) => {
+export const LoginBox = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoginScreenLoading, setIsLoginScreenLoading] = useState(true);
 
@@ -76,12 +65,11 @@ export const LoginBox = ({
       personalEmail: 'lucas.ezequiel001@gmail.com',
       password: '1234',
     },
-    resolver: yupResolver(userLoginSchema),
   });
 
   const onSubmit = async (data) => {
     const response = await login({
-      personalEmail: data.personalEmail,
+      email: data.personalEmail,
       password: data.password,
     });
 
@@ -89,11 +77,9 @@ export const LoginBox = ({
     const user = jwtDecode(response.token);
     localStorage.setItem('user', JSON.stringify(user));
 
-    if (!response.termsAndConditions) {
-      setIsFlipped(true);
-    } else {
-      navigate('/inicio');
-    }
+
+    navigate('/reportes');
+    
   };
 
   useEffect(() => {
@@ -102,7 +88,7 @@ export const LoginBox = ({
       const currentTime = Date.now() / 1000;
 
       if (decodedToken.exp > currentTime) {
-        navigate('/inicio');
+        navigate('/reportes');
       }
     }
     
