@@ -3,103 +3,76 @@ import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined
 import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined';
 import RoomOutlinedIcon from '@mui/icons-material/RoomOutlined';
 import {
-  CircularProgress,
-  Divider
+  CircularProgress, Divider 
 } from '@mui/material';
 import {
-  Box
+  Box 
 } from '@mui/system';
 import {
-  ReportDetailStateFlow
+  ReportDetailStateFlow 
 } from '../../components/ReportDetailStateFlow/ReportDetailStateFlow';
 import {
-  ReportDetails
+  ReportDetails 
 } from '../ReportDetails/ReportDetails';
 import {
-  ReportDetailsDescriptionContent
+  ReportDetailsDescriptionContent 
 } from './ReportDetailsDescriptionContent';
 import {
-  ReportDetailsDescriptionHeader
+  ReportDetailsDescriptionHeader 
 } from './ReportDetailsDescriptionHeader';
 import {
-  useParams
+  useParams 
 } from 'react-router-dom';
 import {
-  useReports
+  useReports 
 } from '../../api/hooks/useReports/useReports';
 import {
-  useEffect, useState
+  useEffect, useState 
 } from 'react';
 import {
-  TimestampUtil
+  TimestampUtil 
 } from '../../utils/timestampUtil';
 import {
-  BreadcrumbsComponent
+  BreadcrumbsComponent 
 } from '../../components/BreadcrumbsComponent/BreadcrumbsComponent';
 import {
   HEIGHT_FULL_SCREEN 
 } from '../../config';
-
-
+import image from '../../../public/images/container.jpg'
 const statusHistoryMapper = (report) => {
   const {
-    status, managerImage, managerName, userName, userImage, observation 
-  } = report
+    status, observation, userId 
+  } = report.item;
 
-  const reversedStatus = [...status].reverse();
-
-  const statusHistory = reversedStatus.map((statusEntry, index) => {
-    const {
-      date, time 
-    } = TimestampUtil.convertToDateAndHour(statusEntry.timestamp)
-
-    if (index == reversedStatus.length - 1) { //first status (NUEVO)
-      return {
-        id: index,
-        user: {
-          avatar: userImage || userName,
-          fullName: userName || 'Ciudadano',
-        },
-        from: statusEntry.status,
-        date: date,
-        time: time,
-      }
-    } else {
-      return {
-        id: index,
-        user: {
-          avatar: managerImage || managerName,
-          fullName: managerName
-        },
-        from: reversedStatus[index + 1].status,
-        to: statusEntry.status,
-        date: date,
-        time: time,
-        observation: index == 0 ? observation || '' : undefined,
-      }
+  // Simulando un historial de estado con base en el estado actual.
+  const statusHistory = [
+    {
+      id: 0,
+      user: {
+        avatar: report.item.userId ? 'Recolector' : 'Ciudadano',
+        fullName: report.item.userId ? 'Recolector' : 'Ciudadano',
+      },
+      from: 'NUEVO',
+      date: TimestampUtil.convertToDateAndHour(report.item.createdAt).date,
+      time: TimestampUtil.convertToDateAndHour(report.item.createdAt).time,
+      observation: observation || '',
     }
-  })
+  ];
 
-  return statusHistory
+  return statusHistory;
 }
 
 const sideDetailsMapper = (report) => {
   const {
-    date, time
-  } = TimestampUtil.convertToDateAndHour(report.timestamp)
-
-  const reportCreator = report.userId ? 'Recolector' : 'Ciudadano'
-
-  const splitedArea = report.address.split(', ')
-  const neighborhood = splitedArea[1]
-  const address = splitedArea[0]
-  const area = report.area.name
+    date, time 
+  } = TimestampUtil.convertToDateAndHour(report.item.createdAt);
+  const reportCreator = report.item.userId ? 'Recolector' : 'Ciudadano';
 
   const sideDetailsContent = [
     {
       icon: <CalendarMonthIcon
         sx={{
-          color: '#2121213B'
+          color: '#2121213B' 
         }}
       />,
       title: 'Fecha de creación',
@@ -108,7 +81,7 @@ const sideDetailsMapper = (report) => {
     {
       icon: <PersonOutlineOutlinedIcon
         sx={{
-          color: '#2121213B'
+          color: '#2121213B' 
         }}
       />,
       title: 'Reportado por',
@@ -117,62 +90,61 @@ const sideDetailsMapper = (report) => {
     {
       icon: <RoomOutlinedIcon
         sx={{
-          color: '#2121213B'
+          color: '#2121213B' 
         }}
       />,
       title: 'Ubicación',
-      description: `${neighborhood} - ${area}`,
-      description2: address
+      description: `${report.item.neighborhood || 'No especificado'}`,
+      description2: `${report.item.street || ''} ${report.item.number || ''}`
     },
     {
       icon: <DeleteOutlineOutlinedIcon
         sx={{
-          color: '#2121213B'
+          color: '#2121213B' 
         }}
       />,
       title: 'Contenedor',
-      description: report.containerId,
+      description: report.item.containerId,
     }
-  ]
+  ];
 
-  return sideDetailsContent
+  return sideDetailsContent;
 }
 
 export const ReportDetailsPage = () => {
   const {
-    id
-  } = useParams()
+    id 
+  } = useParams();
 
   const [reportData, setReportData] = useState(null);
   const [reportSideDetailsContent, setReportSideDetailsContent] = useState(null);
-  const [reportStatusHistoryContent, setReportStatusHistoryContent] = useState(null)
+  const [reportStatusHistoryContent, setReportStatusHistoryContent] = useState(null);
 
   const {
     fetchReport: {
-      fetchReport: fetchReport, isLoadingFetchReport
-    },
+      fetchReport, isLoadingFetchReport 
+    } 
   } = useReports();
 
   useEffect(() => {
     const asyncFetchReport = async () => {
       try {
-        const reportReponse = await fetchReport(id)
-        console.log('🚀 ~ asyncFetchReport ~ reportReponse:', reportReponse)
+        const reportResponse = await fetchReport(id);
+        console.log('🚀 ~ asyncFetchReport ~ reportResponse:', reportResponse);
 
-        const sideDetailsContent = sideDetailsMapper(reportReponse)
-        setReportSideDetailsContent(sideDetailsContent)
+        const sideDetailsContent = sideDetailsMapper(reportResponse);
+        setReportSideDetailsContent(sideDetailsContent);
 
-        const statusHistoryContent = statusHistoryMapper(reportReponse)
-        setReportStatusHistoryContent(statusHistoryContent)
+        const statusHistoryContent = statusHistoryMapper(reportResponse);
+        setReportStatusHistoryContent(statusHistoryContent);
 
-        setReportData(reportReponse)
+        setReportData(reportResponse);
       } catch (error) {
-        console.error('Error fetching report:', error)
+        console.error('Error fetching report:', error);
       }
     };
-    asyncFetchReport()
-  }, [])
-
+    asyncFetchReport();
+  }, [id]);
 
   return (
     <Box
@@ -214,9 +186,9 @@ export const ReportDetailsPage = () => {
         <Box
           sx={{
             padding: {
-              xs: '1rem 2rem 1.5rem', // Para pantallas pequeñas (teléfonos)
-              sm: '1.5rem 3rem 1.75rem', // Para pantallas medianas (tablets)
-              md: '2rem 4rem 2.25rem', // Para pantallas grandes (laptops y monitores grandes)
+              xs: '1rem 2rem 1.5rem',
+              sm: '1.5rem 3rem 1.75rem',
+              md: '2rem 4rem 2.25rem',
             },
             flex: 1,
             display: 'flex',
@@ -228,7 +200,6 @@ export const ReportDetailsPage = () => {
               display: 'flex',
             }}
           >
-
             <Box
               sx={{
                 height: 1,
@@ -245,8 +216,8 @@ export const ReportDetailsPage = () => {
                 }}
               >
                 <ReportDetailsDescriptionHeader
-                  title={reportData?.title}
-                  state={reportData?.type.replace(/_/g, ' ')}
+                  title={reportData?.item?.title}
+                  state={reportData?.item?.type.replace(/_/g, ' ')}
                 />
               </Box>
               <Box
@@ -256,8 +227,8 @@ export const ReportDetailsPage = () => {
                 }}
               >
                 <ReportDetailsDescriptionContent
-                  description={reportData?.description}
-                  image={reportData?.imageUrl}
+                  description={reportData?.item?.description}
+                  image={image}
                 />
               </Box>
               <Box
@@ -279,12 +250,12 @@ export const ReportDetailsPage = () => {
               <ReportDetails
                 reportId={id}
                 content={reportSideDetailsContent}
-                state={reportData?.currentStatus}
+                state={reportData?.item?.status}
               />
             </Box>
           </Box>
         </Box>
       )}
-    </Box >
-  )
+    </Box>
+  );
 };

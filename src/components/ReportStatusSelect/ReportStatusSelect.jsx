@@ -132,6 +132,7 @@ export const ReportStatusSelect = ({
           value={selectedValue}
           onChange={handleChange}
           IconComponent={SmallKeyboardArrowDownIcon(reportStates[selectedValue].colorText)}
+          disabled
           sx={{
             height: '30px',
             color: reportStates[selectedValue].colorText,

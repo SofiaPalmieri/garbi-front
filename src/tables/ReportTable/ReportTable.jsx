@@ -10,9 +10,8 @@ import {
 import {
   AvatarWithTooltip
 } from '../../components/AvatarWithTooltip';
-import {
-  ReportStatusSelect
-} from '../../components/ReportStatusSelect';
+
+
 import {
   useState
 } from 'react';
@@ -191,13 +190,7 @@ export const ReportTable = ({
                 width: 192,
                 paddingX: '24px'
               }}
-            >
-              <ReportStatusSelect
-                reportId={row.id}
-                reportState={row.state}
-                onAvatarUpdate={handleUpdateAvatar}
-              />
-            </TableCell>
+            />
             <TableCell
               align='center'
               sx={{

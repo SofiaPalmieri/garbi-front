@@ -11,9 +11,8 @@ import PersonIcon from '@mui/icons-material/Person';
 import Button from '@mui/material/Button';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
-import {
-  ExpandMore 
-} from '@mui/icons-material';
+
+
 import {
   useState, useEffect 
 } from 'react';
@@ -30,17 +29,10 @@ import {
 } from '../../components/ProfileIconMenu';
 
 const pages = {
-  Mapa: '/inicio',
-  Estadísticas: '/estadisticas',
-  Recomendaciones: '/recomendaciones',  
   Reportes: '/reportes',
 };
 
 const managementItems = {
-  Empleados: '/empleados',
-  Contenedores: '/contenedores',  
-  Recorridos: '/recorridos',  
-  Áreas: '/areas',
 };
 
 export const Header = ({
@@ -359,25 +351,6 @@ export const Header = ({
                       {page}
                     </Button>
                   ))}
-                          
-                  <Button
-                    onClick={handleOpenManagementMenu}
-                    sx={{
-                      color: 'white',
-                      textTransform: 'unset',
-                      borderBottom: currentTab === 'Gestión' ? '2px solid white' : 'none',
-                      '&:hover': {
-                        backgroundColor: '#0c3020',
-                      },
-                    }}
-                  >
-                    Gestión
-                    <ExpandMore
-                      sx={{
-                        color: 'white' 
-                      }}
-                    />
-                  </Button>
                   <Menu
                     sx={{
                       mt: '44px' 

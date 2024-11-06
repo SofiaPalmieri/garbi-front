@@ -314,7 +314,7 @@ export const RegistrationPage = ({
             label='Contraseña'
             control={control}
             type={showPassword.current ? 'text' : 'password'}
-            helperText={errors.password?.message}
+            helperText='La contraseña debe ser de 4 caracteres, únicamente letras y números.'
             InputProps={{
               endAdornment: (
                 <IconButton

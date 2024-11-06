@@ -1,5 +1,6 @@
-
-
+import {
+  LIMIT_DEFAULT
+} from '../../../config';
 import {
   useFetch
 } from '../../../hooks/useFetch';
@@ -49,23 +50,15 @@ export const useFetchReports = () => {
   const {
     commonFetch, isLoading
   } = useFetch({
-    baseUri: baseReportsUri,
+    baseUri: '/api/report',
   });
 
-  const fetchReports = (queryParamsFilter, userId, companyId) => {
+  const fetchReports = (lastKey = null, queryParamsFilter, limit = LIMIT_DEFAULT) => {
     const queryBuilder = new QueryBuilder()
 
-    queryBuilder
-      .addParam('userId', userId)
-      .addParam('companyId', companyId)
-
-    queryParamsFilter.forEach(element => {
-      queryBuilder.addParam(element.key, element.value)
-    });
 
     const uri = queryBuilder.build();
     
-    console.log('🚀 ~ fetchReports ~ uri:', uri)
 
     return commonFetch({
       uri,
@@ -84,7 +77,7 @@ export const useFetchReport = () => {
   const {
     commonFetch, isLoading
   } = useFetch({
-    baseUri: baseReportsUri,
+    baseUri: '/api/report',
   });
 
   const fetchReport = (reportId) => {

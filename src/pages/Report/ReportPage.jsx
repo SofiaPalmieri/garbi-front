@@ -31,12 +31,9 @@ import {
 import {
   ReportTable
 } from '../../tables/ReportTable/ReportTable';
-import {
-  addSelectFilterIfApplies, SelectBoxFilter
-} from '../../utils/filtersUtil.';
-import {
-  TimestampUtil
-} from '../../utils/timestampUtil';
+
+
+
 import {
   subDays 
 } from 'date-fns'
@@ -54,16 +51,11 @@ const mapper = (reports) => {
 
   return reports.map(
     r => {
-      const {
-        date, time
-      } = TimestampUtil.convertToDateAndHour(r.timestamp)
-
       const creator = r.userId ? 'Recolector' : 'Ciudadano'
 
       return {
         id: r.id,
-        date: date,
-        time: time,
+        date: r.createdAt,
         state: r.currentStatus,
         typeOfUser: creator,
         description: r.title,
@@ -99,30 +91,16 @@ export const ReportPage = () => {
 
   // this useEffect is to retrieve areas from BE and complete filters
   useEffect(() => {
-    const getAreasAndCompleteFilters = async () => {
+    console.log('🚀 ~ getReports ~ fetchReports:', fetchReports)
+    
+    const getReports = async () => {
       const {
-        result: areas
-      } = await getAreas()
+        result: reports
+      } = await fetchReports()
 
-      const areasOptions = areas.map(area => ({
-        value: area.id,
-        label: area.name
-      }))
-
-      const completedReportFilters = [...reportsFilters]
-
-      completedReportFilters.push({
-        key: 'area',
-        name: 'Área',
-        values: areasOptions,
-        render: SelectBoxFilter,
-        addFilter: addSelectFilterIfApplies
-      })
-
-      setReportFilters(completedReportFilters)
     }
 
-    getAreasAndCompleteFilters()
+    getReports()
   }, [])
 
   const {
