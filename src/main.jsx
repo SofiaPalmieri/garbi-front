@@ -97,6 +97,10 @@ const router = createBrowserRouter([
         path: '/ingresar',
         element: <LoginPage />,
       },
+      {
+        path: '/registrarse',
+        element: <RegistrationPage />,
+      }
     ],
   },
   {
@@ -109,10 +113,6 @@ const router = createBrowserRouter([
       {
         path: '/contenedores',
         element: <ContainerPage />,
-      },
-      {
-        path: '/registrarse',
-        element: <RegistrationPage />,
       },
       {
         path: '/inicio',

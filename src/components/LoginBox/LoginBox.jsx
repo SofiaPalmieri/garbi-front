@@ -35,6 +35,12 @@ import {
 import {
   useAuth
 } from '../../api/hooks/useAuth/useAuth';
+import {
+  RegistrationPage 
+} from '../../RegistrationPage';
+import {
+  ModalCreateResource 
+} from '../../modales/ModalCreateResource';
 
 
 export const LoginBox = () => {
@@ -62,8 +68,8 @@ export const LoginBox = () => {
     },
   } = useForm({
     defaultValues: {
-      personalEmail: 'lucas.ezequiel001@gmail.com',
-      password: '1234',
+      personalEmail: '',
+      password: '',
     },
   });
 
@@ -73,14 +79,21 @@ export const LoginBox = () => {
       password: data.password,
     });
 
-    localStorage.setItem('token', response.token);
-    const user = jwtDecode(response.token);
-    localStorage.setItem('user', JSON.stringify(user));
-
-
-    navigate('/reportes');
+    if(response.token !== undefined){
+      localStorage.setItem('token', response.token);
+      const user = jwtDecode(response.token);
+      localStorage.setItem('user', JSON.stringify(user));
+      navigate('/reportes');
+    }
     
   };
+
+  const [isOpen, setIsOpen] = useState(false)
+
+  const handleClose = () => {
+    setIsOpen(false)
+  }
+
 
   useEffect(() => {
     if (localStorage.getItem('token') != null) {
@@ -278,6 +291,7 @@ export const LoginBox = () => {
 
               </Button>
               <Typography
+                onClick={()=>setIsOpen(true)}
                 sx={{
                   textDecoration: 'underline',
                   color: '#2196F3',
@@ -285,8 +299,16 @@ export const LoginBox = () => {
                   marginTop: '1rem',
                 }}
               >
-                ¿Olvidaste tu contraseña?
+                Registrarse
               </Typography>
+              <ModalCreateResource
+                title={'Registrarse'}
+                open={isOpen}
+                handleClose={handleClose}
+                form={<RegistrationPage 
+                  handleClose={handleClose}
+                />}
+              />
             </Box>
           </form>
         </Box>

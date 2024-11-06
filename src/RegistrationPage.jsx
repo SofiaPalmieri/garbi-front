@@ -139,13 +139,10 @@ export const RegistrationPage = ({
     }));
   };
 
-  const user = JSON.parse(localStorage.getItem('user'));
-  const companyId = user.companyId;
 
   const onSubmit = async (data) => {
     try {
       const response = await createEmployee({
-        companyId: companyId,
         name: data.firstName,
         surname: data.lastName,
         personalPhone: data.personalPhone,
