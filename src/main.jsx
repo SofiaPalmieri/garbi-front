@@ -53,6 +53,9 @@ import {
   StatsPage
 } from './pages/Stats/StatsPage.jsx';
 import AuthenticatedRoute from './components/AuthenticatedRoute/AuthenticatedRoute.jsx';
+import {
+  RegistrationPage 
+} from './RegistrationPage.jsx';
 
 const theme = createTheme({
   palette: {
@@ -106,6 +109,10 @@ const router = createBrowserRouter([
       {
         path: '/contenedores',
         element: <ContainerPage />,
+      },
+      {
+        path: '/registrarse',
+        element: <RegistrationPage />,
       },
       {
         path: '/inicio',

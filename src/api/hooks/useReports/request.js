@@ -1,6 +1,5 @@
-import {
-  LIMIT_DEFAULT
-} from '../../../config';
+
+
 import {
   useFetch
 } from '../../../hooks/useFetch';
@@ -53,12 +52,12 @@ export const useFetchReports = () => {
     baseUri: baseReportsUri,
   });
 
-  const fetchReports = (lastKey = null, queryParamsFilter, limit = LIMIT_DEFAULT) => {
+  const fetchReports = (queryParamsFilter, userId, companyId) => {
     const queryBuilder = new QueryBuilder()
 
     queryBuilder
-      .addParam('lastKey', lastKey)
-      .addParam('limit', limit)
+      .addParam('userId', userId)
+      .addParam('companyId', companyId)
 
     queryParamsFilter.forEach(element => {
       queryBuilder.addParam(element.key, element.value)
